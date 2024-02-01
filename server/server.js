@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+const corsOptions = require("./config/corsOptions.js")
 const userRoute = require("./routes/user.js");
 const recipeRoute = require("./routes/recipes.js");
 const ingRoute = require("./routes/ingredients.js");
@@ -15,14 +16,13 @@ const margesRoute = require("./routes/marges.js");
 const worksheetRoute = require("./routes/worksheet.js");
 const titlesRoute = require("./routes/titles.js");
 const calcRoute = require("./routes/calculator.js");
-
-
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
     console.log(`server is running on Port: ${PORT}`);
 });
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use('/api/user', userRoute);
 app.use('/api/s/recipes', recipeRoute);
