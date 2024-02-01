@@ -7,7 +7,6 @@ const uuid = require('uuid')
 const db = require('../lib/db.js');
 const {validateRegister, isLoggedIn} = require('../middleware/users.js');
 
-// http://localhost:3000/api/sign-up
 router.post("/sign-up", validateRegister, (req, res, next) => {
     const username = req.body.username;
     db.query(`SELECT id FROM users WHERE LOWER(username) = LOWER(?)`, username, (err, result) => {
@@ -42,7 +41,6 @@ router.post("/sign-up", validateRegister, (req, res, next) => {
     })
 })
 
-// http://localhost:3000/api/user/login
 router.post("/login", (req, res, next) => {
     db.query(`SELECT * FROM users WHERE username = ${db.escape(req.body.username)};`,
     (err, result) => {
@@ -83,7 +81,7 @@ router.post("/login", (req, res, next) => {
     })
     
 });
-// http://localhost:3000/api/s
+
 router.get("/s", isLoggedIn, (req, res, next) => {
     console.log(req.userData);
     res.send('This is secret content');
