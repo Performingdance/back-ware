@@ -1,0 +1,43 @@
+.client-card{
+    display: grid;
+    margin: 0;
+    padding: 0;
+
+}
+.c-card{
+    position: relative;
+    height: 8rem;
+    width: 100%;
+    background-color: var(--bg);
+    margin: 0.2rem 0.2rem 0 ;
+    padding: 0;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    align-content: center;
+    background: none;
+    box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
+}
+.c-title{
+    justify-content: center;
+    text-align: center;
+
+}
+.cc-more{
+    height: 8rem;
+    display: flex;
+    width: 100%;
+    margin-top: 0;
+    align-content: center;
+    justify-content: center;
+}
+.cc-address, .cc-invoice{
+    flex: 1;
+
+    justify-content: center;
+    padding: 0.7rem;
+}
+.cc-list > *{
+    color: var(--text-color);
+    padding: 0.2rem;
+
+}

@@ -1,0 +1,275 @@
+@font-face {
+  font-family: Work Sans;
+  src: url('./styles/fonts/static/WorkSans-Light.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --bg: #ffffff;
+  --bg-accent:#dddddd;
+  --bg-light: #ffffff;
+
+  --bg-0-3: #ffffff71;
+  --bg-0-5: #ffffff78;
+  --bg-0-8: #ffffffb6;
+  --icon-bg-0-8: #989da2b0;
+  --icon-bg: #b1b4b7;
+  --icon-btn-bg: var(--bg-accent);
+  --input-bg: #d1cece;
+
+  --errorBg: #b33b04;
+  --successBg: #079f07;
+
+  --text-size: 0.8rem;
+  --text-color: #000000;
+  --text-color-sec: #9b9ea7;
+  --text-color-dark: #1d1d1d;
+  --heading-color: #000000;
+  --title-font-family: "Work Sans", Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;
+  --button-font-family: var(--title-font-family) ;
+  --font-size-xlg: 2rem;
+  --font-size-lg: large;
+  --font-size-md: medium;
+  --font-size-sm: 0.7rem;
+  
+  --nav-size: 8%;
+  --min-nav-size: 60px;
+
+  --border: 1px solid #1d1d1d;
+  --border-accent: 1px solid #515050b6;
+  --border-light: 1px solid #9d9d9d;
+  --border-radius: 8px;
+
+  --speed: 500ms;
+  --btn-size-lg: 70px;
+  --btn-size-md: 50px;
+  --btn-size-sm: 35px;
+  --header-size: 50px;
+
+
+
+}
+button, .button{
+  margin: 0.3rem;
+  padding: 0 0.4rem 0 0.4rem;
+  justify-items: center;
+  align-items: center;
+  color: var(--text-color);
+  font-family: var(--button-font-family);
+  background: none;
+  border: none;
+  border-radius: var(--border-radius);
+  
+
+}
+button:hover, .button:hover, a:hover, .button-hover{   
+  color: var(--text-color);
+  cursor: pointer;
+  background-color: var(--bg-light);
+  filter: invert(95%) brightness(1.2); 
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-family: var(--title-font-family);
+  background: none;
+  border: none;
+  border-radius: var(--border-radius);
+}
+p, li, pre{
+  color: var(--text-color);
+  text-decoration: none;
+  font-family: var(--title-font-family);
+}
+span{
+  color: var(--text-color);
+  text-decoration: none;
+  font-family: var(--title-font-family);
+}
+div{
+  text-decoration: none;
+  font-family: var(--title-font-family);
+}
+h1, h2, h3, h4, h5 {
+  color: var(--heading-color);
+  font-family: var(--title-font-family);
+}
+input, .input{
+  border: var(--border);
+  border-radius: var(--border-radius);
+  padding: 0.3rem;
+  font-family: var(--title-font-family);
+  font-size: var(--font-size-md); ;
+  color: var(--text-color);
+  background-color: var(--input-bg);
+}
+input:focus, .input:focus{
+  outline: none;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+   appearance: none;
+  -moz-appearance: textfield;
+}
+
+.svg-icon-lg{
+  width: calc(var(--btn-size-lg)*0.5);
+  height: calc(var(--btn-size-lg)*0.5);
+}
+.svg-icon-md{
+  width: calc(var(--btn-size-md)*0.5);
+  height: calc(var(--btn-size-md)*0.5);
+}
+.svg-icon-sm{
+  width: calc(var(--btn-size-sm)*0.5);
+  height: calc(var(--btn-size-sm)*0.5);
+}
+.app{
+  align-content: center;
+  display: inline-block;
+  left:0;
+  padding: 0;
+  margin: 0;
+  background-color: var(--bg);
+}
+.content{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: var(--header-size);
+  left: 0;
+  background-color: var(--bg);
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+}
+
+.page-content{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 20rem));
+  grid-column-gap: 0.5rem;
+  justify-content: center;
+  left:0;
+  padding: 0.5rem;
+  padding-bottom: 8rem;
+  overflow: auto;
+}
+
+.header-edit-btns{
+  position: fixed;
+  display: inline;
+  top: 0rem;
+  right: 1rem;
+
+}
+.header-edit-btn{
+  position: relative;
+  display: inline;
+
+  padding: 0.5rem;
+
+}
+.header-edit-input{
+  position: fixed;
+  top: 0rem;
+  width: 50%;
+  color: var(--text-color);
+  font-family: var(--title-font-family);
+  font-size: var(--font-size-xlg);
+  align-self: center;
+  padding: 0.3rem;
+  border: none;
+  margin-left:15%;
+}
+
+.disableScroll{
+  overflow-y:hidden;
+  overflow-x:hidden;
+}
+
+.jc-c{
+  justify-content: center;
+}
+.ac-c{
+  align-content: center;
+}
+.ai-c{
+  align-items: center;
+}
+.d-none{
+  display: none;
+}
+.d-il{
+  display: inline-flex;
+}
+.w-100{
+  width: 100%;
+}
+.js-f-e{
+  align-self: flex-end;
+}
+.ta-c{
+  text-align: center;
+}
+.fix-left{
+  position: fixed;
+  left: 0;
+}
+.fix-right{
+  position: fixed;
+  right: 0;
+}
+.br-right{
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+.br-left{
+  border-radius:  var(--border-radius) 0 0 var(--border-radius);
+}
+.border-b{
+  border-bottom: var(--border);
+}
+.bg-none{
+  background-color: none;
+}
+.stroke-w{
+    filter:invert(95%);
+}
+.z-1{
+  z-index: 1;
+}
+.errorMsg{
+  background-color: var(--errorBg);
+  color: whitesmoke;
+  justify-items: center;
+  align-self: center;
+  text-align: center;
+  margin: 0.1rem;
+  padding: 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+}
+.successMsg{
+  background-color: var(--successBg);
+  justify-items: center;
+  align-self: center;
+  text-align: center;
+  margin: 0.1rem;
+  padding: 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+}

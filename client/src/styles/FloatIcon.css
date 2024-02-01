@@ -1,0 +1,38 @@
+.float-btn {
+    position: fixed;
+    bottom: 15%;
+    margin: 0;
+    padding: 0;
+    right: 2%;
+    width: var(--btn-size-lg);
+    height: var(--btn-size-lg);
+    border-radius: 50%;
+    background-color: var(--icon-btn-bg);
+}
+.float-btn:hover {
+    filter:brightness(1.2);
+}
+.float-dropdown{
+    position: fixed;
+    bottom: 15%;
+    right: 2%;
+    transform: translateX(1.5rem) translateY(-5rem);
+    min-width:200px;
+    background-color: none;
+    padding: 1rem;
+    overflow:hidden;
+  }
+.float-menu-item {
+    
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border-radius: var(--border-radius);
+    transition: background var(--speed) ;
+    padding: 0.2rem;
+    margin:0.5rem;
+    background-color: var(--icon-btn-bg);
+  }
+  .float-menu-item:hover{
+    background-color: var(--bg-accent);
+  }

@@ -1,0 +1,84 @@
+// Worksheet base sql 
+
+SELECT a.ID,a.date,recipeID,SUM(a.recipe_mass) AS recipe_mass,SUM(a.ing_mass) AS ing_mass,a.base_ingID,a.base_recipeID,a.base,a.note,a.titleID,a.sortID,a.level,a.is_checked FROM (
+    SELECT * FROM worksheet WHERE date LIKE "2023-02-02")AS a
+GROUP BY recipeID = base_recipeID, base_ingID
+
+
+
+// worksheet base filter for selected Recipes
+
+SELECT b.*, d.recipe_mass FROM
+    (SELECT a.ID, a.date, a.recipeID, SUM(a.ing_mass) AS ing_mass, a.base_ingID, recipes.name FROM 
+        (SELECT ID, date, recipeID, recipe_mass, ing_mass, base_ingID 
+                FROM worksheet 
+                WHERE date LIKE '2023-02-02' AND recipeID IN (1,2)
+        UNION
+        SELECT ID, date, base_recipeID AS recipeID, recipe_mass, ing_mass, base_ingID 
+                FROM worksheet 
+                WHERE date LIKE '2023-02-02' AND base_recipeID IN (1,2) ) AS a 
+    LEFT JOIN recipes
+    ON a.recipeID = recipes.ID
+    GROUP BY recipeID, base_ingID) AS b
+LEFT JOIN
+    (SELECT aa.ID, aa.recipeID, SUM(aa.ing_mass) AS recipe_mass FROM 
+        (SELECT ID, date, recipeID, ing_mass, base_ingID 
+                FROM worksheet 
+                WHERE date LIKE '2023-02-02' AND recipeID IN (1,2)
+        UNION
+        SELECT ID, date, base_recipeID AS recipeID, ing_mass, base_ingID 
+                FROM worksheet 
+                WHERE date LIKE '2023-02-02' AND base_recipeID IN (1,2) ) AS aa
+    GROUP BY recipeID) AS d
+ON b.recipeID = d.recipeID
+ORDER BY recipeID ASC
+
+
+// every dough with dough-mass
+SELECT d.*, form.name FROM
+	(SELECT c.*, daylist.formID, SUM(daylist.amount) AS amount FROM
+        (SELECT  b.*, recipes.name FROM
+            (SELECT a.ID, a.date, a.recipeID, SUM(a.ing_mass) AS recipe_mass FROM 
+                (SELECT ID, date, recipeID, ing_mass, base_ingID 
+                        FROM worksheet 
+                        WHERE date LIKE '2023-02-02'
+                UNION
+                SELECT ID, date, base_recipeID AS recipeID, ing_mass, base_ingID 
+                        FROM worksheet 
+                        WHERE date LIKE '2023-02-02') AS a
+            GROUP BY recipeID) AS b
+        LEFT JOIN recipes
+        ON b.recipeID = recipes.ID
+        WHERE recipeID > 0) AS c
+    LEFT JOIN daylist
+    ON daylist.date = c.date AND daylist.recipeID = c.recipeID
+    GROUP BY recipeID, formID) AS d
+LEFT JOIN form
+ON d.formID = form.ID
+
+    ORDER BY recipeID ASC
+
+
+// worksheet base - all base_recipes and the recipes they are part of, as well as the total mass, 
+   SELECT d.*, recipes.name as recipeName FROM
+    (SELECT c.*, recipes.name AS base_recipeName FROM
+        (SELECT  b.*, worksheet.recipeID FROM
+                (SELECT a.ID, a.date, a.recipeID AS base_recipeID, SUM(a.ing_mass) AS base_recipeMass FROM 
+                    (SELECT ID, date, recipeID, ing_mass, base_ingID 
+                            FROM worksheet 
+                            WHERE date LIKE ?
+                    UNION
+                    SELECT ID, date, base_recipeID, ing_mass, base_ingID 
+                            FROM worksheet 
+                            WHERE date LIKE ?) AS a
+                GROUP BY base_recipeID) AS b
+            LEFT JOIN worksheet
+            ON b.base_recipeID = worksheet.base_recipeID OR b.base_recipeID = worksheet.recipeID
+            WHERE b.base_recipeID > 0
+            GROUP BY base_recipeID, recipeID) AS c
+    LEFT JOIN recipes
+    ON c.base_recipeID = recipes.ID) AS d
+LEFT JOIN recipes
+ON d.recipeID = recipes.ID
+WHERE (CASE WHEN ? > 0 THEN base_recipeID IN (?) ELSE base_recipeID IN (SELECT recipeID FROM worksheet WHERE date LIKE ? GROUP BY recipeID) END)
+

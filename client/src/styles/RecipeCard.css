@@ -1,0 +1,193 @@
+.recipe-card{
+    display: grid;
+    margin: 0;
+    padding: 0;
+}
+.rc-card, .rc-daylist, .rc-order{
+    position: relative;
+    height: 11.5rem;
+    /* width: 100%; */
+    background-color: var(--bg);
+    margin: 0.2rem 0.2rem 0 ;
+    padding: 0;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    align-content: center;
+    background: none;
+    box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
+
+
+}
+.rc-daylist, .rc-order{
+    min-height: 11.5rem;
+    height: fit-content;
+}
+.rc-title{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    align-content: center;
+}
+.rc-title:hover{
+    filter: brightness(1.1);
+}
+.rc-name{
+    position: relative;
+
+    margin: 0;
+    padding: 0.5rem;
+    top:1rem;
+    align-self: center;
+    text-align: center;
+    background-color: var(--icon-bg-0-8);
+    color: var(--heading-color);
+    
+}
+
+.rc-title-img{
+    position: absolute;
+    height: 9rem;
+    width: 100%;
+    top: 0;
+    object-fit: cover;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    margin: 0;
+    padding: 0;
+    z-index: -1;
+
+}
+.rc-btns{
+    position: absolute;
+    display: flex;
+    width: 100%;
+    bottom: 0;
+    align-content: center;
+    justify-content: center;
+    z-index: auto;
+
+}
+
+.rc-btn-svg{
+    margin: 0.3rem;
+    width: calc(var(--btn-size-sm)*0.5);
+    height: calc(var(--btn-size-sm)*0.5);
+   
+}
+.rc-btn{
+    display:flex;
+    background-color: none;
+
+
+}
+
+
+.rc-btn:hover{
+  
+    background-color: var(--bg-light);
+    color: var(--text-color-dark);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.rc-order{
+    display: grid;
+    margin-top: 0;
+    border-top: none;
+
+}
+.rc-daylist{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 0;
+    justify-items: center;
+    border-top: none;
+}
+
+.rc-order{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    margin-top: 0;
+    border-top: none;
+}
+
+.rc-text{
+    color: var(--text-color);
+}
+.rc-calendar{
+    margin:0.3rem;
+}
+.rc-form{
+    margin: 0.5rem;
+}
+.rc-form-item{
+    position: relative;
+    height: 1.5rem;
+    justify-content: center;
+    align-content: bottom;
+    display: grid;
+    padding: 0;
+    margin-top:0.3rem;
+    grid-template-columns: 1fr 1fr;
+}
+.rc-input-label{
+    margin: 0;
+    padding: 0;
+    font-size: var(--text-size);
+    height: calc(var(--text-size)*3);
+}
+.rc-form-input{
+    margin: 0;
+    height: 0.8rem;
+    width: 4rem;
+}
+.rc-submit-btn{
+    height: 1.8rem;
+
+}
+
+.rc-calendar-btn{
+    position: relative;
+    display: inline-block;
+    align-items: center;
+    margin: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    background-color: var(--bg-light);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.calendar-line{
+    display: inline-flex;
+    cursor: pointer;
+    background-color: var(--bg-0-5);
+    border-radius: var(--border-radius);
+}
+.cl-arrow, .cl-date{
+
+    padding:  0.5rem;
+    margin: auto;
+    font-size: var(--font-size-lg);
+    color: var(--text-color);
+    
+}
+
+
+
+
+.custom-calendar.rmdp-wrapper,
+.rmdp-container .custom-calendar.ep-arrow::after {
+    background-color: var(--bg-accent); 
+}
+.rmdp-container .custom-calendar.ep-arrow[direction="bottom"] {
+    border-top: 1px solid var(--border);
+}
+  
+.rmdp-container .custom-calendar.ep-arrow[direction="top"] {
+    border-bottom: 1px solid var(--border);
+}
+.custom-dp{
+    color: var(--text-color);
+}

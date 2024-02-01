@@ -1,0 +1,122 @@
+27.01.23 4h
+28.01.23 4h
+29.01.23 2h
+30.01.23 30 min
+01.02.23 3h
+02.02.23 30 min
+03.02.23 2h
+04.02.23 2h
+05.02.23 5h
+07.02.23 45 min
+11.02.23 50 min
+12.02.23 3h
+16.02.23 4h
+17.02.23 4h
+18.02.23 6h
+18.03.23 10h
+19.03.23 5h
+20.03.23 2h
+21.03.23 2h
+27.03. 1,5h
+28.04. 1,5h
+02.04. 6h
+05.04. 4h
+07.04. 5h
+08.04. 1h
+09.04. 2h
+11.04. 1h
+21.04. 3h
+22.04. 3h
+23.04. 3h
+25.04. 3,5h
+26.04. 5h
+27.08 3h
+29.04. 3h
+30.04. 2,5h
+05.05. 2h
+06.05. 6h
+07.04. 2h
+10.05. 3h
+11.05. 3h
+12.05. 3h
+20.05. 2,5h
+21.05. 6h
+26.05. 4h
+01.06. 2h
+04.06. 1h
+06.06. 2,5h
+10.06. 4h
+13.06. 2,5h
+17.06 4h
+18.06. 2h
+19.06. 0,5h
+20.06. 1,5h
+22.06. 4h
+23.06. 3h
+27.06. 3,5h
+29.06. 4h
+30.06. 4,5h
+01.07. 2,5h
+7.07. 2,5h
+08.07. 2h
+09.07. 12h
+11.07. 3h
+01.08. 2h
+03.08. 2h
+06.08. 4h
+07.08. 2h
+08.08. 4h
+30.09. 3,5h
+03.10. 6h
+20.10. 4,5h
+21.10. 3h
+22.10. 1h
+27.10 8h
+10.12 2h
+20.12 2h
+21.12 6h 
+27.12. 2,5h
+01.01.24 3h
+03.01. 2h
+04.01. 1h
+18.01. 2h
+23.01. 2h
+24.01. 1h
+25.01. 2h
+27.01. 6h
+28.01. 3h
+
+
+ToDo:
+Arbeitsplan-Zeiterfassung
+gemeinsamer Kalender
+
+Postfach (Arbeitszeiten eingetragen) - Push-Benachrichtigungen
+
+
+Preisliste - nettopreise, einfache Bearbeitung
+Worksheets:
+    Add base ID (ID of ingredient-recipe with more ingredients to uniquely id Item/recipe )
+    Recipe titleID - 
+
+calculation
+    - total amount invoice netto/brutto
+
+calculator
+    - order ingredients properly
+
+user roles - admin, helper
+
+
+DB:
+    - Daylist colums  Rezept, Form, Menge Soll/ Ist / Rest
+QOL:
+convert input decimals
+converter worktime based 60 (minutes) to based 100 (percent of hour)
+recipe-formCard-> for each form (Picture) -> sort by recipe/ each form (for clients)
+category for recipes
+
+
+
+
+

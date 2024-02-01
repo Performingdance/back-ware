@@ -1,0 +1,48 @@
+.dateline-wrapper{
+    display: inline-flex;
+    align-items: center;
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    top: 0.2rem;
+    right: 1%;
+    z-index: 1;
+}
+
+
+.daylist-wrapper{
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    margin-bottom: calc(var(--nav-size)*3);
+    padding: 0.5rem;
+    max-width: 70rem;
+    background-color: var(--bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
+    align-content: center;
+    justify-items: center;
+
+}
+.daylist-btn{
+    margin-inline: 1rem;
+    padding: 0.3rem;
+    width: calc(100% - 2.6rem);
+}
+.daylist-btns{
+    display: inline-flex;
+    width: 100%;
+
+}
+.daylist-items{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5rem,10rem));
+    border-bottom: var(--border-accent);
+}
+.daylist-item:last-child{
+    border: none;
+}
+.daylist-input{
+    width: 8rem;
+}

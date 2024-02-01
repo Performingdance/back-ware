@@ -1,0 +1,24 @@
+.labelbox{
+    margin: 0;
+    padding: 0;
+}
+.lb-title{
+    font-size: var(--font-size-sm);
+    color: var(--text-color-sec);
+    margin-bottom: 0;
+    padding: 0;
+    text-align: left;
+}
+.lb-text{
+    margin-top: 0;
+    font-size: 100%;
+}
+.lb-input{
+    width: inherit;
+}
+.lb-text-input{
+    width: inherit;
+    margin: 0;
+    font-size: var(--font-size-md);
+    resize: none;
+}

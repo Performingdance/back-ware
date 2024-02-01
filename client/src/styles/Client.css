@@ -1,0 +1,39 @@
+.client-card{
+    display: grid;
+    margin: 0;
+    padding: 0;
+
+}
+.c-list{
+    display: grid;
+
+    margin: 0.5rem;
+
+}
+.c-list-item{
+    margin: 0.1rem;
+    color: var(--text-color);
+}
+.c-list{
+    display: grid;
+    max-width: 40.5rem;
+    grid-template-columns: repeat(auto-fill,minmax(8rem, 15rem));
+    column-gap: 0.4rem;
+    margin: 1rem;
+    justify-content: center;
+}
+.c-list > input{
+    padding: 0.5rem;
+    border: none;
+}
+
+.edit-card{
+    margin-bottom: 10rem;
+  }
+  
+.edit-btn{
+    margin: 1rem;
+    padding: 0.6rem;
+    font-size: medium;
+  
+  }

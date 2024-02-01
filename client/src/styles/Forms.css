@@ -1,0 +1,12 @@
+.form-input{
+    margin-top: 1rem;
+    font-size: larger;
+    text-align: center;
+    font-weight: bold;
+    background-color: var(--input-bg);
+}
+.form-btns{
+    display: inline-flex;
+    justify-content: center;
+    justify-self: center;
+}

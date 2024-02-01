@@ -1,0 +1,90 @@
+.dateline-wrapper{
+    display: inline-flex;
+    align-items: center;
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    top: 0.2rem;
+    right: 1%;
+}
+.w-header{
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 2.8rem;
+    padding: 0.2rem;
+    box-shadow: 0.2rem 0.2rem 0 0 , 0 0.3rem 0.6rem 0;
+
+
+}
+.worksheet-wrapper{
+    max-width: 40rem;
+    margin-top: 0.5rem;
+    margin-bottom: 8rem;
+    margin-inline: auto;
+    padding: 1rem;
+    justify-self: center;
+
+}
+.w-recipe-wrapper{
+    border-bottom: 0.1rem solid var(--bg-accent);
+    margin-bottom: 1rem;
+}
+
+.w-ing-title, .w-ing-title-sub , .w-ing-title-sub_2, .w-ing-title-sub_3{
+    position: relative;
+    display: grid;
+    grid-template-columns: 0.5fr 3fr 1fr 0.5fr;
+    height: 3rem;
+    padding: 0.1rem ;
+    margin-top: 0.2rem;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+
+}
+.w-recipe-title-div{
+    position: relative;
+    display: grid;
+    grid-template-columns: 3fr 0.5fr 1fr 0.5fr;
+    height: 3rem;
+    padding: 0.1rem ;
+    margin-top: 0.2rem;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.w-ing-title-sub{
+    background-color: var(--bg-0-8);
+    border-radius: var(--border-radius);
+}
+.w-ing-title-sub_2{
+    background-color: var(--bg-accent);
+    border-radius: var(--border-radius);
+}
+.w-ing-title-sub_3{
+    background-color: var(--bg-0-5);
+    border-radius: var(--border-radius);
+}
+.w-ext-btn{
+    width: 3rem;
+    height: 3rem;
+    margin-left: -0.1rem;
+}
+.w-check-box:hover{
+    background: none;
+    filter: none;
+}
+.w-formList-div{
+    display: flex;
+    align-items: last baseline;
+
+}
+.w-formList-div >*{
+margin-left: 2rem;
+}
+
+
+.w-section-title{
+    padding-left: 1rem;
+}

@@ -1,0 +1,224 @@
+
+.r-header{
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem,1fr));
+    width: 100%;
+    padding-top:0.2rem ;
+    justify-content: center;
+    align-self: center;
+    box-shadow: 0.2rem 0.2rem 0 0 , 0 0.3rem 0.6rem 0;
+    border-radius: 0 0 var(--border-radius) var(--border-radius) ;
+
+
+}
+.r-header-title{
+    width: 100%;
+    height: 1.8rem;
+    padding-block: 0.7rem;
+    align-self: center;
+    text-align: center;
+    text-justify: center;
+    font-size: large;
+    border-radius: 0  ;
+}
+.r-content{
+    padding: 0;
+    margin: 0;
+}
+
+
+.r-form-card-wrapper{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 21rem);
+    justify-content: center;
+    align-content: center;
+    margin-top: 0.5rem;
+    margin-bottom: 10rem;
+    padding: 0;
+
+    
+}
+.r-form-card{
+    width: 20rem;
+    position: relative;
+    justify-content: center;
+    align-content: center;
+    margin: 0.2rem;
+    padding: 0.3rem;
+
+    border-radius: var(--border-radius);
+    background-size: cover;
+    box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
+}
+.r-form-card-title{
+    text-align: center;
+    align-items: center;
+    display: flex;
+    background-color: var(--bg-0-3);
+    padding: 0.1rem;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.r-form-table{
+    display: grid;
+    grid-template-columns: 10rem 5rem;
+    position: relative;
+    justify-content: center;
+    background-color: var(--bg-0-3);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+.r-form-input{
+    position: relative;
+    width: 5rem;
+    top: 1rem;
+    background: none;
+    color: var(--text-color);
+
+}
+.r-form-btn{
+    width: 1.5rem;
+}
+.r-form-btn:hover{
+    background: none;
+}
+/* instructions */
+.r-ins-wrapper{
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, 1fr);
+    margin-top: 0.5rem;
+    margin-bottom: 8rem;
+    padding: 0;
+
+}
+.r-ins-card{
+    margin: 0.3rem;
+    min-width: 20rem;
+    width: 80%;
+    max-width: 30rem;
+    background-color: var(--bg);
+    box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
+    border-radius: var(--border-radius);
+    justify-self: center;
+    padding: 0.3rem;
+}
+.r-ins-card-title{
+    padding: 0.3rem;
+}
+.r-ins-header{
+    display: inline-flex;
+}
+.r-ins-card-instruction{
+    padding: 0.3rem;
+}
+
+.r-ins-edit-btn{
+    display: inline-flex;
+    padding-inline: 1rem;
+    padding-block: 0.2rem ;
+    
+}
+.r-ins-add-btn{
+    width: 3rem;
+    margin: 1rem;
+    box-shadow: none; 
+
+}
+.r-ins-input{
+    width: 18rem;
+    height: 3rem;
+    font-size: 2rem;
+}
+.r-ins-text-input{
+    width: 18rem;
+    min-height: 5rem;
+    margin-top: 0.3rem;
+    font-size: large;
+    resize: none;
+}
+/* Ingredients */
+.r-ing-wrapper{
+    display: grid;
+    max-width: 30rem;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 1fr);
+    margin-top: 0.8rem;
+    margin-bottom: 8rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.6rem;
+    background-color: var(--bg);
+    box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
+    border-radius: var(--border-radius);
+
+}
+.r-ing-card{
+    justify-content: center;
+    margin: 0 ;
+
+}
+
+.r-ing-content, .r-ing-title{
+    position: relative;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 0.2fr;
+    height: 3rem;
+    padding: 0.1rem ;
+    margin-top: 0.2rem;
+    justify-content: center;
+    align-content: center;
+
+}
+.r-ing-title{
+    grid-template-columns: 0.8fr 0.2fr;
+}
+.r-ing-btns{
+    position: relative;
+    width: 3rem;
+    margin:  1rem;
+    
+}
+
+.r-ing-edit-btn{
+    margin-top: 1rem;
+    background: none;
+    width: auto;
+    box-shadow: none;
+}
+.r-ing-amount{
+    display: inline-flex;
+    align-self: center;
+    border-radius: var(--border-radius);
+    border: none;
+    height: fit-content;
+    background: none;
+    width: 6rem;
+
+
+}
+.r-ing-amount-input{
+    padding: 0;
+    margin: 0;
+
+
+}
+.r-ing-name{
+    align-self: center;
+}
+.r-ing-input{
+    position: relative;
+    height: 2rem;
+    width: 3rem;
+    align-self: center;
+    font-size: var(--font-size-lg);
+    border: none;
+    margin-right: 0.2rem;
+}
+
+.r-ing-input-title{
+    width: auto;
+}
+.selectForm-input{
+    border: none;
+}

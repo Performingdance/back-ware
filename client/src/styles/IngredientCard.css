@@ -1,0 +1,71 @@
+.ingredient-card{
+    display: grid;
+    margin: 0;
+    padding: 0;
+
+}
+.ic-card, .ic-price, .ic-nutri{
+    position: relative;
+    height: 5rem;
+    width: 100%;
+    background-color: var(--bg);
+    margin: 0.2rem 0.2rem 0 ;
+    padding: 0;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    align-content: center;
+    background: none;
+    box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
+
+}
+.ic-nutri{
+    display: grid;
+    min-height: 5rem;
+    height: fit-content;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    
+}
+.ic-price{
+    display: grid;
+    justify-items: left;
+    min-height: 5rem;
+    height: fit-content;
+    grid-template-columns: 0.25fr 1fr;
+    
+}
+.ic-name{
+    position: relative;
+
+    margin: 0;
+    padding: 1rem 1rem 0;
+    align-self: center;
+    text-align: center;
+    color: var(--heading-color);
+}
+
+.ic-list-item{
+    margin: 0.1rem;
+    color: var(--text-color);
+    font-size: var(--font-size-sm);
+}
+.ic-list{
+    display: grid;
+    grid-template-columns: min-content;
+    column-gap: 0rem;
+    margin: 0.5rem;
+    justify-content: center;
+}
+.ic-list > input {
+    padding: 0.5rem;
+}
+
+.edit-card{
+    margin-bottom: 10rem;
+}
+  
+.edit-btn{
+margin: 1rem;
+padding: 0.6rem;
+font-size: medium;
+
+}
