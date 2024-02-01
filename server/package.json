@@ -1,10 +1,11 @@
 {
-  "name": "bake-ware",
+  "name": "api.bake-ware",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon server/server.js -w server"
+    "dev": "npx nodemon server.js -w server",
+    "start": "npm start server.js"
   },
   "keywords": [],
   "author": "Matthias Egger",
