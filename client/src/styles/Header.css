@@ -35,7 +35,7 @@
     color: var(--text-color);
     font-family: var(--title-font-family);
     align-self: center;
-    font-size: x-large;
+    font-size: large;
     padding: 0;
     margin-left:15%;
 }

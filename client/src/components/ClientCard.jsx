@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import SVGIcon from './SVG'
 import plus from '../assets/icons/plus.svg'
+import file_plus from '../assets/icons/file-plus.svg'
 import pencil_square from '../assets/icons/pencil-square.svg'
+import bar_graph from '../assets/icons/bar-graph.svg'
 import '../styles/ClientCard.css'
 import '../styles/RecipeCard.css'
 import '../styles/OrderCard.css'
@@ -39,10 +41,10 @@ orders.map((order, key)=> {
     return(
       <li key={key+"li"} className='order-li'>
         <p></p>
-        <p key={key+"recipe"} className='order-p'>{order.name}</p>
         <a onClick={()=>{setOrderPrompt(true)}} type="button" className='button rc-btn'>
-          <SVGIcon class="rc-btn-svg" src={pencil_square}/>
+          neue Bestellung
         </a>
+        <p></p>
 
       </li>
   
@@ -52,9 +54,18 @@ orders.map((order, key)=> {
       <li key={key+"li"} className='order-li'>
         <p></p>
         <p key={key+"recipe"} className='order-p'>{order.name}</p>
-        <a href={`/orders/edit:${order.ID}`} type="button" className='button rc-btn'>
+        {order.invoiceID? 
+        <a href={`/invoices/id:${order.invoiceID}`} type="button" className='button rc-btn'>
+          <SVGIcon class="rc-btn-svg" src={bar_graph}/>
+        </a>  
+        :<div className='d-il'>
+          <a href={`/orders/edit:${order.ID}`} type="button" className='button rc-btn'>
               <SVGIcon class="rc-btn-svg" src={pencil_square}/>
         </a>
+        <a onClick={()=>{handleNewInvoice()}} type="button" className='button rc-btn'>
+          <SVGIcon class="rc-btn-svg" src={file_plus}/>
+        </a>         
+        </div>}
         
       </li>
   
