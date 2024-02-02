@@ -38,22 +38,24 @@ orders.map((order, key)=> {
   if(order.ID == -1){
     return(
       <li key={key+"li"} className='order-li'>
+        <p></p>
+        <p key={key+"recipe"} className='order-p'>{order.name}</p>
         <a onClick={()=>{setOrderPrompt(true)}} type="button" className='button rc-btn'>
           <SVGIcon class="rc-btn-svg" src={pencil_square}/>
         </a>
-        <p key={key+"recipe"} className='order-p'>{order.name}</p>
-        <p></p>
+
       </li>
   
     )
   }else{
     return(
       <li key={key+"li"} className='order-li'>
+        <p></p>
+        <p key={key+"recipe"} className='order-p'>{order.name}</p>
         <a href={`/orders/edit:${order.ID}`} type="button" className='button rc-btn'>
               <SVGIcon class="rc-btn-svg" src={pencil_square}/>
         </a>
-        <p key={key+"recipe"} className='order-p'>{order.name}</p>
-        <p></p>
+        
       </li>
   
     )
