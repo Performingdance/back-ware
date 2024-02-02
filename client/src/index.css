@@ -255,6 +255,15 @@ input[type=number] {
 .trans-x-2{
   transform: translateX(2rem) 
 }
+.top-icon{
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: inline;
+
+  margin-top: -0.8rem;
+
+}
 .errorMsg{
   background-color: var(--errorBg);
   color: whitesmoke;

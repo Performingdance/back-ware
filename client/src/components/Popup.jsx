@@ -601,7 +601,6 @@ function handleSubmit (e) {
       <div className='popup-card  '>
         <div className='popup-card-content jc-c '>
           <div className="popup-title jc-c">
-            <h3 >Rezept hinzufügen</h3>
             {errForm ? <h5 className='errorMsg' >{errForm.message }</h5>: " "}
             {errClient ? <h5 className='errorMsg' >{errClient.message }</h5>: " "}
             {errOrders ? <h5 className='errorMsg' >{errOrders.message}</h5>: " "}
@@ -785,14 +784,16 @@ export function RecipeOrderPopup({
             
       <div className='popup-card  '>
         <div className='popup-card-content jc-c '>
-          {clients.length &&
+        <h3 className='ta-c'>Rezept hinzufügen</h3>
+          {errForm ? <h5 className='errorMsg' >{errForm.message }</h5>: " "}
+          {addError ? <h5 className='errorMsg' >{addError.message }</h5>: " "}
+          {errClient ? <h5 className='errorMsg' >{errClient.message }</h5>: " "}
+          {errOrders ? <h5 className='errorMsg' >{errOrders.message}</h5>: " "}
+          {errRecipe ? <h5 className='errorMsg' >{errRecipe.message}</h5>: " "}
+          {clients.length ?
           <div className="popup-title jc-c">
-            <h3 >Rezept hinzufügen</h3>
-            {errForm ? <h5 className='errorMsg' >{errForm.message }</h5>: " "}
-            {addError ? <h5 className='errorMsg' >{addError.message }</h5>: " "}
-            {errClient ? <h5 className='errorMsg' >{errClient.message }</h5>: " "}
-            {errOrders ? <h5 className='errorMsg' >{errOrders.message}</h5>: " "}
-            {errRecipe ? <h5 className='errorMsg' >{errRecipe.message}</h5>: " "}
+
+
             <p className='lb-title'>Rezept</p>
             <SelectComponent
               id ="recipe"
@@ -866,7 +867,7 @@ export function RecipeOrderPopup({
                 <button className='popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
                 <button className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
             </div>
-          </div>}
+          </div>:""}
         </div>
         </div>
       

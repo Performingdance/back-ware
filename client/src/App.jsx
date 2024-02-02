@@ -9,6 +9,7 @@ import calendar_plus from './assets/icons/calendar-plus.svg';
 import dots from './assets/icons/three-dots.svg';
 import carrot from './assets/icons/carrot.svg';
 import gear_wide from './assets/icons/gear-wide.svg';
+import person_vcard from './assets/icons/person-vcard.svg'
 import Navbar, { NavItem, DropdownMenu, DropdownItem } from './components/Navbar';
 import Orders from './pages/Orders';
 import Recipes from './pages/Recipes';
@@ -26,6 +27,7 @@ import EditClient from './pages/EditClient';
 import Worksheet from './pages/Worksheet';
 import Calculator from './pages/Calculator';
 import EditOrder from './pages/EditOrder';
+import Account from './pages/Account'
 
 
 
@@ -59,6 +61,9 @@ function App() {
   }
   if(window.location.pathname == "/settings"){
     CurrentPage = Settings
+  }
+  if(window.location.pathname == "/account"){
+    CurrentPage = Account
   }
   if(window.location.pathname == "/daylist"){
     CurrentPage = Daylist
@@ -111,8 +116,13 @@ function App() {
         </NavItem>
         
         <NavItem href="/orders" icon={shop}/>
-        <NavItem href="/settings" icon={gear_wide}/>
 
+        <NavItem icon={gear_wide} toggle={open} id="settings" onClick={()=> {open != "settings" ? setOpen("settings") : setOpen(false)}} >
+          <DropdownMenu class="dropdown dropdown-end">
+              <DropdownItem href="/account" class="menu-item" leftIcon={person_vcard}>Konto</DropdownItem>
+              <DropdownItem href="/settings" class="menu-item" leftIcon={gear_wide}>Einstellungen</DropdownItem>
+          </DropdownMenu>
+        </NavItem>
       </Navbar>
     
     </div>
