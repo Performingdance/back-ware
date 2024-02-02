@@ -16,11 +16,17 @@ function ClientCard({
   editBtn,
   data: client
 }) {
-  function handleOrderBtn(e){
+
+const [orders,error,loading] = handleClientOrderRequest(client.ID)
+const [orderPrompt, setOrderPrompt] = useState(false)
+
+function handleOrderBtn(e){
    // console.log(props.clientID, props.editID, props.editBtn)
 
     return onClick
 }
+
+
 //console.log(client)
 
   return (
