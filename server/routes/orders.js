@@ -101,7 +101,8 @@ router.post("/all/client", isLoggedIn, (req, res, next) => {
 
             db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name, invoiceID 
             FROM orders 
-            WHERE clientID = ?`, 
+            WHERE clientID = ?
+            ORDER BY ID DESC`, 
             [clientID],
             (err, result) =>{
                 if(err){
