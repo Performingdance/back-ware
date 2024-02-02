@@ -95,6 +95,22 @@ router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {
             })
             
 });
+router.post("/all/client", isLoggedIn, (req, res, next) => {   
+    const clientID = req.body.clientID;
+
+            db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name 
+            FROM orders 
+            WHERE clientID = ?`, 
+            [clientID],
+            (err, result) =>{
+                if(err){
+                    console.log(err)
+                } else{
+                    res.send(result)
+                };
+            })
+            
+});
 router.put("/new", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
 

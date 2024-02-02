@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import SVGIcon from './SVG'
 import plus from '../assets/icons/plus.svg'
 import pencil_square from '../assets/icons/pencil-square.svg'
 import '../styles/ClientCard.css'
 import '../styles/RecipeCard.css'
+import handleClientOrderRequest from '../hooks/handleClientOrderRequest'
 
 
 
@@ -17,8 +18,13 @@ function ClientCard({
   data: client
 }) {
 
-const [orders,error,loading] = handleClientOrderRequest(client.ID)
+const [orders,error,loading, handleRequest] = handleClientOrderRequest(client.ID)
 const [orderPrompt, setOrderPrompt] = useState(false)
+useEffect(()=>{if(editID==client.ID && editBtn==1){
+  handleRequest (client.ID)
+}},[editID])
+
+
 
 function handleOrderBtn(e){
    // console.log(props.clientID, props.editID, props.editBtn)

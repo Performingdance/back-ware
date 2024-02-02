@@ -9,7 +9,7 @@ import { LabelInput, LabelTextInput } from './LabelBox';
 import Loading from './Loading';
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
-import handleOpenOrderRequest from '../hooks/handleClientOrderRequest';
+import handleOpenOrderRequest from '../hooks/handleOpenOrderRequest';
 
 
 export default function NewRecipePopup({

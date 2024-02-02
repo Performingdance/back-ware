@@ -2,7 +2,7 @@ import axios from '../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../services/auth-header';
 
-export default function handleClientOrderRequest() {
+export default function handleOpenOrderRequest(clientID) {
    // console.log(clientID)
 
     // handle api request 
@@ -11,17 +11,17 @@ export default function handleClientOrderRequest() {
     const [loading, setLoading] = useState(false);
 
 
-        
+        useEffect(()=>handleRequest(),[clientID])
         
     
-        function handleRequest (clientID) {
+        function handleRequest () {
             
                     //console.log(clientID)
             setLoading(true)
             axios({
                 axiosInstance: axios,
                 method: "POST",
-                url:"s/orders/all/client",
+                url:"s/orders/all/client/noInvoice",
                 headers: {
                     "authorization": authHeader()
                 },
@@ -52,7 +52,7 @@ export default function handleClientOrderRequest() {
             setLoading(false)
         }
             
-        return [res, error, loading, handleRequest];
+        return [res, error, loading];
 
 
    
