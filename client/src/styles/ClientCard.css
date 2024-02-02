@@ -30,6 +30,13 @@
     align-content: center;
     justify-content: center;
 }
+.cc-order{
+    height: 8rem;
+    width: 100%;
+    margin-top: 0;
+    justify-content: center;
+    overflow: scroll;
+}
 .cc-address, .cc-invoice{
     flex: 1;
 

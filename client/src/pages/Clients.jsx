@@ -37,7 +37,7 @@ function Clients() {
     //console.log(editID)
   
   return (
-    <ClientCard onClickOrder={() => [ setEditBtn(1), handleToggleEditID(client.ID)]} onClickMore={() => [ setEditBtn(2),handleToggleEditID(client.ID)]} editID={editID} editBtn={editBtn} key={client.ID} data={client} />
+    <ClientCard onClickOrder={() => [ setEditBtn(1), handleToggleEditID(client.ID)]} onClickMore={() => [ setEditBtn(2),handleToggleEditID(client.ID)]} editID={editID} editBtn={editBtn} key={client.ID} client={client} />
   )
   });
 

@@ -151,25 +151,24 @@ function EditOrder  () {
           <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
           <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
           <p key={key+"form"} className='order-p'>{product.form_name}</p>
-          <p></p>
-          <p key={key+"production"} className='order-p'>{"Backtag: " + product.production_date}</p>
-         
+          <p key={key+"p"} ></p>
+          <p key={key+"production"} className='order-p'>{"Backtag: " + (product.production_date|| "-")}</p>
+          <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
         </div>        
         )
       })
       const editItems = res.map((product, key)=> {
         return(
           <div key={key+"div"} className='edit-order-div'>
-          <div key={key+"li"} className='edit-order-grid'>
-            <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
-            <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
-            <p key={key+"form"} className='order-p'>{product.form_name}</p>
-            <p></p>
-            <p key={key+"production"} className='order-p'>{"Backtag: " + product.production_date}</p>
-           
-          </div>
-          <button key={"del"} className='edit-btn' onClick={()=>[setEdit(false), setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
-
+            <div key={key+"li"} className='edit-order-grid'>
+              <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
+              <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
+              <p key={key+"form"} className='order-p'>{product.form_name}</p>
+              <p key={key+"p"} ></p>
+              <p key={key+"production"} className='order-p'>{"Backtag: " + (product.production_date|| "-")}</p>
+              <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
+            </div>
+            <button key={key+"del"} className='edit-btn' onClick={()=>[setEdit(false), setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
           </div>
 
         )
@@ -230,7 +229,7 @@ function EditOrder  () {
             <p>Notizen:</p>
             <LabelTextInput defaultValue={notes} onChange={(val)=> notes = val} />
           </div>} 
-          {(err || orderErr && <p>{err.message || orderErr.message}</p>)}
+          {((err || orderErr) && <p>{err.message || orderErr.message}</p>)}
           { !edit? 
           <div key={"header_div"} className='edit-btns'>
             <button key={"edit"} className='edit-btn' onClick={()=>setEdit(true)}><SVGIcon src={pencil_square} class="svg-icon-md"/> </button> 

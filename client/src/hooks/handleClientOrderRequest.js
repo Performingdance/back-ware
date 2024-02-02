@@ -38,8 +38,7 @@ export default function handleClientOrderRequest() {
     
                 }else{
                     const addRes = 
-                        [...response.data, {ID: -1, 
-                            name: "Neue Bestellung"}]
+                        [{ID: -1, name: "Neue Bestellung"}, ...response.data]
                 
                     setRes(addRes)
                 }

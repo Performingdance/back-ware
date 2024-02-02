@@ -40,18 +40,18 @@
   .icon-button {
     width: var(--btn-size-md);
     height: var(--btn-size-md);
-    background-color: var(--icon-bg) ;
+    background-color: var(--bg) ;
     border-radius: 50%;
     padding:  0;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: filter 300ms;
+    transition: filter 200ms;
   }
   
   .icon-button:hover {
-    filter:brightness(1.2)
+    background-color: var(--bg);
   }
   
   .icon-button_svg {
@@ -63,15 +63,24 @@
   .dropdown{
     position: fixed;
     bottom: 3rem;
-    min-width:200px;
+    min-width: 12rem;
     background-color: none;
     padding: 1rem;
     overflow:hidden;
+
   }
+.dropdown-start{
+  position:fixed;
+  margin-left: 8rem;
+}
+.dropdown-end{
+  position:fixed;
+  margin-left: -8rem;
+}
 
   .menu-item {
     position: relative;
-    height: 40px;
+    height: 2.2rem;
     align-items: center;
     display: flex;
     border-radius: var(--border-radius);

@@ -94,7 +94,7 @@ function App() {
       <Navbar>
 
         <NavItem icon={list_check} toggle={open} id="list" onClick={()=> {open != "list" ? setOpen("list") : setOpen(false)}} >
-          <DropdownMenu class="dropdown fix-left">
+          <DropdownMenu class="dropdown dropdown-start">
               <DropdownItem href="/daylist" class="menu-item" leftIcon={carrot}>Tagesliste</DropdownItem>
               <DropdownItem href="/worksheet" class="menu-item" leftIcon={calculator}>Backzettel</DropdownItem>
           </DropdownMenu>

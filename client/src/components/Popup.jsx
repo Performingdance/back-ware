@@ -239,17 +239,20 @@ export function NewClientPopup({
 export function NewOrderPopup({
   title,
   onClickOK,
-  onClickAbort
+  onClickAbort,
+  defaultClientID,
+  defaultClientName
 }) {
 
   const [open,setOpen] = useState(false)
-  const [name, setName] = useState(" ")
+  const [name, setName] = useState(defaultClientName || " ")
   const [addRes, setAddRes] = useState([])
   const [addError, setAddError] = useState("");
   const [addLoading, setAddLoading] = useState(false); 
 
-  const [selectedOption, setSelectedOption] = useState(0)
+  const [selectedOption, setSelectedOption] = useState(defaultClientID || -1)
   const [clients, error, loading] = handleClientSelectRequest();
+
   let editRef = useRef("")
   //console.log(clients)
 
@@ -261,7 +264,7 @@ export function NewOrderPopup({
     e.preventDefault();
     const clientID = selectedOption
   
-      if (selectedOption == 0 ){
+      if (selectedOption == -1 ){
         setAddError("Kunde auswählen");
         return
       }else{
@@ -312,7 +315,8 @@ export function NewOrderPopup({
                 open={open}
                 setOpen={(bol)=>setOpen(bol)}
                 className='i-select' 
-                type='text'  />
+                type='text' 
+                defaultValue={defaultClientName} />
           </div>
         {addError&&<h5 className='errorMsg'>
           {addError.msg}

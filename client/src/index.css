@@ -7,15 +7,15 @@
 
 :root {
   --bg: #ffffff;
-  --bg-accent:#dddddd;
+  --bg-accent:#ffffff;
   --bg-light: #ffffff;
 
   --bg-0-3: #ffffff71;
   --bg-0-5: #ffffff78;
   --bg-0-8: #ffffffb6;
   --icon-bg-0-8: #989da2b0;
-  --icon-bg: #b1b4b7;
-  --icon-btn-bg: var(--bg-accent);
+  --icon-bg: #7bf3a7;
+  --icon-btn-bg: var(--icon-bg);
   --input-bg: #d1cece;
 
   --errorBg: #b33b04;
@@ -251,6 +251,9 @@ input[type=number] {
 }
 .z-1{
   z-index: 1;
+}
+.trans-x-2{
+  transform: translateX(2rem) 
 }
 .errorMsg{
   background-color: var(--errorBg);

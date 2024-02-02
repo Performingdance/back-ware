@@ -4,7 +4,9 @@ import plus from '../assets/icons/plus.svg'
 import pencil_square from '../assets/icons/pencil-square.svg'
 import '../styles/ClientCard.css'
 import '../styles/RecipeCard.css'
+import '../styles/OrderCard.css'
 import handleClientOrderRequest from '../hooks/handleClientOrderRequest'
+import { NewOrderPopup } from './Popup'
 
 
 
@@ -15,7 +17,7 @@ function ClientCard({
   onClickMore,
   editID,
   editBtn,
-  data: client
+  client
 }) {
 
 const [orders,error,loading, handleRequest] = handleClientOrderRequest(client.ID)
@@ -31,6 +33,35 @@ function handleOrderBtn(e){
 
     return onClick
 }
+const orderList = 
+orders.map((order, key)=> {
+  if(order.ID == -1){
+    return(
+      <li key={key+"li"} className='order-li'>
+        <p></p>
+        <p key={key+"recipe"} className='order-p'>{order.name}</p>
+        <a onClick={()=>{setOrderPrompt(true)}} type="button" className='button rc-btn'>
+              <SVGIcon class="rc-btn-svg" src={pencil_square}/>
+        </a>
+      </li>
+  
+    )
+  }else{
+    return(
+      <li key={key+"li"} className='order-li'>
+        <p></p>
+        <p key={key+"recipe"} className='order-p'>{order.name}</p>
+        <a href={`/orders/edit:${order.ID}`} type="button" className='button rc-btn'>
+              <SVGIcon class="rc-btn-svg" src={pencil_square}/>
+        </a>
+      </li>
+  
+    )
+
+  }
+  
+
+}) 
 
 
 //console.log(client)
@@ -56,8 +87,16 @@ function handleOrderBtn(e){
 
     </div>
     {editID==client.ID && editBtn==1 && 
-    <div className='c-card new-order'>
-      <p>Bestellung</p>
+    <div className='c-card cc-order'>
+       <ul className='product-list'>
+       {orders.length && orderList}
+       </ul>
+      {orderPrompt && 
+      <NewOrderPopup 
+        defaultClientID={client.ID} 
+        defaultClientName={client.fullName}
+        onClickAbort={()=>setOrderPrompt(false)}
+        onClickOK={()=>setOrderPrompt(false)} />}
     </div>}
     {editID==client.ID && editBtn==2 && 
     <div className=' c-card cc-more '>
