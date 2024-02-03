@@ -89,11 +89,19 @@
 03.02. 4,5h
 
 ToDo:
+Preisliste - Kategorie, vorgeschlagen, gesetzt
+    Bsp: WV (85%) | 0,48€ | 0,50€
+
 Arbeitsplan-Zeiterfassung
 gemeinsamer Kalender
 
 Postfach (Arbeitszeiten eingetragen) - Push-Benachrichtigungen
 
+Fragen:
+
+Lieferdaum für jedes Produkt?
+Preisrechner vom NVP / BVP?
+Backzettel - wichtige Infos
 
 Preisliste - nettopreise, einfache Bearbeitung
 Worksheets:
