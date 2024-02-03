@@ -20,7 +20,7 @@ function Home() {
       {!isLoggedIn?
       [<button key={"login"} className='edit-btn' onClick={()=>setToggleLoginPrompt(true)}><SVGIcon src={login} class="svg-icon-md"/> </button>,
       <button key={"register"} className='edit-btn' onClick={()=>setToggleRegister(true)}><SVGIcon src={person_plus} class="svg-icon-md"/> </button>]:
-      <a href='./' key={"logout"} className='button edit-btn ' onClick={()=>{logoutToken()}}><SVGIcon src={login} class="svg-icon-md"/> </a>
+      <button href='./' key={"logout"} className='btn edit-btn ' onClick={()=>{logoutToken()}}><SVGIcon src={login} class="svg-icon-md"/> </button>
       }    
       
     </div>

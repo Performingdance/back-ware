@@ -10,20 +10,22 @@ const {validateRegister,isLoggedIn, authRole} = require('../middleware/basicAuth
 
 router.post("/sign-up", validateRegister, (req, res, next) => {
     const username = req.body.username;
+    const password = req.body.password;
+
     db.query(`SELECT id FROM users WHERE LOWER(username) = LOWER(?)`, username, (err, result) => {
         if(result && result.length) {//error
             return res.status(409).send({
                 message: "Benutzername bereits vergeben"
             });
         } else {    // username not in use
-            bcrypt.hash(req.body.password, 10, (err, hash) => {
+            bcrypt.hash(password, 10, (err, hash) => {
                 if(err) {
 
                     return res.statusMessage(500).send({
                         message: err,
                     });
                 } else {
-                    db.query(`INSERT INTO users (id, username, password, registered) VALUES ('${uuid.v4()}',${db.escape(req.body.username)},'${hash}', now());`,
+                    db.query(`INSERT INTO users (id, username, password, registered) VALUES ('${uuid.v4()}',?,'${hash}', now());`,[username],
                     (err, result) => {
                         if(err) {
                             return res.status(400).send({
