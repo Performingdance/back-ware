@@ -901,8 +901,9 @@ function handleLogin(){
         "password": pwdRef.current
     },
   }).then(function (response){
-    console.log(response.data);
+    //console.log(response.data);
     localStorage.setItem("token", response.data.token)
+    localStorage.setItem("isLoggedIn", true)
     setLoginStatus(true)
     setLoading(false);
 
