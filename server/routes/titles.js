@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {isLoggedIn} = require('../middleware/users.js');
+const {isLoggedIn} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
-const res = require('express/lib/response.js');
 
 
 router.get("/all", isLoggedIn, (req, res) => {

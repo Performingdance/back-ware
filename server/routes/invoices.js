@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {isLoggedIn} = require('../middleware/users.js');
+const {isLoggedIn} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 // get all invoices
