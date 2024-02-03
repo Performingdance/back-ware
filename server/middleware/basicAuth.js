@@ -42,7 +42,7 @@ module.exports = {
     },
     authRole: (role) => {
         return (req, res, next) => {
-            if (req.userData.role !== role) {
+            if (req.userData.userRole !== role) {
                 res.status(401)
                 return res.send("Not allowed")
             }
