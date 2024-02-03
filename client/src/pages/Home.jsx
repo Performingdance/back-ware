@@ -4,7 +4,7 @@ import login from '../assets/icons/login.svg'
 import person_plus from '../assets/icons/person-plus.svg'
 import { LoginPopup } from '../components/Popup'
 import SVGIcon from '../components/SVG'
-import {logoutToken} from '../services/logout'
+import logoutToken from '../services/logout'
 import tokenCheck from '../services/tokenCheck'
 
 
