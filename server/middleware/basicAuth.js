@@ -32,7 +32,6 @@ module.exports = {
             const token = req.headers.authorization.split(' ')[1];
             const decoded = jwt.verify(token, 'Klee');
             req.userData = decoded;
-            console.log(decoded)
             next();
         } catch (err) {
 
@@ -43,7 +42,7 @@ module.exports = {
     },
     authRole: (role) => {
         return (req, res, next) => {
-            if (req.user.role !== role) {
+            if (req.userData.role !== role) {
                 res.status(401)
                 return res.send("Not allowed")
             }
