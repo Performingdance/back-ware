@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const {isLoggedIn} = require('../middleware/basicAuth.js');
+const {isLoggedIn, authRole} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
-router.get("/img", isLoggedIn, (req, res) => {
+router.get("/img", isLoggedIn, authRole("admin"), (req, res) => {
     db.query(`SELECT a.*, recipe_form.img FROM 
         (SELECT * FROM recipes) AS a
       LEFT JOIN recipe_form
