@@ -43,7 +43,9 @@ router.post("/sign-up", validateRegister, (req, res, next) => {
 })
 
 router.post("/login", (req, res, next) => {
-    db.query(`SELECT * FROM users WHERE username = ${db.escape(req.body.username)};`,
+    const username = req.body.username;
+    const password = req.body.password;
+    db.query(`SELECT * FROM users WHERE username = ?`,[username],
     (err, result) => {
         if(err) {
             return res.status(400).send({
@@ -55,7 +57,7 @@ router.post("/login", (req, res, next) => {
                 message: 'Benutzername oder Passwort stimmt nicht!'
             });
         }
-        bcrypt.compare(req.body.password, result[0]['password'], (bErr, bResult) => {
+        bcrypt.compare(password, result[0]['password'], (bErr, bResult) => {
             if(bErr){
                 return res.status(400).send({
                     message: 'Benutzername oder Passwort stimmt nicht!'
@@ -64,8 +66,7 @@ router.post("/login", (req, res, next) => {
             if(bResult) {   // password match
                 const token = jwt.sign({
                     username:result[0].username,
-                    userId: result[0].id,
-                    userRole: result[0].role
+                    userId: result[0].id
                     }, 'Klee', {expiresIn: "7d"}
                     );
                 db.query(`UPDATE users SET last_login = now() WHERE id = '${result[0].id}';`);
