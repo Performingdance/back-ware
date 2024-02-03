@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const uuid = require('uuid')
 
 const db = require('../lib/db.js');
-const {validateRegister, isLoggedIn} = require('../middleware/basicAuth.js');
+const {validateRegister,isLoggedIn} = require('../middleware/basicAuth.js');
+
 
 router.post("/sign-up", validateRegister, (req, res, next) => {
     const username = req.body.username;
@@ -64,6 +65,7 @@ router.post("/login", (req, res, next) => {
                 const token = jwt.sign({
                     username:result[0].username,
                     userId: result[0].id,
+                    userRole: result[0].role
                     }, 'Klee', {expiresIn: "7d"}
                     );
                 db.query(`UPDATE users SET last_login = now() WHERE id = '${result[0].id}';`);

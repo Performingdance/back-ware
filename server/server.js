@@ -5,6 +5,7 @@ const app = express();
 
 const corsOptions = require("./config/corsOptions.js")
 const authRoute = require("./routes/auth.js");
+const userRoute = require("./routes/user.js");
 const recipeRoute = require("./routes/recipes.js");
 const ingRoute = require("./routes/ingredients.js");
 const formRoute = require("./routes/form.js");
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
 app.use('/api/s/recipes', recipeRoute);
 app.use('/api/s/ing', ingRoute);
 app.use('/api/s/form', formRoute);

@@ -895,7 +895,7 @@ function handleLogin(){
   axios({
     axiosInstance: axios,
     method: "post",
-    url:"user/login",
+    url:"auth/login",
     data:{
         "username": userRef.current,
         "password": pwdRef.current
