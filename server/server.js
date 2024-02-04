@@ -18,6 +18,8 @@ const margesRoute = require("./routes/marges.js");
 const worksheetRoute = require("./routes/worksheet.js");
 const titlesRoute = require("./routes/titles.js");
 const calcRoute = require("./routes/calculator.js");
+const baseRoute = require("./routes/base.js");
+
 const PORT = process.env.PORT || 3000;
 
 
@@ -25,6 +27,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors(corsOptions));
 
+app.use('/', baseRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/s/user', userRoute);
 app.use('/api/s/recipes', recipeRoute);
