@@ -17,7 +17,7 @@ function Home() {
 
   function handleLogout(){
 
-    if(isLoggedIn == false){
+    if(tokenCheck() == false){
       logoutMessage = "Erfolgreich abgemeldet"
     }
     else{
@@ -34,7 +34,7 @@ function Home() {
       {!isLoggedIn?
       [<button key={"login"} className='edit-btn' onClick={()=>setToggleLoginPrompt(true)}><SVGIcon src={login} class="svg-icon-md"/> </button>,
       <button key={"register"} className='edit-btn' onClick={()=>setToggleRegister(true)}><SVGIcon src={person_plus} class="svg-icon-md"/> </button>]:
-      <button key={"logout"} className='btn edit-btn ' onClick={()=>{logoutToken(),handleLogout()}}><SVGIcon src={login} class="svg-icon-md"/> </button>
+      <button key={"logout"} className='btn edit-btn ' onClick={()=>{logoutToken(), handleLogout()}}><SVGIcon src={login} class="svg-icon-md"/> </button>
       }    
       
     </div>
