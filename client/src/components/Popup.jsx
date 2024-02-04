@@ -902,7 +902,7 @@ function handleLogin(){
     },
   }).then(function (response){
     //console.log(response.data);
-    localStorage.setItem("token", response.data.token)
+    localStorage.setItem("token", response.data.token);
     localStorage.setItem("isLoggedIn", true)
     setLoginStatus(true)
     setLoading(false);
@@ -974,6 +974,35 @@ export function PromptPopup({
             <div key={"pc_btn"} className='popup-card-btns'>
                 <button key="pc_btn_ok" className='popup-card-btn' onClick={onClickOK} >{btnOk}</button>
                 <button key="pc_btn_abort" className='popup-card-btn 'onClick={onClickAbort} >{btnAbort}</button>
+            </div>
+          </div>
+        </div>
+      </div>}
+      </>
+    )
+
+}
+export function AlertPopup({
+  onClickOK,
+  btnOk,
+  title,
+  message
+}){
+
+
+
+  return (
+    <>
+      {        
+      <div key="pc" className='popup-card  '>
+        <div key="pc-content" className='popup-card-content jc-c '>
+
+            <div key="login_div" className="popup-title jc-c">
+            <h3 key="title" >{title? title : ""}</h3>
+            <p>{message? message : ""}</p>
+
+            <div key={"pc_btn"} className='popup-card-btns'>
+                <button key="pc_btn_ok" className='popup-card-btn' onClick={onClickOK} >{btnOk || "OK"}</button>
             </div>
           </div>
         </div>

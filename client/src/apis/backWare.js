@@ -6,7 +6,7 @@ const BASE_URL = 'https://back-ware-api.onrender.com/api/';
 
 export default axios.create({
     baseURL: BASE_URL,
-    timeout: 1000,
+    timeout: 2000,
     headers: {
         'Content-Type': 'application/json',
     }

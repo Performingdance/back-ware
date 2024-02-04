@@ -85,8 +85,9 @@
 25.01. 2h
 27.01. 6h
 28.01. 3h
-02.01. 2h
-03.02. 4,5h
+01.01. 2h
+02.02. 4,5h
+03.2. 3h
 
 ToDo:
 Preisliste - Kategorie, vorgeschlagen, gesetzt

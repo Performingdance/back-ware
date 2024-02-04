@@ -6,7 +6,7 @@ function Header(props) {
   return (
     <div className='header'>
         <a href="/home" className='logo-header'><img className='logo' src={logo}/></a>
-        <h2 className='page-title'>{props.title}</h2>        
+        <h1 className='page-title'>{props.title}</h1>        
     </div>
   )
 }
