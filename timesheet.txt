@@ -87,7 +87,12 @@
 28.01. 3h
 01.01. 2h
 02.02. 4,5h
-03.2. 3h
+03.02. 3h
+04.02. 2h
+
+Kosten:
+    Node server Render
+        Feb 7€
 
 ToDo:
 Preisliste - Kategorie, vorgeschlagen, gesetzt
@@ -100,9 +105,21 @@ Postfach (Arbeitszeiten eingetragen) - Push-Benachrichtigungen
 
 Fragen:
 
-Lieferdaum für jedes Produkt?
+Lieferdatum für jedes Produkt?
 Preisrechner vom NVP / BVP?
 Backzettel - wichtige Infos
+
+Dili:
+Lieferzeitraum ergänzend zu Lieferdatum + Lieferdatum für jedes Produkt
+
+
+Halbgebackene Waren ( Frost - tagesaktuell auftauen)
+
+Backzettel:
+Ist, soll, Rest
+Produktion - Froster (Was ist im Froster, was kann aufgetaut werden) 
+
+
 
 Preisliste - nettopreise, einfache Bearbeitung
 Worksheets:

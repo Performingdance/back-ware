@@ -1,10 +1,10 @@
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-    password: 'oL5-KcnTvW-322',
-    user: 'app-dev',
+    password: '@WD%7Xq9$q_p3pK',
+    user: 'API',
     database: 'back-ware',
-    host: '3gger.synology.me',
+    host: '103-13-210-14.cloud-xip.com',
     port:'3306'
 });
 connection.connect();
