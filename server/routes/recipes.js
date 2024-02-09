@@ -243,7 +243,7 @@ router.delete("/delete", isLoggedIn, (req,res) => {
                                     if(err){
                                        console.log(eerr)
                                     } else {
-                                       db.query("DELETE FROM recipe_form WHERE ID = ?", ID, (ferr, fresult) => {
+                                       db.query("DELETE FROM recipe_form WHERE recipeID = ?", ID, (ferr, fresult) => {
                                           if(ferr){
                                              console.log(ferr)
                                           } else {
