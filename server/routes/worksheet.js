@@ -125,51 +125,54 @@ router.put("/checked/recipe", isLoggedIn, (req, res) => {
 router.post("/new", isLoggedIn, (req, res) => {
    const date = req.body.date;
    db.query(`INSERT INTO worksheet (date, recipeID, recipe_mass, ing_mass, base_ingID, base_recipeID, base, titleID, sortID, note, level)
-   SELECT b.*, "1" AS "level"
-       FROM (SELECT a.date, dough.recipeID as recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, "0" AS base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, a.note			
-               FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID, daylist.note 
-               FROM daylist 
-               WHERE date = ?
-               GROUP BY daylist.date, daylist.recipeID, daylist.note ) AS a 
-       LEFT JOIN dough
-       ON a.recipeID = dough.recipeID) AS b    
-   UNION
-   SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, c.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "2" AS "level"
-       FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
-           FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
-               FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID 
-                   FROM daylist 
-                   WHERE date = ?
-                   GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
-           LEFT JOIN dough
-           ON a.recipeID = dough.recipeID
-           WHERE base = 1) AS b
-       LEFT JOIN ingredients
-       ON b.base_ingID = ingredients.ID) AS c
-   LEFT JOIN dough
-   ON c.base_recipeID = dough.recipeID
-   UNION
-   SELECT e.date, e.recipeID, e.recipe_mass, (dough.amount_pc * e.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, e.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "3" AS "level"
-       FROM (SELECT d.date, d.recipeID, d.recipe_mass, d.ing_mass, d.base_ingID, ingredients.recipeID AS base_recipeID, d.base, d.titleID, d.sortID
-           FROM (SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, c.titleID AS titleID, c.sortID AS sortID
-               FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
-               FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
-                       FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID
-                           FROM daylist 
-                           WHERE date = ?
-                           GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
-               LEFT JOIN dough
-               ON a.recipeID = dough.recipeID
-               WHERE base = 1) AS b
-               LEFT JOIN ingredients
-               ON b.base_ingID = ingredients.ID) AS c
-           LEFT JOIN dough
-           ON c.base_recipeID = dough.recipeID
-           WHERE dough.base = 1) AS d
-       LEFT JOIN ingredients
-       ON d.base_ingID = ingredients.ID) AS e
-   LEFT JOIN dough
-   ON e.base_recipeID = dough.recipeID`, [date,date,date], (err, result) =>{
+   SELECT res.* 
+   FROM(SELECT b.*, "1" AS "level"
+          FROM (SELECT a.date, dough.recipeID as recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, "0" AS base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, a.note			
+                  FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID, daylist.note 
+                  FROM daylist 
+                  WHERE date = ?
+                  GROUP BY daylist.date, daylist.recipeID, daylist.note ) AS a 
+          LEFT JOIN dough
+          ON a.recipeID = dough.recipeID) AS b    
+      UNION
+      SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, c.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "2" AS "level"
+          FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
+              FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
+                  FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID 
+                      FROM daylist 
+                      WHERE date = ?
+                      GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
+              LEFT JOIN dough
+              ON a.recipeID = dough.recipeID
+              WHERE base = 1) AS b
+          LEFT JOIN ingredients
+          ON b.base_ingID = ingredients.ID) AS c
+      LEFT JOIN dough
+      ON c.base_recipeID = dough.recipeID
+      UNION
+      SELECT e.date, e.recipeID, e.recipe_mass, (dough.amount_pc * e.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, e.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "3" AS "level"
+          FROM (SELECT d.date, d.recipeID, d.recipe_mass, d.ing_mass, d.base_ingID, ingredients.recipeID AS base_recipeID, d.base, d.titleID, d.sortID
+              FROM (SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, c.titleID AS titleID, c.sortID AS sortID
+                  FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
+                  FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
+                          FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID
+                              FROM daylist 
+                              WHERE date = ?
+                              GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
+                  LEFT JOIN dough
+                  ON a.recipeID = dough.recipeID
+                  WHERE base = 1) AS b
+                  LEFT JOIN ingredients
+                  ON b.base_ingID = ingredients.ID) AS c
+              LEFT JOIN dough
+              ON c.base_recipeID = dough.recipeID
+              WHERE dough.base = 1) AS d
+          LEFT JOIN ingredients
+          ON d.base_ingID = ingredients.ID) AS e
+      LEFT JOIN dough
+      ON e.base_recipeID = dough.recipeID) AS res
+      WHERE base_ingID IS NOT NULL
+      `, [date,date,date], (err, result) =>{
        if(err){
           console.log(err)
        } else {
