@@ -4,11 +4,10 @@ const {isLoggedIn, authRole} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 router.get("/img", isLoggedIn, (req, res) => {
-    db.query(`SELECT a.*, recipe_form.img FROM 
-        (SELECT * FROM recipes) AS a
-      LEFT JOIN recipe_form
-      ON a.ID = recipe_form.recipeID
-      GROUP BY ID `, (err, result) =>{
+    db.query(`SELECT DISTINCT a.recipeID, recipes.name, a.img
+    FROM (SELECT DISTINCT recipeID, img FROM  recipe_form) as a
+       LEFT JOIN recipes
+        ON recipeID = recipes.ID `, (err, result) =>{
          if(err){
             console.log(err)
          } else {
@@ -243,7 +242,13 @@ router.delete("/delete", isLoggedIn, (req,res) => {
                                     if(err){
                                        console.log(eerr)
                                     } else {
-                                         res.send("success")    
+                                       db.query("DELETE FROM recipe_form WHERE ID = ?", ID, (ferr, fresult) => {
+                                          if(ferr){
+                                             console.log(ferr)
+                                          } else {
+                                             res.send("success")  
+                                          }
+                                       }) 
                                     }
                                  });
                               }
