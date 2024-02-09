@@ -132,13 +132,13 @@ function IngList ({
     }
 
 
-    console.log(data)
-    let _titleID = 1
+    //console.log(data)
+    let _titleID = -1
     const [ingBase_2,setIngBase_2] = useState(ingBase)
     const ingList = 
         data.map((item, key)=>{
             if(item.recipeID == recipeID){
-                const sectionTitle = ( (item.titleID != _titleID)) &&
+                const sectionTitle = ( (item.titleID != _titleID) && _titleID != -1) &&
                 <div key={key+"section_title_wrapper"} className='w-ing-title'>
                 <LabelBox key={key+"title"} className="w-section-title" key_={key} title="Abschnitt" text={item.title}  />
                 <p></p>

@@ -91,7 +91,7 @@
 04.02. 2h
 05.02. 5h
 06.02. 1h
-09.02. 1h
+09.02. 2h
 
 Kosten:
     Node server Render
@@ -101,6 +101,7 @@ ToDo:
 Preisliste - Kategorie, vorgeschlagen, gesetzt
     Bsp: WV (85%) | 0,48€ | 0,50€
 
+Update Rezept Nährwerte in ingredients-db
 
 
 Arbeitsplan-Zeiterfassung
