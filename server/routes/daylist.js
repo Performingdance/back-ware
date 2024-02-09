@@ -240,7 +240,7 @@ router.put("/update", isLoggedIn, (req, res) => {
                                 FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID, daylist.note 
                                 FROM daylist 
                                 WHERE date = ?
-                                GROUP BY daylist.recipeID) AS a 
+                                GROUP BY daylist.date, daylist.recipeID, daylist.note ) AS a 
                         LEFT JOIN dough
                         ON a.recipeID = dough.recipeID) AS b    
                     UNION
@@ -250,7 +250,7 @@ router.put("/update", isLoggedIn, (req, res) => {
                                 FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID 
                                     FROM daylist 
                                     WHERE date = ?
-                                    GROUP BY daylist.recipeID) AS a 
+                                    GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
                             LEFT JOIN dough
                             ON a.recipeID = dough.recipeID
                             WHERE base = 1) AS b
@@ -267,7 +267,7 @@ router.put("/update", isLoggedIn, (req, res) => {
                                         FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID
                                             FROM daylist 
                                             WHERE date = ?
-                                            GROUP BY daylist.recipeID) AS a 
+                                            GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
                                 LEFT JOIN dough
                                 ON a.recipeID = dough.recipeID
                                 WHERE base = 1) AS b
