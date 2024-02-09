@@ -89,6 +89,9 @@
 02.02. 4,5h
 03.02. 3h
 04.02. 2h
+05.02. 5h
+06.02. 1h
+09.02. 1h
 
 Kosten:
     Node server Render
@@ -98,6 +101,8 @@ ToDo:
 Preisliste - Kategorie, vorgeschlagen, gesetzt
     Bsp: WV (85%) | 0,48€ | 0,50€
 
+
+
 Arbeitsplan-Zeiterfassung
 gemeinsamer Kalender
 
@@ -106,10 +111,17 @@ Postfach (Arbeitszeiten eingetragen) - Push-Benachrichtigungen
 Fragen:
 
 Lieferdatum für jedes Produkt?
-Preisrechner vom NVP / BVP?
-Backzettel - wichtige Infos
+Preisrechner vom NVP WV
+Hofladen BVP
 
-Dili:
+Backzettel - wichtige Info
+Rechnugsnodwendigkeit - Bei Bestellung
+
+ASYNC - Funktionen
+
+Bestellung RechnungsID erst bei vollständiger
+
+Firma fEIN
 Lieferzeitraum ergänzend zu Lieferdatum + Lieferdatum für jedes Produkt
 
 
@@ -117,8 +129,9 @@ Halbgebackene Waren ( Frost - tagesaktuell auftauen)
 
 Backzettel:
 Ist, soll, Rest
-Produktion - Froster (Was ist im Froster, was kann aufgetaut werden) 
+Produktion - Froster (Was ist im Froster, was kann aufgetaut werden, Produkte für Froster)
 
+Rechnugnsübersicht, Rechnungsablage ()
 
 
 Preisliste - nettopreise, einfache Bearbeitung

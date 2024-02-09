@@ -7,7 +7,8 @@ router.get("/img", isLoggedIn, (req, res) => {
     db.query(`SELECT DISTINCT a.recipeID, recipes.name, a.img
     FROM (SELECT DISTINCT recipeID, img FROM  recipe_form) as a
        LEFT JOIN recipes
-        ON recipeID = recipes.ID `, (err, result) =>{
+        ON recipeID = recipes.ID
+        WHERE name IS NOT NULL `, (err, result) =>{
          if(err){
             console.log(err)
          } else {
