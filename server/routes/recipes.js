@@ -4,7 +4,7 @@ const {isLoggedIn, authRole} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 router.get("/img", isLoggedIn, (req, res) => {
-    db.query(`SELECT DISTINCT a.recipeID, recipes.name, a.img
+    db.query(`SELECT DISTINCT a.recipeID AS ID, recipes.name, a.img
     FROM (SELECT DISTINCT recipeID, img FROM  recipe_form) as a
        LEFT JOIN recipes
         ON recipeID = recipes.ID
