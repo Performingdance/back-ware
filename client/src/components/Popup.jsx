@@ -74,8 +74,8 @@ export default function NewRecipePopup({
         </h5>}
 
         <div className='popup-card-btns'>
-            <button className='popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
-            <button className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+            <button className='btn popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
+            <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
         </div>
         </div>
     </div>}
@@ -142,8 +142,8 @@ export function NewIngPopup({
         </h5>}
 
         <div className='popup-card-btns'>
-            <button className='popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
-            <button className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+            <button className='btn popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
+            <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
         </div>
         </div>
     </div>}
@@ -227,8 +227,8 @@ export function NewClientPopup({
         </h5>}
 
         <div className='popup-card-btns'>
-            <button className='popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
-            <button className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+            <button className='btn popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
+            <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
         </div>
         </div>
     </div>}
@@ -323,8 +323,8 @@ export function NewOrderPopup({
         </h5>}
 
         <div className='popup-card-btns'>
-            <button className='popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
-            <button className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+            <button className='btn popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
+            <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
         </div>
         </div>
     </div>}
@@ -421,9 +421,9 @@ export function NewFormPopup({
 
         <div key={"div 2"} className='popup-card-btns'>
             {addRes.message == "success" ?
-            <button className='popup-card-btn 'onClick={onClickAbort} >OK</button> :
-            [<button className='popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>,
-            <button className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>]}
+            <button className='btn popup-card-btn 'onClick={onClickAbort} >OK</button> :
+            [<button className='btn popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>,
+            <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>]}
         </div>
         </div>
     </div>}
@@ -514,8 +514,8 @@ export function NewInvoicePopup({
         </h5>}
 
         <div className='popup-card-btns'>
-            <button className='popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
-            <button className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+            <button className='btn popup-card-btn' onClick={(e) => [handleOK(e), onClickOK]} >Weiter</button>
+            <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
         </div>
         </div>
     </div>}
@@ -671,8 +671,8 @@ function handleSubmit (e) {
                   
                   />]}
             <div className='popup-card-btns'>
-                <button className='popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
-                <button className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+                <button className='btn popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
+                <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
             </div>
           </div>
         </div>
@@ -864,8 +864,8 @@ export function RecipeOrderPopup({
                     < Calendar onDateChange={handleDateChange}/>
                   </div>
             <div className='popup-card-btns'>
-                <button className='popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
-                <button className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+                <button className='btn popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
+                <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
             </div>
           </div>:""}
         </div>
@@ -924,7 +924,7 @@ function handleLogin(){
             <div key={"loggedIn_div"} className="popup-title jc-c"> 
               <h2 key="h2">Erfolgreich angemeldet</h2>
               <p key="btn_p">
-                <button key="btn_ok" className='popup-card-btn' onClick={onClickOK}>Ok</button>
+                <button key="btn_ok" className='btn popup-card-btn' onClick={onClickOK}>Ok</button>
               </p>
             </div> :
             <div key="login_div" className="popup-title jc-c">
@@ -939,8 +939,8 @@ function handleLogin(){
             <Loading  _key="loading"/>}
 
           <div key={"pc_btn"} className='popup-card-btns'>
-              <button key="pc_btn_ok" className='popup-card-btn' onClick={()=> handleLogin()} >Anmelden</button>
-              <button key="pc_btn_abort" className='popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+              <button key="pc_btn_ok" className='btn popup-card-btn' onClick={()=> handleLogin()} >Anmelden</button>
+              <button key="pc_btn_abort" className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
           </div>
           </div>}
         </div>
@@ -972,8 +972,8 @@ export function PromptPopup({
             <p>{message? message : ""}</p>
 
             <div key={"pc_btn"} className='popup-card-btns'>
-                <button key="pc_btn_ok" className='popup-card-btn' onClick={onClickOK} >{btnOk}</button>
-                <button key="pc_btn_abort" className='popup-card-btn 'onClick={onClickAbort} >{btnAbort}</button>
+                <button key="btn pc_btn_ok" className='popup-card-btn' onClick={onClickOK} >{btnOk}</button>
+                <button key="btn pc_btn_abort" className='popup-card-btn 'onClick={onClickAbort} >{btnAbort}</button>
             </div>
           </div>
         </div>
@@ -1002,7 +1002,7 @@ export function AlertPopup({
             <p>{message? message : ""}</p>
 
             <div key={"pc_btn"} className='popup-card-btns'>
-                <button key="pc_btn_ok" className='popup-card-btn' onClick={onClickOK} >{btnOk || "OK"}</button>
+                <button key="pc_btn_ok" className='btn popup-card-btn' onClick={onClickOK} >{btnOk || "OK"}</button>
             </div>
           </div>
         </div>

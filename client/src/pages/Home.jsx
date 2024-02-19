@@ -33,8 +33,8 @@ function Home() {
     {toggleLoginPrompt && <LoginPopup onClickAbort={()=>setToggleLoginPrompt(false)} onClickOK={()=>{setToggleLoginPrompt(false)}}/>}
     <div className='top-icon'>
       {!isLoggedIn?
-      [<button key={"login"} className='edit-btn' onClick={()=>setToggleLoginPrompt(true)}><SVGIcon src={login} class="svg-icon-md"/> </button>,
-      <button key={"register"} className='edit-btn' onClick={()=>setToggleRegister(true)}><SVGIcon src={person_plus} class="svg-icon-md"/> </button>]:
+      [<button key={"login"} className='btn edit-btn' onClick={()=>setToggleLoginPrompt(true)}><SVGIcon src={login} class="svg-icon-md"/> </button>,
+      <button key={"register"} className='btn edit-btn' onClick={()=>setToggleRegister(true)}><SVGIcon src={person_plus} class="svg-icon-md"/> </button>]:
       <button key={"logout"} className='btn edit-btn ' onClick={()=>{logoutToken(), handleLogout()}}><SVGIcon src={logout} class="svg-icon-md"/> </button>
       }    
       

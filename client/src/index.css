@@ -50,23 +50,25 @@
 
 
 }
-.button{
+.btn, .button, button{
   margin: 0.3rem;
-  padding: 0 0.4rem 0 0.4rem;
+  padding: 0;
   justify-items: center;
   align-items: center;
   color: var(--text-color);
   font-family: var(--button-font-family);
-  background: none;
+  background: inherit;
   border: none;
   border-radius: var(--border-radius);
   
 
 }
-button:hover, .button:hover, a:hover, .button-hover{   
+button:hover, .button:hover, .btn:hover, a:hover, .button-hover{   
   color: var(--text-color);
   cursor: pointer;
   background-color: var(--bg-light);
+  border: none;
+  border-radius: var(--border-radius);
   filter: invert(95%) brightness(1.2); 
 }
 ul {
@@ -180,7 +182,6 @@ input[type=number] {
 .header-edit-btn{
   position: relative;
   display: inline;
-
   padding: 0.5rem;
 
 }

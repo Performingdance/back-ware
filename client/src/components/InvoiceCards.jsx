@@ -37,22 +37,59 @@ import '../styles/InvoiceCard.css';
 import SVGIcon from './SVG';
 import pencil_square from '../assets/icons/pencil-square.svg'
 import plus from "../assets/icons/plus.svg"
+import handleInvoiceProductsRequest from '../hooks/handleInvoiceProductsRequest';
 
 
 
 export default function invoiceCards ({
-    data: invoice,
+    invoice,
     onClickMore,
-    onClickOrder
+    onClickOrder,
+    editID,
+    editBtn
     }){
+      const [products,error,loading, handleRequest] = handleInvoiceProductsRequest(invoice.ID)
+      useEffect(()=>{if(editID==client.ID && editBtn==1){
+        handleRequest (invoice.ID)
+      }},[editID])
+
+      const productList = 
+      products.map((product, key)=> {
+        if(product.ID == -1){
+          return(
+            <li key={key+"li"} className='order-li'>
+              <p></p>
+              <p> noch keine Produkte
+              </p>
+              <p></p>
+      
+            </li>
+        
+          )
+        }else{
+          return(
+            <li key={key+"li"} className='order-li'>
+              <p key={key+"amount"} className='order-p'>{product.amount + "x"}</p>
+              <p key={key+"recipe"} className='order-p'>{product.recipeName}</p>
+              <p key={key+"form"} className='order-p'>{product.formName}</p>
+              
+            </li>
+        
+          )
+      
+        }
+        
+      
+      }) 
+      
+
     return (
         <div className='client-card'>
         <div className='c-card'>
             <div className='c-title' >
               <h3>{invoice.name}</h3>
               <p>{invoice.company}</p>
-              <p>#{invoice.invoice_number}</p>
-              <p>#{invoice.invoice_date}</p>
+              <p>#{invoice.invoice_number + " (" + invoice.invoice_date + ")" }</p>
             </div>
             <div className='rc-btns' > 
               <a type="button" className='button rc-btn' onClick={onClickOrder}>
@@ -61,7 +98,7 @@ export default function invoiceCards ({
               <a type="button" className='button rc-btn ' onClick={onClickMore}>
                 <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
               </a>
-              <a href={`/clients/edit:${client.ID}`} type="button" className='button rc-btn'>
+              <a href={`/invoices/edit:${invoice.ID}`} type="button" className='button rc-btn'>
                 <SVGIcon class="rc-btn-svg" src={pencil_square}/>
               </a>
             </div>
@@ -70,10 +107,10 @@ export default function invoiceCards ({
         {editID==invoice.ID && editBtn==1 && 
         <div className='c-card cc-order'>
            <ul className='product-list'>
-           {orders.length && orderList}
+           {products.length && productList}
            </ul>
         </div>}
-        {editID==client.ID && editBtn==2 && 
+        {editID==invoice.ID && editBtn==2 && 
         <div className=' c-card cc-more '>
           <div className='cc-more'>
             <div className='cc-address'>
@@ -85,7 +122,7 @@ export default function invoiceCards ({
             </div>
             <div className='cc-invoice'>
               <ul className='cc-list'>
-                <li>Marge: {client.marge != "0" && " "? client.marge : "-"}</li>
+                <li>Marge: {invoice.marge != "0" && " "? invoice.marge : "-"}</li>
               </ul>
             </div>
     

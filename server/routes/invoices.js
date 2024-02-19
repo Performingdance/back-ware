@@ -19,6 +19,21 @@ router.get("/all", isLoggedIn, (req, res) =>{
         }
    });
 });
+router.get("/products/ID", isLoggedIn, (req, res) =>{
+    db.query(`SELECT b.*, form.name AS formName FROM
+	(SELECT a.*, recipes.name AS recipeName FROM
+        (SELECT * FROM invoices_items WHERE invoiceID = 4) AS a
+    LEFT JOIN recipes
+    on a.recipeID = recipes.ID) AS b
+LEFT JOIN form
+on b.formID = form.ID;`, (err, result) =>{
+        if(err){
+           console.log(err)
+        } else {
+           res.send(result)
+        }
+   });
+});
 // search invoices by client
 router.get("/searchbyclient", isLoggedIn, (req, res) => {
     const clientID = req.body.clientID;

@@ -1,23 +1,47 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Header from '../components/Header'
 import handleInvoiceRequest from '../hooks/handleInvoiceRequest'
 import InvoiceCards from '../components/InvoiceCards'
 import Loading from '../components/Loading'
+import FloatIcon from '../components/FloatIcon'
 import Searchbar_filter from '../components/Searchbar'
 
 function Invoices() {
 
-  const [invoices, error, loading, handleRequest] = handleInvoiceRequest()
-  useMemo(()=>handleRequest(),[])
+  const [invoices, err, loading, handleRequest] = handleInvoiceRequest()
+  useEffect(()=>handleRequest(),[])
 
   const [filteredData,setFilteredData] = useState(invoices)
-  //console.log(res)
   useEffect(()=>setFilteredData(invoices),[invoices])
 
+  const [editID, setEditID] = useState(0)
+  const [editBtn, setEditBtn] = useState(0)
+  const [_editBtn, set_EditBtn] = useState(0)
+
+  function handleToggleEditID (ID) {
+
+
+    if((editID==ID && editBtn == _editBtn)){
+      setEditID(false)
+      set_EditBtn(editBtn) 
+    }else(
+      setEditID(ID),
+      set_EditBtn(editBtn) 
+    )
+
+    //console.log (_editBtn)
+  } 
+
   const invoiceCards = filteredData.map((invoice, key) =>{ 
-  return (
-  <InvoiceCards key={key} invoice={invoice} />
-  )
+  if(!filteredData.length){
+    return
+  }
+  else{
+    return (
+      <InvoiceCards key={key} invoice={invoice} onClickOrder={() => [ setEditBtn(1), handleToggleEditID(invoice.ID)]} onClickMore={() => [ setEditBtn(2),handleToggleEditID(invoice.ID)]} editID={editID} editBtn={editBtn} />
+      )
+  } 
+
   })
 
   return (

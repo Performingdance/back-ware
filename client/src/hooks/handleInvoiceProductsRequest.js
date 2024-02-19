@@ -2,7 +2,7 @@ import axios from '../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../services/auth-header';
 
-export default function handleInvoiceRequest() {
+export default function handleInvoiceProductRequest() {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -16,7 +16,7 @@ export default function handleInvoiceRequest() {
         axios({
             axiosInstance: axios,
             method: "GET",
-            url:"s/invoices/all",
+            url:"s/invoices/products/ID",
             headers: {
                 "authorization": authHeader()
             }, 
