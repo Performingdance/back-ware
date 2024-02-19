@@ -5,7 +5,13 @@ const db = require('../lib/db.js');
 
 // get all invoices
 router.get("/all", isLoggedIn, (req, res) =>{
-    db.query("SELECT * FROM invoices", (err, result) =>{
+    db.query(`SELECT b.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS marge 
+    FROM(SELECT a.ID, a.invoice_number, a.clientID, CONCAT_WS(" ", clients.first_name, clients.last_name) AS fullName, clients.company,  a.total_sum_netto, a.total_sum_brutto, a.is_paid, DATE_FORMAT(a.invoice_date , "%d.%m.%y") AS invoice_date, a.margeID
+        FROM(SELECT * FROM invoices) AS a
+        LEFT JOIN clients
+        ON a.clientID = clients.ID) AS b
+    LEFT JOIN marges
+    ON b.margeID = marges.ID`, (err, result) =>{
         if(err){
            console.log(err)
         } else {
