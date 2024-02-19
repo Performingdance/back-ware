@@ -15,7 +15,7 @@ export default function handleInvoiceProductRequest() {
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "GET",
+            method: "POST",
             url:"s/invoices/products/ID",
             headers: {
                 "authorization": authHeader()

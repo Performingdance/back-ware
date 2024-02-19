@@ -59,7 +59,7 @@ export default function invoiceCards ({
           return(
             <li key={key+"li"} className='order-li'>
               <p></p>
-              <p> noch keine Produkte</p>
+              <p></p>
               <p></p>
       
             </li>
@@ -92,7 +92,7 @@ export default function invoiceCards ({
             </div>
             <div className='rc-btns' > 
               <a type="button" className='button rc-btn' onClick={onClickOrder}>
-                <SVGIcon class="rc-btn-svg" src={plus}/> Bestellung
+                <SVGIcon class="rc-btn-svg" src={plus}/> Produkte
               </a>
               <a type="button" className='button rc-btn ' onClick={onClickMore}>
                 <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
@@ -106,7 +106,9 @@ export default function invoiceCards ({
         {editID==invoice.ID && editBtn==1 && 
         <div className='c-card cc-order'>
            <ul className='product-list'>
-           {products.length && productList}
+           {products.length? productList :        
+                       <p> noch keine Produkte</p>
+           }
            </ul>
         </div>}
         {editID==invoice.ID && editBtn==2 && 
@@ -122,6 +124,7 @@ export default function invoiceCards ({
             <div className='cc-invoice'>
               <ul className='cc-list'>
                 <li>Marge: {invoice.marge != "0" && " "? invoice.marge : "-"}</li>
+                <li>bezahlt: {invoice.is_paid != null? "Ja" : "Nein"}</li>
               </ul>
             </div>
     
