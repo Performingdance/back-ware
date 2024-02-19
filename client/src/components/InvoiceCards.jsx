@@ -49,7 +49,7 @@ export default function invoiceCards ({
     editBtn
     }){
       const [products,error,loading, handleRequest] = handleInvoiceProductsRequest(invoice.ID)
-      useEffect(()=>{if(editID==client.ID && editBtn==1){
+      useEffect(()=>{if(editID==invoice.ID && editBtn==1){
         handleRequest (invoice.ID)
       }},[editID])
 
@@ -59,8 +59,7 @@ export default function invoiceCards ({
           return(
             <li key={key+"li"} className='order-li'>
               <p></p>
-              <p> noch keine Produkte
-              </p>
+              <p> noch keine Produkte</p>
               <p></p>
       
             </li>

@@ -10,7 +10,7 @@ export default function handleInvoiceProductRequest() {
     const [loading, setLoading] = useState(false);
 
 
-    function handleRequest () {
+    function handleRequest (invoiceID) {
         // console.log(res)
         setLoading(true)
         axios({
@@ -20,6 +20,9 @@ export default function handleInvoiceProductRequest() {
             headers: {
                 "authorization": authHeader()
             }, 
+            data: {
+                "invoiceID" : invoiceID
+            }
         }).then((response)=>{
             setRes(response.data)
             //console.log(res);
