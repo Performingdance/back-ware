@@ -188,7 +188,7 @@ function EditInvoice  () {
   return (
     <div className='page-content'>
     
-      <Header key="header" title={invoiceID? "#"+ invoiceID +" "+ (InvoiceRes.client? InvoiceRes.client : " ") :"# - "}/>
+      <Header key="header" title={InvoiceRes.invoice_number? "#"+ InvoiceRes.invoice_number +" "+ (InvoiceRes.client? InvoiceRes.client : " ") :"# - "}/>
       {togglePrompt && <PromptPopup 
           title={InvoiceRes.ID? `Bestellung #${InvoiceRes.ID } löschen?` : "Bestellung löschen?"} 
           btnOk="OK" 

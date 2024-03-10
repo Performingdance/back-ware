@@ -23,7 +23,7 @@ export default function handleInvoiceProdRequest(invoiceID, update) {
         axios({
             axiosInstance: axios,
             method: "POST",
-            url:"s/invoice/ID/prod",
+            url:"s/invoices/ID/prod",
             headers: {
                 "authorization": authHeader()
             },
