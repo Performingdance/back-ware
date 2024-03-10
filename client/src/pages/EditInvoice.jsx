@@ -10,7 +10,7 @@ import trash from '../assets/icons/trash.svg'
 import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
 
-import handleOrderIngRequest from '../hooks/handleOrderIngRequest'
+import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest'
 import NewRecipePopup, { PromptPopup, RecipeOrderPopup } from '../components/Popup';
 import handleInvoiceIDRequest from '../hooks/handleInvoiceIDRequest';
 import { DateLine } from '../components/Calendar';
@@ -28,7 +28,7 @@ function EditInvoice  () {
     let productRef = useRef()
   
 
-    const [res, err, loading] = handleOrderIngRequest(invoiceID, updateInvoice);
+    const [res, err, loading] = handleInvoiceProdRequest(invoiceID, updateInvoice);
     const [InvoiceRes, orderErr, orderLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
     console.log(InvoiceRes)
     
@@ -43,39 +43,52 @@ function EditInvoice  () {
     const [subLoading, setSubLoading] = useState(false);
     
     //
-    let order_date = InvoiceRes.order_date
-    let delivery_date = InvoiceRes.delivery_date
-    let notes = InvoiceRes.notes
 
+    let invoice_date = InvoiceRes.invoice_date
+    let invoice_number = InvoiceRes.invoice_number
+    let margeID = InvoiceRes.margeID
+
+
+    // ID: 1
+    // client: "Hotel (Maria Haag)"
+    // clientID: 4
+    // delivery_date: "02.02.23"
+    // formID: 15
+    // formName: "Baguette, 300g"
+    // invoiceID: 4
+    // orderID: 4
+    // order_date: "05.02.23"
+    // price_piece: null
+    // price_total: null
+    // recipeName: "Weizenvorteig 1050"
     
     const handleSubmit = (e) =>{
       e.preventDefault()
       const today = new Date().toISOString().split("T",[1])
-      if((delivery_date == "00.00.00"|| !delivery_date)){
-        delivery_date = today[0]
+      if((invoice_date == "00.00.00"|| !invoice_date)){
+        invoice_date = today[0]
       }
-      if(delivery_date.indexOf(".") != -1){
-        delivery_date = delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
-      }
-      if(order_date.indexOf(".") != -1){
-        order_date = order_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
+      if(invoice_date.indexOf(".") != -1){
+        invoice_date = invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
       }
 
-      console.log (order_date, delivery_date)
+
+      //console.log (order_date, delivery_date)
       setSubLoading(true)
       axios({
           axiosInstance: axios,
           method: "PUT",
-          url:"s/orders/update",
+          url:"s/invoices/update",
           headers: {
               "authorization": authHeader()
           },
           data : {
-              "orderID": invoiceID,
+        
+              "ID": invoiceID,
               "clientID": InvoiceRes.clientID,
-              "order_date": order_date,
-              "delivery_date": delivery_date,
-              "notes": notes
+              "invoice_date": invoice_date,
+              "invoice_number": invoice_number,
+              "margeID": margeID
           }
       }).then((response)=>{
           setSubRes(response.data)
@@ -90,18 +103,18 @@ function EditInvoice  () {
 
     };
     
-    function handleOrderDelete(){
+    function handleInvoiceDelete(){
     
       setDelLoading(true)
       axios({
           axiosInstance: axios,
           method: "DELETE",
-          url:"s/orders/delete",
+          url:"s/invoices/delete",
           headers: {
               "authorization": authHeader()
           },
           data : {
-              "orderID": invoiceID,
+              "invoiceID": invoiceID,
           }
       }).then((response)=>{
           window.location.href = "/orders";
@@ -117,22 +130,18 @@ function EditInvoice  () {
           
     
     }
-    function handleOrderItemDel(){
+    function handleInvoiceItemDel(){
       let product = productRef.current
       setDelLoading(true)
       axios({
           axiosInstance: axios,
           method: "DELETE",
-          url:"s/orders/delete/item",
+          url:"s/invoices/delete/item",
           headers: {
               "authorization": authHeader()
           },
           data : {
-              "ID": product.ID,
-              "orderID": product.orderID,
-              "recipeID": product.recipeID,
-              "formID": product.formID,
-              "date": product.production_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
+              "invoice_itemID": product.ID,
           }
       }).then((response)=>{
           setDelRes(response.data)
@@ -185,52 +194,38 @@ function EditInvoice  () {
           btnOk="OK" 
           btnAbort="Abbrechen"
           onClickAbort={()=>setTogglePrompt(false)} 
-          onClickOK={()=>handleOrderDelete()}
+          onClickOK={()=>handleInvoiceDelete()}
           message= {delError? delError.message : " "}
           /> 
       }
       {toggleDelPrompt && <PromptPopup 
-          title={productRef? ` ${productRef.current.recipe_name} aus Bestellung löschen?` : "Item aus Bestellung löschen?"} 
+          title={productRef? ` ${productRef.current.recipe_name} aus Rechnung entfernen?` : "Produkt aus Bestellung entfernen?"} 
           btnOk="OK" 
           btnAbort="Abbrechen"
           onClickAbort={()=>setToggleDelPrompt(false)} 
-          onClickOK={()=>[handleOrderItemDel(), setToggleDelPrompt(false), setUpdateInvoice(!updateInvoice)]}
+          onClickOK={()=>[handleInvoiceItemDel(), setToggleDelPrompt(false), setUpdateInvoice(!updateInvoice)]}
           message= {delError? delError.message : " "}
           /> 
       }
-      {toggleOrderPrompt && <RecipeOrderPopup 
-        defaultClientID={InvoiceRes.clientID}
-        defaultOrderID={InvoiceRes.ID}
-        defaultClientName={InvoiceRes.client}
-        defaultOrderName={"#"+InvoiceRes.ID+ " ("+ InvoiceRes.order_date + ")"}
-        onClickAbort={()=>setToggleOrderPrompt(false)}
-        onClickOK={()=>{setToggleOrderPrompt(false), setUpdateInvoice(!updateInvoice) }}
-        /> 
-      }
+
       <div className='order-wrapper'>
         <div className='order-div'>
           <p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>
-          {!edit? <p>Bestelldatum: {InvoiceRes.order_date? InvoiceRes.order_date : "-"}</p>:         
+          {!edit? <p>Rechnungsdatum: {InvoiceRes.invoice_date? InvoiceRes.invoice_date : "-"}</p>:         
           <div className='d-il ai-c'> 
-            <p>Bestelldatum:</p> 
+            <p>Rechnungsdatum:</p> 
             <DateLine 
-              defaultDay={InvoiceRes.order_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
+              defaultDay={InvoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
               onDateChange={(val)=>{order_date = val}} /> 
           </div>}
-          {!edit? <p>Lieferdatum: {InvoiceRes.delivery_date? InvoiceRes.delivery_date : "-"}</p>:         
+          {/* {!edit? <p>Lieferzeitraum: {res.delivery_date? res.delivery_date : "-"}</p>:         
           <div className='d-il ai-c'> 
             <p>Lieferdatum:</p> 
             <DateLine 
               defaultDay={(InvoiceRes.delivery_date != "00.00.00") && InvoiceRes.delivery_date && (InvoiceRes.delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
               onDateChange={(val)=>{delivery_date = val}} />
-          </div>}
-          {!edit? <div>
-            <p>Notizen: </p><pre className=''>{InvoiceRes? InvoiceRes.notes : "-"}</pre>
-            </div>:
-          <div className='d-il ai-c'>
-            <p>Notizen:</p>
-            <LabelTextInput defaultValue={notes} onChange={(val)=> notes = val} />
-          </div>} 
+          </div>} */}
+          
           {((err || orderErr) && <p>{err.message || orderErr.message}</p>)}
           { !edit? 
           <div key={"header_div"} className='edit-btns'>

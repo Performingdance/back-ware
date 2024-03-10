@@ -19,7 +19,26 @@ router.get("/all", isLoggedIn, (req, res) =>{
         }
    });
 });
-router.post("/products/ID", isLoggedIn, (req, res) =>{
+router.post("/ID", isLoggedIn, (req, res) =>{
+    const invoiceID = req.body.invoiceID;
+
+    db.query(`
+    SELECT c.ID, c.clientID, c.invoice_number, DATE_FORMAT(c.invoice_date , "%d.%m.%y") AS invoice_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, c.total_sum_netto, c.total_sum_brutto, c.is_paid, c.margeID, c.marge 
+        FROM
+            (SELECT a.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS name FROM
+                (SELECT * FROM invoices_items WHERE invoiceID = ?) AS a
+            LEFT JOIN marges
+            on a.margeID = marges.ID) AS c
+    LEFT JOIN clients
+    ON c.clientID = clients.ID`,invoiceID, (err, result) =>{
+        if(err){
+           console.log(err)
+        } else {
+           res.send(result)
+        }
+   });
+});
+router.post("/ID/prod", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
 
     db.query(`
