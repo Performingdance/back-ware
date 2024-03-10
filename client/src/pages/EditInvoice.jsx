@@ -172,7 +172,7 @@ function EditInvoice  () {
               "invoiceID": invoiceID,
           }
       }).then((response)=>{
-          window.location.href = "/orders";
+          window.location.href = "/invoices";
           setDelRes(response.data)
           
           //console.log(response.data);
@@ -207,6 +207,7 @@ function EditInvoice  () {
           //console.log(err);
       }) 
       setDelLoading(false)
+      setUpdateInvoice(updateInvoice+1)
           
     
     }
@@ -240,7 +241,7 @@ function EditInvoice  () {
           <p key={key+"price_piece"} className='order-p' >{"Preis/Stück: "+ (product.price_piece || "-") + "€"}</p>
           <p key={key+"price_total"} className='order-p' >{"Preis gesamt: "+ (product.price_total || "-") + "€"}</p>
         </div>
-            <button key={key+"del"} className='edit-btn' onClick={()=>[setEdit(false), setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
+            <button key={key+"del"} className='edit-btn' onClick={()=>[setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
           </div>
 
         )

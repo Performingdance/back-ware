@@ -101,6 +101,16 @@ Kosten:
 ToDo:
 Preisliste - Kategorie, vorgeschlagen, gesetzt
     Bsp: WV (85%) | 0,48€ | 0,50€
+    Preisliste in Preisrechner einfügen (Preis, Marge)
+    Rechnungen:
+         Preis von Preisliste übernehmen, Gesamtpreis berechenen / updaten
+         Produkte / Sonderposten hinzufügen
+         Lieferzeitraum
+         UI überarbeiten - Tabellenstruktur
+         Pdf erstellen
+
+
+
 
 Update Rezept Nährwerte in ingredients-db
 
