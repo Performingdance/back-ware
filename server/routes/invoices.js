@@ -23,10 +23,11 @@ router.post("/ID", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
 
     db.query(`
-    SELECT c.ID, c.clientID, c.invoice_number, DATE_FORMAT(c.invoice_date , "%d.%m.%y") AS invoice_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, c.total_sum_netto, c.total_sum_brutto, c.is_paid, c.margeID, c.marge 
+    SELECT c.ID, c.clientID, c.invoice_number, DATE_FORMAT(c.invoice_date , "%d.%m.%y") AS invoice_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, c.total_sum_netto, c.total_sum_brutto, c.is_paid, c.margeID, c.marge_name
         FROM
-            (SELECT a.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS name FROM
-                (SELECT * FROM invoices_items WHERE invoiceID = ?) AS a
+            (SELECT a.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS marge_name 
+             FROM
+                (SELECT * FROM invoices WHERE ID = ?) AS a
             LEFT JOIN marges
             on a.margeID = marges.ID) AS c
     LEFT JOIN clients
