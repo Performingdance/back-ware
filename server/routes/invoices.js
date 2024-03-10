@@ -43,9 +43,9 @@ router.post("/ID/prod", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
 
     db.query(`
-    SELECT c.ID, c.invoiceID, c.clientID, c.orderID, c.formID, c.recipeID, c.amount, DATE_FORMAT(c.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(c.delivery_date , "%d.%m.%y") AS delivery_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, c.price_piece, c.price_total, c.recipeName, c.formName 
-        FROM (SELECT b.*, form.name AS formName FROM
-            (SELECT a.*, recipes.name AS recipeName FROM
+    SELECT c.ID, c.invoiceID, c.clientID, c.orderID, c.formID, c.recipeID, c.amount, DATE_FORMAT(c.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(c.delivery_date , "%d.%m.%y") AS delivery_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, c.price_piece, c.price_total, c.recipe_name, c.form_name 
+        FROM (SELECT b.*, form.name AS form_name FROM
+            (SELECT a.*, recipes.name AS recipe_name FROM
                 (SELECT * FROM invoices_items WHERE invoiceID = ?) AS a
             LEFT JOIN recipes
             on a.recipeID = recipes.ID) AS b
