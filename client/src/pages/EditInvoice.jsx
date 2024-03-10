@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import Header from '../components/Header'
-import '../styles/IngredientCard.css'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import pencil_square from '../assets/icons/pencil-square.svg'
@@ -15,40 +14,53 @@ import NewRecipePopup, { PromptPopup, RecipeOrderPopup } from '../components/Pop
 import handleInvoiceIDRequest from '../hooks/handleInvoiceIDRequest';
 import { DateLine } from '../components/Calendar';
 import { LabelTextInput } from '../components/LabelBox';
+import { SelectComponent } from '../components/Searchbar';
 
 
 function EditInvoice  () {
 
-    let invoiceID = window.location.pathname.split(":")[1]
-    const [togglePrompt, setTogglePrompt] = useState(false)
-    const [toggleDelPrompt, setToggleDelPrompt] = useState(false)
-    const [toggleOrderPrompt, setToggleOrderPrompt] = useState(false)
-    const [updateInvoice, setUpdateInvoice] = useState(false)
+    let invoiceID = window.location.pathname.split(":")[1];
+    const [togglePrompt, setTogglePrompt] = useState(false);
+    const [toggleDelPrompt, setToggleDelPrompt] = useState(false);
+    const [margeSelectOpen, setMargeSelectOpen] = useState(false);
+    const [clientSelectOpen, setClientSelectOpen] = useState(false);
+
+    const [updateInvoice, setUpdateInvoice] = useState(0);
     const [edit, setEdit] = useState(false);
-    let productRef = useRef()
+    let editRef = useRef();
+    let productRef = useRef();
   
 
     const [res, err, loading] = handleInvoiceProdRequest(invoiceID, updateInvoice);
     const [InvoiceRes, orderErr, orderLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
-    console.log(res)
+    //console.log(res)
     
 
   
-    const [delRes, setDelRes] = useState([])
+    const [delRes, setDelRes] = useState([]);
     const [delError, setDelError] = useState("");
     const [delLoading, setDelLoading] = useState(false);
 
-    const[subRes, setSubRes] = useState([])
+    const [subRes, setSubRes] = useState([]);
     const [subError, setSubError] = useState("");
     const [subLoading, setSubLoading] = useState(false);
-    
-    //
+
+    const [margeData, setMargeData] = useState({});
+    const [margeError, setMargeError] = useState("");
+    const [margeLoading, setMargeLoading] = useState(false);
+
+    const [clientData, setClientData] = useState({});
+    const [clientError, setClientError] = useState("");
+    const [clientLoading, setClientLoading] = useState(false);
+
+
 
     let invoice_date = InvoiceRes.invoice_date
     let invoice_number = InvoiceRes.invoice_number
     let margeID = InvoiceRes.margeID
+    let clientID = InvoiceRes.clientID
 
-
+    useEffect(()=>{handleMargeRequest()}, [edit]) ;
     // ID: 1
     // client: "Hotel (Maria Haag)"
     // clientID: 4
@@ -61,6 +73,49 @@ function EditInvoice  () {
     // price_piece: null
     // price_total: null
     // recipeName: "Weizenvorteig 1050"
+
+    useEffect(()=> handleClientRequest,[edit])
+    
+    function handleClientRequest () {
+      setClientLoading(true)
+        axios({
+            axiosInstance: axios,
+            method: "GET",
+            url:"s/clients/select",
+            headers: {
+                "authorization": authHeader()
+            }
+        }).then((response)=>{
+            setClientData(response.data)
+            //console.log(response.data);
+        }).catch((err) => {
+            setClientError(err)
+            //console.log(err);
+        })
+
+        setClientLoading(false)
+        
+    }
+
+    const handleMargeRequest = () => {
+      setMargeLoading(true)
+      axios({
+          axiosInstance: axios,
+          method: "GET",
+          url:"s/marges/all/name",
+          headers: {
+              "authorization": authHeader()
+          },
+      }).then((response)=>{
+          setMargeData(response.data)
+          //console.log(response.data);
+      }).catch((err) => {
+          setMargeError(err)
+          //console.log(err);
+      })
+
+      setMargeLoading(false)
+      }
     
     const handleSubmit = (e) =>{
       e.preventDefault()
@@ -85,7 +140,7 @@ function EditInvoice  () {
           data : {
         
               "ID": invoiceID,
-              "clientID": InvoiceRes.clientID,
+              "clientID": clientID,
               "invoice_date": invoice_date,
               "invoice_number": invoice_number,
               "margeID": margeID
@@ -99,7 +154,7 @@ function EditInvoice  () {
           //console.log(err);
       }) 
       setSubLoading(false)
-      setUpdateInvoice(!updateInvoice)
+      setUpdateInvoice(updateInvoice+1)
 
     };
     
@@ -163,22 +218,28 @@ function EditInvoice  () {
           <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
           <p key={key+"form"} className='order-p'>{product.form_name}</p>
           <p key={key+"p"} ></p>
-          <p key={key+"production"} className='order-p'>{"Backtag: " + (product.production_date|| "-")}</p>
+          <p key={key+"production"} className='order-p'>{"Bestelldatum: " + (product.order_date|| "-")}</p>
           <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
+          <p key={key+"p2"} ></p>
+          <p key={key+"price_piece"} className='order-p' >{"Preis/Stück: "+ (product.price_piece || "-") + "€"}</p>
+          <p key={key+"price_total"} className='order-p' >{"Preis gesamt: "+ (product.price_total || "-") + "€"}</p>
         </div>        
         )
       })
       const editItems = res.map((product, key)=> {
         return(
           <div key={key+"div"} className='edit-order-div'>
-            <div key={key+"li"} className='edit-order-grid'>
-              <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
-              <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
-              <p key={key+"form"} className='order-p'>{product.form_name}</p>
-              <p key={key+"p"} ></p>
-              <p key={key+"production"} className='order-p'>{"Backtag: " + (product.production_date|| "-")}</p>
-              <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
-            </div>
+        <div key={key+"li"} className='order-grid'>
+          <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
+          <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
+          <p key={key+"form"} className='order-p'>{product.form_name}</p>
+          <p key={key+"p"} ></p>
+          <p key={key+"production"} className='order-p'>{"Bestelldatum: " + (product.order_date|| "-")}</p>
+          <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
+          <p key={key+"p2"} ></p>
+          <p key={key+"price_piece"} className='order-p' >{"Preis/Stück: "+ (product.price_piece || "-") + "€"}</p>
+          <p key={key+"price_total"} className='order-p' >{"Preis gesamt: "+ (product.price_total || "-") + "€"}</p>
+        </div>
             <button key={key+"del"} className='edit-btn' onClick={()=>[setEdit(false), setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
           </div>
 
@@ -203,7 +264,7 @@ function EditInvoice  () {
           btnOk="OK" 
           btnAbort="Abbrechen"
           onClickAbort={()=>setToggleDelPrompt(false)} 
-          onClickOK={()=>[handleInvoiceItemDel(), setToggleDelPrompt(false), setUpdateInvoice(!updateInvoice)]}
+          onClickOK={()=>[handleInvoiceItemDel(), setToggleDelPrompt(false), setUpdateInvoice(updateInvoice+1)]}
           message= {delError? delError.message : " "}
           /> 
       }
@@ -211,15 +272,57 @@ function EditInvoice  () {
       <div className='order-wrapper'>
         <div className='order-div'>
         {((err || orderErr) && <p className='errorMsg'>{err.message || orderErr.message}</p>)}
-          <p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>
-          <p>Marge: {InvoiceRes? InvoiceRes.marge_name : "-"} </p>
-          <p>Rechnungs-Nr.: {InvoiceRes? "#" + InvoiceRes.invoice_number : "# -"} </p>
+          {!edit ?<p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>:
+                    <div className='d-il ai-c'> 
+                    <p>Kunde:</p> 
+                    {clientData && 
+                  <SelectComponent 
+                      key={"client_select"}
+                      id ="client"
+                      editref={editRef.current}
+                      options={clientData}
+                      onSelect={(val)=>{editRef.current=val}}
+                      onChange={(item) =>{clientID = item}}
+                      selectedID={clientID}
+                      defaultValue={InvoiceRes.client}
+                      placeholder={"Kunde wählen...."}
+                      open={clientSelectOpen}
+                      setOpen={(val)=>{setClientSelectOpen(val)}}
+                      className='i-select c-list-item' 
+                      
+                      />}
+                  </div>}
+          {!edit ?<p>Marge: {InvoiceRes? InvoiceRes.marge_name : "-"} </p>:
+                    <div className='d-il ai-c'> 
+                    <p>Marge:</p> 
+                    {margeData && 
+                  <SelectComponent 
+                      key={"marge_select"}
+                      id ="marge"
+                      editref={editRef.current}
+                      options={margeData}
+                      onSelect={(val)=>{editRef.current=val}}
+                      onChange={(item) =>{margeID = item}}
+                      selectedID={margeID}
+                      defaultValue={InvoiceRes.marge_name}
+                      placeholder={"Marge wählen...."}
+                      open={margeSelectOpen}
+                      setOpen={(val)=>{setMargeSelectOpen(val)}}
+                      className='i-select c-list-item' 
+                      
+                      />}
+                  </div>}
+          {!edit ?<p>Rechnungs-Nr.: {InvoiceRes? "#" + InvoiceRes.invoice_number : "# -"} </p>:
+                    <div className='d-il ai-c'> 
+                    <p>Rechnungs-Nr.:</p> 
+                    <input type='number' defaultValue={InvoiceRes.invoice_number}  onChange={(e)=>{invoice_number = e.target.valueAsNumber}}></input>
+                  </div>}
           {!edit? <p>Rechnungsdatum: {InvoiceRes.invoice_date? InvoiceRes.invoice_date : "-"}</p>:         
           <div className='d-il ai-c'> 
             <p>Rechnungsdatum:</p> 
             <DateLine 
               defaultDay={InvoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
-              onDateChange={(val)=>{order_date = val}} /> 
+              onDateChange={(val)=>{invoice_date = val}} /> 
           </div>}
           {/* {!edit? <p>Lieferzeitraum: {res.delivery_date? res.delivery_date : "-"}</p>:         
           <div className='d-il ai-c'> 
