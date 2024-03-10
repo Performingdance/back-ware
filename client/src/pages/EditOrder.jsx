@@ -22,7 +22,7 @@ function EditOrder  () {
     const [togglePrompt, setTogglePrompt] = useState(false)
     const [toggleDelPrompt, setToggleDelPrompt] = useState(false)
     const [toggleOrderPrompt, setToggleOrderPrompt] = useState(false)
-    const [updateOrder, setUpdateOrder] = useState(false)
+    const [updateOrder, setUpdateOrder] = useState(0)
     const [edit, setEdit] = useState(false);
     let productRef = useRef()
   
@@ -84,7 +84,7 @@ function EditOrder  () {
           //console.log(err);
       }) 
       setSubLoading(false)
-      setUpdateOrder(!updateOrder)
+      setUpdateOrder(updateOrder+1)
 
     };
     
@@ -192,7 +192,7 @@ function EditOrder  () {
           btnOk="OK" 
           btnAbort="Abbrechen"
           onClickAbort={()=>setToggleDelPrompt(false)} 
-          onClickOK={()=>[handleOrderItemDel(), setToggleDelPrompt(false), setUpdateOrder(!updateOrder)]}
+          onClickOK={()=>[handleOrderItemDel(), setToggleDelPrompt(false), setUpdateOrder(updateOrder+1)]}
           message= {delError? delError.message : " "}
           /> 
       }
@@ -202,7 +202,7 @@ function EditOrder  () {
         defaultClientName={orderRes.client}
         defaultOrderName={"#"+orderRes.ID+ " ("+ orderRes.order_date + ")"}
         onClickAbort={()=>setToggleOrderPrompt(false)}
-        onClickOK={()=>{setToggleOrderPrompt(false), setUpdateOrder(!updateOrder) }}
+        onClickOK={()=>{setToggleOrderPrompt(false), setUpdateOrder(updateOrder+1) }}
         /> 
       }
       <div className='order-wrapper'>
