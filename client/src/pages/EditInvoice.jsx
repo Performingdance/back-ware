@@ -30,7 +30,7 @@ function EditInvoice  () {
 
     const [res, err, loading] = handleInvoiceProdRequest(invoiceID, updateInvoice);
     const [InvoiceRes, orderErr, orderLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
-    console.log(InvoiceRes)
+    console.log(res)
     
 
   
@@ -210,7 +210,10 @@ function EditInvoice  () {
 
       <div className='order-wrapper'>
         <div className='order-div'>
+        {((err || orderErr) && <p className='errorMsg'>{err.message || orderErr.message}</p>)}
           <p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>
+          <p>Marge: {InvoiceRes? InvoiceRes.marge_name : "-"} </p>
+          <p>Rechnungs-Nr.: {InvoiceRes? "#" + InvoiceRes.invoice_number : "# -"} </p>
           {!edit? <p>Rechnungsdatum: {InvoiceRes.invoice_date? InvoiceRes.invoice_date : "-"}</p>:         
           <div className='d-il ai-c'> 
             <p>Rechnungsdatum:</p> 
@@ -226,7 +229,6 @@ function EditInvoice  () {
               onDateChange={(val)=>{delivery_date = val}} />
           </div>} */}
           
-          {((err || orderErr) && <p>{err.message || orderErr.message}</p>)}
           { !edit? 
           <div key={"header_div"} className='edit-btns'>
             <button key={"edit"} className='edit-btn' onClick={()=>setEdit(true)}><SVGIcon src={pencil_square} class="svg-icon-md"/> </button> 
