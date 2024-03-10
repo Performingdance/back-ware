@@ -2,20 +2,17 @@ import axios from '../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../services/auth-header';
 
-export default function handleInvoiceProdRequest(invoiceID, update) {
+export default function handleInvoiceProdRequest() {
    // console.log(clientID)
 
     // handle api request 
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-
-    
-        useEffect(()=>handleRequest(),[invoiceID, update])
-    
+   
         
     
-    function handleRequest() {
+    function handleRequest(invoiceID) {
         if(invoiceID != -1){
 
             
@@ -42,7 +39,7 @@ export default function handleInvoiceProdRequest(invoiceID, update) {
     }
         
     }
-    return [res, error, loading];
+    return [res, error, loading, handleRequest];
 
 
    

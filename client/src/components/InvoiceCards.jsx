@@ -48,9 +48,9 @@ export default function invoiceCards ({
     editID,
     editBtn
     }){
-      const [products,error,loading, handleRequest] = handleInvoiceProdRequest(invoice.ID)
+      const [products,error,loading, handleProdRequest] = handleInvoiceProdRequest()
       useEffect(()=>{if(editID==invoice.ID && editBtn==1){
-        handleRequest (invoice.ID)
+        handleProdRequest (invoice.ID)
       }},[editID])
 
       const productList = 

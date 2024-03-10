@@ -31,7 +31,8 @@ function EditInvoice  () {
     let productRef = useRef();
   
 
-    const [res, err, loading] = handleInvoiceProdRequest(invoiceID, updateInvoice);
+    const [res, err, loading, handleProdRequest] = handleInvoiceProdRequest();
+    useEffect(()=>{handleProdRequest(invoiceID)},[updateInvoice])
     const [InvoiceRes, orderErr, orderLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
     //console.log(res)
     
