@@ -22,13 +22,17 @@ router.get("/all", isLoggedIn, (req, res) =>{
 router.post("/products/ID", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
 
-    db.query(`SELECT b.*, form.name AS formName FROM
-	(SELECT a.*, recipes.name AS recipeName FROM
-        (SELECT * FROM invoices_items WHERE invoiceID = ?) AS a
-    LEFT JOIN recipes
-    on a.recipeID = recipes.ID) AS b
-LEFT JOIN form
-on b.formID = form.ID;`,invoiceID, (err, result) =>{
+    db.query(`
+    SELECT c.ID, c.invoiceID, c.clientID, c.orderID, c.formID, DATE_FORMAT(c.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(c.delivery_date , "%d.%m.%y") AS delivery_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, c.price_piece, c.price_total, c.recipeName, c.formName 
+        FROM (SELECT b.*, form.name AS formName FROM
+            (SELECT a.*, recipes.name AS recipeName FROM
+                (SELECT * FROM invoices_items WHERE invoiceID = 4) AS a
+            LEFT JOIN recipes
+            on a.recipeID = recipes.ID) AS b
+        LEFT JOIN form
+        on b.formID = form.ID) AS c
+    LEFT JOIN clients
+    ON c.clientID = clients.ID;`,invoiceID, (err, result) =>{
         if(err){
            console.log(err)
         } else {

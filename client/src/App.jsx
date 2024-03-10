@@ -27,6 +27,7 @@ import EditClient from './pages/EditClient';
 import Worksheet from './pages/Worksheet';
 import Calculator from './pages/Calculator';
 import EditOrder from './pages/EditOrder';
+import EditInvoice from './pages/EditInvoice';
 import Account from './pages/Account'
 
 
@@ -85,6 +86,9 @@ function App() {
   }
   if(window.location.pathname.includes( `/orders/edit:` )){
     CurrentPage = EditOrder
+  }
+  if(window.location.pathname.includes( `/invoices/edit:` )){
+    CurrentPage = EditInvoice
   }
   
 
