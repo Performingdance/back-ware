@@ -37,7 +37,7 @@ import '../styles/InvoiceCard.css';
 import SVGIcon from './SVG';
 import pencil_square from '../assets/icons/pencil-square.svg'
 import plus from "../assets/icons/plus.svg"
-import handleInvoiceProductsRequest from '../hooks/handleInvoiceProductsRequest';
+import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest';
 
 
 
@@ -48,7 +48,7 @@ export default function invoiceCards ({
     editID,
     editBtn
     }){
-      const [products,error,loading, handleRequest] = handleInvoiceProductsRequest(invoice.ID)
+      const [products,error,loading, handleRequest] = handleInvoiceProdRequest(invoice.ID)
       useEffect(()=>{if(editID==invoice.ID && editBtn==1){
         handleRequest (invoice.ID)
       }},[editID])

@@ -104,6 +104,8 @@ Preisliste - Kategorie, vorgeschlagen, gesetzt
     Preisliste in Preisrechner einfügen (Preis, Marge)
     Rechnungen:
          Preis von Preisliste übernehmen, Gesamtpreis berechenen / updaten
+
+         Gesamtpreis Brutto / Netto anzeigen
          Produkte / Sonderposten hinzufügen
          Lieferzeitraum
          UI überarbeiten - Tabellenstruktur
