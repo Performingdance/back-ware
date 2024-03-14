@@ -75,7 +75,8 @@ router.post("/searchbyclient", isLoggedIn, (req, res) => {
 });
 // select unpaid invoices
 router.get("/unpaid", isLoggedIn, (req, res) => {
-    db.query("SELECT * FROM invoices WHERE is_paid IS null ", (err, result) =>{
+    db.query(`SELECT ID, clientID, invoice_number, DATE_FORMAT(invoice_date , "%d.%m.%y") AS invoice_date, total_sum_brutto, total_sum_netto, is_paid, margeID
+     FROM invoices WHERE is_paid IS null `, (err, result) =>{
          if(err){
             console.log(err)
          } else {

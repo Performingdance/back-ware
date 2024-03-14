@@ -61,7 +61,6 @@ export  function OrderCard({
       </div>
       {editID==data.ID && editBtn==1 && 
       <div className='c-card new-order'>
-        <p>Rechnung</p>
        {( data.invoiceID <= 0) && <p>Rechnung erstellen</p>}
       </div>}
       {editID==data.ID && editBtn==2 && 

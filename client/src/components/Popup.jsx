@@ -5,6 +5,7 @@ import { SelectComponent} from './Searchbar';
 import handleRecipesRequest from '../hooks/handleRecipesRequest';
 import handleRecipeFormRequest from '../hooks/handleRecipeFormRequest';
 import handleClientSelectRequest from '../hooks/handleClientSelectRequest';
+import handleUnpaidInvoicesRequest from '../hooks/handleUnpaidInvoicesRequest';
 import { LabelInput, LabelTextInput } from './LabelBox';
 import Loading from './Loading';
 import axios from '../apis/backWare';
@@ -521,6 +522,130 @@ export function NewInvoicePopup({
     </div>}
     </>
   )
+}
+
+export function AddInvoicePopup({
+  onClickOK,
+  onClickAbort,
+  defaultOrderID,
+  defaultClientID,
+  defaultOrderName,
+  defaultClientName
+
+}){
+
+
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState(-1)
+
+  // Add hook  (/unpaid)
+  const [invoices, errInvoices, loadingInvoices, handleRequest] = handleUnpaidInvoicesRequest();
+  useEffect(()=>{handleRequest()},[])
+
+  const [invoiceOpen,setInvoiceOpen] = useState(false)
+
+  
+  const [addRes, setAddRes] = useState([])
+  const [addError, setAddError] = useState("");
+  const [addLoading, setAddLoading] = useState(false);  
+
+  const [dates, setDates] = useState([]);
+ 
+  let editRef = useRef(0)
+
+
+  const handleDateChange = (newDates) => {
+    setDates(newDates);
+  }
+  
+
+
+
+
+  function handleSubmit (e) {
+
+    if(selectedInvoiceId < 0){
+      setAddError({message: "Bitte Rechnungsnummer wählen"})
+      return
+    }else{
+      dates.forEach(handleData)
+      function handleData(day, i){
+        const isoDay = day.replace(/(..).(..).(....)/, "$3-$2-$1");
+        e = e || window.Event;
+        e.preventDefault();
+            setAddLoading(true)
+            axios({
+                axiosInstance: axios,
+                method: "POST",
+                url:"s/invoices/new/items/order",
+                headers: {
+                    "authorization": authHeader()
+                },
+                data : {
+                  "clientID" : defaultClientID,
+                  "orderID" : defaultOrderID,
+                  "invoiceID" : selectedInvoiceId
+                }
+            }).then((response)=>{
+              
+                onClickOK(false)
+            }).catch((err) => {
+                setAddError(err)
+                console.log(err);
+            })
+    
+            setAddLoading(false)
+            
+          }
+    }
+    
+    }
+   
+  
+  return (
+            
+      <div className='popup-card  '>
+        <div className='popup-card-content jc-c '>
+        <h3 className='ta-c'>Rezept hinzufügen</h3>
+          {addError ? <h5 className='errorMsg' >{addError.message }</h5>: " "}
+          {errInvoices ? <h5 className='errorMsg' >{errInvoices.message}</h5>: " "}
+          <div className="popup-title jc-c">
+
+            <p className='lb-title '>Kunde</p>
+            <h5>{defaultClientName}</h5>
+            
+            <p className='lb-title ' key={"order_title"}>Bestellungsnummer</p>
+            <h5>{defaultOrderName}</h5>
+                  
+                  <p className='lb-title '>Rechnungsnummer</p>
+                  <SelectComponent 
+                  id ="invoices"
+                  editref={editRef.current}
+                  options={invoices}
+                  onSelect={(val)=>{[editRef.current=val, setSelectedInvoiceId(-1)]}}
+                  onChange={(val) =>{setSelectedInvoiceId(val)}}
+                  selectedID={selectedInvoiceId}
+                  placeholder='Rechungsnummer wählen...'
+                  open={invoiceOpen}
+                  setOpen={(val)=>{setInvoiceOpen(val)}}
+                  className='i-select popup-input' 
+                  defaultValue={""}
+                  />
+                  {(selectedInvoiceId == 0) &&
+                 [ <p className='lb-title '>Rechnungsdatum</p>,
+                  <div className='rc-calendar'>
+                    < Calendar onDateChange={handleDateChange}/>
+                  </div>]}
+            <div className='popup-card-btns'>
+                <button className='btn popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
+                <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+            </div>
+          </div>
+        </div>
+        </div>
+      
+    
+    )
+
 }
 
 export function RecipePopup({

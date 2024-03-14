@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import SVGIcon from './SVG'
 import plus from '../assets/icons/plus.svg'
 import file_plus from '../assets/icons/file-plus.svg'
@@ -8,7 +8,7 @@ import '../styles/ClientCard.css'
 import '../styles/RecipeCard.css'
 import '../styles/OrderCard.css'
 import handleClientOrderRequest from '../hooks/handleClientOrderRequest'
-import { NewOrderPopup } from './Popup'
+import { AddInvoicePopup, NewOrderPopup } from './Popup'
 
 
 
@@ -24,6 +24,11 @@ function ClientCard({
 
 const [orders,error,loading, handleRequest] = handleClientOrderRequest(client.ID)
 const [orderPrompt, setOrderPrompt] = useState(false)
+const [invoicePrompt, setInvoicePrompt] = useState(false)
+
+let orderIDRef = useRef();
+let orderNameRef = useRef();
+
 useEffect(()=>{if(editID==client.ID && editBtn==1){
   handleRequest (client.ID)
 }},[editID])
@@ -62,7 +67,7 @@ orders.map((order, key)=> {
           <a href={`/orders/edit:${order.ID}`} type="button" className='button rc-btn'>
               <SVGIcon class="rc-btn-svg" src={pencil_square}/>
         </a>
-        <a onClick={()=>{handleNewInvoice()}} type="button" className='button rc-btn'>
+        <a onClick={()=>{setInvoicePrompt(true), orderIDRef.current = order.ID, orderNameRef.current = order.name}} type="button" className='button rc-btn'>
           <SVGIcon class="rc-btn-svg" src={file_plus}/>
         </a>         
         </div>}
@@ -133,6 +138,15 @@ orders.map((order, key)=> {
 
       </div>
     </div>}
+    {invoicePrompt && 
+      <AddInvoicePopup
+        defaultClientID={client.ID} 
+        defaultClientName={client.fullName}
+        defaultOrderID={orderIDRef.current}
+        defaultOrderName={orderNameRef.current}
+
+        onClickAbort={()=>setOrderPrompt(false)}
+        onClickOK={()=>setOrderPrompt(false)} />}
 
     </div>
   )

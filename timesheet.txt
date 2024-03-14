@@ -93,24 +93,30 @@
 06.02. 1h
 09.02. 2h
 19.02. 1h
+10.03. 3h
+13.03. 0,5h
 
 Kosten:
     Node server Render
         Feb 7€
 
 ToDo:
+.env Variablen aus Code entfernen und extern speichern
+
 Preisliste - Kategorie, vorgeschlagen, gesetzt
     Bsp: WV (85%) | 0,48€ | 0,50€
     Preisliste in Preisrechner einfügen (Preis, Marge)
     Rechnungen:
          Preis von Preisliste übernehmen, Gesamtpreis berechenen / updaten
 
-         Gesamtpreis Brutto / Netto anzeigen
+         Gesamtpreis Brutto / Netto, is_paid anzeigen
          Produkte / Sonderposten hinzufügen
          Lieferzeitraum
          UI überarbeiten - Tabellenstruktur
          Pdf erstellen
-
+    Bestellungen
+    Rechnung öffnen -> invoices/edit:ID
+    zu Rechnung hinzufügen / neue erstellen prompt
 
 
 
