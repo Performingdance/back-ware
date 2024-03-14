@@ -5,7 +5,7 @@ import { SelectComponent} from './Searchbar';
 import handleRecipesRequest from '../hooks/handleRecipesRequest';
 import handleRecipeFormRequest from '../hooks/handleRecipeFormRequest';
 import handleClientSelectRequest from '../hooks/handleClientSelectRequest';
-import handleUnpaidInvoicesRequest from '../hooks/handleUnpaidInvoicesRequest';
+import handleInvoicenoRequest from '../hooks/handleInvoicenoRequest';
 import { LabelInput, LabelTextInput } from './LabelBox';
 import Loading from './Loading';
 import axios from '../apis/backWare';
@@ -538,7 +538,7 @@ export function AddInvoicePopup({
   const [selectedInvoiceId, setSelectedInvoiceId] = useState(-1)
 
   // Add hook  (/unpaid)
-  const [invoices, errInvoices, loadingInvoices, handleRequest] = handleUnpaidInvoicesRequest();
+  const [invoices, errInvoices, loadingInvoices, handleRequest] = handleInvoicenoRequest();
   useEffect(()=>{handleRequest()},[])
 
   const [invoiceOpen,setInvoiceOpen] = useState(false)

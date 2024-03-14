@@ -87,7 +87,7 @@ router.get("/unpaid", isLoggedIn, (req, res) => {
     });
 });
 router.get("/invoiceno", isLoggedIn, (req, res) => {
-    db.query(`SELECT ID, clientID, CONCAT("#",invoice_number, DATE_FORMAT(invoice_date , "%d.%m.%y")) AS name, is_paid
+    db.query(`SELECT ID, clientID, CONCAT("#",invoice_number, " (",DATE_FORMAT(invoice_date , "%d.%m.%y"), ")") AS name, is_paid
      FROM invoices WHERE is_paid IS null `, (err, result) =>{
          if(err){
             console.log(err)
