@@ -15,6 +15,7 @@ import handleRecipeIngRequest from '../hooks/handleRecipeIngRequest'
 import handleIngAllRequest from '../hooks/handleIngAllRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
+import handlePriceListRequest from '../hooks/handlePriceListRequest'
 
 // recipes/ins/id
 function handleInsRequest(recipeID, edit, addRes, delRes){
@@ -65,9 +66,11 @@ export function RecipeForm({
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [togglePrices, setTogglePrices] = useState(-1)
 
     const [all_forms, errForms, loadingForms] = handleFormRequest() ;
     const [forms, errForm, loadingForm] = handleRecipeFormRequest(ID, editForm,res);
+    const [priceList, priceError, priceLoad, handlePriceRequest] = handlePriceListRequest()
 
 
 
@@ -182,14 +185,14 @@ export function RecipeForm({
 
         return [res, error, loading];
     }    
-    function handleFormImg(formID){
+    function handleFormImg(productID){
         // api update recipeImg, openImg dialog
         
 
         // api handle default recipe img -> first form
 
     }
-    function handleFormDelete(uformID){
+    function handleFormDelete(productID){
         //api delete Form
         function handleRequest () {
             setLoading(true)
@@ -201,7 +204,7 @@ export function RecipeForm({
                     "authorization": authHeader()
                 },
                 data : {
-                    "ID": uformID,
+                    "ID": productID,
                 }
             }).then((response)=>{
                 setRes(response.data)
@@ -223,13 +226,36 @@ export function RecipeForm({
     
 
     const formCards = forms.map((form, key)=>{
+        let price_titles
+        let price_values
+        
+        
+        
+
+        if(priceList.length){
+            price_titles = () =>
+            {for(let i = 0; i <= priceList.length; i++){
+               return(
+                   <p key={"title_price" + i}>{priceList[i].name}</p>
+               )}
+           }
+           price_values = () =>
+           {for(let i = 0; i <= priceList.length; i++){
+              return(
+                  <p key={"value_price" + i}>{priceList[i].price || 0}</p>
+              )}
+          }
+        }
+        
+
         let image 
         if (!form.img){
         image = `/recipe_img/default.jpg`
         }else{
         image = `/recipe_img/${form.img}.jpg`
         }return(
-            <div className='r-form-card' key={key} style={{backgroundImage: `url(${image})`}} >
+            <>
+            <div className='r-form-card' key={key+"main_div"} style={{backgroundImage: `url(${image})`}} >
                 
                     <div className='r-form-card-title' key={key + "title_div"}>
                         {edit == form.ID ?
@@ -245,10 +271,10 @@ export function RecipeForm({
                     </div>
                 <div className='r-form-table' key={key + "table_div"}>
                     <div className='r-form-title' key={key + "title_div"}>
-                        <p>Form-Gewicht (kg)</p>
-                        <p>Arbeitszeit(h)</p>
-                        <p>Stück / Arbeitszeit </p>
-                        <p>VKP-Netto</p>
+                        <p key={key + "title_1"}>Form-Gewicht (kg)</p>
+                        <p key={key + "title_2"}>Arbeitszeit(h)</p>
+                        <p key={key + "title_3"}>Stück / Arbeitszeit </p>
+                        <p key={key + "title_4"}>VKP-Netto</p>
                     </div>
                     {edit == form.ID ? 
                     <div className='r-form-amount' key={key + "amount_edit_div"}> 
@@ -266,7 +292,32 @@ export function RecipeForm({
                     </div>
                     }
                 </div>
+                <SVGIcon class="button r-form-btn" src={plus} onClick={()=>{if(togglePrices==form.ID){setTogglePrices(-1)}else{handlePriceRequest(form.ID),setTogglePrices(form.ID)}}}/>
             </div>
+            {((togglePrices == form.ID)&& (priceList.length)) && 
+            <div className='r-form-card' key={key+"prices_div"}>
+                <div className='r-form-table' key={key + "table_div"}>
+                    <div className='r-form-title' key={key + "title_div"}>
+                        {price_titles}
+                    </div>
+                    {edit == form.ID ? 
+                    <div className='r-form-amount' key={key + "amount_edit_div"}> 
+                        <input key={key+ "amount_edit_1"} className='r-form-input' onChange={(e)=>handleFormValueChange(form, "formweight", e.target.value)} defaultValue={form.formweight || "-"}></input>
+                        <input key={key+ "amount_edit_2"} className='r-form-input' onChange={(e)=>handleFormValueChange(form,  "worktime", e.target.value)} defaultValue={form.worktime || "-"}></input>
+                        <input key={key+ "amount_edit_3"} className='r-form-input' onChange={(e)=>handleFormValueChange(form, "workamount", e.target.value)} defaultValue={form.workamount || "-"}></input>
+                        <input key={key+ "amount_edit_4"} className='r-form-input' onChange={(e)=>handleFormValueChange(form, "vkp_netto", e.target.value)} defaultValue={form.vkp_netto || "-"}></input>
+                    </div>
+                        :
+                    <div className='r-form-amount' key={key + "amount_div"}>
+                        <p key={key+"amount_1"}>{form.formweight || "-"}</p>
+                        <p key={key+"amount_2"}>{form.worktime || "-"}</p>
+                        <p key={key+"amount_3"}>{form.workamount || "-"}</p>
+                        <p key={key+"amount_4"}>{form.vkp_netto || "-"}</p>
+                    </div>
+                    }
+                </div>
+            </div>}
+            </>
         )});
   return (
     <div className='r-form-card-wrapper'>

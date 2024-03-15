@@ -39,6 +39,19 @@ router.post("/form/id", isLoggedIn, (req, res) => {
          }
     });
 });
+router.post("/form/prices", isLoggedIn, (req, res) => {
+   const productID = req.body.productID;
+   db.query(`SELECT a.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS name  
+            FROM (SELECT * FROM prices WHERE productID = ?) AS a
+            LEFT JOIN marges
+            ON marges.ID = a.margeID`, productID, (err, result) =>{
+        if(err){
+           console.log(err)
+        } else {
+           res.send(result)
+        }
+   });
+});
 router.post("/forms", isLoggedIn, (req, res) => {
    const recipeID = req.body.recipeID;
    db.query(`SELECT a.*, form.name FROM
@@ -70,7 +83,26 @@ router.put("/form/new", isLoggedIn, (req, res) => {
             if (err){
                console.log(err)
             } else {
-               res.send(result)
+               const productID = result.insertId;
+               db.query("SELECT ID FROM marges", 
+               (err, result)=>{
+                  if (err){
+                     console.log(err)
+                  } else {
+                     for(i=0;i<=result.length; i++){
+                        let margeID = result[i].ID
+                        db.query("INSERT INTO prices (productID, margeID) VALUES (?,?)", 
+                        [productID, margeID], 
+                        (err, result)=>{
+                           if (err){
+                              console.log(err)
+                           } else {
+                              res.send("success")
+                           }
+                        });
+                     }
+                  }
+               });
             }
          });    
       } else {
@@ -81,20 +113,40 @@ router.put("/form/new", isLoggedIn, (req, res) => {
 });
 router.put("/form/update", isLoggedIn, (req, res) => {
    const ID = req.body.ID;
-   const formID = req.body.formID; 
+   const productID = req.body.productID; 
    const formweight = req.body.formweight;
    const img = req.body.img;
    const worktime = req.body.worktime;
    const workamount = req.body.workamount;
-   const vkp_netto = req.body.vkp_netto;
+   const vkp_netto = req.body.vkp_netto || 0;
+   const priceList = req.body.priceList || [];
 
          db.query("UPDATE recipe_form SET  formID = ?, formweight = ?, img = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
-         [ formID, formweight, img, worktime, workamount, vkp_netto, ID], 
+         [ productID, formweight, img, worktime, workamount, vkp_netto, ID], 
          (err, result)=>{
             if (err){
                console.log(err)
             } else {
-               res.send(result)
+               if(priceList.length){
+                  for(let i=0;i<=priceList.length;i++){
+                     let margeID = priceList[i].margeID
+                     let price = priceList[i].price || 0
+
+                     db.query("UPDATE prices SET price = ? WHERE productID = ? AND margeID = ?", 
+                     [ price, productID, margeID], 
+                     (err, result)=>{
+                        if (err){
+                           console.log(err)
+                        } else {
+                           res.send("success")
+                        }
+                     });  
+                  }
+
+               }else{
+                  res.send("success")
+               }
+               
             }
          });  
 });
@@ -114,6 +166,28 @@ router.put("/form/update/nvp", isLoggedIn, (req, res) => {
             }
          });  
 });
+router.put("/form/update/prices", isLoggedIn, (req, res) => {
+   const priceList = req.body.priceList || [];
+
+   if(priceList.length){
+      for(let i=0;i<=priceList.length;i++){
+         let margeID = priceList[i].margeID
+         let productID = priceList[i].productID
+         let price = priceList[i].price || 0
+
+         db.query("UPDATE prices SET price = ? WHERE productID = ? AND margeID = ?", 
+         [ price, productID, margeID], 
+         (err, result)=>{
+            if (err){
+               console.log(err)
+            } else {
+               res.send("success")
+            }
+         });  
+      }
+
+   }
+});
 
 router.delete("/form/delete", isLoggedIn, (req,res) => {
    const ID = req.body.ID;
@@ -122,7 +196,13 @@ router.delete("/form/delete", isLoggedIn, (req,res) => {
       if(err){
          console.log(err)
       } else {
-         res.send(result)
+         db.query("DELETE FROM prices WHERE productID = ?", ID, (err, result) => {
+            if(err){
+               console.log(err)
+            } else {
+               res.send(result)
+            }
+         });
       }
    });
 });
@@ -283,7 +363,7 @@ router.get("/base/update", isLoggedIn, (req, res) => {
          
          //console.log(ID_list)
          //Update calculated Ingredients of recipe:
-         for(i=1; i<=maxID;i++ ){
+         for(let i=1; i<=maxID;i++ ){
             let ID = i
             db.query(`   
             SELECT c.recipeID, 
@@ -426,7 +506,7 @@ router.put("/ing/new", isLoggedIn, (req, res) => {
                               
                               //console.log(cresult[0].amount);
    
-                              for(i = 0;i < cresult.length; i++) {
+                              for(let i = 0;i < cresult.length; i++) {
                                  const amount_pc = parseFloat(cresult[i].amount / totalamount).toFixed(3);
                                  const ingID = cresult[i].ID;
                                  db.query("UPDATE dough SET amount_pc = ? WHERE ID = ?", 
@@ -486,7 +566,7 @@ router.put("/ing/update", isLoggedIn, (req, res) => {
                         
                         //console.log(cresult[0].amount);
 
-                        for(i = 0;i < cresult.length; i++) {
+                        for(let i = 0;i < cresult.length; i++) {
                            const amount_pc = parseFloat(cresult[i].amount / totalamount).toFixed(3);
                            const ingID = cresult[i].ID;
                            db.query("UPDATE dough SET amount_pc = ? WHERE ID = ?", 

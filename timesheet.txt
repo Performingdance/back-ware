@@ -96,6 +96,7 @@
 10.03. 3h
 13.03. 0,5h
 14.03. 1h
+15.03. 1h
 
 Kosten:
     Node server Render
@@ -103,6 +104,7 @@ Kosten:
 
 ToDo:
 .env Variablen aus Code entfernen und extern speichern
+Order_Items - Daylist verknüpfung überprüfen (Löschen aus der Daylist - auch aus Order?)
 
 Preisliste - Kategorie, vorgeschlagen, gesetzt
     Bsp: WV (85%) | 0,48€ | 0,50€

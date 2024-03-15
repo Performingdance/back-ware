@@ -105,14 +105,38 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
     const clientID = req.body.clientID;
     const recipeID = req.body.recipeID;
     const formID = req.body.formID;
+    let name = req.body.name;
     const amount = req.body.amount;
     const order_date = req.body.delivery_date;
     const delivery_date = req.body.delivery_date;
 
+    if((recipeID >= 1) && (formID >= 1)){
+        db.query("SELECT product_name FROM recipe_form WHERE ID = ?", 
+        [clientID,recipeID, formID, name, amount, order_date, delivery_date, itemID], 
+        (err, result) =>{
+            if(err){
+                console.log(err)
+            } else{
+                name = result[0].product_name
+                db.query(`INSERT INTO invoices_items 
+                (invoiceID, clientID, recipeID, formID, name, amount, order_date, delivery_date) 
+                VALUES (?,?,?,?,?,?,?,?) `, 
+                [invoiceID, clientID, recipeID, formID, name, amount, order_date, delivery_date], 
+                (err, result) =>{
+                    if(err){
+                        console.log(err)
+                    } else{
+                            res.send("success")
+                    };
+                })
+            };
+        });
+
+    }else{
         db.query(`INSERT INTO invoices_items 
-        (invoiceID, clientID, recipeID, formID, amount, order_date, delivery_date) 
-        VALUES (?,?,?,?,?,?,?) `, 
-        [invoiceID, clientID, recipeID, formID, amount, order_date, delivery_date], 
+        (invoiceID, clientID, recipeID, formID, name, amount, order_date, delivery_date) 
+        VALUES (?,?,?,?,?,?,?,?) `, 
+        [invoiceID, clientID, recipeID, formID, name, amount, order_date, delivery_date], 
         (err, result) =>{
             if(err){
                 console.log(err)
@@ -120,21 +144,26 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
                     res.send("success")
             };
         })
+    }
+
+        
 });
 
 // add all open items (orders) from a client to the invoice
 router.post("/new/items/client", isLoggedIn, (req, res, next) => {
     const clientID = req.body.clientID;
     const invoiceID = req.body.invoiceID;
+    let orderID
 
     db.query(`INSERT INTO invoices_items 
     (invoiceID, clientID, orderID, recipeID, formID, amount, order_date, delivery_date) 
-    SELECT ? AS invoiceID, orders_items.* 
-    FROM ( SELECT ID AS orderID          
+    SELECT ? as invoiceID, orders_items.* FROM
+		(SELECT ID         
         FROM orders
-        WHERE clientID = ? AND invoiceID IS null ) AS a
+        WHERE clientID = ? AND invoiceID IS null) as a
     LEFT JOIN orders_items
-    ON a.orderID = orders_items.orderID `, 
+    ON orders_items.orderID = a.ID 
+    WHERE orders_items.ID IS NOT null`, 
     [invoiceID, clientID], 
     (err, result) =>{
         if(err){
@@ -146,7 +175,29 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                 if(berr){
                     console.log(berr)
                 } else {
-                    res.send("success")
+                    db.query(`SELECT ID         
+                    FROM orders
+                    WHERE clientID = ? AND invoiceID IS null`, 
+                    [invoiceID, clientID], 
+                    (berr, result) =>{
+                        if(berr){
+                            console.log(berr)
+                        } else {
+                            for(let i=0; i <= result.length; i++){
+                                orderID = result[i].ID
+                                db.query(`UPDATE orders_items SET invoiceID = ? WHERE orderID = ?`, 
+                                [invoiceID, orderID], 
+                                (berr, result) =>{
+                                    if(berr){
+                                        console.log(berr)
+                                    } else {
+                                        res.send("success")
+                                    }
+                                });
+                            }
+                          
+                        }
+                    });
                 }
             });
         };
@@ -172,7 +223,7 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
         if(err){
             console.log(err)
         } else{
-        db.query("UPDATE orders SET invoiceID = ? WHERE ID = ?", 
+        db.query("UPDATE orders_items SET invoiceID = ? WHERE orderID = ?", 
         [invoiceID, orderID], 
         (derr, dresult) =>{
             if(derr){
@@ -291,19 +342,44 @@ router.put("/update/item", isLoggedIn, (req, res, next) => {
     const clientID = req.body.clientID;
     const recipeID = req.body.recipeID;
     const formID = req.body.formID;
+    let name = req.body.name;
     const amount = req.body.amount;
     const order_date = req.body.delivery_date;
     const delivery_date = req.body.delivery_date;
+
+    if((recipeID >= 1) && (formID >= 1)){
+        db.query("SELECT product_name FROM recipe_form WHERE ID = ?", 
+        [clientID,recipeID, formID, name, amount, order_date, delivery_date, itemID], 
+        (err, result) =>{
+            if(err){
+                console.log(err)
+            } else{
+                name = result[0].product_name
+                db.query("UPDATE invoices_items SET clientID = ?, recipeID = ?, formID = ?, name = ?, amount = ?, order_date = ?, delivery_date = ? WHERE ID = ?", 
+                [clientID,recipeID, formID, name, amount, order_date, delivery_date, itemID], 
+                (err, result) =>{
+                    if(err){
+                        console.log(err)
+                    } else{
+                        res.send("success");
+                    };
+                });
+            };
+        });
+
+    }else{
+        db.query("UPDATE invoices_items SET clientID = ?, recipeID = ?, formID = ?, name = ?, amount = ?, order_date = ?, delivery_date = ? WHERE ID = ?", 
+        [clientID,recipeID, formID, name, amount, order_date, delivery_date, itemID], 
+        (err, result) =>{
+            if(err){
+                console.log(err)
+            } else{
+                res.send("success");
+            };
+        });
+    }
  
-    db.query("UPDATE invoices_items SET clientID = ?, recipeID = ?, formID = ?, amount = ?, order_date = ?, delivery_date = ? WHERE ID = ?", 
-    [clientID,recipeID, formID, amount, order_date, delivery_date, itemID], 
-    (err, result) =>{
-        if(err){
-            console.log(err)
-        } else{
-            res.send("success");
-        };
-    });
+   
      
  });
 
@@ -337,10 +413,10 @@ router.delete("/delete", isLoggedIn, (req, res) => {
        if(err){
           console.log(err)
        } else {
-        db.query("UPDATE orders SET invoiceID = null WHERE invoiceID = ?", 
+        db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ?", 
         [invoiceID], 
         (berr, bresult) =>{
-            if(brr){
+            if(berr){
                 console.log(berr)
             } else{
                 res.send("success");
@@ -354,13 +430,28 @@ router.delete("/delete", isLoggedIn, (req, res) => {
 router.delete("/delete/item", isLoggedIn, (req, res) => {
 
     const invoice_itemID = req.body.invoice_itemID;
+    const recipeID = req.body.recipeID;
+    const formID = req.body.formID;
  
     db.query("DELETE FROM invoices_items WHERE ID = ?", invoice_itemID, 
     (err, result) =>{
         if(err){
            console.log(err)
         } else {
-           res.send(result)
+            if((recipeID != -1) && (formID != -1)){
+                db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ? AND recipeID = ? AND formID =?", 
+                [invoiceID, recipeID, formID], 
+                (berr, bresult) =>{
+                    if(berr){
+                        console.log(berr)
+                    } else{
+                        res.send("success");
+                    };
+                });
+            }else{
+                res.send("success");
+            };
+            
         }
    });
  });
