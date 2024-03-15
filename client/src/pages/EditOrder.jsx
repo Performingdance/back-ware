@@ -245,7 +245,7 @@ function EditOrder  () {
           {(orderRes.invoiceID == null)? 
             <div className='d-il ai-c'>
               <p>Rechnung erstellen </p>
-              <button key={"file_plus"} className='edit-btn' onClick={(e)=>{setInvoicePrompt(true)}}><SVGIcon src={file_plus} class="svg-icon-md"/> </button>
+              <button key={"file_plus"} className='edit-btn' onClick={(e)=>{setInvoicePrompt(true), setUpdateOrder(updateOrder+1)}}><SVGIcon src={file_plus} class="svg-icon-md"/> </button>
             </div>: 
             <div className='d-il ai-c'>
               <p>Rechnung: </p>

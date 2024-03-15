@@ -203,7 +203,7 @@ export const SelectComponent = ({
 
     }).map(opt=>{
         return(
-        <div key={opt.ID} onClick={()=>onItemSelected(opt)} className='i-option'>
+        <div key={opt.ID + "opt"} onClick={()=>onItemSelected(opt)} className='i-option'>
             {opt.name}
         </div>) 
       })
