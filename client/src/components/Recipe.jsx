@@ -232,19 +232,18 @@ export function RecipeForm({
         
         
 
-        if(priceList.length){
-            price_titles = () =>
-            {for(let i = 0; i <= priceList.length; i++){
-               return(
-                   <p key={"title_price" + i}>{priceList[i].name}</p>
-               )}
-           }
-           price_values = () =>
-           {for(let i = 0; i <= priceList.length; i++){
-              return(
-                  <p key={"value_price" + i}>{priceList[i].price || 0}</p>
-              )}
-          }
+        if(priceList.length > 0){
+            price_titles = priceList.map((obj, key) =>
+               {return(
+                   <p key={"title_price" + key}>{obj.name}</p>
+               )
+            })
+               
+               price_values = priceList.map((obj, key) =>
+               {return(
+                   <p key={"price" + key}>{(obj.price || "0,00") + "€" }</p>
+               )
+            })
         }
         
 
