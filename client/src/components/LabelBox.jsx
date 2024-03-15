@@ -45,7 +45,7 @@ export function LabelTextInput({
 return (
   <div _key={_key+"lb"} className={className+" labelbox"} >
       <p _key={_key+"p"} className='lb-title'>{title}</p>
-      <textarea _key={_key+"input"} className='input lb-text-input' on={(e)=>e.target.style.height = calcHeight(e.target.value) + "rem"} placeholder={placeholder} defaultValue={defaultValue} onChange={(e)=>[onChange(e.target.value), e.target.style.height = calcHeight(e.target.value) + "rem"]} onClick={onClick}/>
+      <textarea _key={_key+"input"} className='input lb-text-input' onLoad={(e)=>e.target.style.height = calcHeight(e.target.value) + "rem"} placeholder={placeholder} defaultValue={defaultValue} onChange={(e)=>[onChange(e.target.value), e.target.style.height = calcHeight(e.target.value) + "rem"]} onClick={onClick}/>
   
   </div>
 )

@@ -434,6 +434,10 @@ export function NewFormPopup({
 
 export function NewInvoicePopup({
   title,
+  forwardEdit,
+  defaultClientID,
+  defaultClientName,
+  invoiceID,
   onClickOK,
   onClickAbort
 }) {
@@ -443,7 +447,7 @@ export function NewInvoicePopup({
   const [addError, setAddError] = useState("");
   const [addLoading, setAddLoading] = useState(false); 
   const [date,setDate] = useState(today); 
-  const [selectedOption, setSelectedOption] = useState(0)
+  const [selectedClientID, setSelectedClientID] = useState(defaultClientID || -1)
   const [clients, error, loading] = handleClientSelectRequest();
   let editRef = useRef("")
   //console.log(clients)
@@ -455,7 +459,7 @@ export function NewInvoicePopup({
     e = e || window.Event;
     e.preventDefault();
   
-      if (selectedOption == 0 ){
+      if (selectedClientID == -1 ){
         setAddError("Kunde auswählen");
         return
       }else{
@@ -469,13 +473,19 @@ export function NewInvoicePopup({
                 "authorization": authHeader()
             },
             data : {
-                "clientID" : selectedOption,
+                "clientID" : selectedClientID,
                 "invoice_date": date,
             }
         }).then((response)=>{
           
             setOpen(false)
-            window.location.pathname = `/orders/edit:${response.data.insertId}`
+            if(forwardEdit == false){
+              invoiceID(response.data.insertId)
+              return
+            }else{
+              window.location.pathname = `/orders/edit:${response.data.insertId}`
+            }
+            
          
         }).catch((err) => {
             setAddError(err.message)
@@ -500,9 +510,10 @@ export function NewInvoicePopup({
                 onSelect={(val)=>{editRef.current=val}}
                 editref={editRef.current}
                 options={clients}
-                onChange={(item) =>{setSelectedOption(item)}}
-                selectedID={selectedOption}
+                onChange={(item) =>{setSelectedClientID(item)}}
+                selectedID={selectedClientID}
                 placeholder='Kunde wählen'
+                defaultValue={defaultClientName}
                 open={open}
                 setOpen={(bol)=>setOpen(bol)}
                 className='i-select' 
@@ -535,14 +546,13 @@ export function AddInvoicePopup({
 }){
 
 
-  const [selectedInvoiceId, setSelectedInvoiceId] = useState(-1)
+  const [selectedInvoiceID, setSelectedInvoiceID] = useState(-1)
 
   // Add hook  (/unpaid)
   const [invoices, errInvoices, loadingInvoices, handleRequest] = handleInvoicenoRequest();
   useEffect(()=>{handleRequest()},[])
 
   const [invoiceOpen,setInvoiceOpen] = useState(false)
-
   
   const [addRes, setAddRes] = useState([])
   const [addError, setAddError] = useState("");
@@ -563,13 +573,12 @@ export function AddInvoicePopup({
 
   function handleSubmit (e) {
 
-    if(selectedInvoiceId < 0){
+    if(selectedInvoiceID < 0){
       setAddError({message: "Bitte Rechnungsnummer wählen"})
       return
-    }else{
-      dates.forEach(handleData)
-      function handleData(day, i){
-        const isoDay = day.replace(/(..).(..).(....)/, "$3-$2-$1");
+    }
+    else{
+      
         e = e || window.Event;
         e.preventDefault();
             setAddLoading(true)
@@ -583,7 +592,7 @@ export function AddInvoicePopup({
                 data : {
                   "clientID" : defaultClientID,
                   "orderID" : defaultOrderID,
-                  "invoiceID" : selectedInvoiceId
+                  "invoiceID" : selectedInvoiceID
                 }
             }).then((response)=>{
               
@@ -596,7 +605,7 @@ export function AddInvoicePopup({
             setAddLoading(false)
             
           }
-    }
+    
     
     }
    
@@ -621,22 +630,26 @@ export function AddInvoicePopup({
                   id ="invoices"
                   editref={editRef.current}
                   options={invoices}
-                  onSelect={(val)=>{[editRef.current=val, setSelectedInvoiceId(-1)]}}
-                  onChange={(val) =>{setSelectedInvoiceId(val)}}
-                  selectedID={selectedInvoiceId}
+                  onSelect={(val)=>{[editRef.current=val, setSelectedInvoiceID(-1)]}}
+                  onChange={(val) =>{setSelectedInvoiceID(val)}}
+                  selectedID={selectedInvoiceID}
                   placeholder='Rechungsnummer wählen...'
                   open={invoiceOpen}
                   setOpen={(val)=>{setInvoiceOpen(val)}}
                   className='i-select popup-input' 
                   defaultValue={""}
                   />
-                  {(selectedInvoiceId == 0) &&
-                 [ <p className='lb-title '>Rechnungsdatum</p>,
-                  <div className='rc-calendar'>
-                    < Calendar onDateChange={handleDateChange}/>
-                  </div>]}
+                  {(selectedInvoiceID == 0) &&
+                  <NewInvoicePopup
+                  title={"neue Rechung"}
+                  forwardEdit={false}
+                  defaultClientID={defaultClientID}
+                  defaultClientName={defaultClientName}
+                  invoiceID={(val)=>{setSelectedInvoiceID(val)}}
+                  onClickOK={()=>setNewInvoicePormpt(false)}
+                  onClickAbort={()=>setNewInvoicePormpt(false)} />}
             <div className='popup-card-btns'>
-                <button className='btn popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
+                <button className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Weiter</button>
                 <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
             </div>
           </div>

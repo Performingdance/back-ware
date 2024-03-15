@@ -4,13 +4,15 @@ import '../styles/IngredientCard.css'
 import handleOrderIngRequest from '../hooks/handleOrderIngRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
+import file_plus from '../assets/icons/file-plus.svg'
 import pencil_square from '../assets/icons/pencil-square.svg'
+import bar_graph from '../assets/icons/bar-graph.svg'
 import x_circle from '../assets/icons/x-circle.svg'
 import check from '../assets/icons/check-all.svg'
 import trash from '../assets/icons/trash.svg'
 import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
-import NewRecipePopup, { PromptPopup, RecipeOrderPopup } from '../components/Popup';
+import NewRecipePopup, { AddInvoicePopup, PromptPopup, RecipeOrderPopup } from '../components/Popup';
 import handleOrderIDRequest from '../hooks/handleOrderIDRequest';
 import { DateLine } from '../components/Calendar';
 import { LabelTextInput } from '../components/LabelBox';
@@ -22,6 +24,8 @@ function EditOrder  () {
     const [togglePrompt, setTogglePrompt] = useState(false)
     const [toggleDelPrompt, setToggleDelPrompt] = useState(false)
     const [toggleOrderPrompt, setToggleOrderPrompt] = useState(false)
+    const [invoicePrompt, setInvoicePrompt] = useState(false)
+
     const [updateOrder, setUpdateOrder] = useState(0)
     const [edit, setEdit] = useState(false);
     let productRef = useRef()
@@ -205,6 +209,15 @@ function EditOrder  () {
         onClickOK={()=>{setToggleOrderPrompt(false), setUpdateOrder(updateOrder+1) }}
         /> 
       }
+      {invoicePrompt && 
+      <AddInvoicePopup
+        defaultClientID={orderRes.clientID} 
+        defaultClientName={orderRes.client}
+        defaultOrderID={orderID}
+        defaultOrderName={orderID? "#"+ orderID +" "+ (orderRes.client? orderRes.client : " ") :"# - "}
+        onClickAbort={()=>setInvoicePrompt(false)}
+        onClickOK={()=>setInvoicePrompt(false)} />}
+
       <div className='order-wrapper'>
         <div className='order-div'>
           <p>Kunde: {orderRes? orderRes.client : "-"} </p>
@@ -228,7 +241,16 @@ function EditOrder  () {
           <div className='d-il ai-c'>
             <p>Notizen:</p>
             <LabelTextInput defaultValue={notes} onChange={(val)=> notes = val} />
-          </div>} 
+          </div>}
+          {(orderRes.invoiceID == null)? 
+            <div className='d-il ai-c'>
+              <p>Rechnung erstellen </p>
+              <button key={"file_plus"} className='edit-btn' onClick={(e)=>{setInvoicePrompt(true)}}><SVGIcon src={file_plus} class="svg-icon-md"/> </button>
+            </div>: 
+            <div className='d-il ai-c'>
+              <p>Rechnung: </p>
+              <a key={"bar_graph"} className='edit-btn' href={'/invoices/edit:'+orderRes.invoiceID}><SVGIcon src={bar_graph} class="svg-icon-md"/> </a>
+            </div>} 
           {((err || orderErr) && <p>{err.message || orderErr.message}</p>)}
           { !edit? 
           <div key={"header_div"} className='edit-btns'>

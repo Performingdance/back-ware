@@ -35,9 +35,6 @@ router.post("/ID/ing", isLoggedIn, (req, res) =>{
     SELECT b.*, recipes.name AS recipe_name 
         FROM (SELECT a.*, form.name AS form_name 
              FROM (
-                SELECT ID, formID, recipeID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(date , "%d.%m.%y") AS production_date
-                    FROM daylist WHERE orderID = ? 
-                UNION 
                 SELECT ID, formID, recipeID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(production_date , "%d.%m.%y") AS production_date
                     FROM orders_items WHERE orderID = ?) as a
         LEFT JOIN form

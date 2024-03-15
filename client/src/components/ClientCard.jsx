@@ -144,9 +144,8 @@ orders.map((order, key)=> {
         defaultClientName={client.fullName}
         defaultOrderID={orderIDRef.current}
         defaultOrderName={orderNameRef.current}
-
-        onClickAbort={()=>setOrderPrompt(false)}
-        onClickOK={()=>setOrderPrompt(false)} />}
+        onClickAbort={()=>setInvoicePrompt(false)}
+        onClickOK={()=>setInvoicePrompt(false)} />}
 
     </div>
   )

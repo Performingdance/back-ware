@@ -72,6 +72,12 @@ router.put("/new", isLoggedIn, (req, res) => {
                 console.log(aerr)
             } else{
                 const newOrderID = aresult.insertId
+                db.query("INSERT INTO orders_items (orderID, recipeID, formID, amount, delivery_date, production_date) VALUES (?, ?, ?, ?, ?, ?)", 
+            [newOrderID, recipeID, formID, amount, date, date], 
+            (aaerr, result) =>{
+                if(aaerr){
+                    console.log(aaerr)
+                } else{
                 db.query("INSERT INTO daylist (date, recipeID, formID, amount, ist, orderID, note) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                 [date, recipeID, formID, amount, ist, newOrderID, note], 
                 (err, result) =>{
@@ -93,10 +99,18 @@ router.put("/new", isLoggedIn, (req, res) => {
                             };
                         })
                     };
+                    })
+                };
                 })
             };
         })
     }else{
+    db.query("INSERT INTO orders_items (orderID, recipeID, formID, amount, delivery_date, production_date) VALUES (?, ?, ?, ?, ?, ?)", 
+    [orderID, recipeID, formID, amount, date, date], 
+    (aaerr, result) =>{
+        if(aaerr){
+            console.log(aaerr)
+        } else{
         db.query("INSERT INTO daylist (date, recipeID, formID, amount,ist, orderID, note) VALUES (?, ?, ?, ?, ?, ?, ?)", 
         [date, recipeID, formID, amount, ist, orderID, note], 
         (err, result) =>{
@@ -179,7 +193,10 @@ router.put("/new", isLoggedIn, (req, res) => {
                     };
                 })
                
-            };
+            };                
+        })
+               
+        };
         })
         res.send("success");
     } 
@@ -202,7 +219,12 @@ router.put("/update", isLoggedIn, (req, res) => {
     const date = req.body.date;
 
 
-
+    db.query("UPDATE orders_items SET amount = ? WHERE orderID = ? AND recipeID = ? AND formID = ?,", 
+    [amount,orderID, recipeID, formID], 
+    (aaerr, result) =>{
+        if(aaerr){
+            console.log(aaerr)
+        } else{
     db.query(`UPDATE daylist SET  
     recipeID = ?, 
     formID = ?, 
@@ -291,9 +313,12 @@ router.put("/update", isLoggedIn, (req, res) => {
                         }
                     });
                         }
-                   });
+                    });
                     
-                };
+                };                  
+             });
+                    
+            };
             })
             res.send(result)
         };

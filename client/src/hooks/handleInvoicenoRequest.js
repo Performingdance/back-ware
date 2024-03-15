@@ -21,7 +21,20 @@ export default function handleInvoicenoRequest() {
                 "authorization": authHeader()
             }, 
         }).then((response)=>{
-            setRes(response.data)
+            if(!response.data.length){
+                const newRes = [{
+                    ID: 0, 
+                    name: "Neue Bestellung" 
+               }]
+               setRes(newRes)
+
+            }else{
+                const addRes = 
+                    [...response.data, {ID: 0, 
+                        name: "Neue Rechnung"}]
+            
+                setRes(addRes)
+            }
             //console.log(res);
         }).catch((err) => {
             setError(err)
