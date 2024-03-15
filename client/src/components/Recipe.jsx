@@ -294,7 +294,7 @@ export function RecipeForm({
                 </div>
                 <SVGIcon class="button r-form-btn" src={plus} onClick={()=>{if(togglePrices==form.ID){setTogglePrices(-1)}else{handlePriceRequest(form.ID),setTogglePrices(form.ID)}}}/>
             </div>
-            {((togglePrices == form.ID)&& (priceList.length)) && 
+            {((togglePrices == form.ID)&& (priceList.length > 0)) && 
             <div className='r-form-card' key={key+"prices_div"}>
                 <div className='r-form-table' key={key + "table_div"}>
                     <div className='r-form-title' key={key + "title_div"}>
@@ -302,20 +302,22 @@ export function RecipeForm({
                     </div>
                     {edit == form.ID ? 
                     <div className='r-form-amount' key={key + "amount_edit_div"}> 
-                        <input key={key+ "amount_edit_1"} className='r-form-input' onChange={(e)=>handleFormValueChange(form, "formweight", e.target.value)} defaultValue={form.formweight || "-"}></input>
-                        <input key={key+ "amount_edit_2"} className='r-form-input' onChange={(e)=>handleFormValueChange(form,  "worktime", e.target.value)} defaultValue={form.worktime || "-"}></input>
-                        <input key={key+ "amount_edit_3"} className='r-form-input' onChange={(e)=>handleFormValueChange(form, "workamount", e.target.value)} defaultValue={form.workamount || "-"}></input>
-                        <input key={key+ "amount_edit_4"} className='r-form-input' onChange={(e)=>handleFormValueChange(form, "vkp_netto", e.target.value)} defaultValue={form.vkp_netto || "-"}></input>
+                        // map inputs for price changes
                     </div>
                         :
                     <div className='r-form-amount' key={key + "amount_div"}>
-                        <p key={key+"amount_1"}>{form.formweight || "-"}</p>
-                        <p key={key+"amount_2"}>{form.worktime || "-"}</p>
-                        <p key={key+"amount_3"}>{form.workamount || "-"}</p>
-                        <p key={key+"amount_4"}>{form.vkp_netto || "-"}</p>
+                        {price_values}
                     </div>
                     }
                 </div>
+                
+            </div>}
+            {((togglePrices == form.ID)&& (priceList.length <= 0)) &&
+            <div className='r-form-card' key={key+"prices_div"}>
+                    {priceError? 
+                    <p>{priceError.message}</p>
+                    :<h5>Noch keine Preise eingetragen</h5>
+                    }
             </div>}
             </>
         )});

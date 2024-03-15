@@ -97,10 +97,11 @@ router.put("/form/new", isLoggedIn, (req, res) => {
                            if (err){
                               console.log(err)
                            } else {
-                              res.send("success")
+                             
                            }
                         });
                      }
+                     res.send("success")
                   }
                });
             }
