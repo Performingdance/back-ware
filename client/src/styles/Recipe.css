@@ -71,7 +71,7 @@
 .r-form-input{
     position: relative;
     width: 5rem;
-    top: 1rem;
+    margin: 0.2rem;
     background: none;
     color: var(--text-color);
 

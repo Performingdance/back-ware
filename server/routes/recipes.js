@@ -113,7 +113,7 @@ router.put("/form/new", isLoggedIn, (req, res) => {
    });
 });
 router.put("/form/update", isLoggedIn, (req, res) => {
-   const ID = req.body.ID;
+   const formID = req.body.formID;
    const productID = req.body.productID; 
    const formweight = req.body.formweight;
    const img = req.body.img;
@@ -123,7 +123,7 @@ router.put("/form/update", isLoggedIn, (req, res) => {
    const priceList = req.body.priceList || [];
 
          db.query("UPDATE recipe_form SET  formID = ?, formweight = ?, img = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
-         [ productID, formweight, img, worktime, workamount, vkp_netto, ID], 
+         [ formID, formweight, img, worktime, workamount, vkp_netto, productID], 
          (err, result)=>{
             if (err){
                console.log(err)

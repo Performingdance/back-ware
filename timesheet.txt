@@ -110,6 +110,7 @@ Preisliste - Kategorie, vorgeschlagen, gesetzt
     Bsp: WV (85%) | 0,48€ | 0,50€
     Preisliste in Preisrechner einfügen (Preis, Marge)
     Rechnungen:
+        Check ob ID 0 für neue Rechnung == 1. item oder nur neue Rechnung
          Preis von Preisliste übernehmen, Gesamtpreis berechenen / updaten
 
          Gesamtpreis Brutto / Netto, is_paid anzeigen
