@@ -116,14 +116,14 @@ router.put("/form/update", isLoggedIn, (req, res) => {
    const formID = req.body.formID;
    const productID = req.body.productID; 
    const formweight = req.body.formweight;
-   const img = req.body.img;
+   const product_name = req.body.product_name;
    const worktime = req.body.worktime;
    const workamount = req.body.workamount;
    const vkp_netto = req.body.vkp_netto || 0;
    const priceList = req.body.priceList || [];
 
-         db.query("UPDATE recipe_form SET  formID = ?, formweight = ?, img = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
-         [ formID, formweight, img, worktime, workamount, vkp_netto, productID], 
+         db.query("UPDATE recipe_form SET  formID = ?, formweight = ?, product_name = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
+         [ formID, formweight, product_name, worktime, workamount, vkp_netto, productID], 
          (err, result)=>{
             if (err){
                console.log(err)
