@@ -155,8 +155,8 @@ export function RecipeForm({
         
 
     }
-    function handleFormEditSubmit(editFormID){
-        if(!editFormID || (editFormID == -1)){
+    function handleFormEditSubmit(productID){
+        if(!productID || (productID == -1)){
             return
         }
         // api update recipeForm
@@ -171,9 +171,7 @@ export function RecipeForm({
                     "authorization": authHeader()
                 },
                 data : {
-                    "ID": editFormID,
-                    "recipeID":  editForm.recipeID,
-                    "formID": editForm.formID,
+                    "productID": productID,
                     "formweight": editForm.formweight.replace(",", "."),
                     "worktime": editForm.worktime.replace(",", "."),
                     "workamount": editForm.workamount.replace(",", "."),
