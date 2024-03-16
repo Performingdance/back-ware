@@ -68,9 +68,10 @@ export function RecipeForm({
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [togglePrices, setTogglePrices] = useState(-1)
+    const [formsUpdate, setFormsUpdate] = useState(-1)
 
     const [all_forms, errForms, loadingForms] = handleFormRequest() ;
-    const [forms, errForm, loadingForm] = handleRecipeFormRequest(ID, editForm,res);
+    const [forms, errForm, loadingForm] = handleRecipeFormRequest(ID, formsUpdate);
     const [priceList, priceError, priceLoad, handlePriceRequest] = handlePriceListRequest()
 
     useEffect(()=>setEditPriceList(priceList), [priceList])
@@ -109,6 +110,7 @@ export function RecipeForm({
     
                 handleFormValueReset();
                 setLoading(false)
+                setFormsUpdate(formsUpdate+1)
                 
             }
                handleRequest();
@@ -181,6 +183,7 @@ export function RecipeForm({
                 }
             }).then((response)=>{
                 setRes(response.data)
+                setFormsUpdate(formsUpdate+1)
                 //console.log(res);
             }).catch((err) => {
                 setError(err)
@@ -227,6 +230,7 @@ export function RecipeForm({
 
             handleFormValueReset();
             setLoading(false)
+            setFormsUpdate(formsUpdate+1)
             
         }
            handleRequest();

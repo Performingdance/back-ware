@@ -2,7 +2,7 @@ import axios from '../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../services/auth-header';
 
-export default function handleRecipeFormRequest(recipeID, editForm, newForm) {
+export default function handleRecipeFormRequest(recipeID, update) {
     //console.log(recipeID)
 
     // handle api request 
@@ -11,7 +11,7 @@ export default function handleRecipeFormRequest(recipeID, editForm, newForm) {
     const [loading, setLoading] = useState(false);
 
 
-    useEffect(()=>handleRequest(),[recipeID, editForm, newForm])
+    useEffect(()=>handleRequest(),[recipeID, update])
     function handleRequest () {
         setLoading(true)
         axios({
@@ -25,7 +25,7 @@ export default function handleRecipeFormRequest(recipeID, editForm, newForm) {
                 "recipeID": recipeID
             }
         }).then((response)=>{
-            console.log(response.data)
+           // console.log(response.data)
             if(response.data.length > 0){
             response.data.forEach((obj) => {
                 if(obj.formweight > 0){
@@ -44,7 +44,7 @@ export default function handleRecipeFormRequest(recipeID, editForm, newForm) {
             })
         }
             setRes(response.data)
-            console.log(response.data)
+            //console.log(response.data)
         }).catch((err) => {
             setError(err)
             //console.log(err);

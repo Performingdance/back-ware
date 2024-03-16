@@ -122,13 +122,13 @@ router.put("/form/update", isLoggedIn, (req, res) => {
    const vkp_netto = req.body.vkp_netto || 0;
    const priceList = req.body.priceList || [];
 
-         db.query("UPDATE recipe_form SET  formID = ?, formweight = ?, product_name = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
+         db.query("UPDATE recipe_form SET formID = ?, formweight = ?, product_name = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
          [ formID, formweight, product_name, worktime, workamount, vkp_netto, productID], 
          (err, result)=>{
             if (err){
                console.log(err)
             } else {
-               if(priceList.length){
+               if(priceList.length > 0){
                   for(let i=0;i<=priceList.length;i++){
                      let margeID = priceList[i].margeID
                      let price = priceList[i].price || 0
