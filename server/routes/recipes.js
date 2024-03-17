@@ -99,8 +99,7 @@ router.put("/form/new", isLoggedIn, (req, res) => {
                            } else {
                            }
                         });
-                     }
-                     
+                     } 
                   }
                });
                res.send("success")
@@ -180,10 +179,11 @@ router.put("/form/update/prices", isLoggedIn, (req, res) => {
             if (err){
                console.log(err)
             } else {
-               res.send("success")
+               
             }
          });  
       }
+      res.send("success")
 
    }
 });

@@ -35,6 +35,16 @@ router.post("/new", isLoggedIn, (req, res) => {
         if(err){
             console.log(err)
         } else{
+            const margeID = result.insertId
+            db.query(`INSERT INTO prices (productID, margeID, price)
+            SELECT DISTINCT productID, ?, 0 FROM prices`, 
+            [margeID], 
+            (err, result) =>{
+                if(err){
+                    console.log(err)
+                } else{
+                };
+            })
             res.send("success");
         };
     })
@@ -70,6 +80,12 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                 if(berr){
                    console.log(berr)
                 } else {
+                    db.query("DELETE FROM prices WHERE margeID = ?", ID, (berr, bresult) =>{
+                        if(berr){
+                           console.log(berr)
+                        } else {
+                        }
+                   });
                    res.send(bresult)
                 }
            });
