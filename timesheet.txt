@@ -96,7 +96,7 @@
 10.03. 3h
 13.03. 0,5h
 14.03. 1h
-15.03. 1h
+15.03. 6,5h
 
 Kosten:
     Node server Render
@@ -122,7 +122,7 @@ Preisliste - Kategorie, vorgeschlagen, gesetzt
     Rechnung öffnen -> invoices/edit:ID
     zu Rechnung hinzufügen / neue erstellen prompt
 
-
+Rezepte: Produkte - preise Margen checken -> es müssen alle bei einem neuen Produkt erstellt werden
 
 Update Rezept Nährwerte in ingredients-db
 
