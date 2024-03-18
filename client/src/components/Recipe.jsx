@@ -16,6 +16,7 @@ import handleIngAllRequest from '../hooks/handleIngAllRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import handlePriceListRequest from '../hooks/handlePriceListRequest'
+import { RecipeFormPopup } from './Popup'
 
 // recipes/ins/id
 function handleInsRequest(recipeID, edit, addRes, delRes){
@@ -56,14 +57,15 @@ function handleInsRequest(recipeID, edit, addRes, delRes){
 
 
 export function RecipeForm({
-    ID
+    ID,
+    recipeName
 }) {
 
     const [edit, setEdit] = useState(false);
-    const [selectOpen, setSelectOpen] = useState(false);
+    const [toggleNewForm, setToggleNewForm] = useState(false);
     const [editForm, setEditForm] = useState({});
     const [editPriceList, setEditPriceList] = useState([]);
-    const [selectedOption, setSelectedOption] = useState(0);
+    const [selectedOption, setSelectedOption] = useState(-1);
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -74,13 +76,13 @@ export function RecipeForm({
     const [forms, errForm, loadingForm] = handleRecipeFormRequest(ID, formsUpdate);
     const [priceList, priceError, priceLoad, handlePriceRequest] = handlePriceListRequest()
 
-    useEffect(()=>setEditPriceList(priceList), [priceList])
+    useEffect(()=>setEditPriceList(priceList), [togglePrices])
 
 
 
     function handleFormAdd(formID){
 
-        if(formID != 0){
+        if(formID != -1){
             function handleRequest () {
                 setLoading(true)
                 axios({
@@ -102,7 +104,7 @@ export function RecipeForm({
                 }).then((response)=>{
                     setRes(response.data)
                     //console.log(res);
-                    setSelectOpen(false)
+                    setToggleNewForm(false)
                 }).catch((err) => {
                     setError(err)
                     //console.log(err);
@@ -176,7 +178,7 @@ export function RecipeForm({
                     "workamount": editForm.workamount.replace(",", "."),
                     "vkp_netto": editForm.vkp_netto.replace(",", "."),
                     "product_name": editForm.product_name,
-                    "priceList": editPriceList
+                    "price_list": editPriceList
                 }
             }).then((response)=>{
                 setRes(response.data)
@@ -279,7 +281,7 @@ export function RecipeForm({
                         <SVGIcon key={key+"check"} class="button r-form-btn" src={check} onClick={()=>[setEdit(false), handleFormEditSubmit(form.ID)]}/>,
                         <SVGIcon key={key+"camera"} class="button r-form-btn" src={camera} onClick={()=>[setEdit(false), handleFormImg(form.ID)]}/>,
                         <SVGIcon key={key+"trash"} class="button r-form-btn" src={trash} onClick={()=>{handleFormDelete(form.ID); if(edit==form.ID){setEdit(false)}else{setEdit(form.ID)}}}/>] :
-                        <h4>{form.product_name + " (" + form.name + ")"}</h4>}
+                        <h4 key={key+"productname"}>{form.product_name + " (" + form.name + ")"}</h4>}
                     </div>
                 <div className='r-form-table' key={key + "table_div"}>
                     <div className='r-form-title' key={key + "title_div"}>
@@ -299,10 +301,10 @@ export function RecipeForm({
                     </div>
                         :
                     <div className='r-form-amount' key={key + "amount_div"}>
-                        <p key={key+"amount_1"}>{form.formweight || "-"}</p>
-                        <p key={key+"amount_2"}>{form.worktime || "-"}</p>
+                        <p key={key+"amount_1"}>{form.formweight || "-"}kg</p>
+                        <p key={key+"amount_2"}>{form.worktime || "-"}h</p>
                         <p key={key+"amount_3"}>{form.workamount || "-"}</p>
-                        <p key={key+"amount_4"}>{form.vkp_netto || "-"}</p>
+                        <p key={key+"amount_4"}>{form.vkp_netto || "-"}€</p>
                     </div>
                     }
                 </div>
@@ -341,25 +343,12 @@ export function RecipeForm({
     <div className='r-form-card-wrapper'>
     {formCards}
     {!formCards.length && <h3>Noch keine Formen zugewiesen</h3>}
-    <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn"} onClick={()=>setSelectOpen(!selectOpen)} ><SVGIcon src={plus} class="svg-icon-lg"/></button>
-    {selectOpen && 
-    <SelectComponent 
-                key={"formSelect"}
-                id ={1}
-                onSelect={()=>{}}
-                editref={1}
-                options={all_forms}
-                onChange={(item) =>{setSelectedOption(item), handleFormAdd(item),setEdit(false)}}
-                selectedID={selectedOption}
-                placeholder=' Form wählen...'
-                open={selectOpen}
-                setOpen={()=>{}}
-                className='i-select' 
-                type='text' 
-                />
-  }
-    
-   </div>
+    <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn"} onClick={()=>setToggleNewForm(!toggleNewForm)} ><SVGIcon src={plus} class="svg-icon-lg"/></button>
+    {toggleNewForm && 
+    <RecipeFormPopup defaultRecipeID={ID} defaultRecipeName={recipeName} onClickAbort={()=>setToggleNewForm(false)} onClickOK={()=>{setToggleNewForm(false), setFormsUpdate(formsUpdate+1)}} />
+    }
+    </div>
+
   )
 }
 

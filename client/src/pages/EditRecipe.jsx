@@ -141,7 +141,7 @@ const [openTab, setOpenTab] = useState("ing")
         </div>
 
         {openTab == "ing" && <RecipeIng ID={ID} />}
-        {openTab == "form" && <RecipeForm ID={ID} />}
+        {openTab == "form" && <RecipeForm ID={ID} recipeName={nameRef.current}/>}
         {openTab == "ins" && <RecipeIns ID={ID} />}
     </div>
 

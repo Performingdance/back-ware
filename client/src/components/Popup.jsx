@@ -11,6 +11,8 @@ import Loading from './Loading';
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import handleOpenOrderRequest from '../hooks/handleOpenOrderRequest';
+import handleFormRequest from '../hooks/handleFormRequest';
+import handleMargesRequest from '../hooks/handleMargesRequest';
 
 
 export default function NewRecipePopup({
@@ -1010,6 +1012,161 @@ export function RecipeOrderPopup({
         </div>
       
     
+    )
+
+}
+export function RecipeFormPopup({
+  onClickOK,
+  onClickAbort,
+  defaultRecipeID,
+  defaultRecipeName
+}){
+  const [selectedFormID, setSelectedFormID] = useState(-1)
+  const [all_forms, errForms, loadForms] = handleFormRequest() ;
+  const [marges, errMarges, loadMarges, handleRequest] = handleMargesRequest();
+  useEffect(()=>handleRequest(),[])
+
+  const [open,setOpen] = useState(false)
+  const [formOpen,setFormOpen] = useState(false)
+  const [newFormOpen,setNewFormOpen] = useState(false)
+  
+  const [addRes, setAddRes] = useState([])
+  const [addError, setAddError] = useState("");
+  const [addLoading, setAddLoading] = useState(false);  
+
+  let editRef = useRef();
+  let product_nameRef = useRef();
+  let formweightRef = useRef();
+  let worktimeRef = useRef();
+  let workamountRef = useRef();
+  let vkp_nettoRef = useRef();
+  let editPrice_listRef = useRef();
+
+  useEffect(()=>{editPrice_listRef.current = marges.map(v => ({...v, price: "0,00"}))},[marges])
+
+
+
+function handlePriceListValueChange(margeID, value){
+  for(let i = 0; i < editPrice_listRef.current.length; i++){
+    if(editPrice_listRef.current[i].ID == margeID){
+      editPrice_listRef.current[i].price = value
+    }
+  }
+  //console.log(editPrice_listRef.current)
+
+}
+  
+
+
+function handleSubmit (e) {
+    e = e || window.Event;
+    e.preventDefault();
+    const price_list = editPrice_listRef.current.map(obj => (
+      {margeID : obj.ID, price : obj.price.replace(",", ".")
+      }
+      )) 
+    if(formweightRef.current >0){
+      formweightRef.current = formweightRef.current.replace(",", ".")
+    }
+    if(worktimeRef.current >0){
+      worktimeRef.current = worktimeRef.current.replace(",", ".")
+    }
+    if(workamountRef.current >0){
+      workamountRef.current = workamountRef.current.replace(",", ".")
+    }
+    if(vkp_nettoRef.current >0){
+      vkp_nettoRef.current = vkp_nettoRef.current.replace(",", ".")
+    }
+
+    //console.log(price_list, editPrice_listRef.current)
+    if(selectedFormID != -1){
+      function handleRequest () {
+          setAddLoading(true)
+          axios({
+              axiosInstance: axios,
+              method: "PUT",
+              url:"s/recipes/form/new",
+              headers: {
+                  "authorization": authHeader()
+              },
+              data : {
+                  "recipeID": defaultRecipeID,
+                  "formID" : selectedFormID,
+                  "formweight": formweightRef.current,
+                  "img": "default",
+                  "worktime": worktimeRef.current,
+                  "workamount": workamountRef.current,
+                  "vkp_netto": vkp_nettoRef.current,
+                  "price_list": price_list
+              }
+          }).then((response)=>{
+              setAddRes(response.data)
+              //console.log(res);
+              setSelectOpen(false)
+          }).catch((err) => {
+              setAddError(err)
+              //console.log(err);
+          })
+          setAddLoading(false)
+          
+      }
+         handleRequest();
+  
+
+      return
+  }else{
+    setAddError({message: "Bitte Form wählen"})
+      return
+  }
+  
+}
+  const priceListInput = marges.map((marge, key)=>{
+    return(
+      <LabelInput key={marge.ID} className='popup-input' type='number' title={"Preis - " +marge.name} defaultvalue={0} onChange={(e)=>{handlePriceListValueChange(marge.ID, e.target.value)}}/>
+
+    )
+  })
+
+
+  return (
+    <>
+      {      
+      <div className='popup-card  '>
+        <div className='popup-card-content jc-c '>
+          <div className="popup-title jc-c">
+          {errForms ? <h5 className='errorMsg' >{errForms.message }</h5>: " "}
+          {addError ? <h5 className='errorMsg' >{addError.message }</h5>: " "}
+            <p className='lb-title'>Rezept</p>
+            <h5 className='ta-c'>{defaultRecipeName}</h5>
+            <p className='lb-title ' key={"form_title"}>Form</p>
+            <SelectComponent
+            key={"form_select"}
+            id ="forms"
+            onSelect={(val)=>{editRef.current=val}}
+            editref={editRef.current}
+            options={all_forms}
+            onChange={(item) =>{setSelectedFormID(item)}}
+            selectedID={selectedFormID}
+            placeholder='Form wählen'
+            open={formOpen}
+            setOpen={(bol)=>setFormOpen(bol)}
+            className='i-select' 
+            type='text' 
+            />
+            <LabelInput className='popup-input' type='text' title="Produktbezeichnung" defaultvalue={""} onChange={(e)=>{product_nameRef.current = e.target.value}}/>
+            <LabelInput className='popup-input' type='number' title="Form-Gewicht" defaultvalue={0} onChange={(e)=>{formweightRef.current = e.target.value}}/>
+            <LabelInput className='popup-input' type='number' title="Arbeitszeit(h)" defaultvalue={0} onChange={(e)=>{worktimeRef.current = e.target.value}}/>
+            <LabelInput className='popup-input' type='number' title="Stück/Arbeitszeit" defaultvalue={0} onChange={(e)=>{workamountRef.current = e.target.value}}/>
+            <LabelInput className='popup-input' type='number' title="VKP-Netto" defaultvalue={0} onChange={(e)=>{vkp_nettoRef.current = e.target.value}}/>
+            {priceListInput}
+            <div className='popup-card-btns'>
+                <button className='btn popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
+                <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+            </div>
+          </div>
+        </div>
+      </div>}
+      </>
     )
 
 }

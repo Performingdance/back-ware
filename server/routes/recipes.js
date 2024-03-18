@@ -74,6 +74,8 @@ router.put("/form/new", isLoggedIn, (req, res) => {
    const worktime = req.body.worktime;
    const workamount = req.body.workamount;
    const vkp_netto = req.body.vkp_netto;
+   const price_list = req.body.price_list || [];
+
 
    db.query("SELECT ID FROM recipe_form WHERE formID = ? AND recipeID = ?", [formID, recipeID], (err,result)=>{
       if(err || !result.length){
@@ -83,25 +85,42 @@ router.put("/form/new", isLoggedIn, (req, res) => {
             if (err){
                console.log(err)
             } else {
-               const productID = result.insertId;
-               db.query("SELECT ID FROM marges", 
-               (err, result)=>{
-                  if (err){
-                     console.log(err)
-                  } else {
-                     for(i=0;i<=result.length; i++){
-                        let margeID = result[i].ID
-                        db.query("INSERT INTO prices (productID, margeID) VALUES (?,?)", 
-                        [productID, margeID], 
+               
+                  const productID = result.insertId;
+                  if(price_list.length > 0){
+                     for(let i=0;i<=price_list.length;i++){
+                        let margeID = price_list[i].margeID
+                        let price = price_list[i].price || 0
+   
+                        db.query("INSERT INTO prices SET (productID, margeID, price) VALUES (?,?,?)", 
+                        [productID, margeID,price], 
                         (err, result)=>{
                            if (err){
                               console.log(err)
                            } else {
                            }
-                        });
-                     } 
+                        });  
+                     }
+                  }else{
+                     db.query("SELECT ID FROM marges", 
+                     (err, result)=>{
+                        if (err){
+                           console.log(err)
+                        } else {
+                           for(i=0;i<=result.length; i++){
+                              let margeID = result[i].ID
+                              db.query("INSERT INTO prices (productID, margeID) VALUES (?,?)", 
+                              [productID, margeID], 
+                              (err, result)=>{
+                                 if (err){
+                                    console.log(err)
+                                 } else {
+                                 }
+                              });
+                           } 
+                        }
+                     });
                   }
-               });
                res.send("success")
             }
          });    
@@ -118,7 +137,7 @@ router.put("/form/update", isLoggedIn, (req, res) => {
    const worktime = req.body.worktime;
    const workamount = req.body.workamount;
    const vkp_netto = req.body.vkp_netto || 0;
-   const priceList = req.body.priceList || [];
+   const price_list = req.body.price_list || [];
 
          db.query("UPDATE recipe_form SET formweight = ?, product_name = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
          [ formweight, product_name, worktime, workamount, vkp_netto, productID], 
@@ -126,10 +145,10 @@ router.put("/form/update", isLoggedIn, (req, res) => {
             if (err){
                console.log(err)
             } else {
-               if(priceList.length > 0){
-                  for(let i=0;i<=priceList.length;i++){
-                     let margeID = priceList[i].margeID
-                     let price = priceList[i].price || 0
+               if(price_list.length > 0){
+                  for(let i=0;i<=price_list.length;i++){
+                     let margeID = price_list[i].margeID
+                     let price = price_list[i].price || 0
 
                      db.query("UPDATE prices SET price = ? WHERE productID = ? AND margeID = ?", 
                      [ price, productID, margeID], 

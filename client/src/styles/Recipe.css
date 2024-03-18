@@ -30,7 +30,8 @@
 
 .r-form-card-wrapper{
     display: grid;
-    grid-template-columns: repeat(auto-fill, 21rem);
+    grid-template-columns: repeat(auto-fit, 25rem);
+    column-gap: 1rem;
     justify-content: center;
     align-content: center;
     margin-top: 0.5rem;
@@ -40,7 +41,7 @@
     
 }
 .r-form-card{
-    width: 20rem;
+    width: 25rem;
     position: relative;
     justify-content: center;
     align-content: center;

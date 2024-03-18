@@ -42,7 +42,7 @@ export default function handleRecipeFormRequest(recipeID, update) {
                }
                 return obj
             })
-        }
+            }
             setRes(response.data)
             //console.log(response.data)
         }).catch((err) => {

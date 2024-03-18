@@ -26,7 +26,24 @@ export default function handleRecipeFormRequest(recipeID) {
                 "recipeID": recipeID
             }
         }).then((response)=>{
-            setRes(response.data)
+            if(response.data.length > 0){
+                response.data.forEach((obj) => {
+                    if(obj.formweight >= 0){
+                        obj.formweight = obj.formweight.replace(".", ",")
+                    }
+                   if(obj.worktime >= 0){
+                        obj.worktime = obj.worktime.replace(".", ",")
+                   }
+                   if(obj.workamount >= 0){
+                        obj.workamount = obj.workamount.replace(".", ",")
+                   }
+                   if(obj.vkp_netto >= 0){
+                    obj.vkp_netto = obj.vkp_netto.replace(".", ",")
+                   }
+                    return obj
+                })
+                }
+                setRes(response.data)
             //console.log(res);
         }).catch((err) => {
             setError(err)
