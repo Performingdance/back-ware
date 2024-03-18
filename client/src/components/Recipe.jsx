@@ -293,10 +293,10 @@ export function RecipeForm({
                     </div>
                     {edit == form.ID ? 
                     <div className='r-form-amount' key={key + "amount_edit_div"}> 
-                        <input key={key+ "amount_edit_1"} className='r-form-input' onChange={(e)=>handleFormValueChange( "formweight", e.target.value)} defaultValue={form.formweight || "-"}></input>
-                        <input key={key+ "amount_edit_2"} className='r-form-input' onChange={(e)=>handleFormValueChange( "worktime", e.target.value)} defaultValue={form.worktime || "-"}></input>
-                        <input key={key+ "amount_edit_3"} className='r-form-input' onChange={(e)=>handleFormValueChange( "workamount", e.target.value)} defaultValue={form.workamount || "-"}></input>
-                        <input key={key+ "amount_edit_4"} className='r-form-input' onChange={(e)=>handleFormValueChange( "vkp_netto", e.target.value)} defaultValue={form.vkp_netto || "-"}></input>
+                        <input key={key+ "amount_edit_1"} className='r-form-input' onChange={(e)=>handleFormValueChange( "formweight", e.target.value)} defaultValue={form.formweight || "0,000"}></input>
+                        <input key={key+ "amount_edit_2"} className='r-form-input' onChange={(e)=>handleFormValueChange( "worktime", e.target.value)} defaultValue={form.worktime || "0"}></input>
+                        <input key={key+ "amount_edit_3"} className='r-form-input' onChange={(e)=>handleFormValueChange( "workamount", e.target.value)} defaultValue={form.workamount || "0"}></input>
+                        <input key={key+ "amount_edit_4"} className='r-form-input' onChange={(e)=>handleFormValueChange( "vkp_netto", e.target.value)} defaultValue={form.vkp_netto || "0,00"}></input>
 
                     </div>
                         :
