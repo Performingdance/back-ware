@@ -44,31 +44,28 @@ export function FileList () {
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const folderPath = './public/recipe_img';
 
+  function handleFileRequest () {
+      setLoading(true)
+      axios({
+          axiosInstance: axios,
+          method: "GET",
+          url:"s/imgs/all",
+          headers: {
+              "authorization": authHeader()
+          },
+      }).then((response)=>{
+        setFiles(response.data.files)
+          //console.log(res);
+      }).catch((err) => {
+          setError(err)
+          //console.log(err);
+      })
 
-  //api Ins req
-  // function handleFileRequest () {
-  //     setLoading(true)
-  //     axios({
-  //         axiosInstance: axios,
-  //         method: "GET",
-  //         url:"s/imgs/all",
-  //         headers: {
-  //             "authorization": authHeader()
-  //         },
-  //     }).then((response)=>{
-  //       setFiles(response.data.files)
-  //         //console.log(res);
-  //     }).catch((err) => {
-  //         setError(err)
-  //         //console.log(err);
-  //     })
-
-  //     setLoading(false)
+      setLoading(false)
       
-  // }
-  // useEffect(()=>handleFileRequest(),[]);
+  }
+  useEffect(()=>handleFileRequest(),[]);
 
   return (
     <div>

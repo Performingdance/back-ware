@@ -34,3 +34,5 @@ router.post('/photoUpload', isLoggedIn, (req, res) => {
       res.json({ files });
     });
   });
+
+  module.exports = router;

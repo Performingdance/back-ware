@@ -19,7 +19,7 @@ const worksheetRoute = require("./routes/worksheet.js");
 const titlesRoute = require("./routes/titles.js");
 const calcRoute = require("./routes/calculator.js");
 const baseRoute = require("./routes/base.js");
-const imgRoute = require("./routes/images.js")
+const imgRoute = require("./routes/images.js");
 
 const PORT = process.env.PORT || 3000;
 
