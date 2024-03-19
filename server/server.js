@@ -19,7 +19,7 @@ const worksheetRoute = require("./routes/worksheet.js");
 const titlesRoute = require("./routes/titles.js");
 const calcRoute = require("./routes/calculator.js");
 const baseRoute = require("./routes/base.js");
-const imgRoute = require("./routes/images.js");
+const imgsRoute = require("./routes/images.js");
 
 const PORT = process.env.PORT || 3000;
 
@@ -43,7 +43,7 @@ app.use('/api/s/marges', margesRoute);
 app.use('/api/s/worksheet', worksheetRoute);
 app.use('/api/s/titles', titlesRoute);
 app.use('/api/s/calc', calcRoute);
-app.use('/api/s/imgs', imgRoute);
+app.use('/api/s/imgs', imgsRoute);
 
 
 app.listen(PORT, () => {

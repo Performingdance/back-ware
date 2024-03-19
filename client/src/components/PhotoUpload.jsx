@@ -50,7 +50,7 @@ export function FileList () {
       axios({
           axiosInstance: axios,
           method: "GET",
-          url:"s/imgs/all",
+          url:"/s/imgs/all",
           headers: {
               "authorization": authHeader()
           },
