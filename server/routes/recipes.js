@@ -161,9 +161,8 @@ router.put("/form/update", isLoggedIn, (req, res) => {
                   }
 
                }else{
-                  res.send("success")
                }
-               
+               res.send("success")
             }
          });  
 });

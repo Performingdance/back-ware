@@ -80,50 +80,6 @@ export function RecipeForm({
 
 
 
-    function handleFormAdd(formID){
-
-        if(formID != -1){
-            function handleRequest () {
-                setLoading(true)
-                axios({
-                    axiosInstance: axios,
-                    method: "PUT",
-                    url:"s/recipes/form/new",
-                    headers: {
-                        "authorization": authHeader()
-                    },
-                    data : {
-                        "recipeID": ID,
-                        "formID" : formID,
-                        "formweight": "0",
-                        "img": "default",
-                        "worktime": "0",
-                        "workamount": "0",
-                        "vkp_netto": "0"
-                    }
-                }).then((response)=>{
-                    setRes(response.data)
-                    //console.log(res);
-                    setToggleNewForm(false)
-                }).catch((err) => {
-                    setError(err)
-                    //console.log(err);
-                })
-    
-                handleFormValueReset();
-                setLoading(false)
-                setFormsUpdate(formsUpdate+1)
-                
-            }
-               handleRequest();
-        
-    
-            return [res, error, loading];
-        }else{
-            return
-        }
-        
-    }
 
     function handleFormValueChange(obj, val) {
         let temp_form = editForm
@@ -133,9 +89,13 @@ export function RecipeForm({
         setEditForm(temp_form)
         return 
     }
-    function handlePriceValueChange(obj, val) {
+    function handlePriceValueChange(margeID, val) {
         let temp_priceList = editPriceList
-        temp_priceList = {...temp_priceList, [obj]: val}
+        for(let i = 0; i < temp_priceList.length; i++){
+            if(temp_priceList[i].margeID == margeID){
+              temp_priceList[i].price = val
+            }
+        }
 
         //console.log(temp_form)
         setEditPriceList(temp_priceList)
@@ -169,7 +129,7 @@ export function RecipeForm({
                 method: "PUT",
                 url:"s/recipes/form/update",
                 headers: {
-                    "authorization": authHeader()
+                    "authorization": authHeader(),
                 },
                 data : {
                     "productID": productID,
@@ -242,7 +202,7 @@ export function RecipeForm({
     const formCards = forms.map((form, key)=>{
         let price_titles
         let price_values
-        
+        let editPriceListInputs = []
         if(priceList.length > 0){
             price_titles = priceList.map((obj, key) =>
                {return(
@@ -250,14 +210,19 @@ export function RecipeForm({
                )
             })
                
-               price_values = priceList.map((obj, key) =>
+            price_values = priceList.map((obj, key) =>
                {return(
                    <p key={"price" + key}>{(obj.price || "0,00") + "€" }</p>
                )
             })
+            editPriceListInputs = priceList.map((marge, key)=>{
+                return(
+                    <input key={"price_edit_"+key} className='r-form-input' onChange={(e)=>handlePriceValueChange( marge.margeID, e.target.value)} defaultValue={marge.price || "0,00"}></input>
+                )
+            })
         }
         
-
+        
         let image 
         if (!form.img){
         image = `/recipe_img/default.jpg`
@@ -301,10 +266,10 @@ export function RecipeForm({
                     </div>
                         :
                     <div className='r-form-amount' key={key + "amount_div"}>
-                        <p key={key+"amount_1"}>{form.formweight || "-"}kg</p>
-                        <p key={key+"amount_2"}>{form.worktime || "-"}h</p>
-                        <p key={key+"amount_3"}>{form.workamount || "-"}</p>
-                        <p key={key+"amount_4"}>{form.vkp_netto || "-"}€</p>
+                        <p key={key+"amount_1"}>{form.formweight || "0,000"}kg</p>
+                        <p key={key+"amount_2"}>{form.worktime || "0"}h</p>
+                        <p key={key+"amount_3"}>{form.workamount || "0"}</p>
+                        <p key={key+"amount_4"}>{form.vkp_netto || "0,00"}€</p>
                     </div>
                     }
                 </div>
@@ -318,7 +283,7 @@ export function RecipeForm({
                     </div>
                     {edit == form.ID ? 
                     <div className='r-form-amount' key={key + "amount_edit_div"}> 
-                        // map inputs for price changes
+                        {editPriceListInputs}
                     </div>
                         :
                     <div className='r-form-amount' key={key + "amount_div"}>
