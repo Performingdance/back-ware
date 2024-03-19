@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {isLoggedIn} = require('../middleware/basicAuth.js');
-const db = require('../lib/db.js');
+const fs = require('fs');
+const path = require('path');
 
 
 
@@ -21,7 +22,8 @@ router.post('/photoUpload', isLoggedIn, (req, res) => {
       res.json({ fileName: file.name, filePath: `/client/public/recipe_img/${file.name}` });
     });
   });
-  router.get('/recipe_img', isLoggedIn, (req, res) => {
+
+  router.get('/all', isLoggedIn, (req, res) => {
     
     const folderPath = path.join(__dirname, '/client/public/recipe_img'); // Replace 'your-folder-path' with the actual folder path
     fs.readdir(folderPath, (err, files) => {

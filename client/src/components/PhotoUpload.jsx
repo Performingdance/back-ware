@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react"
+
+import axios from 'axios';
+import authHeader from '../services/auth-header';
 
 export default function UploadAndDisplayImage () {
 
@@ -38,17 +41,35 @@ export default function UploadAndDisplayImage () {
 
 export function FileList () {
   const [files, setFiles] = useState([]);
-  useEffect(() => {
-    const fetchFiles = async () => {
-      try {
-        const response = await axios.get('/s/imgs/all'); // Assuming your server is running on the same host and port 3000
-        setFiles(response.data.files);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchFiles();
-  }, []);
+  const [res, setRes] = useState([])
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const folderPath = './public/recipe_img';
+
+
+  //api Ins req
+  // function handleFileRequest () {
+  //     setLoading(true)
+  //     axios({
+  //         axiosInstance: axios,
+  //         method: "GET",
+  //         url:"s/imgs/all",
+  //         headers: {
+  //             "authorization": authHeader()
+  //         },
+  //     }).then((response)=>{
+  //       setFiles(response.data.files)
+  //         //console.log(res);
+  //     }).catch((err) => {
+  //         setError(err)
+  //         //console.log(err);
+  //     })
+
+  //     setLoading(false)
+      
+  // }
+  // useEffect(()=>handleFileRequest(),[]);
+
   return (
     <div>
       <h2>File List</h2>
