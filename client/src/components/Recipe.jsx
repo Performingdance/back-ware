@@ -310,7 +310,7 @@ export function RecipeForm({
     {!formCards.length && <h3>Noch keine Formen zugewiesen</h3>}
     <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn"} onClick={()=>setToggleNewForm(!toggleNewForm)} ><SVGIcon src={plus} class="svg-icon-lg"/></button>
     {toggleNewForm && 
-    <RecipeFormPopup defaultRecipeID={ID} defaultRecipeName={recipeName} onClickAbort={()=>setToggleNewForm(false)} onClickOK={()=>{setToggleNewForm(false), setFormsUpdate(formsUpdate+1)}} />
+    <RecipeFormPopup defaultRecipeID={ID} defaultRecipeName={recipeName} onClickAbort={()=>setToggleNewForm(false)} onClickOK={(val)=>{setToggleNewForm(val), setFormsUpdate(formsUpdate+1)}} />
     }
     </div>
 

@@ -1092,6 +1092,7 @@ function handleSubmit (e) {
               data : {
                   "recipeID": defaultRecipeID,
                   "formID" : selectedFormID,
+                  "product_name" : product_nameRef.current,
                   "formweight": formweightRef.current,
                   "img": "default",
                   "worktime": worktimeRef.current,
@@ -1102,7 +1103,7 @@ function handleSubmit (e) {
           }).then((response)=>{
               setAddRes(response.data)
               //console.log(res);
-              setSelectOpen(false)
+              onClickOK(false)
           }).catch((err) => {
               setAddError(err)
               //console.log(err);

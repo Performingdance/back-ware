@@ -69,6 +69,7 @@ router.post("/forms", isLoggedIn, (req, res) => {
 router.put("/form/new", isLoggedIn, (req, res) => {
    const recipeID = req.body.recipeID;
    const formID = req.body.formID; 
+   const product_name = req.body.product_name || "";
    const formweight = req.body.formweight;
    const img = req.body.img;
    const worktime = req.body.worktime;
@@ -79,8 +80,8 @@ router.put("/form/new", isLoggedIn, (req, res) => {
 
    db.query("SELECT ID FROM recipe_form WHERE formID = ? AND recipeID = ?", [formID, recipeID], (err,result)=>{
       if(err || !result.length){
-         db.query("INSERT INTO recipe_form (recipeID, formID, formweight, img, worktime, workamount, vkp_netto) VALUES (?,?,?,?,?,?,?)", 
-         [recipeID, formID, formweight, img, worktime, workamount, vkp_netto], 
+         db.query("INSERT INTO recipe_form (recipeID, formID, product_name, formweight, img, worktime, workamount, vkp_netto) VALUES (?,?,?,?,?,?,?,?)", 
+         [recipeID, formID, product_name, formweight, img, worktime, workamount, vkp_netto], 
          (err, result)=>{
             if (err){
                console.log(err)
