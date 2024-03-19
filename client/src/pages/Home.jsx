@@ -7,6 +7,7 @@ import { AlertPopup, LoginPopup } from '../components/Popup'
 import SVGIcon from '../components/SVG'
 import logoutToken from '../services/logout'
 import tokenCheck from '../services/tokenCheck'
+import { FileList } from '../components/PhotoUpload'
 
 
 function Home() {
@@ -44,6 +45,7 @@ function Home() {
       <h1 className='ta-c'>Willkommen in der fein-Bäckerei</h1>
      <h1 className='ta-c'>bitte anmelden</h1>
     </div>}
+    <FileList />
     </div>
   )
 }

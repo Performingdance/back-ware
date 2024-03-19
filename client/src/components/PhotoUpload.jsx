@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const UploadAndDisplayImage = () => {
+export default function UploadAndDisplayImage () {
 
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -35,4 +35,28 @@ const UploadAndDisplayImage = () => {
   );
 };
 
-export default UploadAndDisplayImage;
+
+export function FileList () {
+  const [files, setFiles] = useState([]);
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const response = await axios.get('/s/imgs/all'); // Assuming your server is running on the same host and port 3000
+        setFiles(response.data.files);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchFiles();
+  }, []);
+  return (
+    <div>
+      <h2>File List</h2>
+      <ul>
+        {files.map((file, index) => (
+          <li key={index}>{file}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
