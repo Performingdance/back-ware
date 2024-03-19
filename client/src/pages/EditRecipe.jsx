@@ -125,8 +125,8 @@ const [openTab, setOpenTab] = useState("ing")
     [<Header key="header" title={nameRef.current}/>,
     <div key={"header_div"} className='header-edit-btns'>
       <button key={"edit"} className='header-edit-btn' onClick={()=>setEdit(true)}><SVGIcon src={pencil_square} class="svg-icon-md"/> </button> 
-      </div>]:
-    [<Header key="header" />,
+    </div>]:
+    [<Header key="header_edit" />,
     <div key={"btns"} className='header-edit-btns'>
     <button key={"check"} className='header-edit-btn' onClick={()=>[setEdit(false), handleNameChange(nameRef.current, ID)]}><SVGIcon src={check} class="svg-icon-md"/> </button>
     <button key={"del"} className='header-edit-btn' onClick={()=>[setEdit(false), handleRecipeDelete(ID)]}><SVGIcon src={trash} class="svg-icon-md"/> </button>

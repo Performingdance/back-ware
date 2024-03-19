@@ -120,10 +120,10 @@ router.put("/form/new", isLoggedIn, (req, res) => {
                            } 
                         }
                      });
-                  }
-               res.send("success")
+                  }   
             }
-         });    
+         }); 
+         res.send("success")   
       } else {
          res.send(("Form bereits eingespeichert"))
       }

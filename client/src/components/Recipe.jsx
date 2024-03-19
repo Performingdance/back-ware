@@ -254,7 +254,7 @@ export function RecipeForm({
                         <p key={key + "title_2"}>Arbeitszeit(h)</p>
                         <p key={key + "title_3"}>Stück / Arbeitszeit </p>
                         <p key={key + "title_4"}>VKP-Netto</p>
-                        <SVGIcon class="button r-form-btn" src={plus} onClick={()=>{if(togglePrices==form.ID){setTogglePrices(-1)}else{handlePriceRequest(form.ID),setTogglePrices(form.ID)}}}/> 
+                        <SVGIcon key={key+"plus_btn"} class="button r-form-btn" src={plus} onClick={()=>{if(togglePrices==form.ID){setTogglePrices(-1)}else{handlePriceRequest(form.ID),setTogglePrices(form.ID)}}}/> 
                     </div>
                     {edit == form.ID ? 
                     <div className='r-form-amount' key={key + "amount_edit_div"}> 
