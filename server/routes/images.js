@@ -31,7 +31,8 @@ router.get('/all', isLoggedIn, (req, res) => {
       console.error(err);
       return res.status(500).json({ error: 'Failed to read folder' });
     }
-    res.json({ files });
+   // res.json({ files });
+   res.send(["success"])
   });
 });
 

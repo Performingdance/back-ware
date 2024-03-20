@@ -45,7 +45,7 @@ function Home() {
       <h1 className='ta-c'>Willkommen in der fein-Bäckerei</h1>
      <h1 className='ta-c'>bitte anmelden</h1>
     </div>}
-    {/* <FileList /> */}
+    <FileList />
     </div>
   )
 }
