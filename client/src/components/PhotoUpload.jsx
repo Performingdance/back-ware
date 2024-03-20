@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
-
-import axios from 'axios';
+import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 
 export default function UploadAndDisplayImage () {
