@@ -54,6 +54,7 @@ export function FileList () {
               "authorization": authHeader()
           },
       }).then((response)=>{
+        console.log(res)
         setFiles(response.data.files)
           //console.log(res);
       }).catch((err) => {
@@ -69,11 +70,11 @@ export function FileList () {
   return (
     <div>
       <h2>File List</h2>
-      <ul>
+      {/* <ul>
         {files.map((file, index) => (
           <li key={index}>{file}</li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
