@@ -18,7 +18,7 @@ const upload = multer({
 
 router.post('/photoUpload', isLoggedIn, upload.single('image'), (req, res) => {
 
-  console.log(req.body.file)
+  console.log(req.body.image)
   res.send("success")
   });
 
