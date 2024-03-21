@@ -6,10 +6,10 @@ const path = require('path');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    decodeBase64(null, 'public/recipe_imgs')
+    cb(null, 'public/recipe_imgs')
   },
   filename:(req, file, cb) => {
-    decodeBase64(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
   }
 })
 const upload = multer({

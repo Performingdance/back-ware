@@ -53,7 +53,7 @@ export function FileUploadPopUp({
 
             <div key="login_div" className="popup-title jc-c">
             <h3 key="title" >{title? title : ""}</h3>
-            <input type="image" onChange={handleFile} />
+            <input type="file" onChange={(e)=>handleFile(e)} />
             <button onClick={()=> handleUpload()}>Hochladen</button>
 
             <div key={"pc_btn"} className='popup-card-btns'>
