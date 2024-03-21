@@ -20,8 +20,6 @@ export function FileUploadPopUp({
   }
   //console.log(file)
   const handleUpload = () => {
-    const formdata = new FormData();
-    formdata.append('image', file)
     setLoading(true)
       axios({
           axiosInstance: axios,
@@ -31,7 +29,7 @@ export function FileUploadPopUp({
               "authorization": authHeader()
           },
           data: {
-            "file": file
+            "image": file
           }
       }).then((response)=>{
         console.log(response)
