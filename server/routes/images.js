@@ -17,11 +17,8 @@ const upload = multer({
 })
 
 router.post('/photoUpload', isLoggedIn, upload.single('image'), (req, res) => {
-  if (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Failed to save image' });
-  }
-  console.log(req.file)
+
+  console.log(req.body.file)
   });
 
 router.get('/all', isLoggedIn, (req, res) => {
