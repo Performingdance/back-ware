@@ -18,6 +18,7 @@ export function FileUploadPopUp({
   const handleFile = (e) => {
     setFile(e.target.files[0])
   }
+  //console.log(file)
   const handleUpload = () => {
     const formdata = new FormData();
     formdata.append('image', file)
@@ -29,7 +30,9 @@ export function FileUploadPopUp({
           headers: {
               "authorization": authHeader()
           },
-          data: {file}
+          data: {
+            "file": file
+          }
       }).then((response)=>{
         console.log(response)
         setRes(response)
@@ -53,7 +56,7 @@ export function FileUploadPopUp({
 
             <div key="login_div" className="popup-title jc-c">
             <h3 key="title" >{title? title : ""}</h3>
-            <input type="file" onChange={(e)=>handleFile(e)} />
+            <input type="file" onChange={(e)=>setFile(e.target.files[0])} />
             <button onClick={()=> handleUpload()}>Hochladen</button>
 
             <div key={"pc_btn"} className='popup-card-btns'>
