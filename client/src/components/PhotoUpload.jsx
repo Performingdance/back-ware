@@ -29,7 +29,7 @@ export function FileUploadPopUp({
           headers: {
               "authorization": authHeader()
           },
-          data: {formdata}
+          data: {file}
       }).then((response)=>{
         console.log(response)
         setRes(response)
