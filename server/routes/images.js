@@ -1,31 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const {isLoggedIn} = require('../middleware/basicAuth.js');
-const fs = require('fs');
+const multer =  require('multer')
 const path = require('path');
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    decodeBase64(null, 'public/recipe_imgs')
+  },
+  filename:(req, file, cb) => {
+    decodeBase64(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+  }
+})
+const upload = multer({
+  storage: storage
+})
 
-
-router.post('/photoUpload', isLoggedIn, (req, res) => {
-    if (req.files === null) {
-    return res.status(400).json({ msg: 'No file uploaded' });
-    }
-  
-    const file = req.files.file;
-  
-    file.mv(`${__dirname}/client/public/recipe_img/${file.name}`, err => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send(err);
-      }
-  
-      res.json({ fileName: file.name, filePath: `/client/public/recipe_img/${file.name}` });
-    });
+router.post('/photoUpload', isLoggedIn, upload.single('image'), (req, res) => {
+  console.log(req.file)
   });
 
 router.get('/all', isLoggedIn, (req, res) => {
   
-  const folderPath = path.join(__dirname, '/client/public/recipe_img'); // Replace 'your-folder-path' with the actual folder path
+  const folderPath = path.join(__dirname, ''); // Replace 'your-folder-path' with the actual folder path
   res.send(__dirname)
   fs.readdir(folderPath, (err, files) => {
     if (err) {

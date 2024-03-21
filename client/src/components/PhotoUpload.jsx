@@ -1,41 +1,71 @@
 import React, { useEffect, useState } from "react"
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
+import fs from 'fs'
+import path from "path";
 
-export default function UploadAndDisplayImage () {
+export function FileUploadPopUp({
+  onClickOK,
+  btnOk,
+  title,
+  message
+}){
+  const [file, setFile] = useState();
+  const [res, setRes] = useState([])
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [selectedImage, setSelectedImage] = useState(null);
+  const handleFile = (e) => {
+    setFile(e.target.files[0])
+  }
+  const handleUpload = () => {
+    const formdata = new FormData();
+    formdata.append('image', file)
+    setLoading(true)
+      axios({
+          axiosInstance: axios,
+          method: "POST",
+          url:"/s/imgs/photoUpload",
+          headers: {
+              "authorization": authHeader()
+          },
+          data: {formdata}
+      }).then((response)=>{
+        console.log(response)
+        setRes(response)
+          //console.log(res);
+      }).catch((err) => {
+          setError(err)
+          //console.log(err);
+      })
+
+      setLoading(false)
+      
+  }
+
+
 
   return (
-    <div>
-      <h1>Upload image</h1>
+    <>
+      {        
+      <div key="pc" className='popup-card  '>
+        <div key="pc-content" className='popup-card-content jc-c '>
 
-      {selectedImage && (
-        <div>
-          <img
-            alt="not found"
-            width={"250px"}
-            src={URL.createObjectURL(selectedImage)}
-          />
-          <br />
-          <button onClick={() => setSelectedImage(null)}>Remove</button>
+            <div key="login_div" className="popup-title jc-c">
+            <h3 key="title" >{title? title : ""}</h3>
+            <input type="image" onChange={handleFile} />
+            <button onClick={()=> handleUpload()}>Hochladen</button>
+
+            <div key={"pc_btn"} className='popup-card-btns'>
+                <button key="pc_btn_ok" className='btn popup-card-btn' onClick={onClickOK} >{btnOk || "OK"}</button>
+            </div>
+          </div>
         </div>
-      )}
+      </div>}
+      </>
+    )
 
-      <br />
-      <br />
-      
-      <input
-        type="file"
-        name="myImage"
-        onChange={(event) => {
-          console.log(event.target.files[0].name);
-          setSelectedImage(event.target.files[0]);
-        }}
-      />
-    </div>
-  );
-};
+}
 
 
 export function FileList () {
@@ -54,7 +84,7 @@ export function FileList () {
               "authorization": authHeader()
           },
       }).then((response)=>{
-        console.log(res)
+        console.log(response)
         setFiles(response.data.files)
           //console.log(res);
       }).catch((err) => {
