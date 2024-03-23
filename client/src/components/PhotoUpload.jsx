@@ -21,6 +21,8 @@ export function FileUploadPopUp({
   //console.log(file)
   const handleUpload = () => {
     setLoading(true)
+    let formData = new FormData()
+    formData.append("image", file)
       axios({
           axiosInstance: axios,
           method: "POST",
@@ -30,9 +32,8 @@ export function FileUploadPopUp({
               "Content-Type": file.type,
               "Content-Length": `${file.size}`
           },
-          body: {
-            "image": file
-          }
+          data: formData
+          
       }).then((response)=>{
         //console.log(response)
         setRes(response)

@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
   },
   filename:(req, file, cb) => {
     console.log(file)
-    cb(null, Date.now() + "_" + path.extname(file.originalname))
+    cb(null, file.fieldname +"_"+ Date.now() + path.extname(file.originalname))
   }
 })
 const upload = multer({
@@ -32,11 +32,12 @@ router.get('/all', isLoggedIn, (req, res) => {
       console.error(err);
       return res.status(500).json({ error: 'Failed to read folder' });
     }else{
-      res.send( files );  
+      res.send( {files} );  
     }
 
 
   });
 });
+
 
 module.exports = router;
