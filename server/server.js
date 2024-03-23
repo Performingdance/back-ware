@@ -26,6 +26,7 @@ const PORT = process.env.PORT || 3000;
 
  
 app.use(express.json());
+app.use("/public",express.static("/var/lib/data"))
 app.use(cors(corsOptions));
 
 app.use('/', baseRoute);
