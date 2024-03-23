@@ -26,9 +26,11 @@ export function FileUploadPopUp({
           method: "POST",
           url:"/s/imgs/photoUpload",
           headers: {
-              "authorization": authHeader()
+              "authorization": authHeader(),
+              "Content-Type": file.type,
+              "Content-Length": `${file.size}`
           },
-          data: {
+          body: {
             "image": file
           }
       }).then((response)=>{

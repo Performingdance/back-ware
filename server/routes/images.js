@@ -10,7 +10,8 @@ const storage = multer.diskStorage({
     cb(null, '/var/lib/data/recipe_imgs')
   },
   filename:(req, file, cb) => {
-    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    console.log(file)
+    cb(null, Date.now() + "_" + path.extname(file.originalname))
   }
 })
 const upload = multer({
@@ -19,7 +20,7 @@ const upload = multer({
 console.log(__dirname)
 
 router.post('/photoUpload', isLoggedIn, upload.single('image'), (req, res) => {
-
+  
   console.log(req.body.image)
   res.send("success")
   });
