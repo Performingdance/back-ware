@@ -34,9 +34,8 @@ export function FileUploadPopUp({
             "image": file
           }
       }).then((response)=>{
-        console.log(response)
+        //console.log(response)
         setRes(response)
-          //console.log(res);
       }).catch((err) => {
           setError(err)
           //console.log(err);
@@ -103,11 +102,11 @@ export function FileList () {
   return (
     <div>
       <h2>File List</h2>
-      {/* <ul>
+      <ul>
         {files.map((file, index) => (
           <li key={index}>{file}</li>
         ))}
-      </ul> */}
+      </ul> 
     </div>
   );
 };

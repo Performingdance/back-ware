@@ -28,13 +28,12 @@ router.post('/photoUpload', isLoggedIn, upload.single('image'), (req, res) => {
 router.get('/all', isLoggedIn, (req, res) => {
   
   const folderPath = '/var/lib/data/recipe_imgs'; // Replace 'your-folder-path' with the actual folder path
-  console.log(__dirname, folderPath)
   fs.readdir(folderPath, (err, files) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: 'Failed to read folder' });
     }else{
-      res.json({ files });  
+      res.send( files );  
     }
 
 
