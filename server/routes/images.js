@@ -6,7 +6,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/var/lib/data/public/recipe_imgs')
+    cb(null, '/var/lib/data/recipe_imgs')
   },
   filename:(req, file, cb) => {
     cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
@@ -25,7 +25,7 @@ router.post('/photoUpload', isLoggedIn, upload.single('image'), (req, res) => {
 
 router.get('/all', isLoggedIn, (req, res) => {
   
-  const folderPath = path.join(__dirname, '/var/lib/data/public/recipe_imgs'); // Replace 'your-folder-path' with the actual folder path
+  const folderPath = '/var/lib/data/recipe_imgs'; // Replace 'your-folder-path' with the actual folder path
   console.log(__dirname, folderPath)
   fs.readdir(folderPath, (err, files) => {
     if (err) {
