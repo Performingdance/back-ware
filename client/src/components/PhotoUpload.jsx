@@ -8,7 +8,8 @@ export function FileUploadPopUp({
   onClickOK,
   btnOk,
   title,
-  productID
+  productID,
+  productImg
 }){
   const [file, setFile] = useState();
   const [res, setRes] = useState([])
@@ -18,11 +19,12 @@ export function FileUploadPopUp({
   //console.log(file)
   const handleUpload = () => {
     if(!productID){return}
-    
+
     setLoading(true)
     let formData = new FormData()
     formData.append("image", file);
     formData.append("productID", productID || -1);
+    formData.append("oldImg", productImg || -1);
 
       axios({
           axiosInstance: axios,
@@ -100,14 +102,14 @@ export function FileList () {
       
   }
   useEffect(()=>handleFileRequest(),[]);
-
+console.log(files)
   return (
     <div>
       <h2>File List</h2>
       <ul>
-        {files.map((file, index) => (
+        {/* {files.map((file, index) => (
           <li key={index}>{file}</li>
-        ))}
+        ))} */}
       </ul> 
     </div>
   );

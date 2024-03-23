@@ -64,6 +64,7 @@ export function RecipeForm({
 }) {
 
     const [edit, setEdit] = useState(false);
+    let editImg
     const [toggleNewForm, setToggleNewForm] = useState(false);
     const [editForm, setEditForm] = useState({});
     const [editPriceList, setEditPriceList] = useState([]);
@@ -79,6 +80,7 @@ export function RecipeForm({
     const [formsUpdate, setFormsUpdate] = useState(-1)
     const [forms, errForm, loadingForm] = handleRecipeFormRequest(ID, formsUpdate);
     const [priceList, priceError, priceLoad, handlePriceRequest] = handlePriceListRequest()
+
 
     useEffect(()=>setEditPriceList(priceList), [togglePrices])
 
@@ -242,7 +244,7 @@ export function RecipeForm({
                         [
                         <input key={key+ "product_name_edit"} className='r-form-input r-form-title-input' onChange={(e)=>handleFormValueChange( "product_name", e.target.value)} defaultValue={form.product_name || "-"}></input>,
                         <SVGIcon key={key+"check"} class="button r-form-btn" src={check} onClick={()=>[setEdit(false), handleFormEditSubmit(form.ID)]}/>,
-                        <SVGIcon key={key+"camera"} class="button r-form-btn" src={camera} onClick={()=>[setToggleUploadPrompt(true)]}/>,
+                        <SVGIcon key={key+"camera"} class="button r-form-btn" src={camera} onClick={()=>[setToggleUploadPrompt(true), editImg = form.img]}/>,
                         <SVGIcon key={key+"trash"} class="button r-form-btn" src={trash} onClick={()=>{handleFormDelete(form.ID); if(edit==form.ID){setEdit(false)}else{setEdit(form.ID)}}}/>] :
                         <h4 key={key+"productname"}>{form.product_name + " (" + form.name + ")"}</h4>}
                     </div>
@@ -310,7 +312,7 @@ export function RecipeForm({
     {toggleNewForm && 
     <RecipeFormPopup defaultRecipeID={ID} defaultRecipeName={recipeName} onClickAbort={()=>setToggleNewForm(false)} onClickOK={(val)=>{setToggleNewForm(val), setFormsUpdate(formsUpdate+1)}} />
     }
-    {toggleUploadPrompt && <FileUploadPopUp  onClickOK={()=>setToggleUploadPrompt(false)} productID={edit}/>}
+    {toggleUploadPrompt && <FileUploadPopUp  onClickOK={()=>setToggleUploadPrompt(false)} productID={edit} productImg={editImg}/>}
     </div>
   )
 }

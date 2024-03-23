@@ -20,7 +20,21 @@ const upload = multer({
 })
 
 router.post('/photoUpload', isLoggedIn, upload.single("image"), (req, res) => {
-  const productID = req.body.FormData.get("productID")
+  const productID = req.body.formData.get("productID")
+  const oldImg = req.body.formData.get("oldImg")
+  // Remove old photo
+  if (oldImg) {
+    const oldPath = path.join("/var/lib/data/recipe_imgs/", oldImg);
+    if (fs.existsSync(oldPath)) {
+      fs.unlink(oldPath, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        res.status(200).send(userObj);
+      });
+    }
+  }
   db.query("UPDATE recipe_form SET img = ? WHERE = ? ",[file_name, productID], (err, result) =>{
     if(err){
        console.log(err)
@@ -39,7 +53,7 @@ router.get('/all', isLoggedIn, (req, res) => {
       console.error(err);
       return res.status(500).json({ error: 'Failed to read folder' });
     }else{
-      res.json( {files} );  
+      res.json( files );  
     }
 
 
