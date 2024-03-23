@@ -3,24 +3,31 @@ const router = express.Router();
 const {isLoggedIn} = require('../middleware/basicAuth.js');
 const multer =  require('multer')
 const path = require('path');
+const db = require('../lib/db.js');
 const fs = require('fs')
-
+let file_name
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, '/var/lib/data/recipe_imgs')
   },
   filename:(req, file, cb) => {
-    console.log(file)
-    cb(null, file.fieldname +"_"+ Date.now() + path.extname(file.originalname))
+    file_name = file.fieldname +"_"+ Date.now() + path.extname(file.originalname)
+    cb(null, file_name )
   }
 })
 const upload = multer({
   storage: storage
 })
 
-router.post('/photoUpload', isLoggedIn, upload.single('image'), (req, res) => {
-  
-  console.log(req.body.image)
+router.post('/photoUpload', isLoggedIn, upload.single("image"), (req, res) => {
+  const productID = req.body.FormData.get("productID")
+  db.query("UPDATE recipe_form SET img = ? WHERE = ? ",[file_name, productID], (err, result) =>{
+    if(err){
+       console.log(err)
+    } else {
+    }
+});
+  //console.log(req.body.image)
   res.send("success")
   });
 
@@ -32,7 +39,7 @@ router.get('/all', isLoggedIn, (req, res) => {
       console.error(err);
       return res.status(500).json({ error: 'Failed to read folder' });
     }else{
-      res.send( {files} );  
+      res.json( {files} );  
     }
 
 

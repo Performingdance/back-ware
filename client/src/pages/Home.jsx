@@ -16,7 +16,6 @@ function Home() {
   const [toggleLogoutPrompt, setToggleLogoutPrompt] = useState(false)
   const isLoggedIn = tokenCheck()
   const [logoutMessage, setLogoutMessage]= useState()
-  const [toggleUploadPrompt, setToggleUploadPrompt]= useState(false)
 
   function handleLogout(){
 
@@ -46,8 +45,6 @@ function Home() {
       <h1 className='ta-c'>Willkommen in der fein-Bäckerei</h1>
      <h1 className='ta-c'>bitte anmelden</h1>
     </div>}
-    <button onClick={()=>setToggleUploadPrompt(true)} >Foto hochladen</button>
-    {toggleUploadPrompt && <FileUploadPopUp  onClickOK={()=>setToggleUploadPrompt(false)}/>}
     <FileList />
     </div>
   )

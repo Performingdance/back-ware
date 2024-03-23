@@ -8,21 +8,22 @@ export function FileUploadPopUp({
   onClickOK,
   btnOk,
   title,
-  message
+  productID
 }){
   const [file, setFile] = useState();
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleFile = (e) => {
-    setFile(e.target.files[0])
-  }
   //console.log(file)
   const handleUpload = () => {
+    if(!productID){return}
+    
     setLoading(true)
     let formData = new FormData()
-    formData.append("image", file)
+    formData.append("image", file);
+    formData.append("productID", productID || -1);
+
       axios({
           axiosInstance: axios,
           method: "POST",

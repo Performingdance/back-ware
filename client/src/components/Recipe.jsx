@@ -17,7 +17,9 @@ import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import handlePriceListRequest from '../hooks/handlePriceListRequest'
 import { RecipeFormPopup } from './Popup'
+import { FileUploadPopUp } from './PhotoUpload'
 
+const BASE_URL = "https://back-ware-api.onrender.com/"
 // recipes/ins/id
 function handleInsRequest(recipeID, edit, addRes, delRes){
     const [res, setRes] = useState([])
@@ -66,13 +68,15 @@ export function RecipeForm({
     const [editForm, setEditForm] = useState({});
     const [editPriceList, setEditPriceList] = useState([]);
     const [selectedOption, setSelectedOption] = useState(-1);
+    const [togglePrices, setTogglePrices] = useState(-1)
+    const [toggleUploadPrompt, setToggleUploadPrompt]= useState(false)
+
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const [togglePrices, setTogglePrices] = useState(-1)
-    const [formsUpdate, setFormsUpdate] = useState(-1)
 
     const [all_forms, errForms, loadingForms] = handleFormRequest() ;
+    const [formsUpdate, setFormsUpdate] = useState(-1)
     const [forms, errForm, loadingForm] = handleRecipeFormRequest(ID, formsUpdate);
     const [priceList, priceError, priceLoad, handlePriceRequest] = handlePriceListRequest()
 
@@ -158,13 +162,7 @@ export function RecipeForm({
 
         return [res, error, loading];
     }    
-    function handleFormImg(productID){
-        // api update recipeImg, openImg dialog
-        
 
-        // api handle default recipe img -> first form
-
-    }
     function handleFormDelete(productID){
         //api delete Form
         function handleRequest () {
@@ -227,7 +225,7 @@ export function RecipeForm({
         if (!form.img){
         image = `/recipe_img/default.jpg`
         }else{
-        image = `/recipe_img/${form.img}.jpg`
+        image = `${BASE_URL}public/recipe_img/${form.img}`
         }return(
             <>
             <div className='r-form-card' key={key+"main_div"} style={{backgroundImage: `url(${image})`}} >
@@ -244,7 +242,7 @@ export function RecipeForm({
                         [
                         <input key={key+ "product_name_edit"} className='r-form-input r-form-title-input' onChange={(e)=>handleFormValueChange( "product_name", e.target.value)} defaultValue={form.product_name || "-"}></input>,
                         <SVGIcon key={key+"check"} class="button r-form-btn" src={check} onClick={()=>[setEdit(false), handleFormEditSubmit(form.ID)]}/>,
-                        <SVGIcon key={key+"camera"} class="button r-form-btn" src={camera} onClick={()=>[setEdit(false), handleFormImg(form.ID)]}/>,
+                        <SVGIcon key={key+"camera"} class="button r-form-btn" src={camera} onClick={()=>[setToggleUploadPrompt(true)]}/>,
                         <SVGIcon key={key+"trash"} class="button r-form-btn" src={trash} onClick={()=>{handleFormDelete(form.ID); if(edit==form.ID){setEdit(false)}else{setEdit(form.ID)}}}/>] :
                         <h4 key={key+"productname"}>{form.product_name + " (" + form.name + ")"}</h4>}
                     </div>
@@ -312,8 +310,8 @@ export function RecipeForm({
     {toggleNewForm && 
     <RecipeFormPopup defaultRecipeID={ID} defaultRecipeName={recipeName} onClickAbort={()=>setToggleNewForm(false)} onClickOK={(val)=>{setToggleNewForm(val), setFormsUpdate(formsUpdate+1)}} />
     }
+    {toggleUploadPrompt && <FileUploadPopUp  onClickOK={()=>setToggleUploadPrompt(false)} productID={edit}/>}
     </div>
-
   )
 }
 
