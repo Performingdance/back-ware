@@ -3,6 +3,7 @@ const router = express.Router();
 const {isLoggedIn} = require('../middleware/basicAuth.js');
 const multer =  require('multer')
 const path = require('path');
+const fs = require('fs')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

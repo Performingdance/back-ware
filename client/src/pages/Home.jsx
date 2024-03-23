@@ -47,7 +47,7 @@ function Home() {
      <h1 className='ta-c'>bitte anmelden</h1>
     </div>}
     <button onClick={()=>setToggleUploadPrompt(true)} >Foto hochladen</button>
-    <FileUploadPopUp  onClickOK={()=>setToggleUploadPrompt(false)}/>
+    {toggleUploadPrompt && <FileUploadPopUp  onClickOK={()=>setToggleUploadPrompt(false)}/>}
     <FileList />
     </div>
   )
