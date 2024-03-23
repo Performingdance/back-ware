@@ -12,7 +12,7 @@ import { RecipeOrderPopup } from './Popup'
 
 
 
-export default function RecipeCard(props) {
+export default function ProductCard(props) {
   
 
   const [orderOpen, setOrderOpen] = useState(false);
@@ -26,6 +26,7 @@ export default function RecipeCard(props) {
         
         <a className='rc-title' href={props.href}>
           <h2 className='rc-name'>{props.title}</h2>
+          <img alt="" className="rc-title-img" src={props.img}/>  
         </a>
         <div className='rc-btns' >
           <a type="button" onClick={()=>[ setSelectedRecipeName(props.title), setSelectedRecipeID(props.recipeID),setOrderOpen(!orderOpen)]} className='button rc-btn '>

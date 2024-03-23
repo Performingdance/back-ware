@@ -7,6 +7,7 @@ import handleRecipesRequest from '../hooks/handleRecipesRequest';
 import Loading from '../components/Loading';
 
 
+const BASE_URL = "https://back-ware-api.onrender.com/"
 
 
 
@@ -19,14 +20,8 @@ const [filteredData,setFilteredData] = useState(res);
 useEffect(()=>setFilteredData(res),[res])
 
 const recipeCards = filteredData.map((recipe) => {
-  let image 
-  if (!recipe.img){
-    image = `/recipe_img/default.jpg`
-  }else{
-    image = `/recipe_img/${recipe.img}.jpg`
-  }
   return (
-  <RecipeCard href={`/recipes/edit:${recipe.ID}`} img={image} key={recipe.ID} recipeID={recipe.ID} title={recipe.name}/> 
+  <RecipeCard href={`/recipes/edit:${recipe.ID}`} key={recipe.ID} recipeID={recipe.ID} title={recipe.name}/> 
   )
   
   })

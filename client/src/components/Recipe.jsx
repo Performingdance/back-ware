@@ -227,7 +227,7 @@ export function RecipeForm({
         if (!form.img){
         image = `/recipe_img/default.jpg`
         }else{
-        image = `${BASE_URL}public/recipe_img/${form.img}`
+        image = `${BASE_URL}public/recipe_imgs/${form.img}`
         }return(
             <>
             <div className='r-form-card' key={key+"main_div"} style={{backgroundImage: `url(${image})`}} >
@@ -312,7 +312,7 @@ export function RecipeForm({
     {toggleNewForm && 
     <RecipeFormPopup defaultRecipeID={ID} defaultRecipeName={recipeName} onClickAbort={()=>setToggleNewForm(false)} onClickOK={(val)=>{setToggleNewForm(val), setFormsUpdate(formsUpdate+1)}} />
     }
-    {toggleUploadPrompt && <FileUploadPopUp  onClickOK={()=>setToggleUploadPrompt(false)} productID={edit} productImg={editImg}/>}
+    {toggleUploadPrompt && <FileUploadPopUp title={"Neues Produktfoto hochladen"}  onClickOK={()=>{setFormsUpdate(formsUpdate+1),setToggleUploadPrompt(false)}} productID={edit} productImg={editImg}/>}
     </div>
   )
 }

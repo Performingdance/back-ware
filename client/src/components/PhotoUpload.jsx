@@ -12,7 +12,7 @@ export function FileUploadPopUp({
   productImg
 }){
   const [file, setFile] = useState();
-  const [res, setRes] = useState([])
+  const [res, setRes] = useState("")
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +39,7 @@ export function FileUploadPopUp({
           
       }).then((response)=>{
         //console.log(response)
-        setRes(response)
+        setRes("Erfolgreich hochgeladen")
       }).catch((err) => {
           setError(err)
           //console.log(err);
@@ -60,8 +60,8 @@ export function FileUploadPopUp({
             <div key="login_div" className="popup-title jc-c">
             <h3 key="title" >{title? title : ""}</h3>
             <input type="file" onChange={(e)=>setFile(e.target.files[0])} />
-            <button onClick={()=> handleUpload()}>Hochladen</button>
-
+            <button className="bn" onClick={()=> handleUpload()}>Hochladen</button>
+           {res && <h5>{res}</h5>}
             <div key={"pc_btn"} className='popup-card-btns'>
                 <button key="pc_btn_ok" className='btn popup-card-btn' onClick={onClickOK} >{btnOk || "OK"}</button>
             </div>

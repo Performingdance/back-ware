@@ -4,11 +4,9 @@ const {isLoggedIn, authRole} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 router.get("/img", isLoggedIn, (req, res) => {
-    db.query(`SELECT DISTINCT a.recipeID AS ID, recipes.name, a.img
-    FROM (SELECT DISTINCT recipeID, img FROM  recipe_form) as a
-       LEFT JOIN recipes
-        ON recipeID = recipes.ID
-        WHERE name IS NOT NULL `, (err, result) =>{
+    db.query(`SELECT  ID, name FROM  recipes
+            WHERE name IS NOT NULL
+ `, (err, result) =>{
          if(err){
             console.log(err)
          } else {
@@ -38,6 +36,19 @@ router.post("/form/id", isLoggedIn, (req, res) => {
             res.send(result)
          }
     });
+});
+router.post("/form/all", isLoggedIn, (req, res) => {
+   const recipeID = req.body.recipeID;
+   db.query(`SELECT a.*, form.name FROM
+   (SELECT * FROM recipe_form) AS a
+   JOIN recipes
+   ON a.recipeID = recipes.ID`, recipeID, (err, result) =>{
+        if(err){
+           console.log(err)
+        } else {
+           res.send(result)
+        }
+   });
 });
 router.post("/form/prices", isLoggedIn, (req, res) => {
    const productID = req.body.productID;
