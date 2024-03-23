@@ -35,7 +35,7 @@ router.post('/photoUpload', isLoggedIn, upload.single("image"), (req, res) => {
       });
     }
   }
-  db.query("UPDATE recipe_form SET img = ? WHERE = ? ",[file_name, productID], (err, result) =>{
+  db.query("UPDATE recipe_form SET img = ? WHERE ID = ? ",[file_name, productID], (err, result) =>{
     if(err){
        console.log(err)
     } else {
