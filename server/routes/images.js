@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage
 })
-console.log(__dirname)
 
 router.post('/photoUpload', isLoggedIn, upload.single('image'), (req, res) => {
   

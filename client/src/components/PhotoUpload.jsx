@@ -87,7 +87,7 @@ export function FileList () {
           },
       }).then((response)=>{
         console.log(response)
-        setFiles(response.data.files)
+        setFiles(response.data)
           //console.log(res);
       }).catch((err) => {
           setError(err)
