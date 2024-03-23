@@ -20,8 +20,8 @@ const upload = multer({
 })
 
 router.post('/photoUpload', isLoggedIn, upload.single("image"), (req, res) => {
-  const productID = req.body.formData.get("productID")
-  const oldImg = req.body.formData.get("oldImg")
+  const productID = req.body.productID
+  const oldImg = req.body.oldImg
   // Remove old photo
   if (oldImg) {
     const oldPath = path.join("/var/lib/data/recipe_imgs/", oldImg);
