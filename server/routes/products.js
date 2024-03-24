@@ -3,7 +3,7 @@ const router = express.Router();
 const {isLoggedIn} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
-router.post("/products/all", isLoggedIn, (req, res) => {
+router.post("/all", isLoggedIn, (req, res) => {
     db.query(`SELECT b.*, form.name AS formName
     FROM(SELECT a.*, recipes.name AS RecipeName FROM
     (SELECT * FROM recipe_form) AS a

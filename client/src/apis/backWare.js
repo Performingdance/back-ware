@@ -5,7 +5,7 @@ import config from '../config.json'
 const BASE_URL_API = config.BASE_URL_API
 
 export default axios.create({
-    baseURL: BASE_URL_API+"/api",
+    baseURL: BASE_URL_API+"api/",
     timeout: 3000,
     headers: {
         'Content-Type': 'application/json',

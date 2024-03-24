@@ -28,7 +28,8 @@ import Worksheet from './pages/Worksheet';
 import Calculator from './pages/Calculator';
 import EditOrder from './pages/EditOrder';
 import EditInvoice from './pages/EditInvoice';
-import Account from './pages/Account'
+import Account from './pages/Account';
+import Products from './pages/Products';
 
 
 
@@ -51,6 +52,9 @@ function App() {
   if(window.location.pathname == "/recipes"){
     CurrentPage = Recipes
   }  
+  if(window.location.pathname == "/products"){
+    CurrentPage = Products
+  }
   if(window.location.pathname == "/forms"){
     CurrentPage = Forms
   }  
@@ -108,11 +112,12 @@ function App() {
               <DropdownItem href="/worksheet" class="menu-item" leftIcon={calculator}>Backzettel</DropdownItem>
           </DropdownMenu>
         </NavItem>
-        <NavItem href="/recipes" icon={recipe_book}/>
+        <NavItem href="/products" icon={recipe_book}/>
         <NavItem icon={dots} toggle={open} id="more" onClick={()=>{open != "more" ? setOpen("more") :setOpen(false)}}>
           <DropdownMenu class="dropdown">
               <DropdownItem href="/ingredients" class="menu-item" leftIcon={carrot}>Zutaten</DropdownItem>
               <DropdownItem href="/forms" class="menu-item" leftIcon={carrot}>Formen</DropdownItem>
+              <DropdownItem href="/recipes" class="menu-item" leftIcon={carrot}>Rezepte</DropdownItem>
               <DropdownItem href="/calculator" class="menu-item" leftIcon={calculator}>Preisrechner</DropdownItem>
               <DropdownItem href="/invoices" class="menu-item" leftIcon={calendar_plus}>Rechnungen</DropdownItem>
               <DropdownItem href="/clients" class="menu-item" leftIcon={calendar_plus}>Kunden</DropdownItem>
