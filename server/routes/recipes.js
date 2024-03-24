@@ -37,19 +37,7 @@ router.post("/form/id", isLoggedIn, (req, res) => {
          }
     });
 });
-router.post("/form/all", isLoggedIn, (req, res) => {
-   const recipeID = req.body.recipeID;
-   db.query(`SELECT a.*, form.name FROM
-   (SELECT * FROM recipe_form) AS a
-   JOIN recipes
-   ON a.recipeID = recipes.ID`, recipeID, (err, result) =>{
-        if(err){
-           console.log(err)
-        } else {
-           res.send(result)
-        }
-   });
-});
+
 router.post("/form/prices", isLoggedIn, (req, res) => {
    const productID = req.body.productID;
    db.query(`SELECT a.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS name  

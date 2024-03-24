@@ -7,7 +7,6 @@ import handleRecipesRequest from '../hooks/handleRecipesRequest';
 import Loading from '../components/Loading';
 
 
-const BASE_URL = "https://back-ware-api.onrender.com/"
 
 
 

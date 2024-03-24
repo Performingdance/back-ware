@@ -18,8 +18,10 @@ import authHeader from '../services/auth-header';
 import handlePriceListRequest from '../hooks/handlePriceListRequest'
 import { RecipeFormPopup } from './Popup'
 import { FileUploadPopUp } from './PhotoUpload'
+import config from '../config.json'
 
-const BASE_URL = "https://back-ware-api.onrender.com/"
+const BASE_URL_API = config.BASE_URL_API
+
 // recipes/ins/id
 function handleInsRequest(recipeID, edit, addRes, delRes){
     const [res, setRes] = useState([])
@@ -227,7 +229,7 @@ export function RecipeForm({
         if (!form.img){
         image = `/recipe_img/default.jpg`
         }else{
-        image = `${BASE_URL}public/recipe_imgs/${form.img}`
+        image = `${BASE_URL_API}public/recipe_imgs/${form.img}`
         }return(
             <>
             <div className='r-form-card' key={key+"main_div"} style={{backgroundImage: `url(${image})`}} >
