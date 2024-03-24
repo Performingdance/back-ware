@@ -20,4 +20,4 @@ router.post("/products/all", isLoggedIn, (req, res) => {
     });
  });
 
- module.export = router
+ module.exports = router
