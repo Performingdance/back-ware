@@ -24,10 +24,10 @@ const productCards = filteredData.map((product,key) => {
   href={`/recipes/edit:${product.recipeID}`} 
   recipeID={product.recipeID} 
   recipeName={product.recipeName}
-  productName={product.name}
+  productName={product.product_name}
   productID={product.ID}
   formID={product.formID}
-  formName={product.formID}
+  formName={product.formName}
   img={product.img}
   /> 
   )
@@ -36,7 +36,7 @@ const productCards = filteredData.map((product,key) => {
   return (
 <>
   <Header title="Produkte"/>
-  <Searchbar_filter data={res} searchkey={"name"} searchkey2={"recipe_name"} filteredData={(searchData) => {setFilteredData(searchData)}} class="searchbar-header" btn_class="searchbar-btn" input_class="searchbar-input"/>
+  <Searchbar_filter data={res} searchkey={"product_name"} searchkey2={"recipe_name"} filteredData={(searchData) => {setFilteredData(searchData)}} class="searchbar-header" btn_class="searchbar-btn" input_class="searchbar-input"/>
   <div className='page-content'>
     {filteredData.length && !error && !loading? productCards: 
     <h1 className=''>Keine Produkte verfügbar</h1>}

@@ -47,7 +47,7 @@ function handleRecipeRequestByID(){
 
 
 function Recipe() {
-const [openTab, setOpenTab] = useState("ing")
+const [openTab, setOpenTab] = useState("forms")
   const [edit, setEdit] = useState(false);
   const ID = window.location.pathname.split(":")[1].split("#")[0]
 
@@ -135,13 +135,13 @@ const [openTab, setOpenTab] = useState("ing")
     <input key={"input"} className='header-edit-input' onChange={(e)=> {nameRef.current =(e.target.value)}} onKeyDown={(event)=>{if(event.key=="Enter"){[setEdit(false), handleNameChange(nameRef.current, recipe.ID)]}}} defaultValue={nameRef.current}></input>]}
     <div className='r-content'>
         <div className='r-header'>
-            <a href='#' id='form' onClick={()=>setOpenTab("form")} className={openTab=="form"? ' r-header-title button-hover': 'r-header-title' }>Formen</a> 
+            <a href='#' id='forms' onClick={()=>setOpenTab("forms")} className={openTab=="forms"? ' r-header-title button-hover': 'r-header-title' }>Formen</a> 
             <a href='#' id='ing' onClick={()=>setOpenTab("ing")} className={openTab=="ing"? ' r-header-title button-hover': 'r-header-title' }>Zutaten</a> 
             <a href='#' id='ins' onClick={()=>setOpenTab("ins")} className={openTab=="ins"? ' r-header-title button-hover': 'r-header-title' }>Anweisung</a>
         </div>
 
         {openTab == "ing" && <RecipeIng ID={ID} />}
-        {openTab == "form" && <RecipeForm ID={ID} recipeName={nameRef.current}/>}
+        {openTab == "forms" && <RecipeForm ID={ID} recipeName={nameRef.current}/>}
         {openTab == "ins" && <RecipeIns ID={ID} />}
     </div>
 

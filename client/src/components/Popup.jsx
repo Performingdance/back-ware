@@ -825,9 +825,11 @@ export function RecipeOrderPopup({
   onClickOK,
   onClickAbort,
   defaultRecipeID,
+  defaultFormID,
   defaultOrderID,
   defaultClientID,
   defaultRecipeName,
+  defaultFormName,
   defaultOrderName,
   defaultClientName
 
@@ -837,7 +839,7 @@ export function RecipeOrderPopup({
   useEffect(()=>handleRequest(),[])
   const [recipes, errRecipe, loadingRecipe] = handleRecipesRequest();
   const [selectedRecipeId, setSelectedRecipeId] = useState(defaultRecipeID || -1)
-  const [selectedFormId, setSelectedFormId] = useState(-1)
+  const [selectedFormId, setSelectedFormId] = useState(defaultFormID || -1)
   const [selectedClientId, setSelectedClientId] = useState(defaultClientID || -1)
   const [selectedOrderId, setSelectedOrderId] = useState(defaultOrderID || -1)
   const [recipeForm, errForm, loadingForm] = handleRecipeFormRequest(selectedRecipeId);
@@ -960,11 +962,12 @@ export function RecipeOrderPopup({
             options={recipeForm}
             onChange={(val) =>{setSelectedFormId(val)}}
             selectedID={selectedFormId}
-            placeholder='Form wählen'
+            placeholder='Form wählen...'
             open={formOpen}
             setOpen={(bol)=>setFormOpen(bol)}
             className='i-select' 
             type='text' 
+            defaultValue={defaultFormName}
             />] }
             <p></p>
             <LabelInput className='popup-input' type='number' title="Menge" defaultvalue={0} onChange={(e)=>{amountInputRef.current = e.target.value}}/>

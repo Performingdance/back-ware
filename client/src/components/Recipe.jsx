@@ -227,7 +227,7 @@ export function RecipeForm({
         
         let image 
         if (!form.img){
-        image = `/recipe_img/default.jpg`
+        image = `../public/imgs/default_recipe_img.jpg`
         }else{
         image = `${BASE_URL_API}public/recipe_imgs/${form.img}`
         }return(
