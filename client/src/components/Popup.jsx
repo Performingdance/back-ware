@@ -1202,7 +1202,11 @@ function handleLogin(){
   }).then(function (response){
     //console.log(response.data);
     localStorage.setItem("token", response.data.token);
-    localStorage.setItem("isLoggedIn", true)
+    localStorage.setItem("isLoggedIn", true);
+    localStorage.setItem("role", response.data.user.role);
+    localStorage.setItem("username", response.data.user.username);
+    localStorage.setItem("userID", response.data.user.id);
+
     setLoginStatus(true)
     setLoading(false);
 

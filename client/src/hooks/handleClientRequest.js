@@ -1,6 +1,7 @@
 import axios from '../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../services/auth-header';
+import logoutToken from '../services/logout';
 
 export default function handleClientRequest(){
 
@@ -24,7 +25,12 @@ export default function handleClientRequest(){
                 setRes(response.data)
                 //console.log(res);
             }).catch((err) => {
-                setError(err)
+                if(err.status == 401){
+                    logoutToken();
+                    window.location.href = "/home"
+                }else{
+                    setError(err)
+                }
                 //console.log(err);
             })
     
