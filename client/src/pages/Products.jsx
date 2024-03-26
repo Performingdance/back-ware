@@ -36,7 +36,7 @@ const productCards = filteredData.map((product,key) => {
   return (
 <>
   <Header title="Produkte"/>
-  <Searchbar_filter data={res} searchkey={"product_name"} searchkey2={"recipe_name"} filteredData={(searchData) => {setFilteredData(searchData)}} class="searchbar-header" btn_class="searchbar-btn" input_class="searchbar-input"/>
+  <Searchbar_filter data={res} searchkey={"product_name"} searchkey_2={"recipeName"} filteredData={(searchData) => {setFilteredData(searchData)}} class="searchbar-header" btn_class="searchbar-btn" input_class="searchbar-input"/>
   <div className='page-content'>
     {filteredData.length && !error && !loading? productCards: 
     <h1 className=''>Keine Produkte verfügbar</h1>}

@@ -35,17 +35,16 @@ module.exports = {
             next();
         } catch (err) {
 
-            return res.status(400).send({
+            return res.status(401).send({
                 message: "Your session is not valid",
             });
         }
     },
     authRole: (role) => {
         return (req, res, next) => {
-            console.log(req.userData)
+            //console.log(req.userData)
             if (req.userData.userRole !== role) {
-                res.status(401)
-                return res.send("Not allowed")
+                return res.status(403).send("Not allowed")
             }
             next()
         }

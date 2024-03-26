@@ -28,7 +28,7 @@ export default function ProductCard({
 
   let image
   if(!img){
-    image = "public/imgs/default_recipe_img.jpg"
+    image = "../imgs/default_recipe_img.jpg"
   }else{
     image = BASE_URL_API+"public/recipe_imgs/"+img
   }

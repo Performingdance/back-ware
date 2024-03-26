@@ -44,6 +44,7 @@ router.post("/sign-up", validateRegister, (req, res, next) => {
     })
 })
 
+
 router.post("/login", (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -88,7 +89,7 @@ router.post("/login", (req, res, next) => {
 });
 
 router.get("/s", isLoggedIn, (req, res, next) => {
-    console.log(req.userData);
+    //console.log(req.userData);
     res.send('This is secret content');
 });
 module.exports = router;
