@@ -75,7 +75,7 @@ router.put("/form/new", isLoggedIn, (req, res) => {
    const workamount = req.body.workamount;
    const vkp_netto = req.body.vkp_netto;
    const price_list = req.body.price_list || [];
-   console.log(price_list, price_list[0])
+   //console.log(price_list, price_list[0])
 
    db.query("SELECT ID FROM recipe_form WHERE formID = ? AND recipeID = ?", [formID, recipeID], (err,result)=>{
       if(err || !result.length){
@@ -109,7 +109,7 @@ router.put("/form/new", isLoggedIn, (req, res) => {
                         } else {
                            for(i=0;i<result.length; i++){
                               let margeID = result[i].ID
-                              db.query("INSERT INTO prices (productID, margeID) VALUES (?,?)", 
+                              db.query("INSERT INTO prices (productID, margeID, price) VALUES (?,?, 0)", 
                               [productID, margeID], 
                               (err, result)=>{
                                  if (err){
@@ -146,7 +146,7 @@ router.put("/form/update", isLoggedIn, (req, res) => {
                console.log(err)
             } else {
                if(price_list.length > 0){
-                  for(let i=0;i<=price_list.length;i++){
+                  for(let i=0;i< price_list.length;i++){
                      let margeID = price_list[i].margeID
                      let price = price_list[i].price || 0
 

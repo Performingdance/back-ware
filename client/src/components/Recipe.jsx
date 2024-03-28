@@ -129,7 +129,11 @@ export function RecipeForm({
             return
         }
         // api update recipeForm
-             
+        let temp_priceList = editPriceList
+        for(let i = 0; i < temp_priceList.length; i++){
+              temp_priceList[i].price = temp_priceList[i].price.replace(",",".")
+            
+        }
         function handleRequest () {
             setLoading(true)
             axios({
@@ -146,7 +150,7 @@ export function RecipeForm({
                     "workamount": editForm.workamount.replace(",", "."),
                     "vkp_netto": editForm.vkp_netto.replace(",", "."),
                     "product_name": editForm.product_name,
-                    "price_list": editPriceList
+                    "price_list": temp_priceList
                 }
             }).then((response)=>{
                 setRes(response.data)
@@ -214,12 +218,12 @@ export function RecipeForm({
                
             price_values = priceList.map((obj, key) =>
                {return(
-                   <p key={"price" + key}>{(obj.price || "0,00") + "€" }</p>
+                   <p key={"price" + key}>{(obj.price.replace(".", ",") || "0,00") + "€" }</p>
                )
             })
             editPriceListInputs = priceList.map((marge, key)=>{
                 return(
-                    <input key={"price_edit_"+key} className='r-form-input' onChange={(e)=>handlePriceValueChange( marge.margeID, e.target.value)} defaultValue={marge.price || "0,00"}></input>
+                    <input key={"price_edit_"+key} className='r-form-input' onChange={(e)=>handlePriceValueChange( marge.margeID, e.target.value)} defaultValue={marge.price.replace(".", ",") || "0,00"}></input>
                 )
             })
         }
