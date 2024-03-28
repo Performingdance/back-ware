@@ -1097,7 +1097,7 @@ function handleSubmit (e) {
                   "formID" : selectedFormID,
                   "product_name" : product_nameRef.current,
                   "formweight": formweightRef.current,
-                  "img": "default",
+                  "img": "default_recipe_img.jpg",
                   "worktime": worktimeRef.current,
                   "workamount": workamountRef.current,
                   "vkp_netto": vkp_nettoRef.current,
@@ -1126,15 +1126,14 @@ function handleSubmit (e) {
 }
   const priceListInput = marges.map((marge, key)=>{
     return(
-      <LabelInput key={marge.ID} className='popup-input' type='number' title={"Preis - " +marge.name} defaultvalue={0} onChange={(e)=>{handlePriceListValueChange(marge.ID, e.target.value)}}/>
-
+      <LabelInput key={key} className='popup-input' type='number' title={"Preis - " +marge.name} defaultvalue={0} onChange={(e)=>{handlePriceListValueChange(marge.ID, e.target.value)}}/>
     )
   })
 
 
   return (
     <>
-      {      
+            
       <div className='popup-card  '>
         <div className='popup-card-content jc-c '>
           <div className="popup-title jc-c">
@@ -1158,7 +1157,7 @@ function handleSubmit (e) {
             type='text' 
             />
             <LabelInput className='popup-input' type='text' title="Produktbezeichnung" defaultvalue={""} onChange={(e)=>{product_nameRef.current = e.target.value}}/>
-            <LabelInput className='popup-input' type='number' title="Form-Gewicht" defaultvalue={0} onChange={(e)=>{formweightRef.current = e.target.value}}/>
+            <LabelInput className='popup-input' type='number' title="Form-Gewicht (kg)" defaultvalue={0} onChange={(e)=>{formweightRef.current = e.target.value}}/>
             <LabelInput className='popup-input' type='number' title="Arbeitszeit(h)" defaultvalue={0} onChange={(e)=>{worktimeRef.current = e.target.value}}/>
             <LabelInput className='popup-input' type='number' title="Stück/Arbeitszeit" defaultvalue={0} onChange={(e)=>{workamountRef.current = e.target.value}}/>
             <LabelInput className='popup-input' type='number' title="VKP-Netto" defaultvalue={0} onChange={(e)=>{vkp_nettoRef.current = e.target.value}}/>
@@ -1169,7 +1168,7 @@ function handleSubmit (e) {
             </div>
           </div>
         </div>
-      </div>}
+      </div>
       </>
     )
 

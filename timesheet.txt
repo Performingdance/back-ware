@@ -102,13 +102,15 @@
 20.03. 1,5h
 21.03. 1,5h
 23.03. 4,5h
+26.03. 0,5h
 
 Kosten:
     Node server Render
         Feb 7€
 
 ToDo:
-.env Variablen aus Code entfernen und extern speichern
+
+token check -> Response: location (/home) + next (original page)
 Order_Items - Daylist verknüpfung überprüfen (Löschen aus der Daylist - auch aus Order?)
 
 Preisliste - Kategorie, vorgeschlagen, gesetzt

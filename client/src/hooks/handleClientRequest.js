@@ -25,12 +25,7 @@ export default function handleClientRequest(){
                 setRes(response.data)
                 //console.log(res);
             }).catch((err) => {
-                if(err.status == 401){
-                    logoutToken();
-                    window.location.href = "/home"
-                }else{
-                    setError(err)
-                }
+                setError(err)
                 //console.log(err);
             })
     
