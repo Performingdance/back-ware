@@ -92,7 +92,7 @@ router.put("/form/new", isLoggedIn, (req, res) => {
                         let margeID = price_list[i].margeID
                         let price = price_list[i].price || 0
    
-                        db.query("INSERT INTO prices SET (productID, margeID, price) VALUES (?,?,?)", 
+                        db.query("INSERT INTO prices (productID, margeID, price) VALUES (?,?,?)", 
                         [productID, margeID,price], 
                         (err, result)=>{
                            if (err){
