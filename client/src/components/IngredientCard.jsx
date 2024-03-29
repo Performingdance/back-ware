@@ -31,50 +31,50 @@ export default function IngredientCard({
     </div>
     {priceOpen &&
     <div key={data.ID + "ic-price"} className='ic-price'>
-        <ul key={data.ID + "price-ul"}  className='ic-list'>
-            <li key={data.ID + "price-li_1"} className='ic-list-item'>Preis: </li>
-            <li key={data.ID + "price-li_2"} className='ic-list-item'>Preis/KG: </li>
-            <li key={data.ID + "price-li_3"} className='ic-list-item'>Packungsmenge: </li>
-            <li key={data.ID + "price-li_4"} className='ic-list-item'>Lieferant: </li>
-        </ul>
-        <ul key={data.ID + "price-ul_2"} className='ic-list'>
-            <li key={data.ID + "price-li_5"} className='ic-list-item'>{data.price != " " ? data.price +"€" : "-"}</li>
-            <li key={data.ID + "price-li_6"} className='ic-list-item'>{data.priceKG != " " ? data.priceKG +"€": "-"}</li>
-            <li key={data.ID + "price-li_7"} className='ic-list-item'>{data.amount != " " ? data.amount : "-"}</li>
-            <li key={data.ID + "price-li_8"} className='ic-list-item'>{data.source != (" " && 0) ? data.source : "-"}</li>
-        </ul>
+        <tr key={data.ID + "price-ul"}  className='ic-list'>
+            <td key={data.ID + "price-li_1"} className='ic-list-item'>Preis: </td>
+            <td key={data.ID + "price-li_2"} className='ic-list-item'>Preis/KG: </td>
+            <td key={data.ID + "price-li_3"} className='ic-list-item'>Packungsmenge: </td>
+            <td key={data.ID + "price-li_4"} className='ic-list-item'>Lieferant: </td>
+        </tr>
+        <tr key={data.ID + "price-ul_2"} className='ic-list'>
+            <td key={data.ID + "price-li_5"} className='ic-list-item'>{data.price != " " ? data.price +"€" : "-"}</td>
+            <td key={data.ID + "price-li_6"} className='ic-list-item'>{data.priceKG != " " ? data.priceKG +"€": "-"}</td>
+            <td key={data.ID + "price-li_7"} className='ic-list-item'>{data.amount != " " ? data.amount : "-"}</td>
+            <td key={data.ID + "price-li_8"} className='ic-list-item'>{data.source != (" " && 0) ? data.source : "-"}</td>
+        </tr>
 
     </div>}
     {nutriOpen &&
     <div key={data.ID + "ic-nutri"} className='ic-nutri'>
-        <ul key={data.ID + "nutri-ul"} className='ic-list'>
-            <li key={data.ID + "nutri-li_1"} className='ic-list-item'>Allergen: </li>
-            <li key={data.ID + "nutri-li_2"} className='ic-list-item'>kJ: </li>
-            <li key={data.ID + "nutri-li_3"} className='ic-list-item'>kcal: </li>
-            <li key={data.ID + "nutri-li_4"} className='ic-list-item'>Protein: </li>
-            <li key={data.ID + "nutri-li_5"} className='ic-list-item'>Kohlenhydrate: </li>
-            <li key={data.ID + "nutri-li_6"} className='ic-list-item'>dav. Zucker: </li>
-        </ul>
-        <ul key={data.ID + "nutri-ul_2"} className='ic-list'>
-            <li key={data.ID + "nutri-li_7"} className='ic-list-item'>{data.allergen != " " ? data.allergen : "-"}</li>
-            <li key={data.ID + "nutri-li_8"} className='ic-list-item'>{data.kj != " " ? data.kj : "-"}</li>
-            <li key={data.ID + "nutri-li_9"} className='ic-list-item'>{data.kcal != " " ? data.kcal : "-"}</li>
-            <li key={data.ID + "nutri-li_10"} className='ic-list-item'>{data.protein != " " ? data.protein +"g" : "-"}</li>
-            <li key={data.ID + "nutri-li_11"} className='ic-list-item'>{data.carbs != " " ? data.carbs +"g": "-"}</li>
-            <li key={data.ID + "nutri-li_12"} className='ic-list-item'>{data.sugar != " " ? data.sugar +"g": "-"}</li>
-        </ul>
-        <ul key={data.ID + "nutri-ul_3"} className='ic-list'>
-            <li key={data.ID + "nutri-li_13"} className='ic-list-item'>Fett: </li>
-            <li key={data.ID + "nutri-li_14"} className='ic-list-item'>ges. Fettsäuren: </li>
-            <li key={data.ID + "nutri-li_15"} className='ic-list-item'>Ballaststoffe: </li>
-            <li key={data.ID + "nutri-li_16"} className='ic-list-item'>Salz: </li>
-        </ul>
-        <ul key={data.ID + "nutri-ul_4"} className='ic-list'>
-            <li key={data.ID + "nutri-li_17"} className='ic-list-item'>{data.fat != " " ? data.fat +"g" : "-"}</li>
-            <li key={data.ID + "nutri-li_18"} className='ic-list-item'>{data.sat_fat != " " ? data.sat_fat +"g" : "-"}</li>
-            <li key={data.ID + "nutri-li_19"} className='ic-list-item'>{data.fibres != " " ? data.fibres +"g" : "-"}</li>
-            <li key={data.ID + "nutri-li_20"} className='ic-list-item'>{data.salt != " " ? data.salt +"g" : "-"}</li>
-        </ul>
+        <tr key={data.ID + "nutri-ul"} className='ic-list'>
+            <td key={data.ID + "nutri-li_1"} className='ic-list-item'>Allergen: </td>
+            <td key={data.ID + "nutri-li_2"} className='ic-list-item'>kJ: </td>
+            <td key={data.ID + "nutri-li_3"} className='ic-list-item'>kcal: </td>
+            <td key={data.ID + "nutri-li_4"} className='ic-list-item'>Protein: </td>
+            <td key={data.ID + "nutri-li_5"} className='ic-list-item'>Kohlenhydrate: </td>
+            <td key={data.ID + "nutri-li_6"} className='ic-list-item'>dav. Zucker: </td>
+        </tr>
+        <tr key={data.ID + "nutri-ul_2"} className='ic-list'>
+            <td key={data.ID + "nutri-li_7"} className='ic-list-item'>{data.allergen != "" ? data.allergen : "-"}</td>
+            <td key={data.ID + "nutri-li_8"} className='ic-list-item'>{data.kj != " " ? data.kj : "-"}</td>
+            <td key={data.ID + "nutri-li_9"} className='ic-list-item'>{data.kcal != " " ? data.kcal : "-"}</td>
+            <td key={data.ID + "nutri-li_10"} className='ic-list-item'>{data.protein != " " ? data.protein +"g" : "-"}</td>
+            <td key={data.ID + "nutri-li_11"} className='ic-list-item'>{data.carbs != " " ? data.carbs +"g": "-"}</td>
+            <td key={data.ID + "nutri-li_12"} className='ic-list-item'>{data.sugar != " " ? data.sugar +"g": "-"}</td>
+        </tr>
+        <tr key={data.ID + "nutri-ul_3"} className='ic-list'>
+            <td key={data.ID + "nutri-li_13"} className='ic-list-item'>Fett: </td>
+            <td key={data.ID + "nutri-li_14"} className='ic-list-item'>ges. Fettsäuren: </td>
+            <td key={data.ID + "nutri-li_15"} className='ic-list-item'>Ballaststoffe: </td>
+            <td key={data.ID + "nutri-li_16"} className='ic-list-item'>Salz: </td>
+        </tr>
+        <tr key={data.ID + "nutri-ul_4"} className='ic-list'>
+            <td key={data.ID + "nutri-li_17"} className='ic-list-item'>{data.fat != " " ? data.fat +"g" : "-"}</td>
+            <td key={data.ID + "nutri-li_18"} className='ic-list-item'>{data.sat_fat != " " ? data.sat_fat +"g" : "-"}</td>
+            <td key={data.ID + "nutri-li_19"} className='ic-list-item'>{data.fibres != " " ? data.fibres +"g" : "-"}</td>
+            <td key={data.ID + "nutri-li_20"} className='ic-list-item'>{data.salt != " " ? data.salt +"g" : "-"}</td>
+        </tr>
 
     </div>}
     </div>

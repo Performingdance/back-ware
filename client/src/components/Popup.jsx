@@ -485,7 +485,7 @@ export function NewInvoicePopup({
               invoiceID(response.data.insertId)
               return
             }else{
-              window.location.pathname = `/orders/edit:${response.data.insertId}`
+              window.location.pathname = `/invoices/edit:${response.data.insertId}`
             }
             
          
@@ -538,6 +538,7 @@ export function NewInvoicePopup({
 }
 
 export function AddInvoicePopup({
+  forwardEdit,
   onClickOK,
   onClickAbort,
   defaultOrderID,
@@ -555,6 +556,8 @@ export function AddInvoicePopup({
   useEffect(()=>{handleRequest()},[])
 
   const [invoiceOpen,setInvoiceOpen] = useState(false)
+  const [newInvoicePrompt,setNewInvoicePrompt] = useState(false)
+  
   
   const [addRes, setAddRes] = useState([])
   const [addError, setAddError] = useState("");
@@ -579,6 +582,10 @@ export function AddInvoicePopup({
       setAddError({message: "Bitte Rechnungsnummer wählen"})
       return
     }
+    if(defaultOrderID<0){
+      setAddError({message: " Bestellung nicht erkannt"})
+      return}
+    if(defaultClientID<0){return}
     else{
       
         e = e || window.Event;
@@ -599,6 +606,11 @@ export function AddInvoicePopup({
             }).then((response)=>{
               
                 onClickOK(false)
+                if(forwardEdit == false){
+                  return
+                }else{
+                  window.location.pathname = `/invoices/edit:${selectedInvoiceID}`
+                }
             }).catch((err) => {
                 setAddError(err)
                 console.log(err);
@@ -616,7 +628,7 @@ export function AddInvoicePopup({
             
       <div className='popup-card  '>
         <div className='popup-card-content jc-c '>
-        <h3 className='ta-c'>Rezept hinzufügen</h3>
+        <h3 className='ta-c'>Rechnung erstellen</h3>
           {addError ? <h5 className='errorMsg' >{addError.message }</h5>: " "}
           {errInvoices ? <h5 className='errorMsg' >{errInvoices.message}</h5>: " "}
           <div className="popup-title jc-c">
@@ -648,8 +660,8 @@ export function AddInvoicePopup({
                   defaultClientID={defaultClientID}
                   defaultClientName={defaultClientName}
                   invoiceID={(val)=>{setSelectedInvoiceID(val)}}
-                  onClickOK={()=>setNewInvoicePormpt(false)}
-                  onClickAbort={()=>setNewInvoicePormpt(false)} />}
+                  onClickOK={()=>setNewInvoicePrompt(false)}
+                  onClickAbort={()=>setNewInvoicePrompt(false)} />}
             <div className='popup-card-btns'>
                 <button className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Weiter</button>
                 <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>

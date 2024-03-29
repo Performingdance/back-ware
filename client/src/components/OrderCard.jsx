@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import SVGIcon from './SVG'
 import plus from '../assets/icons/plus.svg'
+import file_plus from '../assets/icons/file-plus.svg'
+import bar_graph from '../assets/icons/bar-graph.svg'
 import pencil_square from '../assets/icons/pencil-square.svg'
 import '../styles/ClientCard.css'
 import '../styles/RecipeCard.css'
@@ -44,10 +46,10 @@ export  function OrderCard({
           </div>
           <div className='rc-btns' > 
             {( data.invoiceID <= 0)? <a type="button" className='button rc-btn ' onClick={onClickInv}>
-              <SVGIcon class="rc-btn-svg" src={plus}/> Rechnung (neu)
+              <SVGIcon class="rc-btn-svg" src={file_plus}/> Rechnung (neu)
             </a> :
-            <a type="button" className='button rc-btn ' onClick={onClickInv}>
-              <SVGIcon class="rc-btn-svg" src={plus}/> Rechnung öffnen
+            <a type="button" className='button rc-btn ' onClick={()=>window.location.href = `/invoices/edit:${data.invoiceID}`}>
+              <SVGIcon class="rc-btn-svg" src={bar_graph}/> Rechnung öffnen
             </a>}          
             <a type="button" className='button rc-btn' onClick={onClickMore}>
               <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
@@ -70,6 +72,7 @@ export  function OrderCard({
 
         </ul>
       </div>}
+
   
       </div>
     )

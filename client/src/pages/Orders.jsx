@@ -5,6 +5,7 @@ import FloatIcon from '../components/FloatIcon.jsx'
 import handleOrderRequest from '../hooks/handleOrderRequest.js'
 import { OrderCard } from '../components/OrderCard.jsx'
 import handleOrderIngRequest from '../hooks/handleOrderIngRequest.js'
+import { AddInvoicePopup } from '../components/Popup.jsx'
 // temp 
 
 
@@ -18,7 +19,10 @@ function Orders() {
   const [editBtn, setEditBtn] = useState(0)
   const [_editBtn, set_EditBtn] = useState(0)
   const [products, proError, proLoading] = handleOrderIngRequest(editID);
-
+  const [editOrder, setEditOrder] = useState({})
+  let editInvoiceId = -1
+  const [newInvoicePrompt, setNewInvoicePrompt] = useState(false)
+  
 
   function handleToggleEditID (ID) {
 
@@ -40,7 +44,7 @@ function Orders() {
     //console.log(editID)
   
   return (
-    <OrderCard onClickInv={() => [ setEditBtn(1), handleToggleEditID(order.ID)]} onClickMore={() => [ setEditBtn(2),handleToggleEditID(order.ID)]} products={products} editID={editID} editBtn={editBtn} key={order.ID} data={order} />
+    <OrderCard onClickInv={() => [setEditOrder(order), setNewInvoicePrompt(true)]} onClickMore={() => [ setEditBtn(2),handleToggleEditID(order.ID)]} products={products} editID={editID} editBtn={editBtn} key={order.ID} data={order} />
   )
   });
 
@@ -49,6 +53,16 @@ function Orders() {
     <Header title="Bestellungen"/>
     <Searchbar_filter data={orders} searchkey={"order_date"} searchkey2={"client"} filteredData={(searchData) => {setfilteredData(searchData)}} class="searchbar-header" btn_class="searchbar-btn" input_class="searchbar-input"/>
     {orderCards}
+    {newInvoicePrompt &&
+                  <AddInvoicePopup
+                  title={"neue Rechung"}
+                  forwardEdit={true}
+                  defaultClientID={editOrder.clientID || -1}
+                  defaultClientName={editOrder.client}
+                  defaultOrderID={editOrder.ID}
+                  defaultOrderName={editOrder.ID? "#"+ editOrder.ID +" "+ (editOrder.client? editOrder.client : " ") :"# - "}          
+                  onClickOK={()=>{setNewInvoicePrompt(false)}}
+                  onClickAbort={()=>setNewInvoicePrompt(false)} />}
     <FloatIcon/>
     </div>
 

@@ -225,11 +225,19 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
         } else{
         db.query("UPDATE orders_items SET invoiceID = ? WHERE orderID = ?", 
         [invoiceID, orderID], 
-        (derr, dresult) =>{
-            if(derr){
-                console.log(derr)
+        (err, result) =>{
+            if(err){
+                console.log(err)
             } else {
-                res.send("success")
+                db.query("UPDATE orders SET invoiceID = ? WHERE ID = ?", 
+                [invoiceID, orderID], 
+                (err, result) =>{
+                    if(err){
+                        console.log(err)
+                    } else {
+                        res.send("success")
+                    }
+                });
             }
         });
         };

@@ -104,13 +104,14 @@
 23.03. 4,5h
 26.03. 0,5h
 28.03. 1,5h
+29.03. 2h
 
 Kosten:
     Node server Render
         Feb 7€
 
 ToDo:
-
+images lazy load (produkte, rezepte)
 token check -> Response: location (/home) + next (original page)
 Order_Items - Daylist verknüpfung überprüfen (Löschen aus der Daylist - auch aus Order?)
 
