@@ -109,7 +109,7 @@ router.put("/form/new", isLoggedIn, (req, res) => {
                         } else {
                            for(i=0;i<result.length; i++){
                               let margeID = result[i].ID
-                              db.query("INSERT INTO prices (productID, margeID, price) VALUES (?,?, 0)", 
+                              db.query(`INSERT INTO prices (productID, margeID, price) VALUES (?,?, "0.00")`, 
                               [productID, margeID], 
                               (err, result)=>{
                                  if (err){

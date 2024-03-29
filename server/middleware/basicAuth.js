@@ -24,7 +24,7 @@ module.exports = {
     },
     isLoggedIn: (req, res, next) => {
         if(!req.headers.authorization) {
-            return res.status(400).send({
+            return res.status(401).send({
                 message: "Your session is not valid",
             });
         }

@@ -45,6 +45,32 @@ router.post('/photoUpload', isLoggedIn, upload.single("image"), (req, res) => {
   res.send("success")
   });
 
+router.post('/photoDefault', isLoggedIn, (req, res) => {
+  const productID = req.body.productID
+  const oldImg = req.body.oldImg
+  // Remove old photo
+  if (oldImg) {
+    const oldPath = path.join("/var/lib/data/recipe_imgs/", oldImg);
+    if (fs.existsSync(oldPath)) {
+      fs.unlink(oldPath, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        res.status(200).send(userObj);
+      });
+    }
+  }
+  db.query("UPDATE recipe_form SET img = ? WHERE ID = ? ",[NULL, productID], (err, result) =>{
+    if(err){
+        console.log(err)
+    } else {
+    }
+});
+  //console.log(req.body.image)
+  res.send("success")
+  });
+  
 router.get('/all', isLoggedIn, (req, res) => {
   
   const folderPath = '/var/lib/data/recipe_imgs'; // Replace 'your-folder-path' with the actual folder path

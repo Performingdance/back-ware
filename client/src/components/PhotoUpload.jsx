@@ -49,6 +49,35 @@ export function FileUploadPopUp({
       
   }
 
+  const handleDefaultPhoto = () => {
+    if(!productID){return}
+
+    setLoading(true)
+    let formData = new FormData()
+    formData.append("image", "");
+    formData.append("productID", productID || -1);
+    formData.append("oldImg", productImg || -1);
+
+      axios({
+          axiosInstance: axios,
+          method: "POST",
+          url:"/s/imgs/photoDefault",
+          headers: {
+              "authorization": authHeader(),
+          },
+          data: formData
+          
+      }).then((response)=>{
+        //console.log(response)
+        setRes("Erfolgreich Zurückgesetzt")
+      }).catch((err) => {
+          setError(err)
+          //console.log(err);
+      })
+
+      setLoading(false)
+      
+  }
 
 
   return (
@@ -61,6 +90,7 @@ export function FileUploadPopUp({
             <h3 key="title" >{title? title : ""}</h3>
             <input type="file" onChange={(e)=>setFile(e.target.files[0])} />
             <button className="bn" onClick={()=> handleUpload()}>Hochladen</button>
+            <button className="bn" onClick={()=>{ handleDefaultPhoto()}}>Zurücksetzen</button>
            {res && <h5>{res}</h5>}
             <div key={"pc_btn"} className='popup-card-btns'>
                 <button key="pc_btn_ok" className='btn popup-card-btn' onClick={onClickOK} >{btnOk || "OK"}</button>
