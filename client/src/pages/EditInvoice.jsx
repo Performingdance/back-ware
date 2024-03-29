@@ -33,7 +33,7 @@ function EditInvoice  () {
 
     const [res, err, loading, handleProdRequest] = handleInvoiceProdRequest();
     useEffect(()=>{handleProdRequest(invoiceID)},[updateInvoice])
-    const [InvoiceRes, orderErr, orderLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
+    const [InvoiceRes, invoiceErr, invoiceLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
     //console.log(res)
     
 
@@ -246,12 +246,12 @@ function EditInvoice  () {
           </div>
 
         )
-      })
+      })      
 
   return (
     <div className='page-content'>
     
-      <Header key="header" title={InvoiceRes.invoice_number? "#"+ InvoiceRes.invoice_number +" "+ (InvoiceRes.client? InvoiceRes.client : " ") :"# - "}/>
+      <Header key="header" title={InvoiceRes.invoice_number? "#"+ InvoiceRes.invoice_number +" "+ (res.client? res.client : " ") :"# - "}/>
       {togglePrompt && <PromptPopup 
           title={InvoiceRes.ID? `Bestellung #${InvoiceRes.ID } löschen?` : "Bestellung löschen?"} 
           btnOk="OK" 
@@ -271,9 +271,10 @@ function EditInvoice  () {
           /> 
       }
 
+
       <div className='order-wrapper'>
         <div className='order-div'>
-        {((err || orderErr) && <p className='errorMsg'>{err.message || orderErr.message}</p>)}
+        {((err || invoiceErr) && <p className='errorMsg'>{err.message || orderErr.message}</p>)}
           {!edit ?<p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>:
                     <div className='d-il ai-c'> 
                     <p>Kunde:</p> 
