@@ -18,7 +18,10 @@ export function FileUploadPopUp({
 
   //console.log(file)
   const handleUpload = () => {
-    if(!productID){return}
+    if(!productID ){return}
+    if(!file ){
+      setError({message: "Foto auswählen"})
+      return}
 
     setLoading(true)
     let formData = new FormData()
@@ -89,9 +92,11 @@ export function FileUploadPopUp({
             <div key="login_div" className="popup-title jc-c">
             <h3 key="title" >{title? title : ""}</h3>
             <input type="file" onChange={(e)=>setFile(e.target.files[0])} />
+            <br></br>
             <button className="btn" onClick={()=> handleUpload()}>Hochladen</button>
-            <button className="btn" onClick={()=>{handleDefaultPhoto()}}>Zurücksetzen</button>
-           {res && <h5>{res}</h5>}
+            <button className="btn" onClick={()=>{handleDefaultPhoto()}}>Foto zurücksetzen</button>
+           {res && <h5 className="successMsg">{res}</h5>}
+           {error.message && <h5 className="errorMsg">{error.message}</h5>}
             <div key={"pc_btn"} className='popup-card-btns'>
                 <button key="pc_btn_ok" className='btn popup-card-btn' onClick={onClickOK} >{btnOk || "OK"}</button>
             </div>

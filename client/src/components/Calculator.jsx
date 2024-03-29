@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import '../styles/Calculator.css'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
+import handlePriceListRequest from '../hooks/handlePriceListRequest';
 
 
 // // BVP Rechner 
@@ -41,6 +42,22 @@ export default function Bvp({
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [editPriceList, setEditPriceList] = useState([]);
+  const [priceList, priceError, priceLoad, handlePriceRequest] = handlePriceListRequest()
+  useEffect(()=>setEditPriceList(priceList), []);
+
+  function handlePriceValueChange(margeID, val) {
+    let temp_priceList = editPriceList
+    for(let i = 0; i < temp_priceList.length; i++){
+        if(temp_priceList[i].margeID == margeID){
+          temp_priceList[i].price = val
+        }
+    }
+
+    //console.log(temp_form)
+    setEditPriceList(temp_priceList)
+    return 
+}
   // // BVP Rechner 
 // req = {
 //     "recipeID": 4,
@@ -67,23 +84,32 @@ export default function Bvp({
 //         "bvp": 2.2050560000000003
 //     }
 // ]
+
 function handleNvpChange(val) {
  // console.log(data, val)
-    data.vkp_netto =val 
-
+    data.vkp_netto = val 
+    if(!productID || (productID == -1)){
+      return
+  }
+  let temp_priceList = editPriceList
+  for(let i = 0; i < temp_priceList.length; i++){
+        temp_priceList[i].price = temp_priceList[i].price.replace(",",".")
+      
+  }
 
     const handleRequest = ()=>{
     setLoading(true);
     axios({
       axiosInstance: axios,
       method: "PUT",
-      url:"s/recipes/form/update/nvp",
+      url:"s/recipes/form/update/calc_prices",
       headers: {
         "authorization": authHeader()
       },
       data:{
-          "ID": data.ID,
-          "vkp_netto": val
+          "productID": data.ID,
+          "vkp_netto": val.replace(",","."),
+          "price_list": temp_priceList
       },
     }).then(function (response){
       //console.log(response.data);
@@ -118,7 +144,7 @@ function handleNvpChange(val) {
           <p>BVP</p>
           <p>{data.bvp? data.bvp : 0}€</p>
           <p className='bvp-price'>gesetzter NVP</p>
-          <input className='bvp-price' defaultValue={data.vkp_netto ? parseFloat(data.vkp_netto).toFixed(2): 0} onChange={(e)=>handleNvpChange(e.target.value)}></input>
+          <input className='bvp-price' defaultValue={data.vkp_netto ? data.vkp_netto.replace(".",","): "0,00"} onChange={(e)=>handleNvpChange(e.target.value)}></input>
       </div>
       
     </div>

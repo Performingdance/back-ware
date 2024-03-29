@@ -53,8 +53,8 @@ router.post("/form/prices", isLoggedIn, (req, res) => {
 });
 router.post("/forms", isLoggedIn, (req, res) => {
    const recipeID = req.body.recipeID;
-   db.query(`SELECT a.*, form.name FROM
-   (SELECT formID AS ID, recipeID, img FROM recipe_form WHERE recipeID = ?) AS a
+   db.query(`SELECT a.*, CONCAT(a.product_name, ' (', form.name,')') AS name FROM
+   (SELECT formID AS ID, recipeID, img, product_name FROM recipe_form WHERE recipeID = ?) AS a
    JOIN form
    ON a.ID = form.ID`, recipeID, (err, result) =>{
         if(err){
@@ -64,7 +64,16 @@ router.post("/forms", isLoggedIn, (req, res) => {
         }
    });
 });
-
+router.post("/products", isLoggedIn, (req, res) => {
+   const recipeID = req.body.recipeID;
+   db.query(`SELECT ID, formID, recipeID, img, product_name AS name FROM recipe_form WHERE recipeID = ?`, recipeID, (err, result) =>{
+        if(err){
+           console.log(err)
+        } else {
+           res.send(result)
+        }
+   });
+});
 router.put("/form/new", isLoggedIn, (req, res) => {
    const recipeID = req.body.recipeID;
    const formID = req.body.formID; 
@@ -167,18 +176,35 @@ router.put("/form/update", isLoggedIn, (req, res) => {
          });  
 });
 
-router.put("/form/update/nvp", isLoggedIn, (req, res) => {
-   const ID = req.body.ID;
+router.put("/form/update/calc_prices", isLoggedIn, (req, res) => {
+   const productID = req.body.productID; 
    const vkp_netto = req.body.vkp_netto || 0;
+   const price_list = req.body.price_list || [];
 
-
-         db.query("UPDATE recipe_form SET  vkp_netto = ? WHERE ID = ?", 
-         [ vkp_netto, ID], 
+         db.query("UPDATE recipe_form SET vkp_netto = ? WHERE ID = ?", 
+         [vkp_netto, productID], 
          (err, result)=>{
             if (err){
                console.log(err)
             } else {
-               res.send(result)
+               if(price_list.length > 0){
+                  for(let i=0;i< price_list.length;i++){
+                     let margeID = price_list[i].margeID
+                     let price = price_list[i].price || 0
+
+                     db.query("UPDATE prices SET price = ? WHERE productID = ? AND margeID = ?", 
+                     [ price, productID, margeID], 
+                     (err, result)=>{
+                        if (err){
+                           console.log(err)
+                        } else {
+                        }
+                     });  
+                  }
+
+               }else{
+               }
+               res.send("success")
             }
          });  
 });

@@ -135,7 +135,7 @@ const [openTab, setOpenTab] = useState("forms")
     <input key={"input"} className='header-edit-input' onChange={(e)=> {nameRef.current =(e.target.value)}} onKeyDown={(event)=>{if(event.key=="Enter"){[setEdit(false), handleNameChange(nameRef.current, recipe.ID)]}}} defaultValue={nameRef.current}></input>]}
     <div className='r-content'>
         <div className='r-header'>
-            <a href='#' id='forms' onClick={()=>setOpenTab("forms")} className={openTab=="forms"? ' r-header-title button-hover': 'r-header-title' }>Formen</a> 
+            <a href='#' id='forms' onClick={()=>setOpenTab("forms")} className={openTab=="forms"? ' r-header-title button-hover': 'r-header-title' }>Produkte/Formen</a> 
             <a href='#' id='ing' onClick={()=>setOpenTab("ing")} className={openTab=="ing"? ' r-header-title button-hover': 'r-header-title' }>Zutaten</a> 
             <a href='#' id='ins' onClick={()=>setOpenTab("ins")} className={openTab=="ins"? ' r-header-title button-hover': 'r-header-title' }>Anweisung</a>
         </div>

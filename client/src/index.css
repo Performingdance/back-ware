@@ -52,7 +52,7 @@
 }
 .btn, .button, button{
   margin: 0.3rem;
-  padding: 0;
+  padding: 0.5rem;
   justify-items: center;
   align-items: center;
   color: var(--text-color);

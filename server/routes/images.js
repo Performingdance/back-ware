@@ -73,7 +73,7 @@ router.post('/photoDefault', isLoggedIn, (req, res) => {
   
 router.get('/all', isLoggedIn, (req, res) => {
   
-  const folderPath = '/var/lib/data/recipe_imgs'; // Replace 'your-folder-path' with the actual folder path
+  const folderPath = '/var/lib/data/recipe_imgs'; 
   fs.readdir(folderPath, (err, files) => {
     if (err) {
       console.error(err);

@@ -164,7 +164,7 @@ function Calculator({
     const [selectedRecipeId, setSelectedRecipeId] = useState(-1)
     const [selectedFormId, setSelectedFormId] = useState(-1)
     const [recipes, rError, rLoading] = handleRecipesRequest();
-    const [forms, formsError,formsLoading] = handleRecipeFormRequest (selectedRecipeId);
+    const [forms, formsError,formsLoading] = handleRecipeFormRequest(selectedRecipeId);
     const [bvpData, bvpError, bvpLoading] = handleBvpRequest(selectedRecipeId, selectedFormId);
     const [ingData, ingError, ingLoading] = handleIngRequest(selectedRecipeId);
     const [nutriData, nutriError, nutriLoading] = handleNutriRequest(selectedRecipeId);

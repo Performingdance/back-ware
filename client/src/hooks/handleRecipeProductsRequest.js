@@ -2,7 +2,7 @@ import axios from '../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../services/auth-header';
 
-export default function handleRecipeFormRequest(recipeID) {
+export default function handleRecipeProductsRequest(recipeID) {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -18,7 +18,7 @@ export default function handleRecipeFormRequest(recipeID) {
         axios({
             axiosInstance: axios,
             method: "POST",
-            url:"s/recipes/forms",
+            url:"s/recipes/products",
             headers: {
                 "authorization": authHeader()
             },
@@ -26,7 +26,7 @@ export default function handleRecipeFormRequest(recipeID) {
                 "recipeID": recipeID
             }
         }).then((response)=>{
-                setRes(response.data)
+            setRes(response.data)
             //console.log(res);
         }).catch((err) => {
             setError(err)
