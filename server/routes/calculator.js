@@ -4,8 +4,7 @@ const {isLoggedIn} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 router.post("/bvp", isLoggedIn, (req, res) =>{
-    const recipeID = req.body.recipeID;
-    const formID = req.body.formID;
+    const productID = req.body.productID;
     db.query(`
     SELECT g.*, CAST((nvp+ (nvp*mwst/100))AS DECIMAL(5,2)) AS bvp
     FROM(SELECT f.*, CAST((sk+(sk*rg/100)) AS DECIMAL(5,2)) AS nvp   
@@ -15,7 +14,7 @@ router.post("/bvp", isLoggedIn, (req, res) =>{
                     FROM (SELECT b.*, CAST(settings.setting*b.worktime AS DECIMAL(5,2)) AS bk
                         FROM(SELECT a.*, ingredients.priceKG
                             FROM (SELECT * FROM recipe_form
-                            WHERE recipeID = ? AND formID = ?) AS a
+                            WHERE ID = ?) AS a
                         LEFT JOIN ingredients
                         ON ingredients.recipeID = a.recipeID) AS b 
                     LEFT JOIN settings
@@ -26,7 +25,7 @@ router.post("/bvp", isLoggedIn, (req, res) =>{
             on settings.ID = 3) AS e
         LEFT JOIN settings
         on settings.ID = 4) AS f) 
-    AS g `, [recipeID,formID],
+    AS g `, [productID],
         (err, result) =>{
         if(err){
            console.log(err)

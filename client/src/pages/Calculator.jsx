@@ -3,17 +3,17 @@ import React, { useMemo, useState, useRef, useEffect } from 'react'
 import Bvp, { Nutri } from '../components/Calculator'
 import {SelectComponent} from '../components/Searchbar'
 import handleRecipesRequest from '../hooks/handleRecipesRequest'
-import handleRecipeFormRequest from '../hooks/handleRecipeFormRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
+import handleRecipeProductsRequest from '../hooks/handleRecipeProductsRequest'
 
-function handleBvpRequest(recipeID, formID){
+function handleBvpRequest(productID){
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  useEffect(()=>handleRequest(), [formID])
+  useEffect(()=>handleRequest(), [productID])
 
-  if(formID == -1){
+  if(productID == -1){
     return [res, error, loading]
   }
   function handleRequest(){
@@ -26,8 +26,7 @@ function handleBvpRequest(recipeID, formID){
       "authorization": authHeader()
     },
     data:{
-        "recipeID": recipeID,
-        "formID": formID
+        "productID": productID,
     },
   }).then(function (response){
     //console.log(response.data);
@@ -163,9 +162,10 @@ function Calculator({
     const [formOpen, setFormOpen] = useState(false);
     const [selectedRecipeId, setSelectedRecipeId] = useState(-1)
     const [selectedFormId, setSelectedFormId] = useState(-1)
+    const [selectedProductId, setSelectedProductId] = useState(-1)
     const [recipes, rError, rLoading] = handleRecipesRequest();
-    const [forms, formsError,formsLoading] = handleRecipeFormRequest(selectedRecipeId);
-    const [bvpData, bvpError, bvpLoading] = handleBvpRequest(selectedRecipeId, selectedFormId);
+    const [products, productsError,productsLoading] = handleRecipeProductsRequest(selectedRecipeId);
+    const [bvpData, bvpError, bvpLoading] = handleBvpRequest(selectedProductId);
     const [ingData, ingError, ingLoading] = handleIngRequest(selectedRecipeId);
     const [nutriData, nutriError, nutriLoading] = handleNutriRequest(selectedRecipeId);
     const [servingData, servingError, servingLoading] = handleServingRequest(selectedRecipeId, selectedFormId);
@@ -206,13 +206,13 @@ function Calculator({
     /> 
     
     {(selectedRecipeId != -1) && (selectedRecipeId != "") && <SelectComponent
-    id ="forms"
+    id ="products"
     onSelect={(val)=>{editRef.current=val}}
     editref={editRef.current}
-    options={forms}
-    onChange={(item) =>{setSelectedFormId(item)}}
-    selectedID={selectedFormId}
-    placeholder='Form wählen'
+    options={products}
+    onChange={(item) =>{setSelectedProductId(item)}}
+    selectedID={selectedProductId}
+    placeholder='Produkt wählen'
     open={formOpen}
     setOpen={(bol)=>setFormOpen(bol)}
     className='i-select' 
