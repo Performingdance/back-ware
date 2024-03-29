@@ -89,8 +89,8 @@ export function FileUploadPopUp({
             <div key="login_div" className="popup-title jc-c">
             <h3 key="title" >{title? title : ""}</h3>
             <input type="file" onChange={(e)=>setFile(e.target.files[0])} />
-            <button className="bn" onClick={()=> handleUpload()}>Hochladen</button>
-            <button className="bn" onClick={()=>{ handleDefaultPhoto()}}>Zurücksetzen</button>
+            <button className="btn" onClick={()=> handleUpload()}>Hochladen</button>
+            <button className="btn" onClick={()=>{handleDefaultPhoto()}}>Zurücksetzen</button>
            {res && <h5>{res}</h5>}
             <div key={"pc_btn"} className='popup-card-btns'>
                 <button key="pc_btn_ok" className='btn popup-card-btn' onClick={onClickOK} >{btnOk || "OK"}</button>
