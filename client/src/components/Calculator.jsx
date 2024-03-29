@@ -38,14 +38,15 @@ import handlePriceListRequest from '../hooks/handlePriceListRequest';
 export default function Bvp({
   data
 }) {
-
+  const productID = data.ID
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [editPriceList, setEditPriceList] = useState([]);
   const [priceList, priceError, priceLoad, handlePriceRequest] = handlePriceListRequest()
+  useEffect(()=>handlePriceRequest(productID),[])
   useEffect(()=>setEditPriceList(priceList), []);
-
+  //console.log(data)
   function handlePriceValueChange(margeID, val) {
     let temp_priceList = editPriceList
     for(let i = 0; i < temp_priceList.length; i++){
@@ -54,10 +55,13 @@ export default function Bvp({
         }
     }
 
-    //console.log(temp_form)
+  
     setEditPriceList(temp_priceList)
     return 
-}
+  }
+  function handleVkpValueChange(val){
+    data.vkp_netto = val.replace(",",".")
+  }
   // // BVP Rechner 
 // req = {
 //     "recipeID": 4,
@@ -85,9 +89,7 @@ export default function Bvp({
 //     }
 // ]
 
-function handleNvpChange(val) {
- // console.log(data, val)
-    data.vkp_netto = val 
+function handlePriceSubmit() {
     if(!productID || (productID == -1)){
       return
   }
@@ -96,8 +98,7 @@ function handleNvpChange(val) {
         temp_priceList[i].price = temp_priceList[i].price.replace(",",".")
       
   }
-
-    const handleRequest = ()=>{
+  const handleRequest = ()=>{
     setLoading(true);
     axios({
       axiosInstance: axios,
@@ -108,12 +109,12 @@ function handleNvpChange(val) {
       },
       data:{
           "productID": data.ID,
-          "vkp_netto": val.replace(",","."),
+          "vkp_netto": data.vkp_netto,
           "price_list": temp_priceList
       },
     }).then(function (response){
       //console.log(response.data);
-      setRes(response.data)
+      setRes({message:"Erfolgreich gespeichert"})
       setLoading(false);
   
   
@@ -124,27 +125,40 @@ function handleNvpChange(val) {
     })
   }
   handleRequest()
-    return [res, error, loading]
+  return [res, error, loading]
+}
+let editPriceListInputs = []
+if(priceList.length > 0){
+    editPriceListInputs = priceList.map((obj, key) =>
+       {return(
+           [<p key={"title_price" + key}>{obj.name}</p>,
+           <input key={"price_edit_"+key} className='bvp-price' onChange={(e)=>handlePriceValueChange( obj.margeID, e.target.value)} defaultValue={obj.price.replace(".", ",") || "0,00"}></input>]
+       )
+    })
+
 }
   return (
     <div className='bvp-wrapper'>
       <div className='bvp-table'>
           <p>MK</p>
-          <p>{data.mk? data.mk : 0}€</p>
+          <p>{data.mk? data.mk.replace(".",",") : "0,00"}€</p>
           <p className='border-b'>BK</p>
-          <p className='border-b'>{data.bk ? data.bk : 0}€</p>
+          <p className='border-b'>{data.bk ? data.bk.replace(".",",") : "0,00"}€</p>
           <p>SK</p>
-          <p>{data.sk ? data.sk : 0}€</p>
+          <p>{data.sk ? data.sk.replace(".",",") : "0,00"}€</p>
           <p className='border-b'>RG</p>
-          <p className='border-b'>{data.rg ? data.rg : 0.00}%</p>
+          <p className='border-b'>{data.rg ? data.rg.replace(".",",") :"0,00"}%</p>
           <p>NVP</p>
-          <p>{data.nvp ? data.nvp : 0}€</p>
+          <p>{data.nvp ? data.nvp.replace(".",",") : "0,00"}€</p>
           <p className='border-b'>MwST</p>
-          <p className='border-b'>{data.mwst? data.mwst : 0.00}%</p>
+          <p className='border-b'>{data.mwst? data.mwst.replace(".",",") : "0,00"}%</p>
           <p>BVP</p>
-          <p>{data.bvp? data.bvp : 0}€</p>
+          <p>{data.bvp? data.bvp.replace(".",",") : "0,00"}€</p>
           <p className='bvp-price'>gesetzter NVP</p>
-          <input className='bvp-price' defaultValue={data.vkp_netto ? data.vkp_netto.replace(".",","): "0,00"} onChange={(e)=>handleNvpChange(e.target.value)}></input>
+          <input className='bvp-price-first' defaultValue={data.vkp_netto ? data.vkp_netto.replace(".",","): "0,00"} onChange={(e)=>handleVkpValueChange(e.target.value)}></input>
+          {editPriceListInputs? editPriceListInputs : ""}
+          <button className='submit_btn' onClick={()=>handlePriceSubmit()}>Speichern</button>
+          {res.message && <h5 className='successMsg'>{res.message}</h5>}
       </div>
       
     </div>

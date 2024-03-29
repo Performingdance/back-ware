@@ -47,7 +47,8 @@ router.post("/nutri", isLoggedIn, (req, res) => {
 });
 router.post("/nutri/form", isLoggedIn, (req, res) => {
     const recipeID = req.body.recipeID;
-    const formID = req.body.formID;
+    const productID = req.body.productID;
+    
     db.query(`SELECT a.ID, 
     a.name, 
     a.allergen, 
@@ -67,7 +68,7 @@ router.post("/nutri/form", isLoggedIn, (req, res) => {
      CAST((a.salt * 10 * recipe_form.formweight)AS DECIMAL(5, 2)) AS salt 
     FROM (SELECT * FROM ingredients WHERE recipeID = ?) AS a
     LEFT JOIN recipe_form
-    ON a.recipeID = recipe_form.recipeID AND recipe_form.formID = ?`, [recipeID, formID], (err, result) =>{
+    ON recipe_form.ID = ?`, [recipeID, productID], (err, result) =>{
          if(err){
             console.log(err)
          } else {

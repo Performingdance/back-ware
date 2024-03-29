@@ -79,13 +79,13 @@ function handleNutriRequest(recipeID){
 
   return [res, error, loading]
 }
-function handleServingRequest(recipeID, formID){
+function handleServingRequest(recipeID,productID){
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  useEffect(()=>handleRequest(), [formID])
+  useEffect(()=>handleRequest(), [productID])
 
-  if(formID == -1){
+  if(productID == -1){
     return [res, error, loading]
   }
   function handleRequest(){
@@ -99,7 +99,7 @@ function handleServingRequest(recipeID, formID){
     },
     data:{
         "recipeID": recipeID,
-        "formID": formID
+        "prodctID": productID
     },
   }).then(function (response){
     //console.log(response.data);
@@ -168,7 +168,7 @@ function Calculator({
     const [bvpData, bvpError, bvpLoading] = handleBvpRequest(selectedProductId);
     const [ingData, ingError, ingLoading] = handleIngRequest(selectedRecipeId);
     const [nutriData, nutriError, nutriLoading] = handleNutriRequest(selectedRecipeId);
-    const [servingData, servingError, servingLoading] = handleServingRequest(selectedRecipeId, selectedFormId);
+    const [servingData, servingError, servingLoading] = handleServingRequest(selectedRecipeId, selectedProductId);
 
     let ingredients = ingData.map((ing, key)=>{
       if(ingData.length == key){
