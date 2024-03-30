@@ -130,7 +130,6 @@ function EditOrder  () {
             }
         }).then((response)=>{
             setSubRes("success")
-            setUpdateOrder(updateOrder+1)
             //console.log(response.data);
   
         }).catch((err) => {
@@ -142,8 +141,9 @@ function EditOrder  () {
           setSubError(err)
           //console.log(err);
       }) 
-      setSubLoading(false)
       setUpdateOrder(updateOrder+1)
+      setSubLoading(false)
+
 
     };
 
