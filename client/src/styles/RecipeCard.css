@@ -165,11 +165,19 @@
     background-color: var(--bg-0-5);
     border-radius: var(--border-radius);
 }
-.cl-arrow, .cl-date{
+.cl-arrow-md, .cl-date-md{
 
     padding:  0.5rem;
     margin: auto;
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-md);
+    color: var(--text-color);
+    
+}
+.cl-arrow-sm, .cl-date-sm{
+
+    padding:  0.1rem;
+    margin: auto;
+    font-size: var(--font-size-sm);
     color: var(--text-color);
     
 }

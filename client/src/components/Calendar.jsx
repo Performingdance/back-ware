@@ -31,31 +31,39 @@ function CustomInputLine({
   onNextDay, 
   onPrevDay}){
   let icon_size
-  if(size == sm){
+  let date_size
+  let arrow_size
+  if(size == "sm"){
     icon_size = "svg-icon-sm"
+    date_size = "cl-date-sm"
+    arrow_size = "cl-arrow-sm"
   }
-  if(size == md){
+  if(size == "md"){
     icon_size = "svg-icon-md"
+    date_size = "cl-date-md"
+    arrow_size = "cl-arrow-md"
   }
   else{
     icon_size = "svg-icon-md"
+    date_size = "cl-date-md"
+    arrow_size = "cl-arrow-md"
   }
   
   const dayDate = new Date(date).toLocaleDateString();
   //console.log(date)
   return(
       <div className="calendar-line">
-        <div className="cl-arrow" onClick={onPrevDay} type="button">
+        <div className={arrow_size} onClick={onPrevDay} type="button">
           <SVGIcon src={caret_left} class={icon_size}/>
         </div>
-        <div className="cl-date"
+        <div className={date_size}
         href="#"
         onClick={openCalendar} 
         onChange={handleValueChange} 
         type="button"> 
         {dayDate} 
         </div>
-        <div className="cl-arrow" onClick={onNextDay} type="button">
+        <div className={arrow_size} onClick={onNextDay} type="button">
         <SVGIcon src={caret_right} class={icon_size}/>
          </div>
       </div>

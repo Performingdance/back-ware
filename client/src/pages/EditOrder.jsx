@@ -43,27 +43,63 @@ function EditOrder  () {
     const[subRes, setSubRes] = useState([])
     const [subError, setSubError] = useState("");
     const [subLoading, setSubLoading] = useState(false);
-    
+    const today = new Date().toISOString().split("T",[1])
     //
     let order_date = orderRes.order_date
-    let delivery_date = orderRes.delivery_date
+    let order_delivery_date = orderRes.delivery_date
+    let order_delivery_date_end = orderRes.delivery_date_end
     let notes = orderRes.notes
-
+    let editRes = [] 
+    useEffect(() => {
+      res.forEach((obj)=>{
+      let temp_obj = {...obj, edit : false}
+      editRes = [...editRes, temp_obj] 
+      
+    }) }, [res,edit])
     
+    const handleValueChange = (obj, val, ID) =>{
+      editRes.forEach((product,key)=>{
+        if(product.ID == ID){
+          editRes[key].edit = true;
+          if((obj == "delivery_date") || (obj == "production_date")){
+            if((val == "00.00.00"|| !val)){
+              product.obj = today[0]
+            }
+            product.obj = val.replace(/(..).(..).(..)/, "20$3-$2-$1")
+          }else{
+            product.obj = val
+          }
+          product.edit = true
+          
+        }
+      })
+
+    }
     const handleSubmit = (e) =>{
       e.preventDefault()
-      const today = new Date().toISOString().split("T",[1])
-      if((delivery_date == "00.00.00"|| !delivery_date)){
-        delivery_date = today[0]
+
+      if((order_delivery_date == "00.00.00"|| !order_delivery_date)){
+        order_delivery_date = today[0]
+      }      
+      if((order_delivery_date_end == "00.00.00"|| !order_delivery_date_end)){
+        order_delivery_date_end = today[0]
       }
-      if(delivery_date.indexOf(".") != -1){
-        delivery_date = delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
+      if(order_delivery_date_end.indexOf(".") != -1){
+        order_delivery_date_end = order_delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1")
+      }
+      if(order_delivery_date.indexOf(".") != -1){
+        order_delivery_date = order_delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
       }
       if(order_date.indexOf(".") != -1){
         order_date = order_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
       }
+      let changedItems 
+      editRes.forEach((obj)=>{
+        if(obj.edit == true){
+          changedItems = [...changedItems, obj]
+        }
+      })
 
-      console.log (order_date, delivery_date)
       setSubLoading(true)
       axios({
           axiosInstance: axios,
@@ -76,12 +112,31 @@ function EditOrder  () {
               "orderID": orderID,
               "clientID": orderRes.clientID,
               "order_date": order_date,
-              "delivery_date": delivery_date,
+              "delivery_date": order_delivery_date,
+              "delivery_date_end": order_delivery_date_end,
               "notes": notes
           }
       }).then((response)=>{
           setSubRes(response.data)
-          //console.log(response.data);
+
+          axios({
+            axiosInstance: axios,
+            method: "PUT",
+            url:"s/orders/update/items/all",
+            headers: {
+                "authorization": authHeader()
+            },
+            data : {
+              changedItems
+            }
+        }).then((response)=>{
+            setSubRes("success")
+            //console.log(response.data);
+  
+        }).catch((err) => {
+            setSubError(err)
+            //console.log(err);
+        }) 
 
       }).catch((err) => {
           setSubError(err)
@@ -91,6 +146,7 @@ function EditOrder  () {
       setUpdateOrder(updateOrder+1)
 
     };
+
     
     function handleOrderDelete(){
     
@@ -165,20 +221,20 @@ function EditOrder  () {
         return(
           <div key={key+"div"} className='edit-order-div'>
             <div key={key+"li"} className='edit-order-grid'>
-              <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
+              <div><input key={key+"amount"} className='order-amount-input'defaultValue={product.amount} onChange={(e)=>handleValueChange("amount",e.target.value,product.ID)}></input>Stück</div>
               <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
               <p key={key+"form"} className='order-p'>{product.form_name}</p>
               <p key={key+"p"} ></p>
               <div key={key+"edit_production"} className='order-p'>{"Backtag: " }
               <DateLine 
               defaultDay={product.production_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
-              onDateChange={(val)=>{res[key].production_date = val}}
+              onDateChange={(val)=>{handleValueChange("production_date",val,product.ID)}}
               size={"sm"} /> 
               </div>
               <div key={key+"edit_delivery"} className='order-p'>{"Lieferdatum: " }
               <DateLine 
               defaultDay={product.delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
-              onDateChange={(val)=>{res[key].delivery_date = val}}
+              onDateChange={(val)=>{handleValueChange("delivery_date",val,product.ID)}}
               size={"sm"} /> 
               </div>
             </div>
@@ -231,20 +287,46 @@ function EditOrder  () {
       <div className='order-wrapper'>
         <div className='order-div'>
           <p>Kunde: {orderRes? orderRes.client : "-"} </p>
-          {!edit? <p>Bestelldatum: {orderRes.order_date? orderRes.order_date : "-"}</p>:         
+          {!edit? <p>Bestelldatum: {order_date? order_date : "-"}</p>:         
           <div className='d-il ai-c'> 
             <p>Bestelldatum:</p> 
             <DateLine 
-              defaultDay={orderRes.order_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
+              defaultDay={order_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
               onDateChange={(val)=>{order_date = val}} /> 
           </div>}
-          {!edit? <p>Lieferdatum: {orderRes.delivery_date? orderRes.delivery_date : "-"}</p>:         
-          <div className='d-il ai-c'> 
-            <p>Lieferdatum:</p> 
+          {(order_delivery_date == order_delivery_date_end) ?
+          !edit? 
+          <p>Lieferzeitraum: {(order_delivery_date && order_delivery_date_end)? order_delivery_date + "-" +order_delivery_date_end : "-"}
+          </p>:         
+          <div className=' ai-c'> 
+            <p>Lieferzeitraum:</p> 
             <DateLine 
-              defaultDay={(orderRes.delivery_date != "00.00.00") && orderRes.delivery_date && (orderRes.delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
-              onDateChange={(val)=>{delivery_date = val}} />
-          </div>}
+              defaultDay={(order_delivery_date != "00.00.00") && order_delivery_date && (order_delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
+              onDateChange={(val)=>{order_delivery_date = val}}
+              size="sm" />
+              <p>-</p>
+            <DateLine 
+              defaultDay={(order_delivery_date_end != "00.00.00") && order_delivery_date_end && (order_delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
+              onDateChange={(val)=>{order_delivery_date_end = val}}
+              size="sm" />
+          </div>:
+          !edit? 
+          <p>Lieferdatum: {(order_delivery_date)? order_delivery_date: "-"}
+          </p>:         
+          <div className='ai-c jc-c'> 
+            <p>Lieferzeitraum:</p> 
+            <DateLine 
+              defaultDay={(order_delivery_date != "00.00.00") && order_delivery_date && (order_delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
+              onDateChange={(val)=>{order_delivery_date = val}}
+              size="sm" />
+            <p className='ta-c'>bis</p>
+            <DateLine 
+              defaultDay={(order_delivery_date_end != "00.00.00") && order_delivery_date_end && (order_delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
+              onDateChange={(val)=>{order_delivery_date_end = val}}
+              size="sm" />
+          </div>
+          }
+          
           {!edit? <div>
             <p>Notizen: </p><pre className=''>{orderRes? orderRes.notes : "-"}</pre>
             </div>:
@@ -277,12 +359,9 @@ function EditOrder  () {
         {(res && !edit) && items}
         {(res && edit) && editItems}
 
+      <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn"} onClick={()=>{setToggleOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-lg"/></button>
         
       </div>
-      <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn"} onClick={()=>{setToggleOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-lg"/></button>
-
-
-   
     </div>
   )
 }

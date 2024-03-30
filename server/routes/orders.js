@@ -184,10 +184,11 @@ router.put("/update", isLoggedIn, (req, res, next) => {
     const clientID = req.body.clientID;
     const order_date = req.body.order_date;
     const delivery_date = req.body.delivery_date;
+    const delivery_date_end = req.body.delivery_date_end;
     const notes = req.body.notes;
 
-    db.query("UPDATE orders SET order_date = ?, delivery_date = ?,  clientID = ?, notes = ? WHERE ID = ?", 
-    [order_date, delivery_date, clientID, notes, orderID], 
+    db.query("UPDATE orders SET order_date = ?, delivery_date = ?, delivery_date_end = ?,  clientID = ?, notes = ? WHERE ID = ?", 
+    [order_date, delivery_date,delivery_date_end, clientID, notes, orderID], 
     (err, result) =>{
         if(err){
             console.log(err)
@@ -271,6 +272,87 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
     });
      
 });
+router.put("/update/items/all", isLoggedIn, (req, res, next) => {
+    const items = req.body.changedItems
+    items.forEach(item => {
+        const ID = item.ID;
+        const orderID = item.orderID;
+        const recipeID = item.recipeID;
+        const formID = item.formID;
+        const amount = item.amount;
+        const delivery_date = item.delivery_date;
+        const production_date = item.production_date;
+        db.query("UPDATE orders_items SET amount = ?, delivery_date = ?, production_date = ? WHERE ID = ?", 
+        [ amount, delivery_date, production_date, ID], 
+        (err, result) =>{
+            if(err){
+                console.log(err)
+            } else{
+                db.query("SELECT ID FROM daylist WHERE orderID = ? AND recipeID = ? AND formID = ?", [orderID, recipeID, formID], (aerr, aresult) => {
+                    //console.log(aresult)
+                    if(aerr){
+                        console.log(aerr)
+                    } 
+                    if (!aresult.length ){
+                    
+                        db.query("INSERT INTO daylist (date, recipeID, formID, amount, orderID) VALUES (?, ?, ?, ?, ?)", 
+                        [bake_date, recipeID, formID, amount, orderID], 
+                        (aaerr, result) =>{
+                            if(aaerr){
+                                console.log(aaerr)
+                            } else{
+                                const ID = result.insertId;
+                    
+                                db.query(`
+                                UPDATE daylist SET 
+                                mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE recipeID = ? and formID = ?)) AS mass) 
+                                WHERE ID = ?`, 
+                                [amount, recipeID, formID, ID], 
+                                (aaaerr, aaaresult) =>{
+                                    if(aaaerr){
+                                        console.log(aaaerr)
+                                    } else{
+                                        res.send("success");
+                                    };
+                                })
+                            };
+                        })
+                    
+                    }else{
+                        const daylistID = aresult[0].ID;
+                        db.query("UPDATE daylist SET date = ?, amount = ? WHERE ID = ? ", 
+                        [bake_date, amount, daylistID], 
+                        (berr, bresult) =>{
+                            if(err){
+                                console.log(berr)
+                            } else{
+                                            
+                                db.query(`
+                                UPDATE daylist SET 
+                                mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE recipeID = ? and formID = ?)) AS mass) 
+                                WHERE orderID = ?`, 
+                                [amount, recipeID, formID, ID], 
+                                (bberr, bbresult) =>{
+                                    if(berr){
+                                        console.log(bberr)
+                                    } else{
+                                        res.send("success");
+                                    };
+                                })
+                            };
+                        })
+                    }
+                })
+            };
+        });
+         
+        
+    });
+
+
+
+});
+
 
 router.delete("/delete/item", isLoggedIn, (req, res) => {
 
