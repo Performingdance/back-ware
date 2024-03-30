@@ -1025,8 +1025,11 @@ export function RecipeOrderPopup({
                   className='i-select popup-input' 
                   defaultValue={defaultOrderName}
                   />]}
-                  <div className='rc-calendar'>
-                    < Calendar onDateChange={handleDateChange}/>
+                  <div className='rc-calendar d-il'>                    
+                    <div>
+                      <p>Produktionsdatum:</p>
+                      < Calendar onDateChange={handleDateChange}/>
+                    </div>
                   </div>
             <div className='popup-card-btns'>
                 <button className='btn popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>

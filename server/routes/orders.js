@@ -143,7 +143,7 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
     const productID = req.body.productID;
     const formID = req.body.formID;
     const amount = req.body.amount;
-    const delivery_date = req.body.delivery_date;
+    const delivery_date = req.body.delivery_date || req.body.production_date;
     const production_date = req.body.production_date;
 
             db.query("INSERT INTO orders_items (orderID, productID, recipeID, formID, amount, delivery_date, production_date) VALUES (?,?,?,?,?,?,?)", 

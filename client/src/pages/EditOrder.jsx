@@ -73,7 +73,7 @@ function EditOrder  () {
           
         }
       })
-      console.log(editRes)
+      //console.log(editRes)
 
     }
     const handleSubmit = (e) =>{
@@ -136,12 +136,13 @@ function EditOrder  () {
             setSubError(err)
             //console.log(err);
         }) 
+        setUpdateOrder(updateOrder+1)
 
       }).catch((err) => {
           setSubError(err)
           //console.log(err);
       }) 
-      setUpdateOrder(updateOrder+1)
+     
       setSubLoading(false)
 
 
