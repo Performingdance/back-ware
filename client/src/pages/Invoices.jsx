@@ -57,7 +57,6 @@ function Invoices() {
     {err && <h3> {err.message} </h3>}
     {loading && <Loading/>}
 
-
     </div>
     <FloatIcon/>
     </>

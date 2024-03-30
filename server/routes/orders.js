@@ -91,6 +91,22 @@ router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {
             })
             
 });
+router.get("/all/items/noInvoice", isLoggedIn, (req, res, next) => {   
+
+
+            db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name 
+            FROM order_items 
+            WHERE invoiceID IS NULL`, 
+            [clientID],
+            (err, result) =>{
+                if(err){
+                    console.log(err)
+                } else{
+                    res.send(result)
+                };
+            })
+            
+});
 router.post("/all/client", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
 
@@ -124,6 +140,7 @@ router.put("/new", isLoggedIn, (req, res, next) => {
 router.put("/new/item", isLoggedIn, (req, res, next) => {   
     const orderID = req.body.orderID;
     const recipeID = req.body.recipeID;
+    const productID = req.body.productID;
     const formID = req.body.formID;
     const amount = req.body.amount;
     const delivery_date = req.body.delivery_date;

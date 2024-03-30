@@ -21,6 +21,9 @@ function EditInvoice  () {
 
     let invoiceID = window.location.pathname.split(":")[1];
     const [togglePrompt, setTogglePrompt] = useState(false);
+    const [addItemPrompt, setAddItemPrompt] = useState(false);
+    const [addClientItemPrompt, setAddClientItemPrompt] = useState(false);
+    const [addOrderPrompt, setAddOrderPrompt] = useState(false);
     const [toggleDelPrompt, setToggleDelPrompt] = useState(false);
     const [margeSelectOpen, setMargeSelectOpen] = useState(false);
     const [clientSelectOpen, setClientSelectOpen] = useState(false);
@@ -352,10 +355,12 @@ function EditInvoice  () {
 
         
       </div>
-      <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn"} onClick={()=>{setToggleOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-lg"/></button>
+      <div>
+        <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-lg"/>Bestellung</button>
+        <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn_2"} onClick={()=>{setAddItemPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-lg"/>Produkt</button>
+        <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn_3"} onClick={()=>{setAddClientItemPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-lg"/>Kunde</button>   
 
-
-   
+      </div>
     </div>
   )
 }

@@ -2,38 +2,33 @@ import axios from '../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../services/auth-header';
 
-export default function handleInvoicenoRequest() {
+export default function handleInvoiceOpenClientRequest() {
+   // console.log(clientID)
 
     // handle api request 
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+   
+        
+    
+    function handleRequest(clientID) {
+        if(clientID != -1){
 
-
-    function handleRequest () {
-        // console.log(res)
+            
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "GET",
-            url:"s/invoices/invoiceno",
+            method: "POST",
+            url:"s/orders/all/client/noInvoice",
             headers: {
                 "authorization": authHeader()
             }, 
-        }).then((response)=>{
-            if(!response.data.length){
-                const newRes = [{
-                    ID: 0, 
-                    name: "Neue Bestellung" 
-               }]
-               setRes(newRes)
-
-            }else{
-                const addRes = 
-                    [{ID: 0, name: "Neue Rechnung"}, ...response.data]
-            
-                setRes(addRes)
+            data: {
+                "clientID": clientID
             }
+        }).then((response)=>{
+            setRes(response.data)
             //console.log(res);
         }).catch((err) => {
             setError(err)
@@ -41,8 +36,11 @@ export default function handleInvoicenoRequest() {
         })
 
         setLoading(false)
+    }
         
     }
     return [res, error, loading, handleRequest];
-    
+
+
+   
   }

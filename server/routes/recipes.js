@@ -54,7 +54,7 @@ router.post("/form/prices", isLoggedIn, (req, res) => {
 router.post("/forms", isLoggedIn, (req, res) => {
    const recipeID = req.body.recipeID;
    db.query(`SELECT a.*, CONCAT(a.product_name, ' (', form.name,')') AS name FROM
-   (SELECT formID AS ID, recipeID, img, product_name FROM recipe_form WHERE recipeID = ?) AS a
+   (SELECT formID AS ID, ID as productID, recipeID, img, product_name FROM recipe_form WHERE recipeID = ?) AS a
    JOIN form
    ON a.ID = form.ID`, recipeID, (err, result) =>{
         if(err){

@@ -910,6 +910,7 @@ export function RecipeOrderPopup({
                     "authorization": authHeader()
                 },
                 data : {
+                  "productID" : recipeForm[selectedFormId].productID || "NULL",
                   "recipeID" : selectedRecipeId,
                   "formID" : selectedFormId,
                   "clientID" : selectedClientId,
