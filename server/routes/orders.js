@@ -312,7 +312,7 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
                                     if(aaaerr){
                                         console.log(aaaerr)
                                     } else{
-                                        res.send("success");
+                                        
                                     };
                                 })
                             };
@@ -336,7 +336,6 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
                                     if(berr){
                                         console.log(bberr)
                                     } else{
-                                        res.send("success");
                                     };
                                 })
                             };
@@ -344,13 +343,9 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
                     }
                 })
             };
-        });
-         
-        
+        });    
     });
-
-
-
+    res.send("success");
 });
 
 

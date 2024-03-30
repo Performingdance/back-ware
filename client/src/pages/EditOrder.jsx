@@ -93,7 +93,7 @@ function EditOrder  () {
       if(order_date.indexOf(".") != -1){
         order_date = order_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
       }
-      let changedItems 
+      let changedItems = []
       editRes.forEach((obj)=>{
         if(obj.edit == true){
           changedItems = [...changedItems, obj]
