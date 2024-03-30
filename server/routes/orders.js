@@ -35,7 +35,7 @@ router.post("/ID/ing", isLoggedIn, (req, res) =>{
     SELECT b.*, recipes.name AS recipe_name 
         FROM (SELECT a.*, form.name AS form_name 
              FROM (
-                SELECT ID, formID, recipeID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(production_date , "%d.%m.%y") AS production_date
+                SELECT ID, formID, recipeID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(production_date , "%d.%m.%y") AS production_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date
                     FROM orders_items WHERE orderID = ?) as a
         LEFT JOIN form
         ON form.ID = a.formID) AS b
@@ -146,8 +146,8 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
     const delivery_date = req.body.delivery_date;
     const production_date = req.body.production_date;
 
-            db.query("INSERT INTO orders_items (orderID, recipeID, formID, amount, delivery_date, production_date) VALUES (?, ?, ?, ?, ?, ?)", 
-            [orderID, recipeID, formID, amount, delivery_date, production_date], 
+            db.query("INSERT INTO orders_items (orderID, productID, recipeID, formID, amount, delivery_date, production_date) VALUES (?,?,?,?,?,?,?)", 
+            [orderID, productID, recipeID, formID, amount, delivery_date, production_date], 
             (err, result) =>{
                 if(err){
                     console.log(err)

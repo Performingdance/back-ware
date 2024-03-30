@@ -169,8 +169,18 @@ function EditOrder  () {
               <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
               <p key={key+"form"} className='order-p'>{product.form_name}</p>
               <p key={key+"p"} ></p>
-              <p key={key+"production"} className='order-p'>{"Backtag: " + (product.production_date|| "-")}</p>
-              <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
+              <div key={key+"edit_production"} className='order-p'>{"Backtag: " }
+              <DateLine 
+              defaultDay={product.production_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
+              onDateChange={(val)=>{res[key].production_date = val}}
+              size={"sm"} /> 
+              </div>
+              <div key={key+"edit_delivery"} className='order-p'>{"Lieferdatum: " }
+              <DateLine 
+              defaultDay={product.delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
+              onDateChange={(val)=>{res[key].delivery_date = val}}
+              size={"sm"} /> 
+              </div>
             </div>
             <button key={key+"del"} className='edit-btn' onClick={()=>[setEdit(false), setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
           </div>

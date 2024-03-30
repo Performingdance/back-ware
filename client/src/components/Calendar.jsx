@@ -23,13 +23,30 @@ function CustomInput({openCalendar, closeCalendar, handleValueChange}){
         </a>
     )
 }
-function CustomInputLine({openCalendar, handleValueChange, date, onNextDay, onPrevDay}){
+function CustomInputLine({
+  size,
+  openCalendar, 
+  handleValueChange, 
+  date, 
+  onNextDay, 
+  onPrevDay}){
+  let icon_size
+  if(size == sm){
+    icon_size = "svg-icon-sm"
+  }
+  if(size == md){
+    icon_size = "svg-icon-md"
+  }
+  else{
+    icon_size = "svg-icon-md"
+  }
+  
   const dayDate = new Date(date).toLocaleDateString();
   //console.log(date)
   return(
       <div className="calendar-line">
         <div className="cl-arrow" onClick={onPrevDay} type="button">
-          <SVGIcon src={caret_left} class="svg-icon-md"/>
+          <SVGIcon src={caret_left} class={icon_size}/>
         </div>
         <div className="cl-date"
         href="#"
@@ -39,7 +56,7 @@ function CustomInputLine({openCalendar, handleValueChange, date, onNextDay, onPr
         {dayDate} 
         </div>
         <div className="cl-arrow" onClick={onNextDay} type="button">
-        <SVGIcon src={caret_right} class="svg-icon-md"/>
+        <SVGIcon src={caret_right} class={icon_size}/>
          </div>
       </div>
   )
@@ -120,7 +137,9 @@ export function CalendarSingle({onDateChange}) {
 
 export function DateLine({
   onDateChange,
-  defaultDay}) {
+  defaultDay,
+  size
+}) {
   const today = new Date().toISOString().split("T",[1])
   const [value, setValue] = useState(defaultDay|| today);
 
@@ -155,6 +174,7 @@ export function DateLine({
         className="custom-calendar"
         onChange={date => handleChange(date)}
         render={<CustomInputLine 
+          size
           date={value}
           onNextDay={()=> onNextDay()}
           onPrevDay={()=> onPrevDay()}   />}

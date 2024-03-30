@@ -884,6 +884,15 @@ export function RecipeOrderPopup({
 
 
   function handleSubmit (e) {
+    let productID = -1
+    if(selectedFormId >0){
+      recipeForm.forEach((obj, key)=>{
+        if(obj.ID == selectedFormId){
+          productID = recipeForm[key].productID
+          return
+        }
+      })
+    }
     if(selectedFormId <= 0){
       setAddError({message: "Bitte Form wählen"})
       return
@@ -910,7 +919,7 @@ export function RecipeOrderPopup({
                     "authorization": authHeader()
                 },
                 data : {
-                  "productID" : recipeForm[selectedFormId].productID || "NULL",
+                  "productID" : productID,
                   "recipeID" : selectedRecipeId,
                   "formID" : selectedFormId,
                   "clientID" : selectedClientId,
@@ -1110,7 +1119,7 @@ function handleSubmit (e) {
                   "formID" : selectedFormID,
                   "product_name" : product_nameRef.current,
                   "formweight": formweightRef.current,
-                  "img": "default_recipe_img.jpg",
+                  "img": "",
                   "worktime": worktimeRef.current,
                   "workamount": workamountRef.current,
                   "vkp_netto": vkp_nettoRef.current,
