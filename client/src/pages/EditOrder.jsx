@@ -63,16 +63,17 @@ function EditOrder  () {
           editRes[key].edit = true;
           if((obj == "delivery_date") || (obj == "production_date")){
             if((val == "00.00.00"|| !val)){
-              product.obj = today[0]
+              editRes[key][obj] = today[0]
             }
-            product.obj = val.replace(/(..).(..).(..)/, "20$3-$2-$1")
+            editRes[key][obj] = val.replace(/(..).(..).(..)/, "20$3-$2-$1")
           }else{
-            product.obj = val
+            editRes[key][obj]= val
           }
-          product.edit = true
+          editRes[key].edit = true
           
         }
       })
+      console.log(editRes)
 
     }
     const handleSubmit = (e) =>{
@@ -117,8 +118,6 @@ function EditOrder  () {
               "notes": notes
           }
       }).then((response)=>{
-          setSubRes(response.data)
-
           axios({
             axiosInstance: axios,
             method: "PUT",
@@ -131,6 +130,7 @@ function EditOrder  () {
             }
         }).then((response)=>{
             setSubRes("success")
+            setUpdateOrder(updateOrder+1)
             //console.log(response.data);
   
         }).catch((err) => {
