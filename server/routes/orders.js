@@ -32,9 +32,13 @@ router.post("/ID", isLoggedIn, (req, res) =>{
 router.post("/ID/ing", isLoggedIn, (req, res) =>{
     const orderID = req.body.orderID;
     db.query(`
-    SELECT ID, productID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(production_date , "%d.%m.%y") AS production_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date
-    FROM orders_items WHERE orderID = ?
-    ORDER BY productID
+    SELECT a.*, products.product_name
+    FROM
+        (SELECT ID, productID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(production_date , "%d.%m.%y") AS production_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date
+        FROM orders_items WHERE orderID = ?) AS a
+    LEFT JOIN products
+    ON a.productID = products.ID
+    ORDER BY a.productID
     `, [orderID], (err, result) =>{
         if(err){
            console.log(err)
@@ -143,7 +147,7 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
                 if(err){
                     console.log(err)
                 } else{
-                    db.query("SELECT recipeID, formID FROM recipe_form WHERE ID = ?", 
+                    db.query("SELECT recipeID, formID FROM products WHERE ID = ?", 
                     [productID], 
                     (err, result) =>{
                         if(err){
@@ -162,7 +166,7 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
                         
                                     db.query(`
                                     UPDATE daylist SET 
-                                    mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE ID = ?)) AS mass) 
+                                    mass = (SELECT( ? * (SELECT formweight FROM products WHERE ID = ?)) AS mass) 
                                     WHERE ID = ?`, 
                                     [amount, productID, ID], 
                                     (berr, bresult) =>{
