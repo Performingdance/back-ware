@@ -43,7 +43,7 @@ router.post("/ID/prod", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
 
     db.query(`
-    SELECT c.ID, c.invoiceID, c.clientID, c.orderID, c.product_ID, c.amount, DATE_FORMAT(c.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(c.delivery_date , "%d.%m.%y") AS delivery_date, CONCAT(clients.company," (", clients.first_name, " ", clients.last_name, ")") AS client, c.price_piece, c.price_total, c.product_name
+    SELECT c.ID, c.invoiceID, c.clientID, c.orderID, c.productID, c.amount, DATE_FORMAT(c.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(c.delivery_date , "%d.%m.%y") AS delivery_date, CONCAT(clients.company," (", clients.first_name, " ", clients.last_name, ")") AS client, c.price_piece, c.price_total, c.product_name
         FROM 
         (SELECT * FROM invoices_items WHERE invoiceID = ?) AS c
     LEFT JOIN clients
@@ -206,9 +206,9 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
     const invoiceID = req.body.invoiceID;
 
     db.query(`INSERT INTO invoices_items 
-    (invoiceID, clientID, orderID, recipeID, formID, amount, delivery_date, order_date) 
+    (invoiceID, clientID, orderID,productID, amount, delivery_date, order_date) 
     SELECT a.*, orders.order_date
-    FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, recipeID, formID, amount, delivery_date  
+    FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, productID, amount, delivery_date  
         FROM orders_items 
         WHERE orderID = ?) as a
     LEFT JOIN orders
