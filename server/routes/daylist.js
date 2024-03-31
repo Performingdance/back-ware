@@ -73,6 +73,7 @@ router.put("/new", isLoggedIn, (req, res) => {
             } else{
                 const newOrderID = aresult.insertId
                 db.query("SELECT ID FROM products WHERE recipeID = ? and formID = ?", 
+                [recipeID, formID],
                 (aaerr, result) =>{
                     if(aaerr){
                         console.log(aaerr)
@@ -114,6 +115,7 @@ router.put("/new", isLoggedIn, (req, res) => {
         })
     }else{
     db.query("SELECT ID FROM products WHERE recipeID = ? and formID = ?", 
+    [recipeID, formID],
             (aaerr, result) =>{
                 if(aaerr){
                     console.log(aaerr)
@@ -233,7 +235,8 @@ router.put("/update", isLoggedIn, (req, res) => {
     const note = req.body.note;
     const date = req.body.date;
 
-    db.query("SELECT ID FROM products WHERE recipeID = ? and formID = ?", 
+    db.query("SELECT ID FROM products WHERE recipeID = ? AND formID = ?", 
+    [recipeID, formID],
             (aaerr, result) =>{
                 if(aaerr){
                     console.log(aaerr)
