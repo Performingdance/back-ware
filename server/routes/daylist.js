@@ -113,104 +113,111 @@ router.put("/new", isLoggedIn, (req, res) => {
             };
         })
     }else{
-    db.query("INSERT INTO orders_items (orderID, recipeID, formID, amount, delivery_date, production_date) VALUES (?, ?, ?, ?, ?, ?)", 
-    [orderID, recipeID, formID, amount, date, date], 
-    (aaerr, result) =>{
-        if(aaerr){
-            console.log(aaerr)
-        } else{
-        db.query("INSERT INTO daylist (date, recipeID, formID, amount,ist, orderID, note) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-        [date, recipeID, formID, amount, ist, orderID, note], 
-        (err, result) =>{
-            if(err){
-                console.log(err)
-            } else{
-                const ID = result.insertId;
-    
-                db.query(`
-                UPDATE daylist SET 
-                mass = (SELECT( ? * (SELECT formweight FROM products WHERE recipeID = ? and formID = ?)) AS mass) 
-                WHERE ID = ?`, 
-                [amount, recipeID, formID, ID], 
-                (berr, bresult) =>{
-                    if(berr){
-                        console.log(berr)
+    db.query("SELECT ID FROM products WHERE recipeID = ? and formID = ?", 
+            (aaerr, result) =>{
+                if(aaerr){
+                    console.log(aaerr)
+                } else{
+                    const productID = result[0].ID
+            db.query("INSERT INTO orders_items (orderID, productID, amount, delivery_date, production_date) VALUES (?,?, ?, ?, ?)", 
+            [orderID, productID, amount, date, date], 
+            (aaerr, result) =>{
+                if(aaerr){
+                    console.log(aaerr)
+                } else{
+                db.query("INSERT INTO daylist (date, recipeID, formID, amount,ist, orderID, note) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                [date, recipeID, formID, amount, ist, orderID, note], 
+                (err, result) =>{
+                    if(err){
+                        console.log(err)
                     } else{
-                        db.query("DELETE FROM worksheet WHERE date LIKE ? AND ID >= 0", date, (err, result) =>{
-                            if(err){
-                               console.log(err)
-                            } else {
-                               db.query(`INSERT INTO worksheet (date, recipeID, recipe_mass, ing_mass, base_ingID, base_recipeID, base, titleID, sortID, note, level)
-                               SELECT res.* 
-                               FROM(SELECT b.*, "1" AS "level"
-                                      FROM (SELECT a.date, dough.recipeID as recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, "0" AS base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, a.note			
-                                              FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID, daylist.note 
-                                              FROM daylist 
-                                              WHERE date = ?
-                                              GROUP BY daylist.date, daylist.recipeID, daylist.note ) AS a 
-                                      LEFT JOIN dough
-                                      ON a.recipeID = dough.recipeID) AS b    
-                                  UNION
-                                  SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, c.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "2" AS "level"
-                                      FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
-                                          FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
-                                              FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID 
-                                                  FROM daylist 
-                                                  WHERE date = ?
-                                                  GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
-                                          LEFT JOIN dough
-                                          ON a.recipeID = dough.recipeID
-                                          WHERE base = 1) AS b
-                                      LEFT JOIN ingredients
-                                      ON b.base_ingID = ingredients.ID) AS c
-                                  LEFT JOIN dough
-                                  ON c.base_recipeID = dough.recipeID
-                                  UNION
-                                  SELECT e.date, e.recipeID, e.recipe_mass, (dough.amount_pc * e.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, e.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "3" AS "level"
-                                      FROM (SELECT d.date, d.recipeID, d.recipe_mass, d.ing_mass, d.base_ingID, ingredients.recipeID AS base_recipeID, d.base, d.titleID, d.sortID
-                                          FROM (SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, c.titleID AS titleID, c.sortID AS sortID
-                                              FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
-                                              FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
-                                                      FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID
-                                                          FROM daylist 
-                                                          WHERE date = ?
-                                                          GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
-                                              LEFT JOIN dough
-                                              ON a.recipeID = dough.recipeID
-                                              WHERE base = 1) AS b
-                                              LEFT JOIN ingredients
-                                              ON b.base_ingID = ingredients.ID) AS c
-                                          LEFT JOIN dough
-                                          ON c.base_recipeID = dough.recipeID
-                                          WHERE dough.base = 1) AS d
-                                      LEFT JOIN ingredients
-                                      ON d.base_ingID = ingredients.ID) AS e
-                                  LEFT JOIN dough
-                                  ON e.base_recipeID = dough.recipeID) AS res
-                                  WHERE base_ingID IS NOT NULL`, [date,date,date], (err, result) =>{
-                            if(err){
-                                console.log(err)
-                            } else {
-                                
-                            }
-                        });
-                            }
-                       });
-                        
+                        const ID = result.insertId;
             
-                    };
+                        db.query(`
+                        UPDATE daylist SET 
+                        mass = (SELECT( ? * (SELECT formweight FROM products WHERE recipeID = ? and formID = ?)) AS mass) 
+                        WHERE ID = ?`, 
+                        [amount, recipeID, formID, ID], 
+                        (berr, bresult) =>{
+                            if(berr){
+                                console.log(berr)
+                            } else{
+                                db.query("DELETE FROM worksheet WHERE date LIKE ? AND ID >= 0", date, (err, result) =>{
+                                    if(err){
+                                    console.log(err)
+                                    } else {
+                                    db.query(`INSERT INTO worksheet (date, recipeID, recipe_mass, ing_mass, base_ingID, base_recipeID, base, titleID, sortID, note, level)
+                                    SELECT res.* 
+                                    FROM(SELECT b.*, "1" AS "level"
+                                            FROM (SELECT a.date, dough.recipeID as recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, "0" AS base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, a.note			
+                                                    FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID, daylist.note 
+                                                    FROM daylist 
+                                                    WHERE date = ?
+                                                    GROUP BY daylist.date, daylist.recipeID, daylist.note ) AS a 
+                                            LEFT JOIN dough
+                                            ON a.recipeID = dough.recipeID) AS b    
+                                        UNION
+                                        SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, c.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "2" AS "level"
+                                            FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
+                                                FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
+                                                    FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID 
+                                                        FROM daylist 
+                                                        WHERE date = ?
+                                                        GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
+                                                LEFT JOIN dough
+                                                ON a.recipeID = dough.recipeID
+                                                WHERE base = 1) AS b
+                                            LEFT JOIN ingredients
+                                            ON b.base_ingID = ingredients.ID) AS c
+                                        LEFT JOIN dough
+                                        ON c.base_recipeID = dough.recipeID
+                                        UNION
+                                        SELECT e.date, e.recipeID, e.recipe_mass, (dough.amount_pc * e.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, e.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "3" AS "level"
+                                            FROM (SELECT d.date, d.recipeID, d.recipe_mass, d.ing_mass, d.base_ingID, ingredients.recipeID AS base_recipeID, d.base, d.titleID, d.sortID
+                                                FROM (SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, c.titleID AS titleID, c.sortID AS sortID
+                                                    FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
+                                                    FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
+                                                            FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID
+                                                                FROM daylist 
+                                                                WHERE date = ?
+                                                                GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
+                                                    LEFT JOIN dough
+                                                    ON a.recipeID = dough.recipeID
+                                                    WHERE base = 1) AS b
+                                                    LEFT JOIN ingredients
+                                                    ON b.base_ingID = ingredients.ID) AS c
+                                                LEFT JOIN dough
+                                                ON c.base_recipeID = dough.recipeID
+                                                WHERE dough.base = 1) AS d
+                                            LEFT JOIN ingredients
+                                            ON d.base_ingID = ingredients.ID) AS e
+                                        LEFT JOIN dough
+                                        ON e.base_recipeID = dough.recipeID) AS res
+                                        WHERE base_ingID IS NOT NULL`, [date,date,date], (err, result) =>{
+                                    if(err){
+                                        console.log(err)
+                                    } else {
+                                        
+                                    }
+                                });
+                                    }
+                            });
+                                
+                    
+                            };
+                        })
+                    
+                    };                
                 })
-               
-            };                
+                    
+            };
         })
-               
-        };
-        })
-        res.send("success");
-    } 
+              
+        } 
 
-
-
+    })
+    }
+    res.send("success");
 
 });
 
@@ -226,107 +233,114 @@ router.put("/update", isLoggedIn, (req, res) => {
     const note = req.body.note;
     const date = req.body.date;
 
-
-    db.query("UPDATE orders_items SET amount = ? WHERE orderID = ? AND recipeID = ? AND formID = ?,", 
-    [amount,orderID, recipeID, formID], 
-    (aaerr, result) =>{
-        if(aaerr){
-            console.log(aaerr)
-        } else{
-    db.query(`UPDATE daylist SET  
-    recipeID = ?, 
-    formID = ?, 
-    amount = ?, 
-    ist = ?, 
-    rest = ?, 
-    orderID = ?, 
-    note = ? 
-    WHERE ID = ?`,
-
-    [recipeID,formID,amount,ist,rest,orderID,note, ID], 
-    (err, result) =>{
-        if(err){
-            console.log(err)
-         } else{           
-            
-            db.query(`
-            UPDATE daylist SET mass = (SELECT formweight 
-                FROM recipe_form 
-                WHERE recipeID = ? 
-                AND formID = ?) 
-            WHERE ID = ? 
-            `, 
-            [recipeID, formID, ID], 
-            (berr, bresult) =>{
-                if(berr){
-                    console.log(berr)
+    db.query("SELECT ID FROM products WHERE recipeID = ? and formID = ?", 
+            (aaerr, result) =>{
+                if(aaerr){
+                    console.log(aaerr)
                 } else{
+                    const productID = result[0].ID
+            db.query("UPDATE orders_items SET amount = ? WHERE orderID = ? AND productID = ?,", 
+            [amount,orderID, productID], 
+            (aaerr, result) =>{
+                if(aaerr){
+                    console.log(aaerr)
+                } else{
+            db.query(`UPDATE daylist SET  
+            recipeID = ?, 
+            formID = ?, 
+            amount = ?, 
+            ist = ?, 
+            rest = ?, 
+            orderID = ?, 
+            note = ? 
+            WHERE ID = ?`,
+
+            [recipeID,formID,amount,ist,rest,orderID,note, ID], 
+            (err, result) =>{
+                if(err){
+                    console.log(err)
+                } else{           
                     
-                    db.query("DELETE FROM worksheet WHERE date LIKE ? AND ID >= 0", date, (cerr, cresult) =>{
-                        if(cerr){
-                           console.log(cerr)
-                        } else {
-                           db.query(`INSERT INTO worksheet (date, recipeID, recipe_mass, ing_mass, base_ingID, base_recipeID, base, titleID, sortID, note, level)
-                           SELECT res.* 
-                           FROM(SELECT b.*, "1" AS "level"
-                                  FROM (SELECT a.date, dough.recipeID as recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, "0" AS base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, a.note			
-                                          FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID, daylist.note 
-                                          FROM daylist 
-                                          WHERE date = ?
-                                          GROUP BY daylist.date, daylist.recipeID, daylist.note ) AS a 
-                                  LEFT JOIN dough
-                                  ON a.recipeID = dough.recipeID) AS b    
-                              UNION
-                              SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, c.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "2" AS "level"
-                                  FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
-                                      FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
-                                          FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID 
-                                              FROM daylist 
-                                              WHERE date = ?
-                                              GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
-                                      LEFT JOIN dough
-                                      ON a.recipeID = dough.recipeID
-                                      WHERE base = 1) AS b
-                                  LEFT JOIN ingredients
-                                  ON b.base_ingID = ingredients.ID) AS c
-                              LEFT JOIN dough
-                              ON c.base_recipeID = dough.recipeID
-                              UNION
-                              SELECT e.date, e.recipeID, e.recipe_mass, (dough.amount_pc * e.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, e.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "3" AS "level"
-                                  FROM (SELECT d.date, d.recipeID, d.recipe_mass, d.ing_mass, d.base_ingID, ingredients.recipeID AS base_recipeID, d.base, d.titleID, d.sortID
-                                      FROM (SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, c.titleID AS titleID, c.sortID AS sortID
-                                          FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
-                                          FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
-                                                  FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID
-                                                      FROM daylist 
-                                                      WHERE date = ?
-                                                      GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
-                                          LEFT JOIN dough
-                                          ON a.recipeID = dough.recipeID
-                                          WHERE base = 1) AS b
-                                          LEFT JOIN ingredients
-                                          ON b.base_ingID = ingredients.ID) AS c
-                                      LEFT JOIN dough
-                                      ON c.base_recipeID = dough.recipeID
-                                      WHERE dough.base = 1) AS d
-                                  LEFT JOIN ingredients
-                                  ON d.base_ingID = ingredients.ID) AS e
-                              LEFT JOIN dough
-                              ON e.base_recipeID = dough.recipeID) AS res
-                              WHERE base_ingID IS NOT NULL`, [date,date,date], (derr, dresult) =>{
-                        if(derr){
-                            console.log(derr)
-                        } else {
+                    db.query(`
+                    UPDATE daylist SET mass = (SELECT formweight 
+                        FROM recipe_form 
+                        WHERE recipeID = ? 
+                        AND formID = ?) 
+                    WHERE ID = ? 
+                    `, 
+                    [recipeID, formID, ID], 
+                    (berr, bresult) =>{
+                        if(berr){
+                            console.log(berr)
+                        } else{
                             
-                        }
+                            db.query("DELETE FROM worksheet WHERE date LIKE ? AND ID >= 0", date, (cerr, cresult) =>{
+                                if(cerr){
+                                console.log(cerr)
+                                } else {
+                                db.query(`INSERT INTO worksheet (date, recipeID, recipe_mass, ing_mass, base_ingID, base_recipeID, base, titleID, sortID, note, level)
+                                SELECT res.* 
+                                FROM(SELECT b.*, "1" AS "level"
+                                        FROM (SELECT a.date, dough.recipeID as recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, "0" AS base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, a.note			
+                                                FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID, daylist.note 
+                                                FROM daylist 
+                                                WHERE date = ?
+                                                GROUP BY daylist.date, daylist.recipeID, daylist.note ) AS a 
+                                        LEFT JOIN dough
+                                        ON a.recipeID = dough.recipeID) AS b    
+                                    UNION
+                                    SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, c.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "2" AS "level"
+                                        FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
+                                            FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
+                                                FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID 
+                                                    FROM daylist 
+                                                    WHERE date = ?
+                                                    GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
+                                            LEFT JOIN dough
+                                            ON a.recipeID = dough.recipeID
+                                            WHERE base = 1) AS b
+                                        LEFT JOIN ingredients
+                                        ON b.base_ingID = ingredients.ID) AS c
+                                    LEFT JOIN dough
+                                    ON c.base_recipeID = dough.recipeID
+                                    UNION
+                                    SELECT e.date, e.recipeID, e.recipe_mass, (dough.amount_pc * e.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, e.base_recipeID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID, "" AS note,  "3" AS "level"
+                                        FROM (SELECT d.date, d.recipeID, d.recipe_mass, d.ing_mass, d.base_ingID, ingredients.recipeID AS base_recipeID, d.base, d.titleID, d.sortID
+                                            FROM (SELECT c.date, c.recipeID, c.recipe_mass, (dough.amount_pc * c.ing_mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, c.titleID AS titleID, c.sortID AS sortID
+                                                FROM (SELECT b.date, b.recipeID, b.recipe_mass, b.ing_mass, b.base_ingID, ingredients.recipeID AS base_recipeID, b.base, b.titleID, b.sortID
+                                                FROM (SELECT a.date, dough.recipeID AS recipeID, a.mass AS recipe_mass, (dough.amount_pc * a.mass) AS ing_mass, dough.ingredientID AS base_ingID, dough.base, dough.titleID AS titleID, dough.sortID AS sortID				
+                                                        FROM (SELECT daylist.date, SUM(daylist.mass) as mass, daylist.recipeID
+                                                            FROM daylist 
+                                                            WHERE date = ?
+                                                            GROUP BY daylist.date, daylist.recipeID, daylist.note) AS a 
+                                                LEFT JOIN dough
+                                                ON a.recipeID = dough.recipeID
+                                                WHERE base = 1) AS b
+                                                LEFT JOIN ingredients
+                                                ON b.base_ingID = ingredients.ID) AS c
+                                            LEFT JOIN dough
+                                            ON c.base_recipeID = dough.recipeID
+                                            WHERE dough.base = 1) AS d
+                                        LEFT JOIN ingredients
+                                        ON d.base_ingID = ingredients.ID) AS e
+                                    LEFT JOIN dough
+                                    ON e.base_recipeID = dough.recipeID) AS res
+                                    WHERE base_ingID IS NOT NULL`, [date,date,date], (derr, dresult) =>{
+                                if(derr){
+                                    console.log(derr)
+                                } else {
+                                    
+                                }
+                            });
+                                }
+                            });
+                            
+                        };                  
                     });
-                        }
-                    });
-                    
-                };                  
-             });
-                    
-            };
+                            
+                    };
+                    })
+                };
             })
             res.send(result)
         };
