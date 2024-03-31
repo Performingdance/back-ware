@@ -262,8 +262,8 @@ router.put("/new", isLoggedIn, (req, res, next) => {
                     if(err){
                         console.log(err)
                     } else{
-                        const invoiceID = result.insertId
-                        res.send(invoiceID);
+                        
+                        res.send(result);
                     };
                 })
                };
