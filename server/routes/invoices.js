@@ -43,13 +43,9 @@ router.post("/ID/prod", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
 
     db.query(`
-    SELECT c.ID, c.invoiceID, c.clientID, c.orderID, c.productID, c.amount, DATE_FORMAT(c.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(c.delivery_date , "%d.%m.%y") AS delivery_date, CONCAT(clients.company," (", clients.first_name, " ", clients.last_name, ")") AS client, c.price_piece, c.price_total, 
-        FROM 
-        (SELECT a.*, products.product_name
-        FROM
-        (SELECT * FROM invoices_items WHERE invoiceID = ?) AS a
-        LEFT JOIN products
-        ON products.ID = a.productID) AS c
+    SELECT c.ID, c.invoiceID, c.clientID, c.orderID, c.productID, c.product_name, c.amount, DATE_FORMAT(c.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(c.delivery_date , "%d.%m.%y") AS delivery_date, CONCAT(clients.company," (", clients.first_name, " ", clients.last_name, ")") AS client, c.price_piece, c.price_total 
+            FROM
+            (SELECT * FROM invoices_items WHERE invoiceID = ?) AS c
     LEFT JOIN clients
     ON c.clientID = clients.ID`,invoiceID, (err, result) =>{
         if(err){
@@ -115,7 +111,7 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
             if(err){
                 console.log(err)
             } else{
-                name = result[0].product_name
+                product_name = result[0].product_name
                 db.query(`INSERT INTO invoices_items 
                 (invoiceID, clientID, productID, product_name, amount, order_date, delivery_date) 
                 VALUES (?,?,?,?,?,?,?) `, 
