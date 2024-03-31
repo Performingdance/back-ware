@@ -32,17 +32,10 @@ router.post("/ID", isLoggedIn, (req, res) =>{
 router.post("/ID/ing", isLoggedIn, (req, res) =>{
     const orderID = req.body.orderID;
     db.query(`
-    SELECT b.*, recipes.name AS recipe_name 
-        FROM (SELECT a.*, form.name AS form_name 
-             FROM (
-                SELECT ID, formID, recipeID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(production_date , "%d.%m.%y") AS production_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date
-                    FROM orders_items WHERE orderID = ?) as a
-        LEFT JOIN form
-        ON form.ID = a.formID) AS b
-    LEFT JOIN recipes
-    ON recipes.ID = b.recipeID
-    ORDER BY b.recipeID
-    `, [orderID, orderID], (err, result) =>{
+    SELECT ID, productID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(production_date , "%d.%m.%y") AS production_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date
+    FROM orders_items WHERE orderID = ?
+    ORDER BY productID
+    `, [orderID], (err, result) =>{
         if(err){
            console.log(err)
         } else {
@@ -139,37 +132,46 @@ router.put("/new", isLoggedIn, (req, res, next) => {
 });
 router.put("/new/item", isLoggedIn, (req, res, next) => {   
     const orderID = req.body.orderID;
-    const recipeID = req.body.recipeID;
     const productID = req.body.productID;
-    const formID = req.body.formID;
     const amount = req.body.amount;
     const delivery_date = req.body.delivery_date || req.body.production_date;
     const production_date = req.body.production_date;
 
-            db.query("INSERT INTO orders_items (orderID, productID, recipeID, formID, amount, delivery_date, production_date) VALUES (?,?,?,?,?,?,?)", 
-            [orderID, productID, recipeID, formID, amount, delivery_date, production_date], 
+            db.query("INSERT INTO orders_items (orderID, productID, amount, delivery_date, production_date) VALUES (?,?,?,?,?)", 
+            [orderID, productID, amount, delivery_date, production_date], 
             (err, result) =>{
                 if(err){
                     console.log(err)
                 } else{
-                    db.query("INSERT INTO daylist (date, recipeID, formID, amount, orderID) VALUES (?, ?, ?, ?, ?)", 
-                    [bake_date, recipeID, formID, amount, orderID], 
+                    db.query("SELECT recipeID, formID FROM recipe_form WHERE ID = ?", 
+                    [productID], 
                     (err, result) =>{
                         if(err){
                             console.log(err)
                         } else{
-                            const ID = result.insertId;
+                            const recipeID = result[0].recipeID;
+                            const formID = result[0].formID;
                 
-                            db.query(`
-                            UPDATE daylist SET 
-                            mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE recipeID = ? and formID = ?)) AS mass) 
-                            WHERE ID = ?`, 
-                            [amount, recipeID, formID, ID], 
-                            (berr, bresult) =>{
-                                if(berr){
-                                    console.log(berr)
+                            db.query("INSERT INTO daylist (date, recipeID, formID, amount, orderID) VALUES (?, ?, ?, ?, ?)", 
+                            [production_date, recipeID, formID, amount, orderID], 
+                            (err, result) =>{
+                                if(err){
+                                    console.log(err)
                                 } else{
-                                    res.send("success");
+                                    const ID = result.insertId;
+                        
+                                    db.query(`
+                                    UPDATE daylist SET 
+                                    mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE ID = ?)) AS mass) 
+                                    WHERE ID = ?`, 
+                                    [amount, productID, ID], 
+                                    (berr, bresult) =>{
+                                        if(berr){
+                                            console.log(berr)
+                                        } else{
+                                            res.send("success");
+                                        };
+                                    })
                                 };
                             })
                         };
@@ -200,8 +202,6 @@ router.put("/update", isLoggedIn, (req, res, next) => {
 router.put("/update/items", isLoggedIn, (req, res, next) => {
     const ID = req.body.ID;
     const orderID = req.body.orderID;
-    const recipeID = req.body.recipeID;
-    const formID = req.body.formID;
     const amount = req.body.amount;
     const delivery_date = req.body.delivery_date;
     const production_date = req.body.production_date;
@@ -213,6 +213,16 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
         if(err){
             console.log(err)
         } else{
+            db.query("SELECT recipeID, formID FROM recipe_form WHERE ID = ?", 
+                    [productID], 
+                    (err, result) =>{
+                        if(err){
+                            console.log(err)
+                        } else{
+                            const recipeID = result[0].recipeID;
+                            const formID = result[0].formID;
+                
+                            
             db.query("SELECT ID FROM daylist WHERE orderID = ? AND recipeID = ? AND formID = ?", [orderID, recipeID, formID], (aerr, aresult) => {
                 //console.log(aresult)
                 if(aerr){
@@ -221,7 +231,7 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                 if (!aresult.length ){
                 
                     db.query("INSERT INTO daylist (date, recipeID, formID, amount, orderID) VALUES (?, ?, ?, ?, ?)", 
-                    [bake_date, recipeID, formID, amount, orderID], 
+                    [production_date, recipeID, formID, amount, orderID], 
                     (aaerr, result) =>{
                         if(aaerr){
                             console.log(aaerr)
@@ -230,7 +240,7 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                 
                             db.query(`
                             UPDATE daylist SET 
-                            mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE recipeID = ? and formID = ?)) AS mass) 
+                            mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE productID = ? )) AS mass) 
                             WHERE ID = ?`, 
                             [amount, recipeID, formID, ID], 
                             (aaaerr, aaaresult) =>{
@@ -246,7 +256,7 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                 }else{
                     const daylistID = aresult[0].ID;
                     db.query("UPDATE daylist SET date = ?, amount = ? WHERE ID = ? ", 
-                    [bake_date, amount, daylistID], 
+                    [production_date, amount, daylistID], 
                     (berr, bresult) =>{
                         if(err){
                             console.log(berr)
@@ -268,6 +278,8 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                     })
                 }
             })
+                        };
+                    })
         };
     });
      
@@ -277,8 +289,6 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
     items.forEach(item => {
         const ID = item.ID;
         const orderID = item.orderID;
-        const recipeID = item.recipeID;
-        const formID = item.formID;
         const amount = item.amount;
         const delivery_date = item.delivery_date;
         const production_date = item.production_date;
@@ -288,6 +298,15 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
             if(err){
                 console.log(err)
             } else{
+                db.query("SELECT recipeID, formID FROM recipe_form WHERE ID = ?", 
+                    [productID], 
+                    (err, result) =>{
+                        if(err){
+                            console.log(err)
+                        } else{
+                            const recipeID = result[0].recipeID;
+                            const formID = result[0].formID;
+
                 db.query("SELECT ID FROM daylist WHERE orderID = ? AND recipeID = ? AND formID = ?", [orderID, recipeID, formID], (aerr, aresult) => {
                     //console.log(aresult)
                     if(aerr){
@@ -343,7 +362,9 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
                     }
                 })
             };
-        });    
+        });           
+     };
+    });    
     });
     res.send("success");
 });
