@@ -220,12 +220,12 @@ function EditInvoice  () {
       return(
         <div key={key+"li"} className='order-grid'>
           <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
-          <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
-          <p key={key+"form"} className='order-p'>{product.form_name}</p>
+          <p key={key+"product"} className='order-p'>{product.product_name}</p>
           <p key={key+"p"} ></p>
+          <p key={key+"p2"} ></p>
           <p key={key+"production"} className='order-p'>{"Bestelldatum: " + (product.order_date|| "-")}</p>
           <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
-          <p key={key+"p2"} ></p>
+          <p key={key+"p3"} ></p>
           <p key={key+"price_piece"} className='order-p' >{"Preis/Stück: "+ (product.price_piece || "-") + "€"}</p>
           <p key={key+"price_total"} className='order-p' >{"Preis gesamt: "+ (product.price_total || "-") + "€"}</p>
         </div>        
@@ -236,12 +236,12 @@ function EditInvoice  () {
           <div key={key+"div"} className='edit-order-div'>
         <div key={key+"li"} className='edit-order-grid'>
           <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
-          <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
-          <p key={key+"form"} className='order-p'>{product.form_name}</p>
+          <p key={key+"product"} className='order-p'>{product.product_name}</p>
           <p key={key+"p"} ></p>
+            <p key={key+"p2"} ></p>
           <p key={key+"production"} className='order-p'>{"Bestelldatum: " + (product.order_date|| "-")}</p>
           <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
-          <p key={key+"p2"} ></p>
+          <p key={key+"p3"} ></p>
           <p key={key+"price_piece"} className='order-p' >{"Preis/Stück: "+ (product.price_piece || "-") + "€"}</p>
           <p key={key+"price_total"} className='order-p' >{"Preis gesamt: "+ (product.price_total || "-") + "€"}</p>
         </div>

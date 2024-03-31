@@ -60,7 +60,7 @@ orders.map((order, key)=> {
         <p></p>
         <p key={key+"recipe"} className='order-p'>{order.name}</p>
         {order.invoiceID? 
-        <a href={`/invoices/id:${order.invoiceID}`} type="button" className='button rc-btn'>
+        <a href={`/invoices/edit:${order.invoiceID}`} type="button" className='button rc-btn'>
           <SVGIcon class="rc-btn-svg" src={bar_graph}/>
         </a>  
         :<div className='d-il'>

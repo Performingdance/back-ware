@@ -187,10 +187,8 @@ function EditOrder  () {
               "authorization": authHeader()
           },
           data : {
-              "ID": product.ID,
+              "productID": product.ID,
               "orderID": product.orderID,
-              "recipeID": product.recipeID,
-              "formID": product.formID,
               "date": product.production_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
           }
       }).then((response)=>{
@@ -223,9 +221,9 @@ function EditOrder  () {
           <div key={key+"div"} className='edit-order-div'>
             <div key={key+"li"} className='edit-order-grid'>
               <div><input key={key+"amount"} className='order-amount-input'defaultValue={product.amount} onChange={(e)=>handleValueChange("amount",e.target.value,product.ID)}></input>Stück</div>
-              <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
-              <p key={key+"form"} className='order-p'>{product.form_name}</p>
+              <p key={key+"product"} className='order-p'>{product.product_name}</p>
               <p key={key+"p"} ></p>
+              <p key={key+"p2"} ></p>
               <div key={key+"edit_production"} className='order-p'>{"Backtag: " }
               <DateLine 
               defaultDay={product.production_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 

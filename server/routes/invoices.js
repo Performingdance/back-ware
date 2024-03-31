@@ -43,14 +43,9 @@ router.post("/ID/prod", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
 
     db.query(`
-    SELECT c.ID, c.invoiceID, c.clientID, c.orderID, c.formID, c.recipeID, c.amount, DATE_FORMAT(c.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(c.delivery_date , "%d.%m.%y") AS delivery_date, CONCAT(clients.company," (", clients.first_name, " ", clients.last_name, ")") AS client, c.price_piece, c.price_total, c.recipe_name, c.form_name 
-        FROM (SELECT b.*, form.name AS form_name FROM
-            (SELECT a.*, recipes.name AS recipe_name FROM
-                (SELECT * FROM invoices_items WHERE invoiceID = ?) AS a
-            LEFT JOIN recipes
-            on a.recipeID = recipes.ID) AS b
-        LEFT JOIN form
-        on b.formID = form.ID) AS c
+    SELECT c.ID, c.invoiceID, c.clientID, c.orderID, c.product_ID, c.amount, DATE_FORMAT(c.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(c.delivery_date , "%d.%m.%y") AS delivery_date, CONCAT(clients.company," (", clients.first_name, " ", clients.last_name, ")") AS client, c.price_piece, c.price_total, c.product_name
+        FROM 
+        (SELECT * FROM invoices_items WHERE invoiceID = ?) AS c
     LEFT JOIN clients
     ON c.clientID = clients.ID`,invoiceID, (err, result) =>{
         if(err){
@@ -103,25 +98,24 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
 
     const invoiceID = req.body.invoiceID;
     const clientID = req.body.clientID;
-    const recipeID = req.body.recipeID;
-    const formID = req.body.formID;
-    let name = req.body.name;
+    const productID = req.body.productID
+    let product_name = req.body.product_name;
     const amount = req.body.amount;
     const order_date = req.body.delivery_date;
     const delivery_date = req.body.delivery_date;
 
-    if((recipeID >= 1) && (formID >= 1)){
+    if((productID >= 1)){
         db.query("SELECT product_name FROM recipe_form WHERE ID = ?", 
-        [clientID,recipeID, formID, name, amount, order_date, delivery_date, itemID], 
+        [productID], 
         (err, result) =>{
             if(err){
                 console.log(err)
             } else{
                 name = result[0].product_name
                 db.query(`INSERT INTO invoices_items 
-                (invoiceID, clientID, recipeID, formID, name, amount, order_date, delivery_date) 
-                VALUES (?,?,?,?,?,?,?,?) `, 
-                [invoiceID, clientID, recipeID, formID, name, amount, order_date, delivery_date], 
+                (invoiceID, clientID, productID, product_name, amount, order_date, delivery_date) 
+                VALUES (?,?,?,?,?,?,?) `, 
+                [invoiceID, clientID, productID, product_name, amount, order_date, delivery_date], 
                 (err, result) =>{
                     if(err){
                         console.log(err)
@@ -134,9 +128,9 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
 
     }else{
         db.query(`INSERT INTO invoices_items 
-        (invoiceID, clientID, recipeID, formID, name, amount, order_date, delivery_date) 
-        VALUES (?,?,?,?,?,?,?,?) `, 
-        [invoiceID, clientID, recipeID, formID, name, amount, order_date, delivery_date], 
+        (invoiceID, clientID, productID, product_name, amount, order_date, delivery_date) 
+        VALUES (?,?,?,?,?,?,?) `, 
+        [invoiceID, clientID, productID, product_name, amount, order_date, delivery_date], 
         (err, result) =>{
             if(err){
                 console.log(err)
@@ -156,8 +150,9 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
     let orderID
 
     db.query(`INSERT INTO invoices_items 
-    (invoiceID, clientID, orderID, recipeID, formID, amount, order_date, delivery_date) 
-    SELECT ? as invoiceID, orders_items.* FROM
+    (invoiceID, clientID, orderID, productID, amount, order_date, delivery_date) 
+    SELECT ? as invoiceID, orders_items.clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.delivery_date 
+    FROM
 		(SELECT ID         
         FROM orders
         WHERE clientID = ? AND invoiceID IS null) as a

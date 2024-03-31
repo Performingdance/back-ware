@@ -94,7 +94,7 @@ router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {
 router.get("/all/items/noInvoice", isLoggedIn, (req, res, next) => {   
 
 
-            db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name 
+            db.query(`SELECT ID, product_name AS name, DATE_FORMAT(order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date  
             FROM order_items 
             WHERE invoiceID IS NULL`, 
             [clientID],
@@ -351,20 +351,26 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
 
 router.delete("/delete/item", isLoggedIn, (req, res) => {
 
-    const ID = req.body.ID;
+    const productID = req.body.productID;
     const orderID = req.body.orderID;
-    const recipeID = req.body.recipeID;
-    const formID = req.body.formID;
     const date = req.body.date;
-    db.query("DELETE FROM orders_items WHERE ID = ? AND orderID = ?", [ID,orderID], (err, result) =>{
+    db.query("DELETE FROM orders_items WHERE ID = ? AND orderID = ?", [productID,orderID], (err, result) =>{
         if(err){
            console.log(err)
         } else {
-            db.query("DELETE FROM daylist WHERE date = ? AND orderID = ? AND recipeID = ? AND formID = ?",[date, orderID, recipeID, formID], (berr, bresult) =>{
-                if(berr){
-                   console.log(berr)
+            db.query("SELECT recipeID, formID FROM orders_items WHERE ID = ?",[date, orderID, productID], (err, result) =>{
+                if(err){
+                   console.log(err)
                 } else {
-                   res.send(bresult)
+                    const recipeID = result[0].recipeID
+                    const formID = result[0].formID
+                    db.query("DELETE FROM daylist WHERE date = ? AND orderID = ? AND recipeID = ? AND formID = ?",[date, orderID, recipeID, formID], (berr, bresult) =>{
+                        if(berr){
+                           console.log(berr)
+                        } else {
+                           res.send(bresult)
+                        }
+                   });
                 }
            });
         }
