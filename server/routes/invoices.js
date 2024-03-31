@@ -256,14 +256,14 @@ router.put("/new", isLoggedIn, (req, res, next) => {
                } else{
                 const invoice_number = result[0].last_invoice +1;
                 const margeID = result[0].margeID;
-                
                 db.query(`INSERT INTO invoices (clientID, invoice_number, invoice_date, margeID) VALUES (?,?,?,?)`, 
                 [clientID, invoice_number, invoice_date, margeID], 
                 (err, result) =>{
                     if(err){
                         console.log(err)
                     } else{
-                        res.send("success");
+                        const invoiceID = result.insertId
+                        res.send(invoiceID);
                     };
                 })
                };

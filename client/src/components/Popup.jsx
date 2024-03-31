@@ -482,10 +482,10 @@ export function NewInvoicePopup({
           
             setOpen(false)
             if(forwardEdit == false){
-              invoiceID(response.data.insertId)
+              invoiceID(response)
               return
             }else{
-              window.location.pathname = `/invoices/edit:${response.data.insertId}`
+              window.location.pathname = `/invoices/edit:${response}`
             }
             
          

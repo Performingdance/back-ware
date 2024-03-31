@@ -24,7 +24,7 @@ export default function handleInvoicenoRequest() {
             if(!response.data.length){
                 const newRes = [{
                     ID: 0, 
-                    name: "Neue Bestellung" 
+                    name: "Neue Rechnung" 
                }]
                setRes(newRes)
 

@@ -173,7 +173,7 @@ function EditInvoice  () {
               "authorization": authHeader()
           },
           data : {
-              "invoiceID": invoiceIDRef.current,
+              "invoiceID": invoiceID,
           }
       }).then((response)=>{
           window.location.href = "/invoices";
@@ -256,7 +256,7 @@ function EditInvoice  () {
     
       <Header key="header" title={InvoiceRes.invoice_number? "#"+ InvoiceRes.invoice_number +" "+ (InvoiceRes.client? InvoiceRes.client : " ") :"# - "}/>
       {togglePrompt && <PromptPopup 
-          title={InvoiceRes.ID? `Bestellung #${InvoiceRes.ID } löschen?` : "Bestellung löschen?"} 
+          title={InvoiceRes.invoice_number? `Bestellung #${InvoiceRes.invoice_number } löschen?` : "Bestellung löschen?"} 
           btnOk="OK" 
           btnAbort="Abbrechen"
           onClickAbort={()=>setTogglePrompt(false)} 

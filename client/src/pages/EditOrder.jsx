@@ -208,9 +208,9 @@ function EditOrder  () {
       return(
         <div key={key+"li"} className='order-grid'>
           <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
-          <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
-          <p key={key+"form"} className='order-p'>{product.form_name}</p>
+          <p key={key+"product"} className='order-p'>{product.product_name}</p>
           <p key={key+"p"} ></p>
+          <p key={key+"p2"} ></p>
           <p key={key+"production"} className='order-p'>{"Backtag: " + (product.production_date|| "-")}</p>
           <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
         </div>        
