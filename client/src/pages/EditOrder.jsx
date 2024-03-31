@@ -293,7 +293,7 @@ function EditOrder  () {
               defaultDay={order_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
               onDateChange={(val)=>{order_date = val}} /> 
           </div>}
-          {(order_delivery_date == order_delivery_date_end) ?
+          {(order_delivery_date != order_delivery_date_end) ?
           !edit? 
           <p>Lieferzeitraum: {(order_delivery_date && order_delivery_date_end)? order_delivery_date + "-" +order_delivery_date_end : "-"}
           </p>:         

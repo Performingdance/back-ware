@@ -27,7 +27,7 @@ router.post("/id", isLoggedIn, (req, res) => {
 router.post("/form/id", isLoggedIn, (req, res) => {
     const recipeID = req.body.recipeID;
     db.query(`SELECT a.*, form.name FROM
-    (SELECT * FROM recipe_form WHERE recipeID = ?) AS a
+    (SELECT * FROM products WHERE recipeID = ?) AS a
     JOIN form
     ON a.formID = form.ID`, recipeID, (err, result) =>{
          if(err){
@@ -54,7 +54,8 @@ router.post("/form/prices", isLoggedIn, (req, res) => {
 router.post("/forms", isLoggedIn, (req, res) => {
    const recipeID = req.body.recipeID;
    db.query(`SELECT a.*, CONCAT(a.product_name, ' (', form.name,')') AS name FROM
-   (SELECT formID AS ID, ID as productID, recipeID, img, product_name FROM recipe_form WHERE recipeID = ?) AS a
+   (SELECT formID AS ID, ID as productID, recipeID, img, product_name 
+      FROM products WHERE recipeID = ?) AS a
    JOIN form
    ON a.ID = form.ID`, recipeID, (err, result) =>{
         if(err){
@@ -66,7 +67,7 @@ router.post("/forms", isLoggedIn, (req, res) => {
 });
 router.post("/products", isLoggedIn, (req, res) => {
    const recipeID = req.body.recipeID;
-   db.query(`SELECT ID, formID, recipeID, img, product_name AS name FROM recipe_form WHERE recipeID = ?`, recipeID, (err, result) =>{
+   db.query(`SELECT ID, formID, recipeID, img, product_name AS name FROM products WHERE recipeID = ?`, recipeID, (err, result) =>{
         if(err){
            console.log(err)
         } else {
@@ -86,9 +87,9 @@ router.put("/form/new", isLoggedIn, (req, res) => {
    const price_list = req.body.price_list || [];
    //console.log(price_list, price_list[0])
 
-   db.query("SELECT ID FROM recipe_form WHERE formID = ? AND recipeID = ?", [formID, recipeID], (err,result)=>{
+   db.query("SELECT ID FROM products WHERE formID = ? AND recipeID = ?", [formID, recipeID], (err,result)=>{
       if(err || !result.length){
-         db.query("INSERT INTO recipe_form (recipeID, formID, product_name, formweight, img, worktime, workamount, vkp_netto) VALUES (?,?,?,?,?,?,?,?)", 
+         db.query("INSERT INTO products (recipeID, formID, product_name, formweight, img, worktime, workamount, vkp_netto) VALUES (?,?,?,?,?,?,?,?)", 
          [recipeID, formID, product_name, formweight, img, worktime, workamount, vkp_netto], 
          (err, result)=>{
             if (err){
@@ -148,7 +149,7 @@ router.put("/form/update", isLoggedIn, (req, res) => {
    const vkp_netto = req.body.vkp_netto || 0;
    const price_list = req.body.price_list || [];
 
-         db.query("UPDATE recipe_form SET formweight = ?, product_name = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
+         db.query("UPDATE products SET formweight = ?, product_name = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
          [ formweight, product_name, worktime, workamount, vkp_netto, productID], 
          (err, result)=>{
             if (err){
