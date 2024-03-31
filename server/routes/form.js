@@ -71,7 +71,7 @@ router.put("/update", isLoggedIn, (req, res, next) => {
 router.delete("/delete", isLoggedIn, (req, res) => {
 
    const ID = req.body.ID;
-   db.query("SELECT recipeID FROM recipe_form WHERE formID = ?", ID, (err, result) =>{
+   db.query("SELECT recipeID FROM products WHERE formID = ?", ID, (err, result) =>{
     if(err){
        console.log(err)
     } 

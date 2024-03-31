@@ -61,7 +61,7 @@ router.post('/photoDefault', isLoggedIn, (req, res) => {
       });
     }
   }
-  db.query("UPDATE recipe_form SET img = ? WHERE ID = ? ",["NULL", productID], (err, result) =>{
+  db.query("UPDATE products SET img = ? WHERE ID = ? ",["NULL", productID], (err, result) =>{
     if(err){
         console.log(err)
     } else {

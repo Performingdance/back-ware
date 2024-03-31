@@ -105,7 +105,7 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
     const delivery_date = req.body.delivery_date;
 
     if((productID >= 1)){
-        db.query("SELECT product_name FROM recipe_form WHERE ID = ?", 
+        db.query("SELECT product_name FROM products WHERE ID = ?", 
         [productID], 
         (err, result) =>{
             if(err){
@@ -313,8 +313,8 @@ router.put("/update/item/price", isLoggedIn, (req, res, next) => {
                             ON a.invoiceID = invoices.ID) AS b
                         LEFT JOIN marges
                         ON b.margeID = marges.ID) as c
-                    LEFT JOIN recipe_form
-                    ON c.recipeID = recipe_form.recipeID AND c.formID = recipe_form.formID`, 
+                    LEFT JOIN products
+                    ON c.recipeID = products.recipeID AND c.formID = products.formID`, 
                     [invoice_itemID], 
                 (berr, bresult) =>{
                     if(berr){
@@ -351,7 +351,7 @@ router.put("/update/item", isLoggedIn, (req, res, next) => {
     const delivery_date = req.body.delivery_date;
 
     if((recipeID >= 1) && (formID >= 1)){
-        db.query("SELECT product_name FROM recipe_form WHERE ID = ?", 
+        db.query("SELECT product_name FROM products WHERE ID = ?", 
         [clientID,recipeID, formID, name, amount, order_date, delivery_date, itemID], 
         (err, result) =>{
             if(err){

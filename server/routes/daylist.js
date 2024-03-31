@@ -72,35 +72,43 @@ router.put("/new", isLoggedIn, (req, res) => {
                 console.log(aerr)
             } else{
                 const newOrderID = aresult.insertId
-                db.query("INSERT INTO orders_items (orderID, recipeID, formID, amount, delivery_date, production_date) VALUES (?, ?, ?, ?, ?, ?)", 
-            [newOrderID, recipeID, formID, amount, date, date], 
-            (aaerr, result) =>{
-                if(aaerr){
-                    console.log(aaerr)
-                } else{
-                db.query("INSERT INTO daylist (date, recipeID, formID, amount, ist, orderID, note) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                [date, recipeID, formID, amount, ist, newOrderID, note], 
-                (err, result) =>{
-                    if(err){
-                        console.log(err)
+                db.query("SELECT ID FROM products WHERE recipeID = ? and formID = ?", 
+                (aaerr, result) =>{
+                    if(aaerr){
+                        console.log(aaerr)
                     } else{
-                        const ID = result.insertId;
-            
-                        db.query(`
-                        UPDATE daylist SET 
-                        mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE recipeID = ? and formID = ?)) AS mass) 
-                        WHERE ID = ?`, 
-                        [amount, recipeID, formID, ID], 
-                        (berr, bresult) =>{
-                            if(berr){
-                                console.log(berr)
+                        const productID = result[0].ID
+                        db.query("INSERT INTO orders_items (orderID, productID, amount, delivery_date, production_date) VALUES (?, ?, ?, ?, ?, ?)", 
+                        [newOrderID, productID, amount, date, date], 
+                        (aaerr, result) =>{
+                            if(aaerr){
+                                console.log(aaerr)
                             } else{
-                                res.send("success");
+                            db.query("INSERT INTO daylist (date, recipeID, formID, amount, ist, orderID, note) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                            [date, recipeID, formID, amount, ist, newOrderID, note], 
+                            (err, result) =>{
+                                if(err){
+                                    console.log(err)
+                                } else{
+                                    const ID = result.insertId;
+                        
+                                    db.query(`
+                                    UPDATE daylist SET 
+                                    mass = (SELECT( ? * (SELECT formweight FROM products WHERE recipeID = ? and formID = ?)) AS mass) 
+                                    WHERE ID = ?`, 
+                                    [amount, recipeID, formID, ID], 
+                                    (berr, bresult) =>{
+                                        if(berr){
+                                            console.log(berr)
+                                        } else{
+                                            res.send("success");
+                                        };
+                                    })
+                                };
+                                })
                             };
                         })
                     };
-                    })
-                };
                 })
             };
         })
@@ -121,7 +129,7 @@ router.put("/new", isLoggedIn, (req, res) => {
     
                 db.query(`
                 UPDATE daylist SET 
-                mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE recipeID = ? and formID = ?)) AS mass) 
+                mass = (SELECT( ? * (SELECT formweight FROM products WHERE recipeID = ? and formID = ?)) AS mass) 
                 WHERE ID = ?`, 
                 [amount, recipeID, formID, ID], 
                 (berr, bresult) =>{

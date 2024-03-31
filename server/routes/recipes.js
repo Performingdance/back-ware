@@ -181,7 +181,7 @@ router.put("/form/update/calc_prices", isLoggedIn, (req, res) => {
    const vkp_netto = req.body.vkp_netto || 0;
    const price_list = req.body.price_list || [];
 
-         db.query("UPDATE recipe_form SET vkp_netto = ? WHERE ID = ?", 
+         db.query("UPDATE products SET vkp_netto = ? WHERE ID = ?", 
          [vkp_netto, productID], 
          (err, result)=>{
             if (err){
@@ -235,7 +235,7 @@ router.put("/form/update/prices", isLoggedIn, (req, res) => {
 router.delete("/form/delete", isLoggedIn, (req,res) => {
    const ID = req.body.ID;
 
-   db.query("DELETE FROM recipe_form WHERE ID = ?", ID, (err, result) => {
+   db.query("DELETE FROM products WHERE ID = ?", ID, (err, result) => {
       if(err){
          console.log(err)
       } else {
@@ -366,7 +366,7 @@ router.delete("/delete", isLoggedIn, (req,res) => {
                                     if(err){
                                        console.log(eerr)
                                     } else {
-                                       db.query("DELETE FROM recipe_form WHERE recipeID = ?", ID, (ferr, fresult) => {
+                                       db.query("DELETE FROM products WHERE recipeID = ?", ID, (ferr, fresult) => {
                                           if(ferr){
                                              console.log(ferr)
                                           } else {

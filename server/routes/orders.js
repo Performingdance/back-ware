@@ -213,7 +213,7 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
         if(err){
             console.log(err)
         } else{
-            db.query("SELECT recipeID, formID FROM recipe_form WHERE ID = ?", 
+            db.query("SELECT recipeID, formID FROM products WHERE ID = ?", 
                     [productID], 
                     (err, result) =>{
                         if(err){
@@ -240,7 +240,7 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                 
                             db.query(`
                             UPDATE daylist SET 
-                            mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE productID = ? )) AS mass) 
+                            mass = (SELECT( ? * (SELECT formweight FROM products WHERE productID = ? )) AS mass) 
                             WHERE ID = ?`, 
                             [amount, recipeID, formID, ID], 
                             (aaaerr, aaaresult) =>{
@@ -264,7 +264,7 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                                         
                             db.query(`
                             UPDATE daylist SET 
-                            mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE recipeID = ? and formID = ?)) AS mass) 
+                            mass = (SELECT( ? * (SELECT formweight FROM products WHERE recipeID = ? and formID = ?)) AS mass) 
                             WHERE orderID = ?`, 
                             [amount, recipeID, formID, ID], 
                             (bberr, bbresult) =>{
@@ -298,7 +298,7 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
             if(err){
                 console.log(err)
             } else{
-                db.query("SELECT recipeID, formID FROM recipe_form WHERE ID = ?", 
+                db.query("SELECT recipeID, formID FROM products WHERE ID = ?", 
                     [productID], 
                     (err, result) =>{
                         if(err){
@@ -324,7 +324,7 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
                     
                                 db.query(`
                                 UPDATE daylist SET 
-                                mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE recipeID = ? and formID = ?)) AS mass) 
+                                mass = (SELECT( ? * (SELECT formweight FROM products WHERE recipeID = ? and formID = ?)) AS mass) 
                                 WHERE ID = ?`, 
                                 [amount, recipeID, formID, ID], 
                                 (aaaerr, aaaresult) =>{
@@ -348,7 +348,7 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
                                             
                                 db.query(`
                                 UPDATE daylist SET 
-                                mass = (SELECT( ? * (SELECT formweight FROM recipe_form WHERE recipeID = ? and formID = ?)) AS mass) 
+                                mass = (SELECT( ? * (SELECT formweight FROM products WHERE recipeID = ? and formID = ?)) AS mass) 
                                 WHERE orderID = ?`, 
                                 [amount, recipeID, formID, ID], 
                                 (bberr, bbresult) =>{

@@ -53,22 +53,22 @@ router.post("/nutri/form", isLoggedIn, (req, res) => {
     a.name, 
     a.allergen, 
     a.source,
-    CAST(recipe_form.formweight AS DECIMAL(5,3)) AS formweight,
-    recipe_form.formID, 
-     CAST((a.priceKG * recipe_form.formweight) AS DECIMAL(5, 2)) AS price, 
+    CAST(products.formweight AS DECIMAL(5,3)) AS formweight,
+    products.formID, 
+     CAST((a.priceKG * products.formweight) AS DECIMAL(5, 2)) AS price, 
     a.date, 
-    CAST((a.kj * 10 *  recipe_form.formweight) AS DECIMAL(5, 2)) AS kj, 
-     CAST((a.kcal * 10 * recipe_form.formweight)AS DECIMAL(5, 2)) AS kcal, 
-     CAST((a.protein * 10 * recipe_form.formweight)AS DECIMAL(5, 2)) AS protein, 
-     CAST((a.carbs * 10 * recipe_form.formweight)AS DECIMAL(5, 2)) AS carbs, 
-     CAST((a.sugar * 10 * recipe_form.formweight)AS DECIMAL(5, 2)) AS sugar, 
-     CAST((a.fat * 10 * recipe_form.formweight)AS DECIMAL(5, 2)) AS fat, 
-     CAST((a.sat_fat * 10 * recipe_form.formweight)AS DECIMAL(5, 2)) AS sat_fat, 
-     CAST((a.fibres * 10 * recipe_form.formweight)AS DECIMAL(5, 2)) AS fibres, 
-     CAST((a.salt * 10 * recipe_form.formweight)AS DECIMAL(5, 2)) AS salt 
+    CAST((a.kj * 10 *  products.formweight) AS DECIMAL(5, 2)) AS kj, 
+     CAST((a.kcal * 10 * products.formweight)AS DECIMAL(5, 2)) AS kcal, 
+     CAST((a.protein * 10 * products.formweight)AS DECIMAL(5, 2)) AS protein, 
+     CAST((a.carbs * 10 * products.formweight)AS DECIMAL(5, 2)) AS carbs, 
+     CAST((a.sugar * 10 * products.formweight)AS DECIMAL(5, 2)) AS sugar, 
+     CAST((a.fat * 10 * products.formweight)AS DECIMAL(5, 2)) AS fat, 
+     CAST((a.sat_fat * 10 * products.formweight)AS DECIMAL(5, 2)) AS sat_fat, 
+     CAST((a.fibres * 10 * products.formweight)AS DECIMAL(5, 2)) AS fibres, 
+     CAST((a.salt * 10 * products.formweight)AS DECIMAL(5, 2)) AS salt 
     FROM (SELECT * FROM ingredients WHERE recipeID = ?) AS a
-    LEFT JOIN recipe_form
-    ON recipe_form.ID = ?`, [recipeID, productID], (err, result) =>{
+    LEFT JOIN products
+    ON products.ID = ?`, [recipeID, productID], (err, result) =>{
          if(err){
             console.log(err)
          } else {

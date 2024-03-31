@@ -6,7 +6,7 @@ const db = require('../lib/db.js');
 router.get("/all", isLoggedIn, (req, res) => {
     db.query(`SELECT b.*, form.name AS formName
     FROM(SELECT a.*, recipes.name AS recipeName FROM
-    (SELECT * FROM recipe_form) AS a
+    (SELECT * FROM products) AS a
     LEFT JOIN recipes
     ON a.recipeID = recipes.ID) AS b
     LEFT JOIN form
