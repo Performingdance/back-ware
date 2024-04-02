@@ -433,8 +433,8 @@ router.delete("/delete", isLoggedIn, (req, res) => {
 router.delete("/delete/item", isLoggedIn, (req, res) => {
 
     const invoice_itemID = req.body.invoice_itemID;
-    const recipeID = req.body.recipeID;
-    const formID = req.body.formID;
+    const invoiceID = req.body.invoiceID;
+    const productID = req.body.productID;
  
     db.query("DELETE FROM invoices_items WHERE ID = ?", invoice_itemID, 
     (err, result) =>{
@@ -442,8 +442,8 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
            console.log(err)
         } else {
             if((recipeID != -1) && (formID != -1)){
-                db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ? AND recipeID = ? AND formID =?", 
-                [invoiceID, recipeID, formID], 
+                db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ? AND productID =?", 
+                [invoiceID, productID], 
                 (berr, bresult) =>{
                     if(berr){
                         console.log(berr)

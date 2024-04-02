@@ -201,6 +201,8 @@ function EditInvoice  () {
           },
           data : {
               "invoice_itemID": product.ID,
+              "invoiceID": product.invoiceID,
+              "productID" : product.productID
           }
       }).then((response)=>{
           setDelRes(response.data)
