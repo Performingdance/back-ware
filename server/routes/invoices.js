@@ -448,13 +448,12 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                     if(berr){
                         console.log(berr)
                     } else{
-                        res.send("success");
                     };
                 });
             }else{
-                res.send("success");
+                
             };
-            
+            res.send("success");
         }
    });
  });

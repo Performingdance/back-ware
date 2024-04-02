@@ -279,7 +279,7 @@ function EditInvoice  () {
 
       <div className='order-wrapper'>
         <div className='order-div'>
-        {((err || invoiceErr) && <p className='errorMsg'>{err.message || orderErr.message}</p>)}
+        {((err || invoiceErr) && <p className='errorMsg'>{err.message || invoiceErr.message}</p>)}
           {!edit ?<p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>:
                     <div className='d-il ai-c'> 
                     <p>Kunde:</p> 

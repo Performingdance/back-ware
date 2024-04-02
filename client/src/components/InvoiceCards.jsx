@@ -69,9 +69,7 @@ export default function invoiceCards ({
           return(
             <li key={key+"li"} className='order-li'>
               <p key={key+"amount"} className='order-p'>{product.amount + "x"}</p>
-              <p key={key+"recipe"} className='order-p'>{product.recipe_name}</p>
-              <p key={key+"form"} className='order-p'>{product.form_name}</p>
-              
+              <p key={key+"product"} className='order-p'>{product.product_name}</p>              
             </li>
         
           )

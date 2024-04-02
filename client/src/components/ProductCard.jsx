@@ -42,7 +42,7 @@ export default function ProductCard({
         
         <a className='rc-title' href={href}>
           <h2 className='rc-name'>{productName}</h2>
-          <img alt="" className="rc-title-img" src={image}/>  
+          <img alt="" className="rc-title-img" src={image} loading='lazy'/>  
         </a>
         <div className='rc-btns' >
           <a type="button" onClick={()=>[setOrderOpen(!orderOpen)]} className='button rc-btn '>
