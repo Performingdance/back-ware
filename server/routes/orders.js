@@ -173,7 +173,18 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
                                         if(berr){
                                             console.log(berr)
                                         } else{
-                                            res.send("success");
+                                            db.query(`
+                                            UPDATE orders SET 
+                                                total_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ?)
+                                            WHERE ID = ?`, 
+                                            [orderID, orderID], 
+                                            (berr, bresult) =>{
+                                                if(berr){
+                                                    console.log(berr)
+                                                } else{
+                                                    res.send("success");
+                                                };
+                                            })
                                         };
                                     })
                                 };
@@ -453,7 +464,18 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                         if(berr){
                            console.log(berr)
                         } else {
-                           res.send(bresult)
+                            db.query(`
+                            UPDATE orders SET 
+                                total_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ?)
+                            WHERE ID = ?`, 
+                            [orderID, orderID], 
+                            (berr, bresult) =>{
+                                if(berr){
+                                    console.log(berr)
+                                } else{
+                                    res.send("success");
+                                };
+                            })
                         }
                    });
                 }

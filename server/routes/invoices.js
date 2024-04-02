@@ -407,6 +407,7 @@ router.delete("/delete", isLoggedIn, (req, res) => {
 
    const invoiceID = req.body.invoiceID;
 
+
    db.query(`DELETE invoices, invoices_items 
    FROM invoices
    INNER JOIN invoices_items 
@@ -416,15 +417,41 @@ router.delete("/delete", isLoggedIn, (req, res) => {
        if(err){
           console.log(err)
        } else {
-        db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ?", 
+        db.query(`
+        SELECT DISTINCT orderID FROM orders_items WHERE invoiceID = ?`, 
         [invoiceID], 
-        (berr, bresult) =>{
-            if(berr){
-                console.log(berr)
+        (err, result) =>{
+            if(err){
+                console.log(err)
             } else{
-                res.send("success");
+                const orderIDs = result
+                db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ?", 
+                [invoiceID], 
+                (berr, bresult) =>{
+                    if(berr){
+                        console.log(berr)
+                    } else{
+                        orderIDs.forEach((ID)=>{
+                            db.query(`
+                            UPDATE orders SET 
+                                billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
+                            WHERE ID = ?`, 
+                            [ID.orderID, ID.orderID], 
+                            (berr, bresult) =>{
+                                if(berr){
+                                    console.log(berr)
+                                } else{
+                                    
+                                };
+                            })
+                        })
+                        
+                    };
+                });
+                                
             };
-        });
+        })
+        
        }
   });
 });
@@ -435,6 +462,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
     const invoice_itemID = req.body.invoice_itemID;
     const invoiceID = req.body.invoiceID;
     const productID = req.body.productID;
+    const orderID = req.body.orderID;
  
     db.query("DELETE FROM invoices_items WHERE ID = ?", invoice_itemID, 
     (err, result) =>{
@@ -448,6 +476,18 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                     if(berr){
                         console.log(berr)
                     } else{
+                        db.query(`
+                        UPDATE orders SET 
+                            billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
+                        WHERE ID = ?`, 
+                        [orderID, orderID], 
+                        (berr, bresult) =>{
+                            if(berr){
+                                console.log(berr)
+                            } else{
+                                
+                            };
+                        })
                     };
                 });
             }else{
