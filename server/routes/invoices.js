@@ -451,7 +451,7 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                                 
             };
         })
-        
+        res.send("success")
        }
   });
 });
