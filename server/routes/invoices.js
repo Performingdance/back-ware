@@ -441,6 +441,18 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                                 if(berr){
                                     console.log(berr)
                                 } else{
+                                    db.query(`
+                                    UPDATE orders SET 
+                                        invoiceID = NULL 
+                                    WHERE ID = ? AND invoiceID = ?`, 
+                                    [ID.orderID, invoiceID], 
+                                    (berr, bresult) =>{
+                                        if(berr){
+                                            console.log(berr)
+                                        } else{
+                                            
+                                        };
+                                    })
                                     
                                 };
                             })
@@ -477,9 +489,9 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                         console.log(berr)
                     } else{
                         db.query(`
-                        UPDATE orders SET 
-                            billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
-                        WHERE ID = ?`, 
+                            UPDATE orders SET 
+                                billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
+                            WHERE ID = ?`, 
                         [orderID, orderID], 
                         (berr, bresult) =>{
                             if(berr){
