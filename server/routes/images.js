@@ -8,7 +8,7 @@ const fs = require('fs')
 let file_name
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/var/lib/data/recipe_imgs')
+    cb(null, '/var/lib/data/recipe_imgs/')
   },
   filename:(req, file, cb) => {
     file_name = file.fieldname +"_"+ Date.now() + path.extname(file.originalname)
