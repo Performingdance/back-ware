@@ -45,7 +45,7 @@ router.post("/nutri", isLoggedIn, (req, res) => {
          }
     });
 });
-router.post("/nutri/form", isLoggedIn, (req, res) => {
+router.post("/nutri/product", isLoggedIn, (req, res) => {
     const recipeID = req.body.recipeID;
     const productID = req.body.productID;
     

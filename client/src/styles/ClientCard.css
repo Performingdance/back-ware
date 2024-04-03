@@ -4,6 +4,16 @@
     padding: 0;
 
 }
+.client-li{
+    margin: 0;
+    display: grid;
+    grid-template-columns: 10% 45% 45%;
+    justify-self: center;
+    align-items: center;
+    padding: 0.3rem;
+    margin: auto;
+    
+}
 .c-card{
     position: relative;
     height: 8rem;

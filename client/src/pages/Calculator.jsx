@@ -94,13 +94,13 @@ function handleServingRequest(recipeID,productID){
   axios({
     axiosInstance: axios,
     method: "post",
-    url:"s/calc/nutri/form",
+    url:"s/calc/nutri/product",
     headers: {
       "authorization": authHeader()
     },
     data:{
         "recipeID": recipeID,
-        "prodctID": productID
+        "productID": productID
     },
   }).then(function (response){
     //console.log(response.data);
@@ -192,13 +192,12 @@ function Calculator({
 
     <div className='calc-header'>
 
-    
     <SelectComponent
     id ="products"
     onSelect={(val)=>{editRef.current=val}}
     editref={editRef.current}
     options={products}
-    onChange={(item) =>{setSelectedProductId(item)}}
+    onChange={(item) =>[setSelectedProductId(item), setSelectedRecipeId(item.length? products[item].recipeID : -1)]}
     selectedID={selectedProductId}
     placeholder='Produkt wählen'
     open={productOpen}
@@ -207,7 +206,7 @@ function Calculator({
     type='text' 
     /> 
     </div>
-    {selectedRecipeId == -1 ? "":
+    {selectedProductId == -1 ? "":
     <div className='calc-header'>
         <a id='bvp' onClick={()=>setOpenTab("bvp")} className={openTab=="bvp"? 'r-header-title button-hover' : 'r-header-title'}>Kosten</a> 
         <a id='nutri' onClick={()=>setOpenTab("nutri")} className={openTab=="nutri"? 'r-header-title button-hover' : 'r-header-title'}>Nährwerte</a>

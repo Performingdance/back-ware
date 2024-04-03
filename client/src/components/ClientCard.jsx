@@ -44,19 +44,17 @@ const orderList =
 orders.map((order, key)=> {
   if(order.ID == -1){
     return(
-      <li key={key+"li"} className='order-li'>
+      <li key={key+"li"} className='client-li'>
         <p></p>
         <a onClick={()=>{setOrderPrompt(true)}} type="button" className='button rc-btn'>
           neue Bestellung
         </a>
-        <p></p>
-
       </li>
   
     )
   }else{
     return(
-      <li key={key+"li"} className='order-li'>
+      <li key={key+"li"} className='client-li'>
         <p></p>
         <p key={key+"recipe"} className='order-p'>{order.name}</p>
         {order.invoiceID? 
