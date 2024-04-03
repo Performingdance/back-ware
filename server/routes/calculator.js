@@ -37,7 +37,7 @@ router.post("/bvp", isLoggedIn, (req, res) =>{
 
 router.post("/nutri", isLoggedIn, (req, res) => {
     const recipeID = req.body.recipeID;
-    db.query("SELECT * FROM ingredients WHERE recipeID = ? ", recipeID, (err, result) =>{
+    db.query("SELECT * FROM ingredients WHERE recipeID = ?",[recipeID], (err, result) =>{
          if(err){
             console.log(err)
          } else {

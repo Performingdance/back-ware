@@ -86,7 +86,7 @@ function handleServingRequest(recipeID,productID){
   const [loading, setLoading] = useState(false);
   useEffect(()=>handleRequest(), [productID])
 
-  if(productID == -1){
+  if((productID == -1)||(recipeID == -1)){
     return [res, error, loading]
   }
   function handleRequest(){
@@ -197,7 +197,7 @@ function Calculator({
     onSelect={(val)=>{editRef.current=val}}
     editref={editRef.current}
     options={products}
-    onChange={(item) =>[setSelectedProductId(item), setSelectedRecipeId(item.length? products[item].recipeID : -1)]}
+    onChange={(item) =>[setSelectedProductId(item), setSelectedRecipeId(item != ""? products.forEach((product)=>{if(product.ID == item){return product.recipeID}}):-1)]}
     selectedID={selectedProductId}
     placeholder='Produkt wählen'
     open={productOpen}
