@@ -6,6 +6,7 @@ import handleRecipesRequest from '../hooks/handleRecipesRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import handleRecipeProductsRequest from '../hooks/handleRecipeProductsRequest'
+import handleProductRequest from '../hooks/handleProductRequest'
 
 function handleBvpRequest(productID){
   const [res, setRes] = useState([])
@@ -158,17 +159,24 @@ function Calculator({
 }) {
     const [openTab, setOpenTab] = useState("bvp")
     let editRef = useRef("")
-    const [recipeOpen, setRecipeOpen] = useState(false);
-    const [formOpen, setFormOpen] = useState(false);
+    const [productOpen, setProductOpen] = useState(false);
     const [selectedRecipeId, setSelectedRecipeId] = useState(-1)
-    const [selectedFormId, setSelectedFormId] = useState(-1)
     const [selectedProductId, setSelectedProductId] = useState(-1)
-    const [recipes, rError, rLoading] = handleRecipesRequest();
-    const [products, productsError,productsLoading] = handleRecipeProductsRequest(selectedRecipeId);
+    const [products, productsError,productsLoading] = handleProductRequest();
     const [bvpData, bvpError, bvpLoading] = handleBvpRequest(selectedProductId);
     const [ingData, ingError, ingLoading] = handleIngRequest(selectedRecipeId);
     const [nutriData, nutriError, nutriLoading] = handleNutriRequest(selectedRecipeId);
     const [servingData, servingError, servingLoading] = handleServingRequest(selectedRecipeId, selectedProductId);
+    const [productList, setProductList] = useState({});
+    const handleNameProducts = ()=> {
+      let temp_productList = {}
+      products.forEach((product)=>{
+        temp_productList = {...product, name: product.product_name}
+      })
+      setProductList(temp_productList)
+    }
+    useEffect(()=>{handleNameProducts()},[products])
+    
 
     let ingredients = ingData.map((ing, key)=>{
       if(ingData.length == key){
@@ -191,33 +199,21 @@ function Calculator({
     <Header title="Preisrechner"/>
 
     <div className='calc-header'>
-    <SelectComponent
-    id ="recipe"
-    onSelect={(val)=>{[editRef.current=val, setSelectedFormId(-1), setSelectedRecipeId(-1)]}}
-    editref={editRef.current}
-    options={recipes}
-    onChange={(item) =>{setSelectedRecipeId(item)}}
-    selectedID={selectedRecipeId}
-    placeholder='Rezept wählen'
-    open={recipeOpen}
-    setOpen={(bol)=>setRecipeOpen(bol)}
-    className='i-select' 
-    type='text' 
-    /> 
+
     
-    {(selectedRecipeId != -1) && (selectedRecipeId != "") && <SelectComponent
+    <SelectComponent
     id ="products"
     onSelect={(val)=>{editRef.current=val}}
     editref={editRef.current}
-    options={products}
+    options={productList}
     onChange={(item) =>{setSelectedProductId(item)}}
     selectedID={selectedProductId}
     placeholder='Produkt wählen'
-    open={formOpen}
-    setOpen={(bol)=>setFormOpen(bol)}
+    open={productOpen}
+    setOpen={(bol)=>setProductOpen(bol)}
     className='i-select' 
     type='text' 
-    /> }
+    /> 
     </div>
     {selectedRecipeId == -1 ? "":
     <div className='calc-header'>

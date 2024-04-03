@@ -4,7 +4,7 @@ const {isLoggedIn} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 router.get("/all", isLoggedIn, (req, res) => {
-    db.query(`SELECT b.*, form.name AS formName
+    db.query(`SELECT b.*, b.product_name AS name, form.name AS formName
     FROM(SELECT a.*, recipes.name AS recipeName FROM
     (SELECT * FROM products) AS a
     LEFT JOIN recipes
