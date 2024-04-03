@@ -167,15 +167,7 @@ function Calculator({
     const [ingData, ingError, ingLoading] = handleIngRequest(selectedRecipeId);
     const [nutriData, nutriError, nutriLoading] = handleNutriRequest(selectedRecipeId);
     const [servingData, servingError, servingLoading] = handleServingRequest(selectedRecipeId, selectedProductId);
-    const [productList, setProductList] = useState({});
-    const handleNameProducts = ()=> {
-      let temp_productList = {}
-      products.forEach((product)=>{
-        temp_productList = {...product, name: product.product_name}
-      })
-      setProductList(temp_productList)
-    }
-    useEffect(()=>{handleNameProducts()},[products])
+
     
 
     let ingredients = ingData.map((ing, key)=>{
@@ -205,7 +197,7 @@ function Calculator({
     id ="products"
     onSelect={(val)=>{editRef.current=val}}
     editref={editRef.current}
-    options={productList}
+    options={products}
     onChange={(item) =>{setSelectedProductId(item)}}
     selectedID={selectedProductId}
     placeholder='Produkt wählen'
