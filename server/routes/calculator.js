@@ -13,7 +13,7 @@ router.post("/bvp", isLoggedIn, (req, res) =>{
                 FROM (SELECT c.*,  CAST(settings.setting/100 AS DECIMAL(5,2)) AS mk_preisniveau
                     FROM (SELECT b.*, CAST(settings.setting*b.worktime AS DECIMAL(5,2)) AS bk
                         FROM(SELECT a.*, ingredients.priceKG
-                            FROM (SELECT * FROM recipe_form
+                            FROM (SELECT * FROM products
                             WHERE ID = ?) AS a
                         LEFT JOIN ingredients
                         ON ingredients.recipeID = a.recipeID) AS b 
