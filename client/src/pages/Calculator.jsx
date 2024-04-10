@@ -8,14 +8,14 @@ import authHeader from '../services/auth-header';
 import handleRecipeProductsRequest from '../hooks/handleRecipeProductsRequest'
 import handleProductRequest from '../hooks/handleProductRequest'
 
-function handleBvpRequest(productID){
+function handleBvpRequest(){
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  useEffect(()=>handleRequest(), [productID])
 
   if(productID == -1){
-    return [res, error, loading]
+    return [res, error, loading, handleRequest(productID)]
+
   }
   function handleRequest(){
   setLoading(true);
@@ -42,18 +42,18 @@ function handleBvpRequest(productID){
   })
 }
 
-  return [res, error, loading]
+return [res, error, loading, handleRequest()]
+
 }
-function handleNutriRequest(recipeID){
+function handleNutriRequest(){
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  useEffect(()=>handleRequest(), [recipeID])
 
   if(recipeID == -1){
-    return [res, error, loading]
+    return [res, error, loading, handleRequest()]
   }
-  function handleRequest(){
+  function handleRequest(recipeID){
   setLoading(true);
   axios({
     axiosInstance: axios,
@@ -78,18 +78,17 @@ function handleNutriRequest(recipeID){
   })
 }
 
-  return [res, error, loading]
+return [res, error, loading, handleRequest()]
 }
-function handleServingRequest(recipeID,productID){
+function handleServingRequest(){
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  useEffect(()=>handleRequest(), [productID])
 
   if((productID == -1)||(recipeID == -1)){
-    return [res, error, loading]
+    return [res, error, loading, handleRequest()]
   }
-  function handleRequest(){
+  function handleRequest(recipeID,productID){
   setLoading(true);
   axios({
     axiosInstance: axios,
@@ -115,7 +114,7 @@ function handleServingRequest(recipeID,productID){
   })
 }
 
-  return [res, error, loading]
+  return [res, error, loading, handleRequest()]
 }
 function handleIngRequest(recipeID){
   const [res, setRes] = useState([])
@@ -163,11 +162,14 @@ function Calculator({
     const [selectedRecipeId, setSelectedRecipeId] = useState(-1)
     const [selectedProductId, setSelectedProductId] = useState(-1)
     const [products, productsError,productsLoading] = handleProductRequest();
-    const [bvpData, bvpError, bvpLoading] = handleBvpRequest(selectedProductId);
-    const [ingData, ingError, ingLoading] = handleIngRequest(selectedRecipeId);
-    const [nutriData, nutriError, nutriLoading] = handleNutriRequest(selectedRecipeId);
-    const [servingData, servingError, servingLoading] = handleServingRequest(selectedRecipeId, selectedProductId);
-
+    const [bvpData, bvpError, bvpLoading, bvpRequest] = handleBvpRequest();
+    const [ingData, ingError, ingLoading, ingRequest] = handleIngRequest();
+    const [nutriData, nutriError, nutriLoading, nutriRequest] = handleNutriRequest();
+    const [servingData, servingError, servingLoading, servingRequest] = handleServingRequest();
+    useEffect(()=>{bvpRequest(selectedProductId),[selectedProductId]})
+    useEffect(()=>{ingRequest(selectedRecipeId),[selectedRecipeId]})
+    useEffect(()=>{nutriRequest(selectedRecipeId),[selectedRecipeId]})
+    useEffect(()=>{servingRequest(selectedRecipeId, selectedProductId),[selectedRecipeId, selectedProductId]})
     
 
     let ingredients = ingData.map((ing, key)=>{

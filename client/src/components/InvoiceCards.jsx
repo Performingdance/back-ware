@@ -33,7 +33,6 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import '../styles/IngredientCard.css';
-import '../styles/InvoiceCard.css';
 import SVGIcon from './SVG';
 import pencil_square from '../assets/icons/pencil-square.svg'
 import plus from "../assets/icons/plus.svg"

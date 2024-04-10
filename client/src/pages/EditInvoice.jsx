@@ -8,6 +8,7 @@ import check from '../assets/icons/check-all.svg'
 import trash from '../assets/icons/trash.svg'
 import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
+import '../styles/EditInvoice.css';
 
 import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest'
 import NewRecipePopup, { PromptPopup, RecipeOrderPopup } from '../components/Popup';
@@ -220,17 +221,15 @@ function EditInvoice  () {
 
     const items = res.map((product, key)=> {
       return(
-        <div key={key+"li"} className='order-grid'>
-          <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
-          <p key={key+"product"} className='order-p'>{product.product_name}</p>
-          <p key={key+"p"} ></p>
-          <p key={key+"p2"} ></p>
-          <p key={key+"production"} className='order-p'>{"Bestelldatum: " + (product.order_date|| "-")}</p>
-          <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
-          <p key={key+"p3"} ></p>
-          <p key={key+"price_piece"} className='order-p' >{"Preis/Stück: "+ (product.price_piece || "-") + "€"}</p>
-          <p key={key+"price_total"} className='order-p' >{"Preis gesamt: "+ (product.price_total || "-") + "€"}</p>
-        </div>        
+        <tr key={key+"li"} className='invoice-tb-row'>
+             
+                <td key={key+"pos"}>{key+1}</td>
+                <td key={key+"product"} className='order-p'>{product.product_name}</td>
+                <td key={key+"amount"} className='order-p' >{product.amount+"x"}</td>
+                <td key={key+"price_piece"} className='order-p' >{(product.price_piece || "-") + "€"}</td>
+                <td key={key+"price_total"} className='order-p' >{(product.price_total || "-") + "€"}</td>
+
+        </tr>        
         )
       })
       const editItems = res.map((product, key)=> {
@@ -254,9 +253,9 @@ function EditInvoice  () {
       })      
 
   return (
-    <div className='page-content'>
+    <div className='page-content-wide'>
     
-      <Header key="header" title={InvoiceRes.invoice_number? "#"+ InvoiceRes.invoice_number +" "+ (InvoiceRes.client? InvoiceRes.client : " ") :"# - "}/>
+      <Header key="header" title={InvoiceRes? "#"+ InvoiceRes.invoice_number +" "+ (InvoiceRes.client? InvoiceRes.client : " ") :"# - "}/>
       {togglePrompt && <PromptPopup 
           title={InvoiceRes.invoice_number? `Bestellung #${InvoiceRes.invoice_number } löschen?` : "Bestellung löschen?"} 
           btnOk="OK" 
@@ -277,8 +276,8 @@ function EditInvoice  () {
       }
 
 
-      <div className='order-wrapper'>
-        <div className='order-div'>
+      <div className='invoice-wrapper'>
+        <div className='invoice-div'>
         {((err || invoiceErr) && <p className='errorMsg'>{err.message || invoiceErr.message}</p>)}
           {!edit ?<p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>:
                     <div className='d-il ai-c'> 
@@ -292,7 +291,7 @@ function EditInvoice  () {
                       onSelect={(val)=>{editRef.current=val}}
                       onChange={(item) =>{clientIDRef.current = item}}
                       selectedID={clientIDRef.current}
-                      defaultValue={InvoiceRes.client}
+                      defaultValue={InvoiceRes? InvoiceRes.client:""}
                       placeholder={"Kunde wählen...."}
                       open={clientSelectOpen}
                       setOpen={(val)=>{setClientSelectOpen(val)}}
@@ -312,7 +311,7 @@ function EditInvoice  () {
                       onSelect={(val)=>{editRef.current=val}}
                       onChange={(item) =>{margeIDRef.current = item}}
                       selectedID={margeIDRef.current}
-                      defaultValue={InvoiceRes.marge_name}
+                      defaultValue={InvoiceRes? InvoiceRes.marge_name: ""}
                       placeholder={"Marge wählen...."}
                       open={margeSelectOpen}
                       setOpen={(val)=>{setMargeSelectOpen(val)}}
@@ -323,13 +322,13 @@ function EditInvoice  () {
           {!edit ?<p>Rechnungs-Nr.: {InvoiceRes? "#" + InvoiceRes.invoice_number : "# -"} </p>:
                     <div className='d-il ai-c'> 
                     <p>Rechnungs-Nr.:</p> 
-                    <input type='number' defaultValue={InvoiceRes.invoice_number}  onChange={(e)=>{invoice_numberRef.current = e.target.valueAsNumber}}></input>
+                    <input type='number' defaultValue={InvoiceRes? InvoiceRes.invoice_number: 0}  onChange={(e)=>{invoice_numberRef.current = e.target.valueAsNumber}}></input>
                   </div>}
           {!edit? <p>Rechnungsdatum: {InvoiceRes? InvoiceRes.invoice_date : "-"}</p>:         
           <div className='d-il ai-c'> 
             <p>Rechnungsdatum:</p> 
             <DateLine 
-              defaultDay={InvoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1")} 
+              defaultDay={InvoiceRes? InvoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1"): ""} 
               onDateChange={(val)=>{invoice_dateRef.current = val}} /> 
           </div>}
           {/* {!edit? <p>Lieferzeitraum: {res.delivery_date? res.delivery_date : "-"}</p>:         
@@ -350,10 +349,20 @@ function EditInvoice  () {
             <button key={"abort"} className='edit-btn' onClick={()=>setEdit(false)}><SVGIcon src={x_circle} class="svg-icon-md"/> </button>
           </div>}
         </div>
-
-        {res.length? " ": <h4>Noch keine Produkte in der Bestellung</h4>}
-        {(res && !edit) && items}
-        {(res && edit) && editItems}
+        
+        {res.length? 
+        <div className='invoice-tb-div'>   
+              <tr className='invoice-tb-row'>
+                <th>Pos</th>
+                <th>Artikel</th>
+                <th>Anzahl</th>
+                <th>Einzelpreis</th>
+                <th>Summe Netto</th>
+              </tr>
+              {(res && !edit) && items}
+              {(res && edit) && editItems}
+        </div>: <h4>Noch keine Produkte in der Bestellung</h4>}
+        
 
         <div className='ac-c'>
         <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Bestellung</button>

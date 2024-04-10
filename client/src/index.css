@@ -172,6 +172,15 @@ input[type=number] {
   overflow: auto;
 }
 
+.page-content-wide{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 35rem));
+  justify-content: center;
+  padding: 0.5rem;
+  padding-bottom: 8rem;
+  overflow: auto;
+}
+
 .header-edit-btns{
   position: fixed;
   display: inline;
