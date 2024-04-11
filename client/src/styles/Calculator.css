@@ -11,20 +11,20 @@
 .calc-s-header >*{
     flex-wrap: 2;
 }
-.bvp-table{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
 
-    margin: 0.3rem;
-    padding: 0 0.6rem 0 0.6rem;
-    box-shadow: 0.2rem 0rem 0 0 , 0 0.3rem 0.3rem 0;
-    border-radius: var(--border-radius);   
-}
 .bvp-wrapper{
     margin: auto;
     margin-bottom: calc(var(--nav-size)*3.5);
-    max-width: 30rem;
-    
+    width: 30rem;
+    padding: 0 0.6rem 0.3rem 0.6rem;
+    box-shadow: 0.2rem 0rem 0 0 , 0 0.3rem 0.3rem 0;
+    border-radius: var(--border-radius);   
+}
+.bvp-table{
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    padding: 0.3rem;
+
 }
 .bvp-price{
     margin-top: 1rem;

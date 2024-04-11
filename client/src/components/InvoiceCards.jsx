@@ -47,24 +47,14 @@ export default function invoiceCards ({
     editID,
     editBtn
     }){
-      const [products,error,loading, handleProdRequest] = handleInvoiceProdRequest()
+      const [products,prodError,prodLoading, handleProdRequest] = handleInvoiceProdRequest()
+
       useEffect(()=>{if(editID==invoice.ID && editBtn==1){
         handleProdRequest (invoice.ID)
       }},[editID])
 
       const productList = 
       products.map((product, key)=> {
-        if(product.ID == -1){
-          return(
-            <li key={key+"li"} className='order-li'>
-              <p></p>
-              <p></p>
-              <p></p>
-      
-            </li>
-        
-          )
-        }else{
           return(
             <li key={key+"li"} className='order-li'>
               <p key={key+"amount"} className='order-p'>{product.amount + "x"}</p>
@@ -72,13 +62,8 @@ export default function invoiceCards ({
             </li>
         
           )
+      })
       
-        }
-        
-      
-      }) 
-      
-
     return (
         <div className='client-card'>
         <div className='c-card'>
@@ -103,9 +88,10 @@ export default function invoiceCards ({
         {editID==invoice.ID && editBtn==1 && 
         <div className='c-card cc-order'>
            <ul className='product-list'>
-           {products.length? productList :        
-                       <p> noch keine Produkte</p>
-           }
+           {prodError? prodError.message : 
+           (products.length? productList :
+           <p>noch keine Produkte</p>)
+            }
            </ul>
         </div>}
         {editID==invoice.ID && editBtn==2 && 

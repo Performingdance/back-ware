@@ -5,172 +5,33 @@ import {SelectComponent} from '../components/Searchbar'
 import handleRecipesRequest from '../hooks/handleRecipesRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
-import handleRecipeProductsRequest from '../hooks/handleRecipeProductsRequest'
 import handleProductRequest from '../hooks/handleProductRequest'
+import handleBvpRequest from '../hooks/calculator/handleBvpRequest'
+import handleNutriRequest from '../hooks/calculator/handleNutriRequest'
+import handleProdIngRequest from '../hooks/calculator/handleProdIngRequest'
+import handleServingRequest from '../hooks/calculator/handleServingRequest'
+  
 
-function handleBvpRequest(){
-  const [res, setRes] = useState([])
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  if(productID == -1){
-    return [res, error, loading, handleRequest(productID)]
-
-  }
-  function handleRequest(){
-  setLoading(true);
-  axios({
-    axiosInstance: axios,
-    method: "post",
-    url:"s/calc/bvp",
-    headers: {
-      "authorization": authHeader()
-    },
-    data:{
-        "productID": productID,
-    },
-  }).then(function (response){
-    //console.log(response.data);
-    setRes(response.data)
-    setLoading(false);
+  
 
 
-  }).catch(function (error) {
-    console.log(error.message);
-    setError(error.message)
-    setLoading(false);
-  })
-}
 
-return [res, error, loading, handleRequest()]
-
-}
-function handleNutriRequest(){
-  const [res, setRes] = useState([])
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  if(recipeID == -1){
-    return [res, error, loading, handleRequest()]
-  }
-  function handleRequest(recipeID){
-  setLoading(true);
-  axios({
-    axiosInstance: axios,
-    method: "post",
-    url:"s/calc/nutri",
-    headers: {
-      "authorization": authHeader()
-    },
-    data:{
-        "recipeID": recipeID
-    },
-  }).then(function (response){
-    //console.log(response.data);
-    setRes(response.data)
-    setLoading(false);
-
-
-  }).catch(function (error) {
-    console.log(error.message);
-    setError(error.message)
-    setLoading(false);
-  })
-}
-
-return [res, error, loading, handleRequest()]
-}
-function handleServingRequest(){
-  const [res, setRes] = useState([])
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  if((productID == -1)||(recipeID == -1)){
-    return [res, error, loading, handleRequest()]
-  }
-  function handleRequest(recipeID,productID){
-  setLoading(true);
-  axios({
-    axiosInstance: axios,
-    method: "post",
-    url:"s/calc/nutri/product",
-    headers: {
-      "authorization": authHeader()
-    },
-    data:{
-        "recipeID": recipeID,
-        "productID": productID
-    },
-  }).then(function (response){
-    //console.log(response.data);
-    setRes(response.data)
-    setLoading(false);
-
-
-  }).catch(function (error) {
-    console.log(error.message);
-    setError(error.message)
-    setLoading(false);
-  })
-}
-
-  return [res, error, loading, handleRequest()]
-}
-function handleIngRequest(recipeID){
-  const [res, setRes] = useState([])
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  useEffect(()=>handleRequest(), [recipeID])
-
-  if(recipeID == -1){
-    return [res, error, loading]
-  }
-  function handleRequest(){
-  setLoading(true);
-  axios({
-    axiosInstance: axios,
-    method: "post",
-    url:"s/calc/ing",
-    headers: {
-      "authorization": authHeader()
-    },
-    data:{
-        "recipeID": recipeID
-    },
-  }).then(function (response){
-    //console.log(response.data);
-
-    setRes(response.data)
-    setLoading(false);
-
-
-  }).catch(function (error) {
-    console.log(error.message);
-    setError(error.message)
-    setLoading(false);
-  })
-}
-
-  return [res, error, loading]
-}
 function Calculator({
 
 }) {
     const [openTab, setOpenTab] = useState("bvp")
+    const[idUpdate, setIdUpdate] = useState(-1)
     let editRef = useRef("")
     const [productOpen, setProductOpen] = useState(false);
     const [selectedRecipeId, setSelectedRecipeId] = useState(-1)
     const [selectedProductId, setSelectedProductId] = useState(-1)
     const [products, productsError,productsLoading] = handleProductRequest();
     const [bvpData, bvpError, bvpLoading, bvpRequest] = handleBvpRequest();
-    const [ingData, ingError, ingLoading, ingRequest] = handleIngRequest();
+    const [ingData, ingError, ingLoading, ingRequest] = handleProdIngRequest();
     const [nutriData, nutriError, nutriLoading, nutriRequest] = handleNutriRequest();
     const [servingData, servingError, servingLoading, servingRequest] = handleServingRequest();
-    useEffect(()=>{bvpRequest(selectedProductId),[selectedProductId]})
-    useEffect(()=>{ingRequest(selectedRecipeId),[selectedRecipeId]})
-    useEffect(()=>{nutriRequest(selectedRecipeId),[selectedRecipeId]})
-    useEffect(()=>{servingRequest(selectedRecipeId, selectedProductId),[selectedRecipeId, selectedProductId]})
-    
+   
+    //console.log(selectedProductId, selectedRecipeId)
 
     let ingredients = ingData.map((ing, key)=>{
       if(ingData.length == key){
@@ -184,7 +45,25 @@ function Calculator({
       }
       
     })
+function handleProductChange(productID){
+  let _recipeID
+  if((productID > -1)&&(productID != "")){
+    products.forEach((product)=>{
+      if(product.ID == productID){
+        _recipeID = product.recipeID}
+    })
+    bvpRequest(productID)
+    ingRequest(_recipeID)
+    nutriRequest(_recipeID)
+    servingRequest(_recipeID, productID)
+    setSelectedRecipeId(_recipeID)
+    setSelectedProductId(productID)
+  }else{
+    return
+  }
 
+
+}
    
 
 
@@ -199,7 +78,7 @@ function Calculator({
     onSelect={(val)=>{editRef.current=val}}
     editref={editRef.current}
     options={products}
-    onChange={(item) =>[setSelectedProductId(item), setSelectedRecipeId(item != ""? products.forEach((product)=>{if(product.ID == item){return product.recipeID}}):-1)]}
+    onChange={(item) =>handleProductChange(item)}
     selectedID={selectedProductId}
     placeholder='Produkt wählen'
     open={productOpen}

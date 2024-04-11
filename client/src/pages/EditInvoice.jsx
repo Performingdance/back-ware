@@ -221,14 +221,12 @@ function EditInvoice  () {
 
     const items = res.map((product, key)=> {
       return(
-        <tr key={key+"li"} className='invoice-tb-row'>
-             
-                <td key={key+"pos"}>{key+1}</td>
-                <td key={key+"product"} className='order-p'>{product.product_name}</td>
-                <td key={key+"amount"} className='order-p' >{product.amount+"x"}</td>
-                <td key={key+"price_piece"} className='order-p' >{(product.price_piece || "-") + "€"}</td>
-                <td key={key+"price_total"} className='order-p' >{(product.price_total || "-") + "€"}</td>
-
+        <tr key={key+"li"} className='invoice-tb-row'>      
+            <td key={key+"pos"}>{key+1}</td>
+            <td key={key+"product"} className='order-p'>{product.product_name}</td>
+            <td key={key+"amount"} className='order-p' >{product.amount+"x"}</td>
+            <td key={key+"price_piece"} className='order-p' >{(product.price_piece || "-") + "€"}</td>
+            <td key={key+"price_total"} className='order-p' >{(product.price_total || "-") + "€"}</td>
         </tr>        
         )
       })
@@ -349,29 +347,32 @@ function EditInvoice  () {
             <button key={"abort"} className='edit-btn' onClick={()=>setEdit(false)}><SVGIcon src={x_circle} class="svg-icon-md"/> </button>
           </div>}
         </div>
-        
+        <div className='invoice-div'>
         {res.length? 
-        <div className='invoice-tb-div'>   
+        <table className='invoice-tb'>
+        <tbody className='invoice-tb-tbody'>   
               <tr className='invoice-tb-row'>
-                <th>Pos</th>
-                <th>Artikel</th>
-                <th>Anzahl</th>
-                <th>Einzelpreis</th>
-                <th>Summe Netto</th>
+                <th className='invoice-tb-th'>Pos</th>
+                <th className='invoice-tb-th'>Artikel</th>
+                <th className='invoice-tb-th'>Anzahl</th>
+                <th className='invoice-tb-th'>Einzelpreis</th>
+                <th className='invoice-tb-th'>Summe Netto</th>
               </tr>
               {(res && !edit) && items}
               {(res && edit) && editItems}
-        </div>: <h4>Noch keine Produkte in der Bestellung</h4>}
+        </tbody>
         
+        </table>: 
+        <h4>Noch keine Produkte in der Bestellung</h4>}
+                
+        <div className='invoice-btns'>
+          <button className='invoice-btn' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Bestellung</button>
+          <button className='invoice-btn' key={"add-btn_2"} onClick={()=>{setAddItemPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Produkt</button>
+          <button className='invoice-btn' key={"add-btn_3"} onClick={()=>{setAddClientItemPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Kunde</button>   
 
-        <div className='ac-c'>
-        <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Bestellung</button>
-        <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn_2"} onClick={()=>{setAddItemPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Produkt</button>
-        <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn_3"} onClick={()=>{setAddClientItemPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Kunde</button>   
-
+        </div>
+        </div>
       </div>
-      </div>
-     
     </div>
   )
 }
