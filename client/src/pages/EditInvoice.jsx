@@ -11,7 +11,7 @@ import SVGIcon from '../components/SVG';
 import '../styles/EditInvoice.css';
 
 import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest'
-import NewRecipePopup, { PromptPopup, RecipeOrderPopup } from '../components/Popup';
+import NewRecipePopup, { AddInvoiceOrderPopup, AddInvoiceProdPopup, PromptPopup, RecipeOrderPopup } from '../components/Popup';
 import handleInvoiceIDRequest from '../hooks/handleInvoiceIDRequest';
 import { DateLine } from '../components/Calendar';
 import { LabelTextInput } from '../components/LabelBox';
@@ -222,7 +222,7 @@ function EditInvoice  () {
     const items = res.map((product, key)=> {
       return(
         <div key={key+"li"} className='invoice-tb-row'>      
-            <p key={key+"pos"}>{key+1}</p>
+            <p key={key+"pos"} className='order-p'>{key+1}</p>
             <p key={key+"product"} className='order-p'>{product.product_name}</p>
             <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
             <p key={key+"price_piece"} className='order-p' >{(product.price_piece || "-") + "€"}</p>
@@ -234,7 +234,7 @@ function EditInvoice  () {
         return(
           <div key={key+"div"} className=''>
             <div key={key+"li"} className='invoice-tb-row'>      
-              <p key={key+"pos"}>{key+1}</p>
+              <p key={key+"pos"} className='order-p'>{key+1}</p>
               <p key={key+"product"} className='order-p'>{product.product_name}</p>
               <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
               <p key={key+"price_piece"} className='order-p' >{(product.price_piece || "-") + "€"}</p>
@@ -268,6 +268,23 @@ function EditInvoice  () {
           message= {delError? delError.message : " "}
           /> 
       }
+      {addOrderPrompt && <AddInvoiceOrderPopup
+        forwardEdit={false}
+        onClickOK={()=>{setUpdateInvoice(updateInvoice+1),setAddOrderPrompt(false)}}
+        onClickAbort={()=>{setAddOrderPrompt(false)}}
+        defaultInvoiceID={invoiceID}
+        defaultClientID={InvoiceRes.clientID}
+        defaultInvoiceName={InvoiceRes.invoice_number}
+        defaultClientName={InvoiceRes.client} />}
+
+      {addItemPrompt && <AddInvoiceProdPopup
+        forwardEdit={false}
+        onClickOK={()=>{setUpdateInvoice(updateInvoice+1),setAddItemPrompt(false)}}
+        onClickAbort={()=>{setAddItemPrompt(false)}}
+        defaultInvoiceID={invoiceID}
+        defaultClientID={InvoiceRes.clientID}
+        defaultInvoiceName={InvoiceRes.invoice_number}
+        defaultClientName={InvoiceRes.client} />}
 
 
       <div className='invoice-wrapper'>

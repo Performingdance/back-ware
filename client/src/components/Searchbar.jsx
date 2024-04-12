@@ -144,11 +144,14 @@ export const SelectComponent = ({
   selectedID,
   open,
   setOpen,
-  defaultValue
+  defaultValue,
+  returnValue
 }) =>{
   const [inputValue, setInputValue] = useState(defaultValue || "");
   const onInputChange = (e) => {
+    returnValue(e.target.value)
     setInputValue(e.target.value);
+
   }
   function handleOnSelect () {
     //console.log(id, editref)
@@ -159,6 +162,8 @@ export const SelectComponent = ({
   const onItemSelected = (option) => {
     onChange !== undefined && onChange(option.ID)
     onChange !== undefined && setInputValue(option.name)
+    returnValue(option.name)
+    
     setOpen(false);
   }
 

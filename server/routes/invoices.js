@@ -101,6 +101,8 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
     const productID = req.body.productID
     let product_name = req.body.product_name;
     const amount = req.body.amount;
+    const price_piece = req.body.price_piece;
+    const price_total = req.body.price_total;
     const order_date = req.body.delivery_date;
     const delivery_date = req.body.delivery_date;
 
@@ -113,9 +115,9 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
             } else{
                 product_name = result[0].product_name
                 db.query(`INSERT INTO invoices_items 
-                (invoiceID, clientID, productID, product_name, amount, order_date, delivery_date) 
-                VALUES (?,?,?,?,?,?,?) `, 
-                [invoiceID, clientID, productID, product_name, amount, order_date, delivery_date], 
+                (invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date) 
+                VALUES (?,?,?,?,?,?,?,?,?) `, 
+                [invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date], 
                 (err, result) =>{
                     if(err){
                         console.log(err)
@@ -128,9 +130,9 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
 
     }else{
         db.query(`INSERT INTO invoices_items 
-        (invoiceID, clientID, productID, product_name, amount, order_date, delivery_date) 
-        VALUES (?,?,?,?,?,?,?) `, 
-        [invoiceID, clientID, productID, product_name, amount, order_date, delivery_date], 
+        (invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date) 
+        VALUES (?,?,?,?,?,?,?,?,?) `, 
+        [invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date], 
         (err, result) =>{
             if(err){
                 console.log(err)
@@ -416,7 +418,8 @@ router.delete("/delete", isLoggedIn, (req, res) => {
    const invoiceID = req.body.invoiceID;
 
 
-   db.query(`DELETE invoices, invoices_items 
+   db.query(`DELETE invoices, 
+   invoices_items 
    FROM invoices
    INNER JOIN invoices_items 
    ON invoices_items.invoiceID = invoices.ID
