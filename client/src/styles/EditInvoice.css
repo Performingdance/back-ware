@@ -7,6 +7,8 @@ margin: 0;
     background-color: var(--bg-accent-light);
 }
 .invoice-tb-row{
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 0.5fr 0.7fr 0.7fr;
     padding: 0rem;
 }
 .invoice-tb-data{

@@ -439,12 +439,12 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                     if(berr){
                         console.log(berr)
                     } else{
-                        orderIDs.forEach((ID)=>{
+                        orderIDs.forEach((orderID)=>{
                             db.query(`
                             UPDATE orders SET 
                                 billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
                             WHERE ID = ?`, 
-                            [ID.orderID, ID.orderID], 
+                            [orderID, orderID], 
                             (berr, bresult) =>{
                                 if(berr){
                                     console.log(berr)
@@ -453,7 +453,7 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                                     UPDATE orders SET 
                                         invoiceID = NULL 
                                     WHERE ID = ? AND invoiceID = ?`, 
-                                    [ID.orderID, invoiceID], 
+                                    [orderID,invoiceID], 
                                     (berr, bresult) =>{
                                         if(berr){
                                             console.log(berr)
@@ -489,7 +489,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
         if(err){
            console.log(err)
         } else {
-            if((recipeID != -1) && (formID != -1)){
+            if(productID != -1){
                 db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ? AND productID =?", 
                 [invoiceID, productID], 
                 (berr, bresult) =>{

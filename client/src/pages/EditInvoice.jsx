@@ -221,29 +221,25 @@ function EditInvoice  () {
 
     const items = res.map((product, key)=> {
       return(
-        <tr key={key+"li"} className='invoice-tb-row'>      
-            <td key={key+"pos"}>{key+1}</td>
-            <td key={key+"product"} className='order-p'>{product.product_name}</td>
-            <td key={key+"amount"} className='order-p' >{product.amount+"x"}</td>
-            <td key={key+"price_piece"} className='order-p' >{(product.price_piece || "-") + "€"}</td>
-            <td key={key+"price_total"} className='order-p' >{(product.price_total || "-") + "€"}</td>
-        </tr>        
+        <div key={key+"li"} className='invoice-tb-row'>      
+            <p key={key+"pos"}>{key+1}</p>
+            <p key={key+"product"} className='order-p'>{product.product_name}</p>
+            <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
+            <p key={key+"price_piece"} className='order-p' >{(product.price_piece || "-") + "€"}</p>
+            <p key={key+"price_total"} className='order-p' >{(product.price_total || "-") + "€"}</p>
+        </div>        
         )
       })
       const editItems = res.map((product, key)=> {
         return(
-          <div key={key+"div"} className='edit-order-div'>
-        <div key={key+"li"} className='edit-order-grid'>
-          <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
-          <p key={key+"product"} className='order-p'>{product.product_name}</p>
-          <p key={key+"p"} ></p>
-            <p key={key+"p2"} ></p>
-          <p key={key+"production"} className='order-p'>{"Bestelldatum: " + (product.order_date|| "-")}</p>
-          <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
-          <p key={key+"p3"} ></p>
-          <p key={key+"price_piece"} className='order-p' >{"Preis/Stück: "+ (product.price_piece || "-") + "€"}</p>
-          <p key={key+"price_total"} className='order-p' >{"Preis gesamt: "+ (product.price_total || "-") + "€"}</p>
-        </div>
+          <div key={key+"div"} className=''>
+            <div key={key+"li"} className='invoice-tb-row'>      
+              <p key={key+"pos"}>{key+1}</p>
+              <p key={key+"product"} className='order-p'>{product.product_name}</p>
+              <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
+              <p key={key+"price_piece"} className='order-p' >{(product.price_piece || "-") + "€"}</p>
+              <p key={key+"price_total"} className='order-p' >{(product.price_total || "-") + "€"}</p>
+             </div>   
             <button key={key+"del"} className='edit-btn' onClick={()=>[setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
           </div>
 
@@ -349,20 +345,18 @@ function EditInvoice  () {
         </div>
         <div className='invoice-div'>
         {res.length? 
-        <table className='invoice-tb'>
-        <tbody className='invoice-tb-tbody'>   
-              <tr className='invoice-tb-row'>
-                <th className='invoice-tb-th'>Pos</th>
-                <th className='invoice-tb-th'>Artikel</th>
-                <th className='invoice-tb-th'>Anzahl</th>
-                <th className='invoice-tb-th'>Einzelpreis</th>
-                <th className='invoice-tb-th'>Summe Netto</th>
-              </tr>
+        <div className='invoice-tb-tbody'>   
+              <div className='invoice-tb-row'>
+                <p className='invoice-tb-th'>Pos</p>
+                <p className='invoice-tb-th'>Artikel</p>
+                <p className='invoice-tb-th'>Anzahl</p>
+                <p className='invoice-tb-th'>Einzelpreis</p>
+                <p className='invoice-tb-th'>Summe Netto</p>
+              </div>
               {(res && !edit) && items}
               {(res && edit) && editItems}
-        </tbody>
-        
-        </table>: 
+        </div>
+        : 
         <h4>Noch keine Produkte in der Bestellung</h4>}
                 
         <div className='invoice-btns'>
