@@ -772,24 +772,20 @@ export function AddInvoiceOrderPopup({
 
             <p className='lb-title '>Kunde</p>
             <h5>{defaultClientName}</h5>
-            
-            <p className='lb-title ' key={"order_title"}>Rechnungsnummer</p>
-            <h5>{defaultInvoiceName}</h5>
-                  
-                  <p className='lb-title '>Bestellung</p>
-                  <SelectComponent 
-                  id ="invoices"
-                  editref={editRef.current}
-                  options={orders}
-                  onSelect={(val)=>{[editRef.current=val, setSelectedOrderID(-1)]}}
-                  onChange={(val) =>{setSelectedOrderID(val)}}
-                  selectedID={selectedOrderID}
-                  placeholder='Bestellung wählen...'
-                  open={ordersOpen}
-                  setOpen={(val)=>{setOrdersOpen(val)}}
-                  className='i-select popup-input' 
-                  defaultValue={""}
-                  />
+            <p className='lb-title '>Bestellung</p>
+            <SelectComponent 
+              id ="invoices"
+              editref={editRef.current}
+              options={orders}
+              onSelect={(val)=>{[editRef.current=val, setSelectedOrderID(-1)]}}
+              onChange={(val) =>{setSelectedOrderID(val)}}
+              selectedID={selectedOrderID}
+              placeholder='Bestellung wählen...'
+              open={ordersOpen}
+              setOpen={(val)=>{setOrdersOpen(val)}}
+              className='i-select popup-input' 
+              defaultValue={""}
+            />
             <div className='popup-card-btns'>
                 <button className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Weiter</button>
                 <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>

@@ -149,7 +149,7 @@ export const SelectComponent = ({
 }) =>{
   const [inputValue, setInputValue] = useState(defaultValue || "");
   const onInputChange = (e) => {
-    returnValue(e.target.value)
+    returnValue && returnValue(e.target.value)
     setInputValue(e.target.value);
 
   }
@@ -162,7 +162,7 @@ export const SelectComponent = ({
   const onItemSelected = (option) => {
     onChange !== undefined && onChange(option.ID)
     onChange !== undefined && setInputValue(option.name)
-    returnValue(option.name)
+    returnValue && returnValue(option.name)
     
     setOpen(false);
   }

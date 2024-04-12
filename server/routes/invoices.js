@@ -213,12 +213,12 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
     const invoiceID = req.body.invoiceID;
 
     db.query(`INSERT INTO invoices_items 
-    (invoiceID, clientID, orderID ,productID, amount, delivery_date, order_date, product_name) 
-    SELECT b.*, products.product_name
+    (invoiceID, clientID, orderID ,productID, amount, delivery_date, order_date, product_name, price_piece, price_total) 
+    SELECT b.*, products.product_name, products.vkp_netto, calc(products.vkp_netto * amount)
     FROM (SELECT a.*, orders.order_date
         FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, productID, amount, delivery_date  
             FROM orders_items 
-            WHERE orderID = ?) as a
+            WHERE orderID = ? AND invoiceID = "Null") as a
         LEFT JOIN orders
         ON a.orderID = orders.ID) as b
     LEFT JOIN products
@@ -501,7 +501,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                     } else{
                         db.query(`
                             UPDATE orders SET 
-                                billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
+                                billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL), invoiceID = "NULL""
                             WHERE ID = ?`, 
                         [orderID, orderID], 
                         (berr, bresult) =>{
