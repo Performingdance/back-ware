@@ -218,7 +218,7 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
     FROM (SELECT a.*, orders.order_date
         FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, productID, amount, delivery_date  
             FROM orders_items 
-            WHERE orderID = ? AND invoiceID = "Null") as a
+            WHERE orderID = ? AND invoiceID IS NULL) as a
         LEFT JOIN orders
         ON a.orderID = orders.ID) as b
     LEFT JOIN products
