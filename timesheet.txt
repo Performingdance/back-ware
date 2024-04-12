@@ -110,12 +110,16 @@
 02.03. 1h
 03.04 1,5h
 10.04. 1,5h
+11.04. 1,5h
 Kosten:
     Node server Render
         Feb 7€
 
 ToDo:
-images lazy load (produkte, rezepte)
+Daylist Update - check
+order -  add to invoice: product_name wird nicht übernommen check
+
+
 token check -> Response: location (/home) + next (original page)
 Order_Items - Daylist verknüpfung überprüfen (Löschen aus der Daylist - auch aus Order?)
 
@@ -134,8 +138,6 @@ Preisliste - Kategorie, vorgeschlagen, gesetzt
     Bestellungen
     Rechnung öffnen -> invoices/edit:ID
     zu Rechnung hinzufügen / neue erstellen prompt
-
-Rezepte: Produkte - preise Margen checken -> es müssen alle bei einem neuen Produkt erstellt werden
 
 Update Rezept Nährwerte in ingredients-db
 
@@ -185,8 +187,6 @@ calculator
 user roles - admin, helper
 
 
-DB:
-    - Daylist colums  Rezept, Form, Menge Soll/ Ist / Rest
 QOL:
 convert input decimals
 converter worktime based 60 (minutes) to based 100 (percent of hour)

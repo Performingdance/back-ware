@@ -149,16 +149,21 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
     const invoiceID = req.body.invoiceID;
     let orderID
 
-    db.query(`INSERT INTO invoices_items 
-    (invoiceID, clientID, orderID, productID, amount, order_date, delivery_date) 
-    SELECT ? as invoiceID, orders_items.clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.delivery_date 
-    FROM
-		(SELECT ID         
-        FROM orders
-        WHERE clientID = ? AND invoiceID IS null) as a
-    LEFT JOIN orders_items
-    ON orders_items.orderID = a.ID 
-    WHERE orders_items.ID IS NOT null`, 
+    db.query(`
+    INSERT INTO invoices_items 
+    (invoiceID, clientID, orderID, productID, amount, order_date, delivery_date, product_name)
+    SELECT b.*, products.product_name 
+    FROM( SELECT ? as invoiceID, orders_items.clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.delivery_date 
+        FROM
+            (SELECT ID         
+            FROM orders
+            WHERE clientID = ? AND invoiceID IS null) AS a
+        LEFT JOIN orders_items
+        ON orders_items.orderID = a.ID 
+        WHERE orders_items.ID IS NOT null) AS b
+    LEFT JOIN products
+    ON products.ID = b.productID 
+        `, 
     [invoiceID, clientID], 
     (err, result) =>{
         if(err){
@@ -206,13 +211,16 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
     const invoiceID = req.body.invoiceID;
 
     db.query(`INSERT INTO invoices_items 
-    (invoiceID, clientID, orderID,productID, amount, delivery_date, order_date) 
-    SELECT a.*, orders.order_date
-    FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, productID, amount, delivery_date  
-        FROM orders_items 
-        WHERE orderID = ?) as a
-    LEFT JOIN orders
-    ON a.orderID = orders.ID`, 
+    (invoiceID, clientID, orderID ,productID, amount, delivery_date, order_date, product_name) 
+    SELECT b.*, products.product_name
+    FROM (SELECT a.*, orders.order_date
+        FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, productID, amount, delivery_date  
+            FROM orders_items 
+            WHERE orderID = ?) as a
+        LEFT JOIN orders
+        ON a.orderID = orders.ID) as b
+    LEFT JOIN products
+    ON b.productID = products.ID`, 
     [invoiceID, clientID, orderID], 
     (err, result) =>{
         if(err){
