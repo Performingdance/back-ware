@@ -260,7 +260,7 @@ function EditInvoice  () {
           /> 
       }
       {toggleDelPrompt && <PromptPopup 
-          title={productRef? ` ${productRef.current.recipe_name} aus Rechnung entfernen?` : "Produkt aus Bestellung entfernen?"} 
+          title={productRef? ` ${productRef.current.product_name} aus Rechnung entfernen?` : "Produkt aus Bestellung entfernen?"} 
           btnOk="OK" 
           btnAbort="Abbrechen"
           onClickAbort={()=>setToggleDelPrompt(false)} 
