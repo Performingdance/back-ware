@@ -13,6 +13,7 @@ import plus from '../assets/icons/plus.svg'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import { NewFormPopup } from '../components/Popup'
+import { LabelInput } from '../components/LabelBox'
 
 
 function Forms() {
@@ -92,9 +93,14 @@ function Forms() {
           <div key={form.ID + "title"} className='c-title' >
             {(edit && editID == form.ID) ? 
             <div key={form.ID + "edit_div"}>
-              <input className='form-input' defaultValue={form.name} onChange={(e)=> editNameRef.current=(e.target.value)} />
-              <p className='order-lable'>Bruch</p>
-              <input className='form-check d-il' type='checkbox' defaultValue={form.bruch} onChange={(e)=>{editBruchRef.current = e.target.value}} />
+              <input className='form-input' defaultValue={form.name} onChange={(e)=> editNameRef.current=(e.target.value)} /> 
+              <LabelInput
+              type="checkbox"
+              title="Bruch"
+              _key ={form.ID} 
+              className="ac-c"
+              value={editBruchRef.current}
+              onChange={(e)=>{editBruchRef.current = e.target.value}} />
             </div>:
             <h2>{form.name}</h2>
             }
@@ -106,7 +112,7 @@ function Forms() {
             <button key={form.ID + "cancel"} className='rc-btn ' onClick={()=> setEdit(false)}>
               <SVGIcon class="svg-icon-md" src={x_circle}/>
             </button>,
-            <button key={form.ID + "check"} className='rc-btn ' onClick={()=> setEdit(false)}>
+            <button key={form.ID + "check"} className='rc-btn ' onClick={()=> [handleSubmit(),setEdit(false)]}>
               <SVGIcon class="svg-icon-md" src={check}/>
             </button>] :
             <button key={form.ID + "edit"} className='rc-btn' onClick={()=>[setEditID(form.ID), setEdit(true), editNameRef.current= form.name, editIDRef.current = form.ID,editBruchRef.current = form.bruch]}>
