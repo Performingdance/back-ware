@@ -111,7 +111,7 @@
 03.04 1,5h
 10.04. 1,5h
 11.04. 1,5h
-12.04. 3,5h
+12.04. 4,5h
 Kosten:
     Node server Render
         Feb 7€
@@ -123,6 +123,8 @@ WV == 0.85 * NVP
 Markt == 1,1*NVP + 7% MWst
 Laden == NVP + 7% MWst
 
+Form-Gewicht - Einwaage
+Eingaben
 Todo Bilder Komprimierung
 
 Produkte nach photUpload im Rezept neu laden

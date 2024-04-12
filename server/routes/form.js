@@ -25,7 +25,7 @@ router.put("/search", isLoggedIn, (req, res) => {
          }
     });
 });
-router.put("/new", isLoggedIn, (req, res, next) => {
+router.put("/new", isLoggedIn, (req, res) => {
    const name = req.body.name;
    const bruch = req.body.bruch;
 
@@ -51,7 +51,7 @@ router.put("/new", isLoggedIn, (req, res, next) => {
 });
 
 
-router.put("/update", isLoggedIn, (req, res, next) => {
+router.put("/update", isLoggedIn, (req, res) => {
    const ID = req.body.ID;
    const name = req.body.name;
    const bruch = req.body.bruch;
