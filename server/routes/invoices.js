@@ -501,7 +501,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                     } else{
                         db.query(`
                             UPDATE orders SET 
-                                billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL), invoiceID = NULL
+                                billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
                             WHERE ID = ?`, 
                         [orderID, orderID], 
                         (berr, bresult) =>{

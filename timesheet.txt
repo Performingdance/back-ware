@@ -111,11 +111,22 @@
 03.04 1,5h
 10.04. 1,5h
 11.04. 1,5h
+12.04. 3,5h
 Kosten:
     Node server Render
         Feb 7€
 
 ToDo:
+
+Preis
+WV == 0.85 * NVP
+Markt == 1,1*NVP + 7% MWst
+Laden == NVP + 7% MWst
+
+Todo Bilder Komprimierung
+
+Produkte nach photUpload im Rezept neu laden
+Rechnung artikel, Zutaten decimal comma replace
 Daylist Update - check
 order -  add to invoice: product_name wird nicht übernommen check
 

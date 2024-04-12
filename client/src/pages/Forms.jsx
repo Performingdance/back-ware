@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Header from '../components/Header'
 import '../styles/Forms.css'
 import check from '../assets/icons/check.svg'
@@ -18,6 +18,7 @@ import { NewFormPopup } from '../components/Popup'
 function Forms() {
   const [edit, setEdit] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const [bruch, setBruch] = useState(false);
   const [editID, setEditID] = useState(0);
   const [res, error, loading] = handleFormRequest();
   const [filteredData,setFilteredData] = useState([]);
@@ -26,6 +27,9 @@ function Forms() {
   const [delRes, setDelRes] = useState([])
   const [delError, setDelError] = useState("");
   const [delLoading, setDelLoading] = useState(false);
+  let editNameRef = useRef()
+  let editIDRef = useRef()
+  let editBruchRef = useRef()
 
 
   function handleFormDelete(ID){
@@ -53,6 +57,33 @@ function Forms() {
 
   }
 
+  function handleSubmit(){
+    setDelLoading(true)
+    axios({
+        axiosInstance: axios,
+        method: "UPDATE",
+        url:"s/form/update",
+        headers: {
+            "authorization": authHeader()
+        },
+        data : {
+            "ID": editIDRef.current,
+            "name": editNameRef.current,
+            "bruch": editBruchRef.current,
+        }
+    }).then((response)=>{
+        setDelRes(response.data)
+        console.log(response.data);
+        window.location.href = "/forms";
+    }).catch((err) => {
+        setDelError(err)
+        //console.log(err);
+    })
+
+    setDelLoading(false)
+
+  }
+
 
   const formCards = filteredData.map((form)=>{
     return (
@@ -60,7 +91,11 @@ function Forms() {
       <div key={form.ID + "c-card"} className='c-card'>
           <div key={form.ID + "title"} className='c-title' >
             {(edit && editID == form.ID) ? 
-            <input className='form-input' defaultValue={form.name} onChange={(e)=> handleNameChange(form.ID, e.target.value)} />:
+            <div key={form.ID + "edit_div"}>
+              <input className='form-input' defaultValue={form.name} onChange={(e)=> editNameRef.current=(e.target.value)} />
+              <p className='order-lable'>Bruch</p>
+              <input className='form-check d-il' type='checkbox' defaultValue={form.bruch} onChange={(e)=>{editBruchRef.current = e.target.value}} />
+            </div>:
             <h2>{form.name}</h2>
             }
           </div>
@@ -74,7 +109,7 @@ function Forms() {
             <button key={form.ID + "check"} className='rc-btn ' onClick={()=> setEdit(false)}>
               <SVGIcon class="svg-icon-md" src={check}/>
             </button>] :
-            <button key={form.ID + "edit"} className='rc-btn' onClick={()=>[setEditID(form.ID), setEdit(true)]}>
+            <button key={form.ID + "edit"} className='rc-btn' onClick={()=>[setEditID(form.ID), setEdit(true), editNameRef.current= form.name, editIDRef.current = form.ID,editBruchRef.current = form.bruch]}>
               <SVGIcon class="svg-icon-md" src={pencil_square}/>
             </button>}
           </div>
