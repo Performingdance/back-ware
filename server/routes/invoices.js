@@ -214,7 +214,7 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
 
     db.query(`INSERT INTO invoices_items 
     (invoiceID, clientID, orderID ,productID, amount, delivery_date, order_date, product_name, price_piece, price_total) 
-    SELECT b.*, products.product_name, products.vkp_netto, calc(products.vkp_netto * amount)
+    SELECT b.*, products.product_name, products.vkp_netto, products.vkp_netto * amount
     FROM (SELECT a.*, orders.order_date
         FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, productID, amount, delivery_date  
             FROM orders_items 
