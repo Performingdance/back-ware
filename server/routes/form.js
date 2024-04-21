@@ -54,7 +54,7 @@ router.put("/new", isLoggedIn, (req, res) => {
 router.put("/update", isLoggedIn, (req, res) => {
    const ID = req.body.ID;
    const name = req.body.name;
-   const bruch = req.body.bruch;
+   const bruch = req.body.bruch || NULL ;
 
    db.query("UPDATE form SET name = ?, bruch = ? WHERE ID = ?", 
    [name, bruch, ID], 
