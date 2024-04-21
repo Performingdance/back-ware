@@ -173,7 +173,6 @@ export function RecipeForm({
 
     function handleFormDelete(productID){
         //api delete Form
-        function handleRequest () {
             setLoading(true)
             axios({
                 axiosInstance: axios,
@@ -187,19 +186,16 @@ export function RecipeForm({
                 }
             }).then((response)=>{
                 setRes(response.data)
+                handleFormValueReset();
+                setLoading(false)
+                setFormsUpdate(formsUpdate+1)
                 //console.log(res);
             }).catch((err) => {
                 setError(err)
                 //console.log(err);
             })
 
-            handleFormValueReset();
-            setLoading(false)
-            setFormsUpdate(formsUpdate+1)
-            
-        }
-           handleRequest();
-    
+           
 
         return [res, error, loading];
     }    

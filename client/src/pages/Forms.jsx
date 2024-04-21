@@ -21,7 +21,8 @@ function Forms() {
   const [addOpen, setAddOpen] = useState(false);
   const [bruch, setBruch] = useState(false);
   const [editID, setEditID] = useState(0);
-  const [res, error, loading] = handleFormRequest();
+  const [updateForms, setUpdateForms] = useState(0);
+  const [res, error, loading] = handleFormRequest(updateForms);
   const [filteredData,setFilteredData] = useState([]);
   useEffect(()=>setFilteredData(res),[res])
 
@@ -48,7 +49,7 @@ function Forms() {
     }).then((response)=>{
         setDelRes(response.data)
         console.log(response.data);
-        window.location.href = "/forms";
+        setUpdateForms(updateForms+1);
     }).catch((err) => {
         setDelError(err)
         //console.log(err);
@@ -62,7 +63,7 @@ function Forms() {
     setDelLoading(true)
     axios({
         axiosInstance: axios,
-        method: "UPDATE",
+        method: "PUT",
         url:"s/form/update",
         headers: {
             "authorization": authHeader()
@@ -70,12 +71,12 @@ function Forms() {
         data : {
             "ID": editIDRef.current,
             "name": editNameRef.current,
-            "bruch": editBruchRef.current,
+            "bruch": editBruchRef.current
         }
     }).then((response)=>{
         setDelRes(response.data)
         console.log(response.data);
-        window.location.href = "/forms";
+        setUpdateForms(updateForms+1)
     }).catch((err) => {
         setDelError(err)
         //console.log(err);
@@ -137,7 +138,7 @@ function Forms() {
     {error && <h3> {error.message} </h3>}
     {loading && <Loading/>}
     <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn"} onClick={()=>setAddOpen(!addOpen)} ><SVGIcon src={plus} class="svg-icon-lg"/></button>
-    {addOpen && <NewFormPopup key={"popup"} title={"Neue Form"} onClickOK={()=>{setAddOpen(false)}} onClickAbort={()=>setAddOpen(false)}/>}
+    {addOpen && <NewFormPopup key={"popup"} title={"Neue Form"} onClickOK={()=>{setUpdateForms(updateForms+1),setAddOpen(false)}} onClickAbort={()=>setAddOpen(false)}/>}
     
     </div>
 

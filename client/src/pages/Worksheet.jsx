@@ -13,59 +13,22 @@ function Worksheet() {
   const [res, error, loading] = handleWorksheetRequest(date) ;
 
 
-  return (<>
+  return (
+  <>
     <Header title="Backzettel"/>
     <div className='dateline-wrapper'>
     <DateLine onDateChange={(date) => setDate(date)}/>
     </div>
 
-  <div className='r-content'>
-    <div className='w-header'>
-        <a href='#' id='recipe' onClick={()=> setOpenTab("recipe")} className='r-header-title'>Rezepte</a> 
-        <a href='#' id='base' onClick={()=> setOpenTab("base")} className='r-header-title'>Grundteige</a> 
-    </div>
-    {loading ? <Loading /> : openTab == "recipe" && <WorksheetRecipes data={res} date={date} />}
-    {loading ? <Loading /> : openTab == "base" && <WorksheetBase data={res} date={date}  />}
-  </div>
-    {/* 
-  Rezepte:
-      Käsekuchen
-        -Hefeteig
-        -...Zutaten
-        Formen:
-        2x 60x40 Blech
-      Notiz
-      
-      Rosinenbrötchen
-        -Hefeteig
-        Formen:
-        6x Brötchen, rund
-      Notiz
-
-      Olivenbaguette
-        -Baguette
-        -...Zutaten
-        Formen:
-        Baguette, 250g
-        Baguette, 500g
-      Notiz
-
-  Grundteige:
-    Hefeteig (gesamt)
-     - ...Zutaten
-
-     Rezepte:
-     Käsekuchen
-     Rosinenbrötchen
-
-    Baguette (gesamt)
-    - ...Zutaten
-
-    Rezepte:
-    Olivenbaguette
-    */}
-    
-    </>
+    <div className='r-content'>
+      <div className='w-header'>
+          <a href='#' id='recipe' onClick={()=> setOpenTab("recipe")} className='r-header-title'>Rezepte</a> 
+          <a href='#' id='base' onClick={()=> setOpenTab("base")} className='r-header-title'>Grundteige</a> 
+      </div>
+      {loading ? <Loading /> : openTab == "recipe" && <WorksheetRecipes data={res} date={date} />}
+      {loading ? <Loading /> : openTab == "base" && <WorksheetBase data={res} date={date}  />}
+    </div>    
+  </>
   )
 }
 

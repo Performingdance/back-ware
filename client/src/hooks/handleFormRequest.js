@@ -2,7 +2,7 @@ import axios from '../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../services/auth-header';
 
-export default function handleFormRequest() {
+export default function handleFormRequest(update) {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -10,7 +10,7 @@ export default function handleFormRequest() {
     const [loading, setLoading] = useState(false);
 
 
-    useEffect(()=>handleRequest(),[])
+    useEffect(()=>handleRequest(),[update])
     function handleRequest () {
         setLoading(true)
         axios({
