@@ -165,7 +165,7 @@ input[type=number] {
 .page-content{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 20rem));
-  grid-column-gap: 0.5rem;
+  grid-gap: 0.5rem;
   justify-content: center;
   left:0;
   padding: 0.5rem;

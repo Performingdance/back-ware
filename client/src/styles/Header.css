@@ -16,7 +16,7 @@
 
 }
 .logo-header{
-    position: relative;
+    position: absolute;
     left: 0;
     align-content: center;
 }

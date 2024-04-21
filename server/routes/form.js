@@ -62,10 +62,10 @@ router.put("/update", isLoggedIn, (req, res) => {
        if(err){
            console.log(err)
        } else{
-           res.send("success");
+          
        };
    });
-    
+   res.send("success");
 });
 
 router.delete("/delete", isLoggedIn, (req, res) => {

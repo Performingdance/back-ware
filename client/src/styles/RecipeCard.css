@@ -1,27 +1,24 @@
 .recipe-card{
     display: grid;
-    margin: 0;
+    margin: 0.2rem;
     padding: 0;
 }
-.rc-card, .rc-daylist, .rc-order{
+.rc-card{
     position: relative;
     height: 11.5rem;
     /* width: 100%; */
     background-color: var(--bg);
-    margin: 0.2rem 0.2rem 0 ;
+    margin: 0;
     padding: 0;
     border: var(--border);
     border-radius: var(--border-radius);
-    align-content: center;
+    justify-content: center;
     background: none;
     box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
 
 
 }
-.rc-daylist, .rc-order{
-    min-height: 11.5rem;
-    height: fit-content;
-}
+
 .rc-title{
     position: absolute;
     height: 100%;
@@ -33,7 +30,6 @@
 }
 .rc-name{
     position: relative;
-
     margin: 0;
     padding: 0.5rem;
     top:1rem;

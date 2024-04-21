@@ -94,13 +94,15 @@ function Forms() {
             {(edit && editID == form.ID) ? 
             <div key={form.ID + "edit_div"}>
               <input className='form-input' defaultValue={form.name} onChange={(e)=> editNameRef.current=(e.target.value)} /> 
-              <LabelInput
-              type="checkbox"
-              title="Bruch"
-              _key ={form.ID} 
-              className="ac-c"
-              value={editBruchRef.current}
-              onChange={(e)=>{editBruchRef.current = e.target.value}} />
+              <div className='d-il' key={form.Id + "bruchDiv"}> 
+                <p key={form.Id + "label"} className='label'>Bruch</p>
+                <input
+                type="checkbox"
+                key ={form.ID+ "bruchInput"} 
+                className="d-il"
+                value={editBruchRef.current}
+                onChange={(e)=>{editBruchRef.current = e.target.value}} />
+              </div>
             </div>:
             <h2>{form.name}</h2>
             }

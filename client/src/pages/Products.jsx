@@ -10,7 +10,7 @@ import Loading from '../components/Loading';
 
 
 
-export default function Recipes() {
+export default function Products() {
 
 const [res, error, loading] =  handleProductRequest();
 //console.log(res)

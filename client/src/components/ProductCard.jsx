@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import '../styles/RecipeCard.css'
 import SVGIcon from './SVG'
-import calendar_plus from '../assets/icons/calendar-plus.svg'
 import clipboard_plus from '../assets/icons/clipboard-plus.svg'
-import pencil_square from '../assets/icons/pencil-square.svg'
 import { RecipeOrderPopup } from './Popup'
 import config from '../config.json'
 const BASE_URL_API = config.BASE_URL_API
@@ -28,7 +26,7 @@ export default function ProductCard({
 
   let image
   if(!img || (img == "NULL") || (img == "default")){
-    image = "../imgs/default_recipe_img.jpg"
+    image = "../imgs/default_product_img.jpg"
   }else{
     image = BASE_URL_API+"public/recipe_imgs/"+img
   }
