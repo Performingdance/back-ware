@@ -909,14 +909,14 @@ export function AddInvoiceProdPopup({
             />
 
             <p className='lb-title '>Menge</p>
-            <input className='' onChange={(e)=>{amountRef.current = e.target.value}}></input>
+            <input className='i-select' onChange={(e)=>{amountRef.current = e.target.value}}></input>
             <p className='lb-title '>Einzelpreis</p>
-            <input className='' onChange={(e)=>{price_pieceRef.current = e.target.value}}></input> 
+            <input className='i-select' onChange={(e)=>{price_pieceRef.current = e.target.value}}></input> 
             <p className='lb-title '>Gesamtpreis</p>
-            <input className='' onChange={(e)=>{price_totalRef.current = e.target.value}}></input>                    
+            <input className='i-select' onChange={(e)=>{price_totalRef.current = e.target.value}}></input>                    
 
             
-            <div className='rc-calendar d-il'>                    
+            <div className='d-il'>                    
               <div>
                 <p>Bestelldatum:</p>
                 <DateLine 

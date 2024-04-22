@@ -30,21 +30,23 @@
     position: relative;
     margin: 0;
     padding: 0;
-    width: auto;
     font-size: 4m;
     color: var(--text-color);
 }
 
 .popup-title{
     position: relative;
-    margin: 0;
+    width: 14rem;
+    margin: 0.2rem;
     padding: 0;
     justify-self: center;
     align-self: center;
     text-align: center;
     color: var(--heading-color);
 }
-
+.popup-title >*{
+    width: fit-content;
+}
 
 .popup-card-btns{
     align-self: center;

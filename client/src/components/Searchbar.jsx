@@ -32,14 +32,23 @@ export default function Searchbar_filter(props) {
 
 
   return (
+        <>
+        {open? 
         <div className={props.class} onBlur={props.onBlur}>
-        {open&& 
-        <input ref={searchInputRef} className={props.input_class} onChange={(e)=>handleFilter(e.target.value, props.data)}></input>}
+          <input ref={searchInputRef} className={props.input_class} onChange={(e)=>handleFilter(e.target.value, props.data)}></input>
+          <a className={props.btn_class } onClick={()=>{setOpen(!open), filteredData(props.data) }}>
+          <SVGIcon src={x_circle} class='svg-icon-lg'/> 
+
+          </a>
+        </div>:
+        <div className="searchbar-header-default" onBlur={props.onBlur}>
         <a className={props.btn_class } onClick={()=>{setOpen(!open), filteredData(props.data) }}>
-          {open? <SVGIcon src={x_circle} class='svg-icon-lg'/> :
-          <SVGIcon  src={search} class='svg-icon-lg'/>}
+         <SVGIcon  src={search} class='svg-icon-lg'/>
         </a>
-        </div>
+      </div>
+      
+      }
+      </>
         
     )
 }
@@ -191,7 +200,7 @@ export const SelectComponent = ({
 
       
       { selectedID || inputValue? [
-      <div  key="select-div-clear">
+      <div  key="select-div-clear" className='i-select-icon-div'>
         <button key="select-btn-clear" id={id+"_sReset"} onClick={()=>{clearDropdown(), setOpen(false)}} >
           <SVGIcon key="select-btn-clear-icon" className="i-icon" src={x} class="svg-icon-md"/>
         </button>

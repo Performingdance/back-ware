@@ -237,8 +237,8 @@ function EditInvoice  () {
               <p key={key+"pos"} className='order-p'>{key+1}</p>
               <p key={key+"product"} className='order-p'>{product.product_name}</p>
               <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
-              <p key={key+"price_piece"} className='order-p' >{(product.price_piece || "-") + "€"}</p>
-              <p key={key+"price_total"} className='order-p' >{(product.price_total || "-") + "€"}</p>
+              <p key={key+"price_piece"} className='order-p' >{(product.price_piece? product.price_piece.replace(".",",") : "-") + "€"}</p>
+              <p key={key+"price_total"} className='order-p' >{(product.price_total? product.price_total.replace(".",",") : "-") + "€"}</p>
              </div>   
             <button key={key+"del"} className='edit-btn' onClick={()=>[setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
           </div>

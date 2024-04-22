@@ -1,5 +1,5 @@
 .invoice-tb{
-margin: 0;
+    margin: 0;
 
 }
 .invoice-tb-th{
@@ -21,7 +21,6 @@ margin: 0;
     padding: 1rem ;
     border: var(--border);
     border-radius: var(--border-radius);
-    align-content: center;
     background: none;
     box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
 }
@@ -30,9 +29,11 @@ margin: 0;
 }
 
 .invoice-wrapper{
-    width: 30rem;
+    width: 80%;
+
+    max-width: 40rem;
     margin-top: 0.5rem;
-    justify-items: center;
+    justify-self: center;
 }
 .invoice-btns{
     display: grid;
