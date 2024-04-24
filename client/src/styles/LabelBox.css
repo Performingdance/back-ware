@@ -15,10 +15,12 @@
 }
 .lb-input{
     width: inherit;
+    border: none;
 }
 .lb-text-input{
     width: inherit;
     margin: 0;
     font-size: var(--font-size-md);
     resize: none;
+    border: none;
 }

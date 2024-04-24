@@ -42,7 +42,7 @@ function handleOrderBtn(e){
 }
 const orderList = 
 orders.map((order, key)=> {
-  if(order.ID == -1){
+  if(order.ID <= 0){
     return(
       <li key={key+"li"} className='client-li'>
         <p></p>

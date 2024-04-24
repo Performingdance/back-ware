@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon server.js -w server",
-    "start": "npm run server.js"
+    "dev": "npx nodemon server.js -w server"
   },
   "keywords": [],
   "author": "Matthias Egger",
