@@ -114,6 +114,7 @@
 12.04. 4,5h
 21.04. 1,5h
 22.04. 1h
+24.04. 1h
 Kosten:
     Node server Render
         Feb 7€
