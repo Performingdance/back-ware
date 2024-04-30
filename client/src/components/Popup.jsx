@@ -690,10 +690,10 @@ export function AddInvoiceOrderPopup({
   const [selectedOrderID, setSelectedOrderID] = useState(-1)
 
   // Add hook  (/unpaid)
-  const [orders, errOrders, loadingOrders] = handleOpenOrderRequest(defaultClientID);
+  const [orders, errOrders, loadingOrders] = handleOpenOrderRequest(defaultClientID, false);
+  const [newInvoicePrompt,setNewInvoicePrompt] = useState(false)
 
   const [ordersOpen,setOrdersOpen] = useState(false)
-  const [newInvoicePrompt,setNewInvoicePrompt] = useState(false)
   
   
   const [addRes, setAddRes] = useState([])
@@ -703,15 +703,12 @@ export function AddInvoiceOrderPopup({
   const [dates, setDates] = useState([]);
  
   let editRef = useRef(0)
-
-
-  const handleDateChange = (newDates) => {
-    setDates(newDates);
-  }
-  
-
-
-
+  useEffect(()=>{
+    if(orders.length == 0){
+      setAddError({message: "keine offene Bestellung verfügbar"})
+      return
+    }
+  },[orders])
 
   function handleSubmit (e) {
 
@@ -777,7 +774,7 @@ export function AddInvoiceOrderPopup({
               id ="invoices"
               editref={editRef.current}
               options={orders}
-              onSelect={(val)=>{[editRef.current=val, setSelectedOrderID(-1)]}}
+              onSelect={(val)=>{[editRef.current=val, setSelectedOrderID(-1)]} }
               onChange={(val) =>{setSelectedOrderID(val)}}
               selectedID={selectedOrderID}
               placeholder='Bestellung wählen...'
@@ -952,7 +949,7 @@ export function RecipePopup({
   const [recipeForm, errForm, loadingForm] = handleRecipeFormRequest(selectedRecipeId);
   const [clients, errClient, loadingClient, handleRequest] = handleClientSelectRequest();  
   useEffect(()=>handleRequest(),[])
-  const [orders, errOrders, loadingOrders] = handleOpenOrderRequest(selectedClientId);
+  const [orders, errOrders, loadingOrders] = handleOpenOrderRequest(selectedClientId, true);
 
   const [open,setOpen] = useState(false)
   const [recipeOpen, setRecipeOpen] = useState(false);
@@ -1121,7 +1118,7 @@ export function RecipeOrderPopup({
   const [selectedClientId, setSelectedClientId] = useState(defaultClientID || -1)
   const [selectedOrderId, setSelectedOrderId] = useState(defaultOrderID || -1)
   const [recipeForm, errForm, loadingForm] = handleRecipeFormRequest(selectedRecipeId);
-  const [orders, errOrders, loadingOrders] = handleOpenOrderRequest(selectedClientId);
+  const [orders, errOrders, loadingOrders] = handleOpenOrderRequest(selectedClientId, true);
 
   const [recipeOpen, setRecipeOpen] = useState(false);
   const [formOpen,setFormOpen] = useState(false)

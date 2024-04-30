@@ -2,7 +2,7 @@ import axios from '../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../services/auth-header';
 
-export default function handleOpenOrderRequest(clientID) {
+export default function handleOpenOrderRequest(clientID, addNew ) {
    // console.log(clientID)
 
     // handle api request 
@@ -29,19 +29,22 @@ export default function handleOpenOrderRequest(clientID) {
                     "clientID": clientID
                 }
             }).then((response)=>{
-                if(!response.data.length){
+                if(!response.data.length && addNew){
                     const newRes = [{
                         ID: -1, 
                         name: "Neue Bestellung" 
                    }]
                    setRes(newRes)
     
-                }else{
+                }if(addNew){
                     const addRes = 
-                        [...response.data, {ID: -1, 
-                            name: "Neue Bestellung"}]
-                
-                    setRes(addRes)
+                    [...response.data, {ID: -1, 
+                        name: "Neue Bestellung"}]
+                   setRes(newRes)
+    
+                }
+                else{
+                    setRes(response.data)
                 }
                 //console.log(res);
             }).catch((err) => {

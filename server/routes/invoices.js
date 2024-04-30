@@ -442,12 +442,12 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                     if(berr){
                         console.log(berr)
                     } else{
-                        orderIDs.forEach((orderID)=>{
+                        orderIDs.forEach((order)=>{
                             db.query(`
                             UPDATE orders SET 
                                 billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
                             WHERE ID = ?`, 
-                            [orderID, orderID], 
+                            [order.orderID, order.orderID], 
                             (berr, bresult) =>{
                                 if(berr){
                                     console.log(berr)
@@ -456,7 +456,7 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                                     UPDATE orders SET 
                                         invoiceID = NULL 
                                     WHERE ID = ? AND invoiceID = ?`, 
-                                    [orderID,invoiceID], 
+                                    [order.orderID,invoiceID], 
                                     (berr, bresult) =>{
                                         if(berr){
                                             console.log(berr)
