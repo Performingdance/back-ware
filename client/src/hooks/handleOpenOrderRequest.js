@@ -37,7 +37,7 @@ export default function handleOpenOrderRequest(clientID, addNew ) {
                    setRes(newRes)
     
                 }if(addNew){
-                    const addRes = 
+                    const newRes = 
                     [...response.data, {ID: -1, 
                         name: "Neue Bestellung"}]
                    setRes(newRes)

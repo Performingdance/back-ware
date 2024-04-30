@@ -5,14 +5,21 @@
 .invoice-tb-th{
     margin-bottom: 0.3rem;
     background-color: var(--bg-accent-light);
+
 }
 .invoice-tb-row{
     display: grid;
-    grid-template-columns: 0.5fr 1fr 0.5fr 0.7fr 0.7fr;
+    grid-template-columns: 0.2fr 1fr 0.5fr 0.7fr 0.7fr;
+    column-gap: 0.2rem;
     padding: 0rem;
+    text-align: end;
 }
 .invoice-tb-data{
     padding: 0.3rem;
+
+}
+.invoice-p{
+    text-align: end;
 }
 .invoice-div{
     position: relative;

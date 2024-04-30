@@ -704,7 +704,7 @@ export function AddInvoiceOrderPopup({
  
   let editRef = useRef(0)
   useEffect(()=>{
-    if(orders.length == 0){
+    if(orders.length <= 0){
       setAddError({message: "keine offene Bestellung verfügbar"})
       return
     }
