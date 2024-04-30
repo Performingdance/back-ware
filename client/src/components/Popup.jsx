@@ -1589,9 +1589,9 @@ export function AlertPopup({
     <>
       {        
       <div key="pc" className='popup-card  '>
-        <div key="pc-content" className='popup-card-content jc-c '>
+        <div key="pc-content" className='popup-card-content '>
 
-            <div key="login_div" className="popup-title jc-c">
+            <div key="login_div" className="popup-title">
             <h3 key="title" >{title? title : ""}</h3>
             <p>{message? message : ""}</p>
 

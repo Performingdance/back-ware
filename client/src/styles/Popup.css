@@ -45,7 +45,7 @@
     color: var(--heading-color);
 }
 .popup-title >*{
-    width: fit-content;
+    width: fill;
 }
 
 .popup-card-btns{

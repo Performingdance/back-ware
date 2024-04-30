@@ -24,16 +24,17 @@ const productsRoute = require("./routes/products.js");
 
 const PORT = process.env.PORT || 3000;
 
-app.get("/*", function (req,res){
-    res.sendFile(
-        path.join(__dirname, "../client/build/index.html"),
-        function (err){
-            if(err){
-                res.status(500).send(err)
-            }
-        }
-    );
-});
+// app.get("/*", function (req,res){
+//     res.sendFile(
+//         path.join(__dirname, "../client/build/index.html"),
+//         function (err){
+//             if(err){
+//                 res.status(500).send(err)
+//             }
+//         }
+//     );
+// });
+
  
 app.use(express.json());
 app.use("/public",express.static("/var/lib/data"))
