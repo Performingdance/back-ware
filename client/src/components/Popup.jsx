@@ -851,7 +851,7 @@ export function AddInvoiceClientPopup({
     if(defaultClientID< 0){
       setAddError({message: "Kunde nicht erkannt"})
       return}
-    if(addAll == false ){
+    if((addAll == false) && selectedItemID != -1 ){
       items.forEach((item)=>{
         if(item.ID == selectedItemID){
           orderIDRef.current = item.orderID;
@@ -917,8 +917,8 @@ export function AddInvoiceClientPopup({
                   "authorization": authHeader()
               },
               data : {
-                "invoiceID" : defaultInvoiceID,
-                "clientID" : defaultClientID    
+                "invoiceID" : parseInt(defaultInvoiceID),
+                "clientID" : parseInt(defaultClientID)    
               }
           }).then((response)=>{
             
