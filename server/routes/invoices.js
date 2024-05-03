@@ -203,7 +203,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
     INSERT INTO invoices_items 
     (invoiceID, clientID, orderID, productID, amount, order_date, delivery_date, product_name)
     SELECT b.*, products.product_name 
-    FROM( SELECT ? as invoiceID, ? AS clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.production_date, orders_items.delivery_date 
+    FROM( SELECT ? as invoiceID, ? AS clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.delivery_date 
         FROM
             (SELECT ID         
             FROM orders
@@ -225,9 +225,10 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                 if(berr){
                     console.log(berr)
                 } else {
-                    db.query(`SELECT ID         
-                    FROM orders
-                    WHERE clientID = ? AND invoiceID IS null`, 
+                    db.query(`
+                    SELECT ID         
+                        FROM orders
+                        WHERE clientID = ? AND invoiceID IS null`, 
                     [invoiceID, clientID], 
                     (berr, result) =>{
                         if(berr){

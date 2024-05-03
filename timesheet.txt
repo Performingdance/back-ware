@@ -132,6 +132,8 @@ Form-Gewicht - Einwaage
 Eingaben
 Todo Bilder Komprimierung
 
+Invoice_items & Order_items - production_date / order_date in nodeJs ergänzen
+
 Produkte nach photUpload im Rezept neu laden
 Rechnung artikel, Zutaten decimal comma replace
 Daylist Update - check
