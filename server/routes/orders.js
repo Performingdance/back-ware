@@ -91,8 +91,8 @@ router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {
 router.post("/client/items/noInvoice", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
 
-            db.query(`SELECT CONCAT(b.amount , "x ", products.product_name) AS name, b.* FROM( 
-                SELECT a.*, orders.clientID 
+            db.query(`SELECT b.*,CONCAT(b.amount , "x ", products.product_name) AS name , products.vkp_netto AS price_piece, (products.vkp_netto*b.amount) AS price_total  
+                FROM( SELECT a.*, orders.clientID 
                         FROM(SELECT * FROM orders_items
                         WHERE invoiceID IS NULL) AS a
                     LEFT JOIN orders

@@ -15,7 +15,7 @@ export default function handleUnpaidItemsRequest() {
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "GET",
+            method: "POST",
             url:"s/orders/client/items/noInvoice",
             headers: {
                 "authorization": authHeader()

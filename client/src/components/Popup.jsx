@@ -848,7 +848,7 @@ export function AddInvoiceClientPopup({
     if(defaultClientID< 0){
       setAddError({message: "Kunde nicht erkannt"})
       return}
-    if(addAllRef.current == false){
+    if(addAllRef.current != true ){
       items.forEach((item)=>{
         if(item.ID == selectedItemID){
           orderIDRef.current = item.orderID;
@@ -877,9 +877,9 @@ export function AddInvoiceClientPopup({
                   "invoiceID" : defaultInvoiceID,
                   "productID" : productIDRef.current,
                   "product_name" : product_nameRef.current,
-                  "price_piece" : parseFloat(price_pieceRef.current.replace(",",".")),
-                  "price_total" : parseFloat(price_totalRef.current.replace(",",".")),
-                  "amount" : amountRef.current.replace(",","."),
+                  "price_piece" : price_pieceRef.current,
+                  "price_total" : price_totalRef.current,
+                  "amount" : amountRef.current,
                   "order_date" : order_dateRef.current,
                   "delivery_date" : delivery_dateRef.current,
             
@@ -914,8 +914,8 @@ export function AddInvoiceClientPopup({
                   "authorization": authHeader()
               },
               data : {
-                "invoiceID" : defaultInvoiceID,
-                "clientID" : defaultClientID    
+                "invoiceID" : defaultInvoiceID.parseInt(),
+                "clientID" : defaultClientID.parseInt()    
               }
           }).then((response)=>{
             
@@ -966,7 +966,7 @@ export function AddInvoiceClientPopup({
               returnValue={(val)=>{product_nameRef.current = val}}
             />
             <p className='lb-title '>Alle hinzufügen</p>
-            <input type='check-box' className='i-select' onChange={(e)=>{addAllRef.current = e.target.value}}></input>
+            <input type='checkbox' className='i-select' onChange={(e)=>{addAllRef.current = e.target.value}}></input>
             <div className='popup-card-btns'>
                 <button className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Weiter</button>
                 <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
@@ -1081,7 +1081,7 @@ export function AddInvoiceProdPopup({
               onSelect={(val)=>{[editRef.current=val]}}
               onChange={(val) =>{setSelectedProductID(val)}}
               selectedID={selectedProductID}
-              placeholder='Produkt wählen...'
+              placeholder='Bezeichnung'
               open={productOpen}
               setOpen={(val)=>{setProductOpen(val)}}
               className='i-select popup-input' 
