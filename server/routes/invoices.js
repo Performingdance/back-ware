@@ -234,8 +234,9 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                         if(berr){
                             console.log(berr)
                         } else {
-                            for(let i=0; i <= result.length; i++){
-                                orderID = result[i].ID
+                            result.forEach((res){
+                                console.log(result, res.ID)
+                                orderID = res.ID
                                 db.query(`UPDATE orders_items SET invoiceID = ? WHERE orderID = ?`, 
                                 [invoiceID, orderID], 
                                 (berr, result) =>{
@@ -245,7 +246,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                                         res.send("success")
                                     }
                                 });
-                            }
+                            })
                           
                         }
                     });
