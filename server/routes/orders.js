@@ -88,6 +88,28 @@ router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {
             })
             
 });
+router.post("/client/items/noInvoice", isLoggedIn, (req, res, next) => {   
+    const clientID = req.body.clientID;
+
+            db.query(`SELECT CONCAT(b.amount , "x ", products.product_name) AS name, b.* FROM( 
+                SELECT a.*, orders.clientID 
+                        FROM(SELECT * FROM orders_items
+                        WHERE invoiceID IS NULL) AS a
+                    LEFT JOIN orders
+                    ON a.orderID = orders.ID
+                    WHERE orders.clientID = ?) AS b
+                LEFT JOIN products
+                ON b.productID = products.ID;`, 
+            [clientID],
+            (err, result) =>{
+                if(err){
+                    console.log(err)
+                } else{
+                    res.send(result)
+                };
+            })
+            
+});
 router.get("/all/items/noInvoice", isLoggedIn, (req, res, next) => {   
 
 

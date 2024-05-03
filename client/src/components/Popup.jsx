@@ -14,6 +14,7 @@ import handleOpenOrderRequest from '../hooks/handleOpenOrderRequest';
 import handleFormRequest from '../hooks/handleFormRequest';
 import handleMargesRequest from '../hooks/handleMargesRequest';
 import handleProductRequest from '../hooks/handleProductRequest';
+import handleUnpaidItemsRequest from '../hooks/handleUnpaidItemsRequest';
 
 
 export default function NewRecipePopup({
@@ -783,6 +784,189 @@ export function AddInvoiceOrderPopup({
               className='i-select popup-input' 
               defaultValue={""}
             />
+            <div className='popup-card-btns'>
+                <button className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Weiter</button>
+                <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+            </div>
+          </div>
+        </div>
+        </div>
+      
+    
+    )
+
+}
+export function AddInvoiceClientPopup({
+  forwardEdit,
+  onClickOK,
+  onClickAbort,
+  defaultInvoiceID,
+  defaultClientID,
+  defaultClientName
+
+}){
+
+
+  const [selectedItemID, setSelectedItemID] = useState(-1)
+
+  // Add hook  (/unpaid)
+  const [items, errItems, loadingItemss, handleItemRequest] = handleUnpaidItemsRequest();
+  useEffect(()=>{handleItemRequest(defaultClientID)},[defaultClientID])
+
+  const [itemsOpen,setItemsOpen] = useState(false)
+  
+  
+  const [addRes, setAddRes] = useState([])
+  const [addError, setAddError] = useState("");
+  const [addLoading, setAddLoading] = useState(false);  
+ 
+  let editRef = useRef(0)
+  let addAllRef = useRef()
+  let orderIDRef = useRef()
+  let order_dateRef = useRef()
+  let delivery_dateRef = useRef()
+  let amountRef = useRef()
+  let product_nameRef = useRef()
+  let productIDRef = useRef()
+  let price_pieceRef = useRef()
+  let price_totalRef = useRef()
+
+  useEffect(()=>{
+    if(items.length <= 0){
+      setAddError({message: "keine unbezahlten Produkte verfügbar"})
+      return
+    }
+  },[items])
+
+
+  function handleSubmit (e) {
+
+
+    if(defaultInvoiceID < 0){
+      setAddError({message: "Rechnung nicht erkannt"})
+      return}
+    if(defaultClientID< 0){
+      setAddError({message: "Kunde nicht erkannt"})
+      return}
+    if(addAllRef.current == false){
+      items.forEach((item)=>{
+        if(item.ID == selectedItemID){
+          orderIDRef.current = item.orderID;
+          order_dateRef.current = item.order_date;
+          delivery_dateRef.current = item.delivery_date;
+          amountRef.current = item.amount;
+          price_pieceRef.current = item.price_piece;
+          price_totalRef.current = item.price_total;
+          productIDRef.current = item.productID
+        }
+      })
+      
+        e = e || window.Event;
+        e.preventDefault();
+            setAddLoading(true)
+            axios({
+                axiosInstance: axios,
+                method: "POST",
+                url:"s/invoices/new/item",
+                headers: {
+                    "authorization": authHeader()
+                },
+                data : {
+                  "clientID" : defaultClientID,
+                  "orderID" : orderIDRef.current,
+                  "invoiceID" : defaultInvoiceID,
+                  "productID" : productIDRef.current,
+                  "product_name" : product_nameRef.current,
+                  "price_piece" : parseFloat(price_pieceRef.current.replace(",",".")),
+                  "price_total" : parseFloat(price_totalRef.current.replace(",",".")),
+                  "amount" : amountRef.current.replace(",","."),
+                  "order_date" : order_dateRef.current,
+                  "delivery_date" : delivery_dateRef.current,
+            
+                }
+            }).then((response)=>{
+              
+                onClickOK(false)
+                if(forwardEdit == false){
+                  return
+                }else{
+                  window.location.pathname = `/invoices/edit:${defaultInvoiceID}`
+                }
+            }).catch((err) => {
+                setAddError(err)
+                console.log(err);
+            })
+    
+            setAddLoading(false)
+            
+          }
+    if(addAllRef.current){
+
+        
+      e = e || window.Event;
+      e.preventDefault();
+          setAddLoading(true)
+          axios({
+              axiosInstance: axios,
+              method: "POST",
+              url:"s/invoices/new/client",
+              headers: {
+                  "authorization": authHeader()
+              },
+              data : {
+                "invoiceID" : defaultInvoiceID,
+                "clientID" : defaultClientID    
+              }
+          }).then((response)=>{
+            
+              onClickOK(false)
+              if(forwardEdit == false){
+                return
+              }else{
+                window.location.pathname = `/invoices/edit:${defaultInvoiceID}`
+              }
+          }).catch((err) => {
+              setAddError(err)
+              console.log(err);
+          })
+  
+          setAddLoading(false)
+    }
+    else{
+      return
+    }
+    
+    
+    }
+  
+  return (
+            
+      <div className='popup-card  '>
+        <div className='popup-card-content jc-c '>
+        <h3 className='ta-c'>Bestellung der Rechnung hinzufügen</h3>
+          {addError ? <h5 className='errorMsg' >{addError.message }</h5>: " "}
+          {errItems ? <h5 className='errorMsg' >{errItems.message}</h5>: " "}
+          <div className="popup-title jc-c">
+
+            <p className='lb-title '>Kunde</p>
+            <h5>{defaultClientName}</h5>
+            <p className='lb-title '>Produkte ohne Rechnung</p>
+            <SelectComponent 
+              id ="items"
+              editref={editRef.current}
+              options={items}
+              onSelect={(val)=>{[editRef.current=val]}}
+              onChange={(val) =>{setSelectedItemID(val)}}
+              selectedID={selectedItemID}
+              placeholder='Produkt wählen...'
+              open={itemsOpen}
+              setOpen={(val)=>{setItemsOpen(val)}}
+              className='i-select popup-input' 
+              defaultValue={""}
+              returnValue={(val)=>{product_nameRef.current = val}}
+            />
+            <p className='lb-title '>Alle hinzufügen</p>
+            <input type='check-box' className='i-select' onChange={(e)=>{addAllRef.current = e.target.value}}></input>
             <div className='popup-card-btns'>
                 <button className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Weiter</button>
                 <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>

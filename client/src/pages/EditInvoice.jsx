@@ -11,7 +11,7 @@ import SVGIcon from '../components/SVG';
 import '../styles/EditInvoice.css';
 
 import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest'
-import NewRecipePopup, { AddInvoiceOrderPopup, AddInvoiceProdPopup, PromptPopup, RecipeOrderPopup } from '../components/Popup';
+import NewRecipePopup, { AddInvoiceClientPopup, AddInvoiceOrderPopup, AddInvoiceProdPopup, PromptPopup, RecipeOrderPopup } from '../components/Popup';
 import handleInvoiceIDRequest from '../hooks/handleInvoiceIDRequest';
 import { DateLine } from '../components/Calendar';
 import { LabelTextInput } from '../components/LabelBox';
@@ -281,6 +281,15 @@ function EditInvoice  () {
         forwardEdit={false}
         onClickOK={()=>{setUpdateInvoice(updateInvoice+1),setAddItemPrompt(false)}}
         onClickAbort={()=>{setAddItemPrompt(false)}}
+        defaultInvoiceID={invoiceID}
+        defaultClientID={InvoiceRes.clientID}
+        defaultInvoiceName={InvoiceRes.invoice_number}
+        defaultClientName={InvoiceRes.client} />}
+      
+      {addClientItemPrompt && <AddInvoiceClientPopup
+        forwardEdit={false}
+        onClickOK={()=>{setUpdateInvoice(updateInvoice+1),setAddClientItemPrompt(false)}}
+        onClickAbort={()=>{setAddClientItemPrompt(false)}}
         defaultInvoiceID={invoiceID}
         defaultClientID={InvoiceRes.clientID}
         defaultInvoiceName={InvoiceRes.invoice_number}
