@@ -234,7 +234,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                         if(berr){
                             console.log(berr)
                         } else {
-                            result.forEach((res){
+                            result.forEach((res)=>{
                                 console.log(result, res.ID)
                                 orderID = res.ID
                                 db.query(`UPDATE orders_items SET invoiceID = ? WHERE orderID = ?`, 
