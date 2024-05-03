@@ -15,6 +15,7 @@ import handleFormRequest from '../hooks/handleFormRequest';
 import handleMargesRequest from '../hooks/handleMargesRequest';
 import handleProductRequest from '../hooks/handleProductRequest';
 import handleUnpaidItemsRequest from '../hooks/handleUnpaidItemsRequest';
+import { message } from 'statuses';
 
 
 export default function NewRecipePopup({
@@ -690,6 +691,7 @@ export function AddInvoiceOrderPopup({
 
   const [selectedOrderID, setSelectedOrderID] = useState(-1)
 
+
   // Add hook  (/unpaid)
   const [orders, errOrders, loadingOrders] = handleOpenOrderRequest(defaultClientID, false);
   const [newInvoicePrompt,setNewInvoicePrompt] = useState(false)
@@ -808,6 +810,7 @@ export function AddInvoiceClientPopup({
 
 
   const [selectedItemID, setSelectedItemID] = useState(-1)
+  const [addAll, setAddAll] = useState(false)
 
   // Add hook  (/unpaid)
   const [items, errItems, loadingItemss, handleItemRequest] = handleUnpaidItemsRequest();
@@ -848,7 +851,7 @@ export function AddInvoiceClientPopup({
     if(defaultClientID< 0){
       setAddError({message: "Kunde nicht erkannt"})
       return}
-    if(addAllRef.current != true ){
+    if(addAll == false ){
       items.forEach((item)=>{
         if(item.ID == selectedItemID){
           orderIDRef.current = item.orderID;
@@ -900,23 +903,22 @@ export function AddInvoiceClientPopup({
     
             setAddLoading(false)
             
-          }
-    if(addAllRef.current){
+    }
+    if(addAll == true){
 
-        
       e = e || window.Event;
       e.preventDefault();
           setAddLoading(true)
           axios({
               axiosInstance: axios,
               method: "POST",
-              url:"s/invoices/new/client",
+              url:"s/invoices/new/items/client",
               headers: {
                   "authorization": authHeader()
               },
               data : {
-                "invoiceID" : defaultInvoiceID.parseInt(),
-                "clientID" : defaultClientID.parseInt()    
+                "invoiceID" : defaultInvoiceID,
+                "clientID" : defaultClientID    
               }
           }).then((response)=>{
             
@@ -934,6 +936,7 @@ export function AddInvoiceClientPopup({
           setAddLoading(false)
     }
     else{
+      setAddError({message: "bitte Produkt (oder alle) Auswälen"})
       return
     }
     
@@ -967,7 +970,7 @@ export function AddInvoiceClientPopup({
               returnValue={(val)=>{product_nameRef.current = val}}
             />
             <p className='lb-title '>Alle hinzufügen</p>
-            <input type='checkbox' className='i-select' onChange={(e)=>{addAllRef.current = e.target.value}}></input>
+            <input type='checkbox' defaultValue={addAll} className='i-select' onChange={()=>{setAddAll(!addAll)}}></input>
             <div className='popup-card-btns'>
                 <button className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Weiter</button>
                 <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>

@@ -203,7 +203,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
     INSERT INTO invoices_items 
     (invoiceID, clientID, orderID, productID, amount, order_date, delivery_date, product_name)
     SELECT b.*, products.product_name 
-    FROM( SELECT ? as invoiceID, orders_items.clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.delivery_date 
+    FROM( SELECT ? as invoiceID, ? AS clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.delivery_date 
         FROM
             (SELECT ID         
             FROM orders
@@ -214,7 +214,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
     LEFT JOIN products
     ON products.ID = b.productID 
         `, 
-    [invoiceID, clientID], 
+    [invoiceID, clientID, clientID], 
     (err, result) =>{
         if(err){
             console.log(err)
