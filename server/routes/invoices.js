@@ -239,7 +239,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                                     if(berr){
                                         console.log(berr)
                                     } else {
-                                        res.send("success")
+                                       
                                     }
                                 });
                             })
@@ -249,6 +249,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                 }
             });
         };
+        res.send("success")
     })
 });
 
