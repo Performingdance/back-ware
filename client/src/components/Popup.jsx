@@ -705,7 +705,7 @@ export function AddInvoiceOrderPopup({
  
   let editRef = useRef(0)
   useEffect(()=>{
-    if(orders.length <= 0){
+    if(orders.length < 0){
       setAddError({message: "keine offene Bestellung verfügbar"})
       return
     }
@@ -832,7 +832,7 @@ export function AddInvoiceClientPopup({
   let price_totalRef = useRef()
 
   useEffect(()=>{
-    if(items.length <= 0){
+    if(items.length < 0){
       setAddError({message: "keine unbezahlten Produkte verfügbar"})
       return
     }
@@ -852,7 +852,7 @@ export function AddInvoiceClientPopup({
       items.forEach((item)=>{
         if(item.ID == selectedItemID){
           orderIDRef.current = item.orderID;
-          order_dateRef.current = item.order_date;
+          order_dateRef.current = item.production_date;
           delivery_dateRef.current = item.delivery_date;
           amountRef.current = item.amount;
           price_pieceRef.current = item.price_piece;
@@ -867,11 +867,12 @@ export function AddInvoiceClientPopup({
             axios({
                 axiosInstance: axios,
                 method: "POST",
-                url:"s/invoices/new/item",
+                url:"s/invoices/new/client/item",
                 headers: {
                     "authorization": authHeader()
                 },
                 data : {
+                  "orderItemID" : selectedItemID,
                   "clientID" : defaultClientID,
                   "orderID" : orderIDRef.current,
                   "invoiceID" : defaultInvoiceID,
@@ -880,8 +881,8 @@ export function AddInvoiceClientPopup({
                   "price_piece" : price_pieceRef.current,
                   "price_total" : price_totalRef.current,
                   "amount" : amountRef.current,
-                  "order_date" : order_dateRef.current,
-                  "delivery_date" : delivery_dateRef.current,
+                  "order_date" : order_dateRef.current.split("T",[1]),
+                  "delivery_date" : delivery_dateRef.current.split("T",[1]),
             
                 }
             }).then((response)=>{

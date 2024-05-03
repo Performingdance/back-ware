@@ -144,6 +144,54 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
 
         
 });
+// Add unpaid Item of client to invoice
+router.post("/new/client/item", isLoggedIn, (req, res, next) => {
+
+    const invoiceID = req.body.invoiceID;
+    const clientID = req.body.clientID;
+    const productID = req.body.productID
+    let product_name = req.body.product_name;
+    const amount = req.body.amount;
+    const price_piece = req.body.price_piece;
+    const price_total = req.body.price_total;
+    const order_date = req.body.delivery_date;
+    const delivery_date = req.body.delivery_date;
+    const orderItemID = req.body.orderItemID;
+
+    if((productID >= 1)){
+        db.query("SELECT product_name FROM products WHERE ID = ?", 
+        [productID], 
+        (err, result) =>{
+            if(err){
+                console.log(err)
+            } else{
+                product_name = result[0].product_name
+                db.query(`INSERT INTO invoices_items 
+                (invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date) 
+                VALUES (?,?,?,?,?,?,?,?,?) `, 
+                [invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date], 
+                (err, result) =>{
+                    if(err){
+                        console.log(err)
+                    } else{
+                        db.query(`UPDATE orders_items SET invoiceID = ? WHERE ID = ?`, 
+                        [invoiceID, orderItemID], 
+                        (berr, result) =>{
+                            if(berr){
+                                console.log(berr)
+                            } else {
+                                res.send("success")
+                            }
+                        });
+                    };
+                })
+            };
+        });
+
+    }
+
+        
+});
 
 // add all open items (orders) from a client to the invoice
 router.post("/new/items/client", isLoggedIn, (req, res, next) => {
