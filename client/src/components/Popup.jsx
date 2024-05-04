@@ -808,7 +808,7 @@ export function AddInvoiceClientPopup({
 
 }){
 
-
+  const today = new Date().toISOString().split("T",[1])
   const [selectedItemID, setSelectedItemID] = useState(-1)
   const [addAll, setAddAll] = useState(false)
 
@@ -824,10 +824,10 @@ export function AddInvoiceClientPopup({
   const [addLoading, setAddLoading] = useState(false);  
  
   let editRef = useRef(0)
-  let addAllRef = useRef()
   let orderIDRef = useRef()
-  let order_dateRef = useRef()
-  let delivery_dateRef = useRef()
+  let order_dateRef = useRef(today)
+  let production_dateRef = useRef(today)
+  let delivery_dateRef = useRef(today)
   let amountRef = useRef()
   let product_nameRef = useRef()
   let productIDRef = useRef()
@@ -855,7 +855,8 @@ export function AddInvoiceClientPopup({
       items.forEach((item)=>{
         if(item.ID == selectedItemID){
           orderIDRef.current = item.orderID;
-          order_dateRef.current = item.production_date;
+          order_dateRef.current = item.order_date;
+          production_dateRef.current = item.production_date;
           delivery_dateRef.current = item.delivery_date;
           amountRef.current = item.amount;
           price_pieceRef.current = item.price_piece;
@@ -885,6 +886,7 @@ export function AddInvoiceClientPopup({
                   "price_total" : price_totalRef.current,
                   "amount" : amountRef.current,
                   "order_date" : order_dateRef.current.split("T",[1]),
+                  "production_date" : production_dateRef.current.split("T",[1]),
                   "delivery_date" : delivery_dateRef.current.split("T",[1]),
             
                 }
@@ -1005,6 +1007,7 @@ export function AddInvoiceProdPopup({
   const [addLoading, setAddLoading] = useState(false);  
 
   let order_dateRef = useRef(today)
+  let production_dateRef = useRef(today)
   let delivery_dateRef = useRef(today)
   let amountRef = useRef()
   let product_nameRef = useRef()
@@ -1023,6 +1026,11 @@ export function AddInvoiceProdPopup({
       return}
     if(defaultClientID<0){return}
     else{
+      products.forEach((product)=>{
+        if(product.ID == selectedProductID){
+          production_dateRef.current = product.production_date
+        }
+      })
       
         e = e || window.Event;
         e.preventDefault();
@@ -1044,6 +1052,7 @@ export function AddInvoiceProdPopup({
                   "price_total" : parseFloat(price_totalRef.current.replace(",",".")),
                   "amount" : amountRef.current.replace(",","."),
                   "order_date" : order_dateRef.current,
+                  "production_date" : production_dateRef.current,
                   "delivery_date" : delivery_dateRef.current,
             
                 }

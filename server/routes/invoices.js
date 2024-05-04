@@ -155,6 +155,7 @@ router.post("/new/client/item", isLoggedIn, (req, res, next) => {
     const price_piece = req.body.price_piece;
     const price_total = req.body.price_total;
     const order_date = req.body.delivery_date;
+    const production_date = req.body.production_date;
     const delivery_date = req.body.delivery_date;
     const orderItemID = req.body.orderItemID;
 
@@ -167,9 +168,9 @@ router.post("/new/client/item", isLoggedIn, (req, res, next) => {
             } else{
                 product_name = result[0].product_name
                 db.query(`INSERT INTO invoices_items 
-                (invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date) 
-                VALUES (?,?,?,?,?,?,?,?,?) `, 
-                [invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date], 
+                (invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, production_date, delivery_date) 
+                VALUES (?,?,?,?,?,?,?,?,?,?) `, 
+                [invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, production_date, delivery_date], 
                 (err, result) =>{
                     if(err){
                         console.log(err)
@@ -201,16 +202,21 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
 
     db.query(`
     INSERT INTO invoices_items 
-    (invoiceID, clientID, orderID, productID, amount, order_date, production_date, delivery_date, product_name)
-
-    SELECT b.*, products.product_name 
-    FROM( SELECT 25 as invoiceID, 5 AS clientID, ID AS orderID, productID, orders_items.amount,order_date, production_date, delivery_date 
-     FROM orders_items
-     WHERE invoiceID IS null) AS b
+    (invoiceID, clientID, orderID, productID, amount, order_date, production_date, delivery_date, product_name, price_piece, price_total)
+    SELECT b.*, products.product_name, products.vkp_netto, (products.vkp_netto * amount) AS price_total 
+    FROM(
+        SELECT orders_items.* 
+        FROM(
+            SELECT ID, notes FROM orders 
+            WHERE clientID = 5
+        ) AS a
+    LEFT JOIN orders_items
+    ON orders_items.orderID = a.ID) AS b
+    WHERE b.invoiceID IS NULL
     LEFT JOIN products
     ON products.ID = b.productID 
         `, 
-    [invoiceID, clientID, clientID], 
+    [invoiceID, clientID], 
     (err, result) =>{
         if(err){
             console.log(err)
@@ -260,9 +266,9 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
     const invoiceID = req.body.invoiceID;
 
     db.query(`INSERT INTO invoices_items 
-    (invoiceID, clientID, orderID ,productID, amount, delivery_date, order_date, product_name, price_piece, price_total) 
-    SELECT b.*, products.product_name, products.vkp_netto, products.vkp_netto * amount
-    FROM (SELECT a.*, orders.order_date
+    (invoiceID, clientID, orderID ,productID, amount, order_date, production_date, delivery_date, product_name, price_piece, price_total) 
+    SELECT b.*, products.product_name, products.vkp_netto, (products.vkp_netto * amount) AS price_total
+    FROM (SELECT a.*
         FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, productID, amount, delivery_date  
             FROM orders_items 
             WHERE orderID = ? AND invoiceID IS NULL) as a
@@ -398,7 +404,7 @@ router.put("/update/item/price", isLoggedIn, (req, res, next) => {
 
 // Update items on invoice
 router.put("/update/item", isLoggedIn, (req, res, next) => {
-    const itemID = req.body.itemID;
+    const productID = req.body.productID;
     const clientID = req.body.clientID;
     const recipeID = req.body.recipeID;
     const formID = req.body.formID;
@@ -409,14 +415,14 @@ router.put("/update/item", isLoggedIn, (req, res, next) => {
 
     if((recipeID >= 1) && (formID >= 1)){
         db.query("SELECT product_name FROM products WHERE ID = ?", 
-        [clientID,recipeID, formID, name, amount, order_date, delivery_date, itemID], 
+        [clientID,recipeID, formID, name, amount, order_date, delivery_date, productID], 
         (err, result) =>{
             if(err){
                 console.log(err)
             } else{
                 name = result[0].product_name
                 db.query("UPDATE invoices_items SET clientID = ?, recipeID = ?, formID = ?, name = ?, amount = ?, order_date = ?, delivery_date = ? WHERE ID = ?", 
-                [clientID,recipeID, formID, name, amount, order_date, delivery_date, itemID], 
+                [clientID,recipeID, formID, name, amount, order_date, delivery_date, productID], 
                 (err, result) =>{
                     if(err){
                         console.log(err)
@@ -429,7 +435,7 @@ router.put("/update/item", isLoggedIn, (req, res, next) => {
 
     }else{
         db.query("UPDATE invoices_items SET clientID = ?, recipeID = ?, formID = ?, name = ?, amount = ?, order_date = ?, delivery_date = ? WHERE ID = ?", 
-        [clientID,recipeID, formID, name, amount, order_date, delivery_date, itemID], 
+        [clientID,recipeID, formID, name, amount, order_date, delivery_date, productID], 
         (err, result) =>{
             if(err){
                 console.log(err)

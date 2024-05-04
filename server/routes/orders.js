@@ -160,11 +160,12 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
     const orderID = req.body.orderID;
     const productID = req.body.productID;
     const amount = req.body.amount;
+    const order_date = req.body.order_date
     const delivery_date = req.body.delivery_date || req.body.production_date;
     const production_date = req.body.production_date;
 
-            db.query("INSERT INTO orders_items (orderID, productID, amount, delivery_date, production_date) VALUES (?,?,?,?,?)", 
-            [orderID, productID, amount, delivery_date, production_date], 
+            db.query("INSERT INTO orders_items (orderID, productID, amount, order_date, production_date, delivery_date) VALUES (?,?,?,?,?,?)", 
+            [orderID, productID, amount, order_date, production_date, delivery_date], 
             (err, result) =>{
                 if(err){
                     console.log(err)
@@ -232,7 +233,15 @@ router.put("/update", isLoggedIn, (req, res, next) => {
         if(err){
             console.log(err)
         } else{
-            res.send(result)
+            db.query("UPDATE orders_items SET order_date = ? WHERE orderID = ?", 
+            [order_date, orderID], 
+            (err, result) =>{
+                if(err){
+                    console.log(err)
+                } else{
+                }
+            })
+            res.send("success")
         }
     })
 });
@@ -469,14 +478,14 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
 
 router.delete("/delete/item", isLoggedIn, (req, res) => {
 
-    const productID = req.body.productID;
     const orderID = req.body.orderID;
+    const itemID = req.body.productID;
     const date = req.body.date;
-    db.query("DELETE FROM orders_items WHERE ID = ? AND orderID = ?", [productID,orderID], (err, result) =>{
+    db.query("DELETE FROM orders_items WHERE ID = ? AND orderID = ?", [itemID,orderID], (err, result) =>{
         if(err){
            console.log(err)
         } else {
-            db.query("SELECT recipeID, formID FROM orders_items WHERE ID = ?",[date, orderID, productID], (err, result) =>{
+            db.query("SELECT recipeID, formID FROM orders_items WHERE ID = ?",[date, orderID, itemID], (err, result) =>{
                 if(err){
                    console.log(err)
                 } else {
