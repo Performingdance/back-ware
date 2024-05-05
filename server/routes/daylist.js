@@ -299,7 +299,7 @@ router.put("/update", isLoggedIn, (req, res) => {
                     console.log(aaerr)
                 } else{
                     const productID = result[0].ID
-            db.query("UPDATE orders_items SET amount = ? WHERE orderID = ? AND productID = ?,", 
+            db.query("UPDATE orders_items SET amount = ? WHERE orderID = ? AND productID = ?", 
             [amount,orderID, productID], 
             (aaerr, result) =>{
                 if(aaerr){
