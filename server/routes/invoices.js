@@ -257,8 +257,8 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                     });
                 }
             });
-        };
-        res.send("success")
+            res.send("success")
+        };   
     })
 });
 
