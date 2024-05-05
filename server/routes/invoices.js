@@ -203,18 +203,18 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
     db.query(`
     INSERT INTO invoices_items 
     (invoiceID, clientID, orderID, productID, amount, order_date, production_date, delivery_date, product_name, price_piece, price_total)
-    SELECT b.*, products.product_name, products.vkp_netto, (products.vkp_netto * amount) AS price_total 
+    SELECT ? as invoiceID, b.*, products.product_name, products.vkp_netto, (products.vkp_netto * amount) AS price_total 
     FROM(
-        SELECT ? as invoiceID, a.clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.production_date, orders_items.delivery_date
+        SELECT a.clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.production_date, orders_items.delivery_date
         FROM(
             SELECT ID, clientID FROM orders 
             WHERE clientID = ?
         ) AS a
     LEFT JOIN orders_items
-    ON orders_items.orderID = a.ID) AS b
+    ON orders_items.orderID = a.ID AND invoiceID IS NULL 
+    ) AS b
     LEFT JOIN products
-    ON products.ID = b.productID 
-    WHERE b.invoiceID IS NULL
+    ON products.ID = b.productID;
         `, 
     [invoiceID, clientID], 
     (err, result) =>{

@@ -66,18 +66,6 @@ function EditInvoice  () {
     let clientIDRef = useRef()
 
     useEffect(()=>{handleMargeRequest()}, [edit]) ;
-    // ID: 1
-    // client: "Hotel (Maria Haag)"
-    // clientID: 4
-    // delivery_date: "02.02.23"
-    // formID: 15
-    // formName: "Baguette, 300g"
-    // invoiceID: 4
-    // orderID: 4
-    // order_date: "05.02.23"
-    // price_piece: null
-    // price_total: null
-    // recipeName: "Weizenvorteig 1050"
 
     useEffect(()=> handleClientRequest,[edit])
     
@@ -223,7 +211,7 @@ function EditInvoice  () {
       return(
         <div key={key+"li"} className='invoice-tb-row'>      
             <p key={key+"pos"} className='invoice-p'>{key+1}</p>
-            <p key={key+"product"} className='invoice-p'>{product.product_name}</p>
+            <p key={key+"product"} className='invoice-p ta-s'>{product.product_name}</p>
             <p key={key+"amount"} className='invoice-p' >{product.amount+"x"}</p>
             <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? (product.price_piece.replace(".",",") ): "0,00") + "€"}</p>
             <p key={key+"price_total"} className='invoice-p'> {(product.price_total? (product.price_total.replace(".",",") ): "0,00") + "€"}</p>
@@ -235,7 +223,7 @@ function EditInvoice  () {
           <div key={key+"div"} className=''>
             <div key={key+"li"} className='invoice-tb-row'>      
               <p key={key+"pos"} className='invoice-p'>{key+1}</p>
-              <p key={key+"product"} className='invoice-p'>{product.product_name}</p>
+              <p key={key+"product"} className='invoice-p ta-c'>{product.product_name}</p>
               <p key={key+"amount"} className='invoice-p' >{product.amount+"x"}</p>
               <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? product.price_piece.replace(".",",") : "0,00") + "€"}</p>
               <p key={key+"price_total"} className='invoice-p' >{(product.price_total? product.price_total.replace(".",",") : "0,00") + "€"}</p>
@@ -374,7 +362,7 @@ function EditInvoice  () {
         <div className='invoice-tb-tbody'>   
               <div className='invoice-tb-row'>
                 <p className='invoice-tb-th'>Pos</p>
-                <p className='invoice-tb-th'>Artikel</p>
+                <p className='invoice-tb-th ta-s'>Artikel</p>
                 <p className='invoice-tb-th'>Anzahl</p>
                 <p className='invoice-tb-th'>Einzelpreis</p>
                 <p className='invoice-tb-th'>Summe Netto</p>

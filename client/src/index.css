@@ -238,6 +238,12 @@ input[type=number] {
 .ta-c{
   text-align: center;
 }
+.ta-s{
+  text-align: start;
+}
+.ta-e{
+  text-align: end;
+}
 .fix-left{
   position: fixed;
   left: 0;

@@ -855,9 +855,9 @@ export function AddInvoiceClientPopup({
       items.forEach((item)=>{
         if(item.ID == selectedItemID){
           orderIDRef.current = item.orderID;
-          order_dateRef.current = item.order_date;
-          production_dateRef.current = item.production_date;
-          delivery_dateRef.current = item.delivery_date;
+          order_dateRef.current = item.order_date? item.order_date: today;
+          production_dateRef.current = item.production_date? item.production_date : today;
+          delivery_dateRef.current = item.delivery_date? item.delivery_date : today;
           amountRef.current = item.amount;
           price_pieceRef.current = item.price_piece;
           price_totalRef.current = item.price_total;
@@ -1110,11 +1110,16 @@ export function AddInvoiceProdPopup({
             <input className='i-select' onChange={(e)=>{price_totalRef.current = e.target.value}}></input>                    
 
             
-            <div className='d-il'>                    
+            <div className=''>                    
               <div>
                 <p>Bestelldatum:</p>
                 <DateLine 
                     onDateChange={(val)=>{order_dateRef.current = val}} /> 
+              </div>
+              <div>
+                <p>Produktionsdatum:</p>
+                <DateLine 
+                    onDateChange={(val)=>{production_dateRef.current = val}} /> 
               </div>
               <div>
                 <p>Lieferdatum:</p>
