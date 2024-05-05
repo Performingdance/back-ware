@@ -402,7 +402,7 @@ router.put("/update", isLoggedIn, (req, res) => {
                     })
                 };
             })
-            res.send(result)
+            res.send("success")
         };
     })
 });
