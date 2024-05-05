@@ -222,26 +222,26 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
             console.log(err)
         } else{
             db.query(`
-            SELECT ID         
-                FROM orders
-                WHERE clientID = ? AND invoiceID IS null`, 
+            UPDATE orders SET invoiceID = ? 
+                WHERE clientID = ? AND invoiceID IS NULL
+            `, 
             [invoiceID, clientID], 
-            (berr, result) =>{
+            (berr, bres) =>{
                 if(berr){
                     console.log(berr)
                 } else {
                     db.query(`
-                    UPDATE orders SET invoiceID = ? 
-                    WHERE clientID = ? AND invoiceID IS NULL`, 
+                    SELECT ID         
+                        FROM orders
+                        WHERE clientID = ?`, 
                     [invoiceID, clientID], 
-                    (cerr, bres) =>{
+                    (cerr, cres) =>{
                         if(cerr){
                             console.log(cerr)
                         } else {
-                            console.log(result)
-                            result.forEach((res)=>{
-                                orderID = res.ID
-                                db.query(`UPDATE orders_items SET invoiceID = ? WHERE orderID = ?`, 
+                            cres.forEach((obj)=>{
+                                orderID = obj.ID
+                                db.query(`UPDATE orders_items SET invoiceID = ? WHERE invoiceID IS NULL AND orderID = ?`, 
                                 [invoiceID, orderID], 
                                 (berr, result) =>{
                                     if(berr){
@@ -556,7 +556,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                     } else{
                         db.query(`
                             UPDATE orders SET 
-                                billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL),
+                                billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
                             WHERE ID = ?`, 
                         [orderID, orderID], 
                         (berr, bresult) =>{
