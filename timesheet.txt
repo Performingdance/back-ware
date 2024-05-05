@@ -117,6 +117,7 @@
 24.04. 1h
 30.04. 1h
 04.05. 2,5h
+05.05. 1h
 Kosten:
     Node server Render
         Feb 7€
@@ -132,7 +133,6 @@ Form-Gewicht - Einwaage
 Eingaben
 Todo Bilder Komprimierung
 
-Invoice_items & Order_items - production_date / order_date in nodeJs ergänzen
 
 Produkte nach photUpload im Rezept neu laden
 Rechnung artikel, Zutaten decimal comma replace

@@ -205,7 +205,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
     (invoiceID, clientID, orderID, productID, amount, order_date, production_date, delivery_date, product_name, price_piece, price_total)
     SELECT b.*, products.product_name, products.vkp_netto, (products.vkp_netto * amount) AS price_total 
     FROM(
-        SELECT ? as invoiceID, orders_items.clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.production_date, orders_items.delivery_date
+        SELECT ? as invoiceID, a.clientID, orders_items.orderID, orders_items.productID, orders_items.amount, orders_items.order_date, orders_items.production_date, orders_items.delivery_date
         FROM(
             SELECT ID, clientID FROM orders 
             WHERE clientID = ?
