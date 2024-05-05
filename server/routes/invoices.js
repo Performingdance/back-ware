@@ -211,8 +211,8 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
             WHERE clientID = ?
         ) AS a
     LEFT JOIN orders_items
-    ON orders_items.orderID = a.ID AND invoiceID IS NULL 
-    ) AS b
+    ON orders_items.orderID = a.ID
+    WHERE invoiceID IS NULL) AS b
     LEFT JOIN products
     ON products.ID = b.productID;
         `, 
@@ -223,7 +223,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
         } else{
             db.query(`
             UPDATE orders SET invoiceID = ? 
-                WHERE clientID = ? AND invoiceID IS NULL
+            WHERE clientID = ? AND invoiceID IS NULL
             `, 
             [invoiceID, clientID], 
             (berr, bres) =>{
@@ -239,7 +239,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                         if(err){
                             console.log(err)
                         } else {
-                            console.log(res)
+                            //console.log(res)
                             res.forEach((obj)=>{
                                 orderID = obj.ID
                                 db.query(`UPDATE orders_items SET invoiceID = ? WHERE invoiceID IS NULL AND orderID = ?`, 

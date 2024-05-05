@@ -14,7 +14,6 @@ import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest'
 import { AddInvoiceClientPopup, AddInvoiceOrderPopup, AddInvoiceProdPopup, PromptPopup } from '../components/Popup';
 import handleInvoiceIDRequest from '../hooks/handleInvoiceIDRequest';
 import { DateLine } from '../components/Calendar';
-import { LabelTextInput } from '../components/LabelBox';
 import { SelectComponent } from '../components/Searchbar';
 
 
@@ -223,7 +222,7 @@ function EditInvoice  () {
           <div key={key+"div"} className=''>
             <div key={key+"li"} className='invoice-tb-row'>      
               <p key={key+"pos"} className='invoice-p'>{key+1}</p>
-              <p key={key+"product"} className='invoice-p ta-c'>{product.product_name}</p>
+              <p key={key+"product"} className='invoice-p ta-s'>{product.product_name}</p>
               <p key={key+"amount"} className='invoice-p' >{product.amount+"x"}</p>
               <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? product.price_piece.replace(".",",") : "0,00") + "€"}</p>
               <p key={key+"price_total"} className='invoice-p' >{(product.price_total? product.price_total.replace(".",",") : "0,00") + "€"}</p>
