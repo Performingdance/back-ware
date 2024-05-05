@@ -239,6 +239,7 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                         if(cerr){
                             console.log(cerr)
                         } else {
+                            console.log(cres, cres[0].ID)
                             cres.forEach((obj)=>{
                                 orderID = obj.ID
                                 db.query(`UPDATE orders_items SET invoiceID = ? WHERE invoiceID IS NULL AND orderID = ?`, 
