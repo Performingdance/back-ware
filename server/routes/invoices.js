@@ -238,8 +238,8 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                         if(cerr){
                             console.log(cerr)
                         } else {
+                            console.log(result)
                             result.forEach((res)=>{
-                                console.log(result, res.ID)
                                 orderID = res.ID
                                 db.query(`UPDATE orders_items SET invoiceID = ? WHERE orderID = ?`, 
                                 [invoiceID, orderID], 
@@ -295,12 +295,13 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
                     if(err){
                         console.log(err)
                     } else {
-                        res.send("success")
+                       
                     }
                 });
             }
         });
         };
+        res.send("success")
     })
 });
 
@@ -308,31 +309,30 @@ router.put("/new", isLoggedIn, (req, res, next) => {
     const clientID = req.body.clientID;
     const invoice_date = req.body.invoice_date
 
+    db.query(`SELECT a.last_invoice, clients.margeID
+        FROM (SELECT MAX(invoice_number) as last_invoice 
+        FROM invoices) as a
+    LEFT JOIN clients
+    ON ID = ?`, 
+    clientID, 
+    (err, result) =>{
+        if(err){
+            console.log(err)
+        } else{
+        const invoice_number = result[0].last_invoice +1;
+        const margeID = result[0].margeID;
+        db.query(`INSERT INTO invoices (clientID, invoice_number, invoice_date, margeID) VALUES (?,?,?,?)`, 
+        [clientID, invoice_number, invoice_date, margeID], 
+        (err, res) =>{
+            if(err){
+                console.log(err)
+            } else{
+                res.send(res);
+            };
+        })
+        };
 
-           db.query(`SELECT a.last_invoice, clients.margeID
-                FROM (SELECT MAX(invoice_number) as last_invoice 
-                FROM invoices) as a
-            LEFT JOIN clients
-            ON ID = ?`, 
-            clientID, 
-           (err, result) =>{
-               if(err){
-                   console.log(err)
-               } else{
-                const invoice_number = result[0].last_invoice +1;
-                const margeID = result[0].margeID;
-                db.query(`INSERT INTO invoices (clientID, invoice_number, invoice_date, margeID) VALUES (?,?,?,?)`, 
-                [clientID, invoice_number, invoice_date, margeID], 
-                (err, result) =>{
-                    if(err){
-                        console.log(err)
-                    } else{
-                        
-                        res.send(result);
-                    };
-                })
-               };
-           })
+    })
 });
 
 
