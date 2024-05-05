@@ -221,20 +221,22 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
         if(err){
             console.log(err)
         } else{
-            db.query("UPDATE orders SET invoiceID = ? WHERE clientID = ?", 
+            db.query(`
+            SELECT ID         
+                FROM orders
+                WHERE clientID = ? AND invoiceID IS null`, 
             [invoiceID, clientID], 
             (berr, result) =>{
                 if(berr){
                     console.log(berr)
                 } else {
                     db.query(`
-                    SELECT ID         
-                        FROM orders
-                        WHERE clientID = ? AND invoiceID IS null`, 
+                    UPDATE orders SET invoiceID = ? 
+                    WHERE clientID = ? AND invoiceID IS NULL`, 
                     [invoiceID, clientID], 
-                    (berr, result) =>{
-                        if(berr){
-                            console.log(berr)
+                    (cerr, bres) =>{
+                        if(cerr){
+                            console.log(cerr)
                         } else {
                             result.forEach((res)=>{
                                 console.log(result, res.ID)

@@ -855,9 +855,9 @@ export function AddInvoiceClientPopup({
       items.forEach((item)=>{
         if(item.ID == selectedItemID){
           orderIDRef.current = item.orderID;
-          order_dateRef.current = item.order_date? item.order_date: today;
-          production_dateRef.current = item.production_date? item.production_date : today;
-          delivery_dateRef.current = item.delivery_date? item.delivery_date : today;
+          order_dateRef.current = item.order_date? item.order_date.split("T",[1]): today;
+          production_dateRef.current = item.production_date? item.production_date.split("T",[1]) : today;
+          delivery_dateRef.current = item.delivery_date? item.delivery_date.split("T",[1]) : today;
           amountRef.current = item.amount;
           price_pieceRef.current = item.price_piece;
           price_totalRef.current = item.price_total;
@@ -885,9 +885,9 @@ export function AddInvoiceClientPopup({
                   "price_piece" : price_pieceRef.current,
                   "price_total" : price_totalRef.current,
                   "amount" : amountRef.current,
-                  "order_date" : order_dateRef.current.split("T",[1]),
-                  "production_date" : production_dateRef.current.split("T",[1]),
-                  "delivery_date" : delivery_dateRef.current.split("T",[1]),
+                  "order_date" : order_dateRef.current,
+                  "production_date" : production_dateRef.current,
+                  "delivery_date" : delivery_dateRef.current,
             
                 }
             }).then((response)=>{
