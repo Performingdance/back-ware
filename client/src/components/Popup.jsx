@@ -1508,6 +1508,196 @@ export function RecipeOrderPopup({
     )
 
 }
+export function ProductOrderPopup({
+  onClickOK,
+  onClickAbort,
+  defaultOrderID,
+  defaultClientID,
+  defaultProductID,
+  defaultOrderName,
+  defaultClientName,
+  defaultProductName,
+  defaultDate
+
+}){
+  const today = new Date().toISOString().split("T",[1])
+
+
+  const [products, errProd, loadingProd] = handleProductRequest();
+  const [selectedProductID, setSelectedProductID] = useState(defaultProductID || -1)
+  const [selectedClientID, setSelectedClientID] = useState(defaultClientID || -1)
+  const [selectedOrderID, setSelectedOrderID] = useState(defaultOrderID || -1)
+  const [orders, errOrders, loadingOrders] = handleOpenOrderRequest(selectedClientID, true);
+  const [clients, errClient, loadingClient, handleRequest] = handleClientSelectRequest();  
+  useMemo(()=>handleRequest(),[])
+
+  const [prodOpen, setProdOpen] = useState(false);
+  const [clientOpen,setClientOpen] = useState(false)
+  const [orderOpen,setOrderOpen] = useState(false)
+
+  
+  const [addRes, setAddRes] = useState([])
+  const [addError, setAddError] = useState("");
+  const [addLoading, setAddLoading] = useState(false);  
+  const isoDate = defaultDate || today
+
+  const [dates, setDates] = useState([isoDate]);
+ 
+
+  let amountInputRef = useRef(0)
+  let noteInputRef = useRef("")
+  let editRef = useRef(0)
+
+
+  const handleDateChange = (newDates) => {
+    setDates(newDates);
+  }
+  
+
+
+
+
+  function handleSubmit (e) {
+    
+    if(selectedProductID <= 0){
+      setAddError({message: "Bitte Produkt wählen"})
+      return
+    }
+    if(selectedClientID <= 0){
+      setAddError({message: "Bitte Kunde wählen"})
+      return
+    }
+    if(dates.length <= 0){
+      setAddError({message:"Bitte mind. 1 Tag wählen"})
+      return
+    }else{
+      let recipeID
+      let formID
+      products.forEach((prod)=>{
+        if(selectedProductID == prod.ID){
+          recipeID = prod.recipeID
+          formID = prod.formID
+        }
+      })
+      dates.forEach(handleData)
+      function handleData(day, i){
+        const isoDay = day.replace(/(..).(..).(....)/, "$3-$2-$1");
+        e = e || window.Event;
+        e.preventDefault();
+            setAddLoading(true)
+            axios({
+                axiosInstance: axios,
+                method: "PUT",
+                url:"s/daylist/new",
+                headers: {
+                    "authorization": authHeader()
+                },
+                data : {
+                  "productID" : selectedProductID,
+                  "recipeID" : recipeID,
+                  "formID" : formID,
+                  "clientID" : selectedClientID,
+                  "amount" : amountInputRef.current,
+                  "date" : isoDay,
+                  "orderID" : selectedOrderID,
+                  "note" : noteInputRef.current
+                }
+            }).then((response)=>{
+              
+                onClickOK(false)
+            }).catch((err) => {
+                setAddError(err)
+                console.log(err);
+            })
+    
+            setAddLoading(false)
+            
+          }
+    }
+    
+    }
+   
+  
+  return (
+            
+      <div className='popup-card  '>
+        <div className='popup-card-content jc-c '>
+        <h3 className='ta-c'>Produkt bestellen</h3>
+          {errProd ? <h5 className='errorMsg' >{errProd.message }</h5>: " "}
+          {addError ? <h5 className='errorMsg' >{addError.message }</h5>: " "}
+          {errClient ? <h5 className='errorMsg' >{errClient.message }</h5>: " "}
+          {errOrders ? <h5 className='errorMsg' >{errOrders.message}</h5>: " "}
+          {clients.length ?
+          <div className="popup-title jc-c">
+
+
+            <p className='lb-title'>Produkt</p>
+            <SelectComponent
+              id ="product"
+              onSelect={(val)=>{[editRef.current=val, setSelectedProductID(-1)]}}
+              editref={editRef.current}
+              options={products}
+              onChange={(item) =>{setSelectedProductID(item)}}
+              selectedID={selectedProductID}
+              placeholder={"Produkt wählen..."}
+              open={prodOpen}
+              setOpen={(bol)=>setProdOpen(bol)}
+              className='i-select' 
+              type='text' 
+              defaultValue={defaultProductName}
+              />
+            <p></p>
+            <LabelInput className='popup-input' type='number' title="Menge" defaultvalue={0} onChange={(e)=>{amountInputRef.current = e.target.value}}/>
+            <LabelTextInput className='popup-input' title="Notiz" defaultValue={"..." } onChange={(val)=>{noteInputRef.current = val}}/>
+            <p className='lb-title '>Kunde</p>
+            <SelectComponent 
+                  id ="clients"
+                  editref={editRef.current}
+                  options={clients}
+                  onSelect={(val)=>{[editRef.current=val, setSelectedOrderID(-1)]}}
+                  onChange={(val) =>{setSelectedClientID(val)}}
+                  selectedID={selectedClientID}
+                  placeholder=' Kunde wählen...'
+                  open={clientOpen}
+                  setOpen={(val)=>{setClientOpen(val)}}
+                  className='i-select popup-input' 
+                  defaultValue={defaultClientName}
+                  />
+            {((selectedClientID != -1) && (selectedClientID != "")) && 
+            [<p className='lb-title ' key={"order_title"}>Bestellung</p>,
+
+            <SelectComponent 
+                  key={"order_select"}
+                  id ="order"
+                  editref={editRef.current}
+                  options={orders}
+                  onSelect={(val)=>{[editRef.current=val]}}
+                  onChange={(val) =>{setSelectedOrderID(val)}}
+                  selectedID={selectedOrderID}
+                  placeholder=' Bestellung wählen...'
+                  open={orderOpen}
+                  setOpen={(val)=>{setOrderOpen(val)}}
+                  className='i-select popup-input' 
+                  defaultValue={defaultOrderName}
+                  />]}
+                  <div className='rc-calendar d-il'>                    
+                    <div>
+                      <p>Produktionsdatum:</p>
+                      < Calendar onDateChange={handleDateChange} defaultDate={isoDate}/>
+                    </div>
+                  </div>
+            <div className='popup-card-btns'>
+                <button className='btn popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
+                <button className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+            </div>
+          </div>:""}
+        </div>
+        </div>
+      
+    
+    )
+
+}
 export function RecipeFormPopup({
   onClickOK,
   onClickAbort,

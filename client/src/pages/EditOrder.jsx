@@ -12,7 +12,7 @@ import check from '../assets/icons/check-all.svg'
 import trash from '../assets/icons/trash.svg'
 import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
-import NewRecipePopup, { AddInvoicePopup, PromptPopup, RecipeOrderPopup } from '../components/Popup';
+import NewRecipePopup, { AddInvoicePopup, ProductOrderPopup, PromptPopup } from '../components/Popup';
 import handleOrderIDRequest from '../hooks/handleOrderIDRequest';
 import { DateLine } from '../components/Calendar';
 import { LabelTextInput } from '../components/LabelBox';
@@ -265,7 +265,7 @@ function EditOrder  () {
           message= {delError? delError.message : " "}
           /> 
       }
-      {toggleOrderPrompt && <RecipeOrderPopup 
+      {toggleOrderPrompt && <ProductOrderPopup 
         defaultClientID={orderRes.clientID}
         defaultOrderID={orderRes.ID}
         defaultClientName={orderRes.client}

@@ -323,7 +323,7 @@ router.put("/update", isLoggedIn, (req, res) => {
                     
                     db.query(`
                     UPDATE daylist SET mass = (SELECT formweight 
-                        FROM recipe_form 
+                        FROM products 
                         WHERE recipeID = ? 
                         AND formID = ?) 
                     WHERE ID = ? 

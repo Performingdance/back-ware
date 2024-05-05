@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../styles/RecipeCard.css'
 import SVGIcon from './SVG'
 import clipboard_plus from '../assets/icons/clipboard-plus.svg'
-import { RecipeOrderPopup } from './Popup'
+import { ProductOrderPopup } from './Popup'
 import config from '../config.json'
 const BASE_URL_API = config.BASE_URL_API
 
@@ -15,10 +15,6 @@ export default function ProductCard({
   productID,
   productName,
   img,
-  recipeID,
-  recipeName,
-  formID,
-  formName,
 
 
 
@@ -51,13 +47,9 @@ export default function ProductCard({
     </div>
     
 
-    {orderOpen && <RecipeOrderPopup 
+    {orderOpen && <ProductOrderPopup 
                       onClickOK={()=>setOrderOpen(false)} 
                       onClickAbort={()=>setOrderOpen(false)} 
-                      defaultRecipeID={recipeID}
-                      defaultRecipeName={recipeName}
-                      defaultFormID={formID}
-                      defaultFormName={formName}
                       defaultProductID={productID}
                       defultProductName={productName}
                      />}

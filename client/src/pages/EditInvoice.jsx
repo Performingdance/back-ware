@@ -11,7 +11,7 @@ import SVGIcon from '../components/SVG';
 import '../styles/EditInvoice.css';
 
 import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest'
-import NewRecipePopup, { AddInvoiceClientPopup, AddInvoiceOrderPopup, AddInvoiceProdPopup, PromptPopup, RecipeOrderPopup } from '../components/Popup';
+import { AddInvoiceClientPopup, AddInvoiceOrderPopup, AddInvoiceProdPopup, PromptPopup } from '../components/Popup';
 import handleInvoiceIDRequest from '../hooks/handleInvoiceIDRequest';
 import { DateLine } from '../components/Calendar';
 import { LabelTextInput } from '../components/LabelBox';

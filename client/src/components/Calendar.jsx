@@ -69,9 +69,11 @@ function CustomInputLine({
       </div>
   )
 }
-export default function Calendar({onDateChange}) {
-  const today = new Date()
-
+export default function Calendar({
+  onDateChange,
+  defaultDate
+}) {
+  const defDate = new Date(defaultDate);
   const [values, setValues] = useState([]);
   const displaySelectedDates = useMemo(() => SelectedDates(values), [values]);
   let dates = ""

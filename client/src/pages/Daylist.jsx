@@ -11,19 +11,19 @@ import check_all from '../assets/icons/check-all.svg'
 import check from '../assets/icons/check.svg'
 import x_circle from '../assets/icons/x-circle.svg'
 // import handleRecipesRequest from '../hooks/handleRecipesRequest'
-import { PromptPopup, RecipePopup } from '../components/Popup'
+import { ProductOrderPopup, PromptPopup } from '../components/Popup'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import Loading from '../components/Loading'
 
-function handleDaylistDayRequest(date, deleteID, togglePopup, updRes, delRes){
+function handleDaylistDayRequest(date, deleteID, update){
   //api {{baseURL}}s/daylist/all/day
 
   const [res, setRes] = useState([])
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(()=>handleRequest(),[date, deleteID, togglePopup, updRes, delRes])
+  useEffect(()=>handleRequest(),[date, deleteID, update])
   function handleRequest () {
       setLoading(true)
       axios({
@@ -65,18 +65,22 @@ function Daylist() {
   const [date,setDate] = useState(today)
   const [edit,setEdit] = useState(false)
   const [editID,setEditID] = useState(0)
-  const[editItem, setEditItem] = useState({})
+  const [editItem, setEditItem] = useState({})
   const [togglePopup, setTogglePopup] = useState(false)
   const [toggleTrash, setToggleTrash] = useState(false)
   const [deleteID, setDeleteID] = useState(-1)
   const [delName, setDelName] = useState("")
+  const [updateDaylist,setUpdateDaylist] = useState(0)
+
+
   const [delRes, setDelRes] = useState([])
   const [delError, setDelError] = useState("");
   const [delLoading, setDelLoading] = useState(false);
+
   const [updRes, setUpdRes] = useState([])
   const [updError, setUpdError] = useState("");
   const [updLoading, setUpdLoading] = useState(false);
-  let [daylistItems, error, loading] = handleDaylistDayRequest(date, deleteID, togglePopup, updRes, delRes);
+  const [daylistItems, error, loading] = handleDaylistDayRequest(date, deleteID, updateDaylist);
 
 
   function handleEdit (item){
@@ -123,13 +127,13 @@ function Daylist() {
           setEdit(false)
           setEditID(-1)
           setUpdRes(response.data)
+          setUpdateDaylist(updateDaylist+1)
 
           //console.log(response.data);
       }).catch((err) => {
           setUpdError(err)
           console.log(err);
       })
-
   setUpdLoading(false)
 }
     
@@ -151,6 +155,7 @@ function Daylist() {
         setDelRes(response.data)
         setDeleteID(ID)
         setEdit(false)
+        setUpdateDaylist(updateDaylist+1)
         //console.log(response.data);
     }).catch((err) => {
         setDelError(err)
@@ -248,20 +253,8 @@ function Daylist() {
 
    {updLoading && <Loading />}
 
-      {togglePopup && <RecipePopup onClickAbort={()=>setTogglePopup(false)} onClickOK={(val)=>{setTogglePopup(val)}} date={date}/>}
+      {togglePopup && <ProductOrderPopup onClickAbort={()=>setTogglePopup(false)} onClickOK={(val)=>{setTogglePopup(val)}} defaultDate={date}/>}
     
-
-   {/* Rezept, Form, Menge Soll/ Ist / Rest, Notiz 
-
-      Baguette
-        500g Baguette 5x 5x Notiz(Bestellung?) 
-        250g Baguette 10x 9x Notiz
-      Mischbrot
-        1000g Laib 14x 15x Notiz
-        etc.
-        add, remove
-   */
-   }
   </div>
   </>
     
