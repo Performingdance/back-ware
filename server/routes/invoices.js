@@ -234,13 +234,13 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                     SELECT ID         
                         FROM orders
                         WHERE clientID = ?`, 
-                    [invoiceID, clientID], 
-                    (cerr, cres) =>{
-                        if(cerr){
-                            console.log(cerr)
+                    [clientID], 
+                    (err, res) =>{
+                        if(err){
+                            console.log(err)
                         } else {
-                            console.log(cres)
-                            cres.forEach((obj)=>{
+                            console.log(res)
+                            res.forEach((obj)=>{
                                 orderID = obj.ID
                                 db.query(`UPDATE orders_items SET invoiceID = ? WHERE invoiceID IS NULL AND orderID = ?`, 
                                 [invoiceID, orderID], 
