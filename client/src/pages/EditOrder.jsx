@@ -20,7 +20,7 @@ import { LabelTextInput } from '../components/LabelBox';
 
 function EditOrder  () {
 
-    let orderID = window.location.pathname.split(":")[1]
+    let orderID = window.location.pathname.split("/")[2]
     const [togglePrompt, setTogglePrompt] = useState(false)
     const [toggleDelPrompt, setToggleDelPrompt] = useState(false)
     const [toggleOrderPrompt, setToggleOrderPrompt] = useState(false)

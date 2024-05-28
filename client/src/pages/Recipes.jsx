@@ -20,7 +20,7 @@ useEffect(()=>setFilteredData(res),[res])
 
 const recipeCards = filteredData.map((recipe) => {
   return (
-  <RecipeCard href={`/recipes/edit:${recipe.ID}`} key={recipe.ID} recipeID={recipe.ID} title={recipe.name}/> 
+  <RecipeCard href={`/recipes/${recipe.ID}`} key={recipe.ID} recipeID={recipe.ID} title={recipe.name}/> 
   )
   
   })

@@ -21,7 +21,7 @@ const productCards = filteredData.map((product,key) => {
   return (
   <ProductCard   
   key={key}
-  href={`/recipes/edit:${product.recipeID}`} 
+  href={`/recipes/${product.recipeID}`} 
   recipeID={product.recipeID} 
   recipeName={product.recipeName}
   productName={product.product_name}

@@ -4,7 +4,7 @@ import SVGIcon from './SVG'
 import clipboard_plus from '../assets/icons/clipboard-plus.svg'
 import { ProductOrderPopup } from './Popup'
 import config from '../config.json'
-const BASE_URL_API = config.BASE_URL_API
+const BASE_URL_IMG_API = config.BASE_URL_IMG_API
 
 
 
@@ -24,7 +24,7 @@ export default function ProductCard({
   if(!img || (img == "NULL") || (img == "default")){
     image = "../imgs/default_product_img.jpg"
   }else{
-    image = BASE_URL_API+"public/recipe_imgs/"+img
+    image = BASE_URL_IMG_API+"public/recipe_imgs/"+img
   }
   
 

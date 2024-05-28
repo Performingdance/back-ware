@@ -10,6 +10,8 @@
     "start-client": "react-scripts start"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.19.0",
     "axios": "^1.4.0",
     "browser-image-compression": "^2.0.2",
     "jwt-decode": "^4.0.0",

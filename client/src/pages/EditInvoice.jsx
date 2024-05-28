@@ -19,7 +19,7 @@ import { SelectComponent } from '../components/Searchbar';
 
 function EditInvoice  () {
 
-    let invoiceID = window.location.pathname.split(":")[1];
+    let invoiceID = window.location.pathname.split("/")[2]
     const [togglePrompt, setTogglePrompt] = useState(false);
     const [addItemPrompt, setAddItemPrompt] = useState(false);
     const [addClientItemPrompt, setAddClientItemPrompt] = useState(false);

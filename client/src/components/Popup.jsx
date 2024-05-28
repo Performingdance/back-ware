@@ -16,6 +16,7 @@ import handleMargesRequest from '../hooks/handleMargesRequest';
 import handleProductRequest from '../hooks/handleProductRequest';
 import handleUnpaidItemsRequest from '../hooks/handleUnpaidItemsRequest';
 import { message } from 'statuses';
+import { useAuth } from '../services/auth/AuthProvider';
 
 
 export default function NewRecipePopup({
@@ -1866,37 +1867,18 @@ export function LoginPopup({
 
   const [loginStatus, setLoginStatus] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const auth = useAuth()
 
 
-function handleLogin(){
-//console.log(userRef.current, pwdRef.current)
-  setLoading(true);
-  axios({
-    axiosInstance: axios,
-    method: "post",
-    url:"auth/login",
-    data:{
-        "username": userRef.current,
-        "password": pwdRef.current
-    },
-  }).then(function (response){
-    //console.log(response.data);
-    localStorage.setItem("token", response.data.token);
-    localStorage.setItem("isLoggedIn", true);
-    localStorage.setItem("role", response.data.user.role);
-    localStorage.setItem("username", response.data.user.username);
-    localStorage.setItem("userID", response.data.user.id);
-
-    setLoginStatus(true)
-    setLoading(false);
-
-
-  }).catch(function (error) {
-    console.log(error.message);
-    setErrMsg(error.message)
-    setLoading(false);
-  })
-}
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (userRef.current !== "" && pwdRef.current !== "") {
+    auth.loginAction(userRef.current, pwdRef.current);
+    onClickOK();
+    return;
+  }
+  alert("pleae provide a valid input");
+};
 
   return (
     <>
@@ -1922,7 +1904,7 @@ function handleLogin(){
             <Loading  _key="loading"/>}
 
           <div key={"pc_btn"} className='popup-card-btns'>
-              <button key="pc_btn_ok" className='btn popup-card-btn' onClick={()=> handleLogin()} >Anmelden</button>
+              <button key="pc_btn_ok" className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Anmelden</button>
               <button key="pc_btn_abort" className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
           </div>
           </div>}

@@ -14,7 +14,7 @@ import { PromptPopup } from '../components/Popup';
 
 function EditIng  () {
 
-    const ingID = window.location.pathname.split(":")[1]
+    const ingID = window.location.pathname.split("/")[2]
     const [togglePrompt, setTogglePrompt] = useState(false)
 
     const [res, err, loading] = handleIngIDRequest(ingID);

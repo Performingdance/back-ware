@@ -227,7 +227,7 @@ export function RecipeForm({
         
         let image 
         if (!form.img || (form.img == "NULL")){
-        image = `../imgs/default_recipe_img.jpg`
+        image = `../imgs/default_product_img.jpg`
         }else{
         image = `${BASE_URL_API}public/recipe_imgs/${form.img}`
         }return(
@@ -238,9 +238,7 @@ export function RecipeForm({
                         {edit == form.ID ?
                         <SVGIcon class="button r-form-btn" src={x_circle} onClick={()=>[setEdit(false), handleFormValueReset(), setEditPriceList([])]}/>
                         :
-                        <SVGIcon class="button r-form-btn" src={pencil_square} onClick={()=>{setEditForm(form); if(edit==form.ID){setEdit(false)}else{handlePriceRequest(form.ID),setEdit(form.ID)}}}/>
-                        }
-                        
+                        <SVGIcon class="button r-form-btn" src={pencil_square} onClick={()=>{setEditForm(form); if(edit==form.ID){setEdit(false)}else{handlePriceRequest(form.ID),setEdit(form.ID)}}}/>}
                         {(edit == form.ID) ?
                         
                         [
@@ -670,15 +668,14 @@ export default function RecipeIng({
   return (
     <div className='r-ing-wrapper'>
     {ingList}
-    {edit? [
+    {edit? <div>
 
     <div key={"title"} className=' r-ing-title'>
         <input  id='-1_sInput'  key={"title_input"} onChange={(e) =>setTitle(e.target.value)} className='r-ing-input r-ing-input-title' defaultValue="nächster Abschnitt"></input>
-
-      </div>,
+      </div>
     <div key="select-component" className='r-ing-content ' >
     <div key={"amount"} className='r-ing-amount r-ing-amount-input'>
-        <input type='number' ref={amountRef} id={"-1_input"} onChange={(e)=>setAmount(e.target.value)} defaultValue='0' className='r-ing-input '/>
+        <input key={"amount-input"} type='number' ref={amountRef} id={"-1_input"} onChange={(e)=>setAmount(e.target.value)} defaultValue='0' className='r-ing-input '/>
         <p>kg</p>
     </div>
 
@@ -698,9 +695,10 @@ export default function RecipeIng({
     <div key="select-btn-submit">
     <button onClick={()=>[handleIngAdd(-1, -1)]}  ><SVGIcon className="i-icon" src={plus} class="svg-icon-lg"/></button>
     </div>
-    </div>,
-    <button className='r-ing-edit-btn r-ins-card jc-c' key={"check-btn"} onClick={()=>[setEdit(false), setOpen(false)]}><SVGIcon src={check} class="svg-icon-md"/></button>,
-    <button className='r-ing-edit-btn r-ins-card jc-c' key={"cancel-btn"} onClick={()=>[setEdit(false), handleIngSubmit(), setOpen(false)]}><SVGIcon src={x_circle} class="svg-icon-md" /></button>] :
+    </div>
+    <button className='r-ing-edit-btn r-ins-card jc-c' key={"check-btn"} onClick={()=>[setEdit(false), setOpen(false)]}><SVGIcon src={check} class="svg-icon-md"/></button>
+    <button className='r-ing-edit-btn r-ins-card jc-c' key={"cancel-btn"} onClick={()=>[setEdit(false), handleIngSubmit(), setOpen(false)]}><SVGIcon src={x_circle} class="svg-icon-md" /></button>
+    </div>:
     <button className='r-ing-edit-btn r-ins-card jc-c' key={"edit-btn"} onClick={()=>setEdit(true)}><SVGIcon src={pencil_square} class="svg-icon-md"/></button>}       
     </div>
   )

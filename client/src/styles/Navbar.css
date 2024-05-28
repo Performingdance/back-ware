@@ -9,10 +9,9 @@
     padding: 0;
     margin: 0;
     border-top: var(--border);
-    float: none;
     bottom: 0;
     left:0;
-    z-index: 0;
+    z-index: auto;
     box-shadow: 0.2rem 0.2rem 0 0 , 0 0.3rem 0.6rem 0;
 
 
@@ -51,7 +50,7 @@
   }
   
   .icon-button:hover {
-    background-color: var(--bg--accent);
+    background-color: var(--bg-accent);
   }
   
   .icon-button_svg {

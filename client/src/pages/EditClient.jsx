@@ -13,9 +13,7 @@ import { PromptPopup } from '../components/Popup';
 function EditClient() {
     const [selectOpen, setSelectOpen] = useState(false)
     const [togglePrompt, setTogglePrompt] = useState(false)
-    const first_slash = window.location.href.indexOf("/", 8) 
-    let path = window.location.href.slice(first_slash)
-    const clientID = path.split(":")[1]
+    const clientID = window.location.pathname.split("/")[2]
     
     let selectedMargeRef = useRef();
     let editRef = useRef();

@@ -54,7 +54,7 @@ export  function OrderCard({
               <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
             </a>
 
-            <a href={`/orders/edit:${data.ID}`} type="button" className='button rc-btn'>
+            <a href={`/orders/${data.ID}`} type="button" className='button rc-btn'>
               <SVGIcon class="rc-btn-svg" src={pencil_square}/>
             </a>
           </div>

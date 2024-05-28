@@ -58,11 +58,11 @@ orders.map((order, key)=> {
         <p></p>
         <p key={key+"recipe"} className='order-p'>{order.name}</p>
         {order.invoiceID? 
-        <a href={`/invoices/edit:${order.invoiceID}`} type="button" className='button rc-btn'>
+        <a href={`/invoices/${order.invoiceID}`} type="button" className='button rc-btn'>
           <SVGIcon class="rc-btn-svg" src={bar_graph}/>
         </a>  
         :<div className='d-il'>
-          <a href={`/orders/edit:${order.ID}`} type="button" className='button rc-btn'>
+          <a href={`/orders/${order.ID}`} type="button" className='button rc-btn'>
               <SVGIcon class="rc-btn-svg" src={pencil_square}/>
         </a>
         <a onClick={()=>{setInvoicePrompt(true), orderIDRef.current = order.ID, orderNameRef.current = order.name}} type="button" className='button rc-btn'>
@@ -96,7 +96,7 @@ orders.map((order, key)=> {
           <a type="button" className='button rc-btn ' onClick={onClickMore}>
             <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
           </a>
-          <a href={`/clients/edit:${client.ID}`} type="button" className='button rc-btn'>
+          <a href={`/clients/${client.ID}`} type="button" className='button rc-btn'>
             <SVGIcon class="rc-btn-svg" src={pencil_square}/>
           </a>
         </div>

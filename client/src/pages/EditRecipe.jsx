@@ -49,7 +49,7 @@ function handleRecipeRequestByID(){
 function Recipe() {
 const [openTab, setOpenTab] = useState("forms")
   const [edit, setEdit] = useState(false);
-  const ID = window.location.pathname.split(":")[1].split("#")[0]
+  const ID = window.location.pathname.split("/")[2]
 
   const [nameRes, setNameRes] = useState([])
   const [nameError, setNameError] = useState("");

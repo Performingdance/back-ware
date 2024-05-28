@@ -79,7 +79,7 @@ export default function invoiceCards ({
               <a type="button" className='button rc-btn ' onClick={onClickMore}>
                 <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
               </a>
-              <a href={`/invoices/edit:${invoice.ID}`} type="button" className='button rc-btn'>
+              <a href={`/invoices/${invoice.ID}`} type="button" className='button rc-btn'>
                 <SVGIcon class="rc-btn-svg" src={pencil_square}/>
               </a>
             </div>

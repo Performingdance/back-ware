@@ -24,7 +24,7 @@ export default function IngredientCard({
           <a key={data.ID + "ic-btn"} type="button" className='button rc-btn ' onClick={()=>[ setNutriOpen(!nutriOpen), setPriceOpen(false)]}>
             <SVGIcon key={data.ID + "nutri-icon"} class="rc-btn-svg" src={plus}/>Nährwerte
           </a>
-          <a key={data.ID + "ic-pen"} href={`/ingredients/edit:${data.ID}`} type="button" className='button rc-btn'>
+          <a key={data.ID + "ic-pen"} href={`/ingredients/${data.ID}`} type="button" className='button rc-btn'>
             <SVGIcon key={data.ID + "pen-icon"} class="rc-btn-svg" src={pencil_square}/>
           </a>
         </div>
