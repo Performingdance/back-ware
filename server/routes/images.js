@@ -4,11 +4,10 @@ const {isLoggedIn} = require('../middleware/basicAuth.js');
 const multer =  require('multer')
 const path = require('path');
 const db = require('../lib/db.js');
-const fs = require('fs')
-import {v2 as cloudinary} from 'cloudinary';
-const REACT_APP_IMG_API_CLOUD_NAME = env.REACT_APP_IMG_API_CLOUD_NAME
-const REACT_APP_IMG_API_KEY = env.REACT_APP_IMG_API_KEY
-const REACT_APP_IMG_API_SECRET = env.REACT_APP_IMG_API_SECRET
+const cloudinary = require('cloudinary').v2;
+const REACT_APP_IMG_API_CLOUD_NAME = process.env.REACT_APP_IMG_API_CLOUD_NAME
+const REACT_APP_IMG_API_KEY = process.env.REACT_APP_IMG_API_KEY
+const REACT_APP_IMG_API_SECRET = process.env.REACT_APP_IMG_API_SECRET
 
 
 
@@ -29,20 +28,19 @@ router.post('/photoUpload', isLoggedIn, (req, res) => {
 
   (async function() {
 
-    console.log(image)
 
-    file_name = Date.now() + path.extname(image.originalname)
+    file_name = "product_"+Date.now() + image.filename.split(".")[1]
 
     
     // Upload an image
-    const uploadResult = await cloudinary.uploader.upload(file, {
+    const uploadResult = await cloudinary.uploader.upload(image, {
         public_id: file_name,
     }).catch((error)=>{console.log(error)});
     
     console.log(uploadResult);
     
     // Optimize delivery by resizing and applying auto-format and auto-quality
-    const optimizeUrl = cloudinary.url("shoes", {
+    const optimizeUrl = cloudinary.url(file_name, {
         fetch_format: 'auto',
         quality: 'auto'
     });
@@ -50,19 +48,15 @@ router.post('/photoUpload', isLoggedIn, (req, res) => {
     console.log(optimizeUrl);
     
     // Transform the image: auto-crop to square aspect_ratio
-    const autoCropUrl = cloudinary.url("shoes", {
+    const autoCropUrl = cloudinary.url(file_name, {
         crop: 'auto',
         gravity: 'auto',
-        width: 500,
-        height: 500,
+        width: 400,
+        height: 280,
     });
     
     console.log(autoCropUrl);    
 })();
-  // Remove old photo
-  if (oldImg) {
-
-  }
   db.query("UPDATE products SET img = ? WHERE ID = ? ",[file_name, productID], (err, result) =>{
     if(err){
        console.log(err)
@@ -77,18 +71,7 @@ router.post('/photoDefault', isLoggedIn, (req, res) => {
   const productID = req.body.productID
   const oldImg = req.body.oldImg
   // Remove old photo
-  if (oldImg) {
-    const oldPath = path.join("/var/lib/data/recipe_imgs/", oldImg);
-    if (fs.existsSync(oldPath)) {
-      fs.unlink(oldPath, (err) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        res.status(200).send(userObj);
-      });
-    }
-  }
+
   db.query("UPDATE products SET img = ? WHERE ID = ? ",["NULL", productID], (err, result) =>{
     if(err){
         console.log(err)
@@ -101,17 +84,6 @@ router.post('/photoDefault', isLoggedIn, (req, res) => {
   
 router.get('/all', isLoggedIn, (req, res) => {
   
-  const folderPath = '/var/lib/data/recipe_imgs'; 
-  fs.readdir(folderPath, (err, files) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Failed to read folder' });
-    }else{
-      res.json( files );  
-    }
-
-
-  });
 });
 
 
