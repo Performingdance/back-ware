@@ -20,7 +20,7 @@ import { RecipeFormPopup } from './Popup'
 import { FileUploadPopUp } from './PhotoUpload'
 import config from '../config.json'
 
-const BASE_URL_API = config.BASE_URL_API
+const BASE_URL_IMG_API = config.BASE_URL_IMG_API
 
 // recipes/ins/id
 function handleInsRequest(recipeID, edit, addRes, delRes){
@@ -229,7 +229,7 @@ export function RecipeForm({
         if (!form.img || (form.img == "NULL")){
         image = `../imgs/default_product_img.jpg`
         }else{
-        image = `${BASE_URL_API}public/recipe_imgs/${form.img}`
+        image = `${BASE_URL_IMG_API}public/product_imgs/${form.img}`
         }return(
             <>
             <div className='r-form-card' key={key+"main_div"} style={{backgroundImage: `url(${image})`}} >

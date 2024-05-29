@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react"
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
-import { Cloudinary } from '@cloudinary/url-gen';
-import { auto } from '@cloudinary/url-gen/actions/resize';
-import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
-import { AdvancedImage } from '@cloudinary/react';
 import config from '../config.json'
 
 
@@ -19,18 +15,11 @@ export function FileUploadPopUp({
   productID,
   productImg
 }){
-  const REACT_APP_IMG_API_CLOUD_NAME = config.REACT_APP_IMG_API_CLOUD_NAME
   const [file, setFile] = useState();
   const [res, setRes] = useState("")
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const cld = new Cloudinary({cloud: {cloudName: REACT_APP_IMG_API_CLOUD_NAME}});
-  
-  const img = cld.image(`public/product_imgs/${productImg}`)
-        .format('auto') // Optimize delivery by resizing and applying auto-format and auto-quality
-        .quality('auto')
-        .resize(auto().gravity(autoGravity()).width(500).height(250)); // Transform the image: auto-crop to square aspect_ratio
 
   //console.log(file)
   const handleUpload = () => {
@@ -104,7 +93,6 @@ export function FileUploadPopUp({
       {        
       <div key="pc" className='popup-card  '>
         <div key="pc-content" className='popup-card-content jc-c '>
-        <AdvancedImage cldImg={img}/>
             <div key="upload_div" className="popup-title jc-c">
             <h3 key="title" >{title? title : ""}</h3>
             <input type="file" onChange={(e)=>setFile(e.target.files[0])} />

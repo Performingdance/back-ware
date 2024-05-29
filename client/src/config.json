@@ -1,5 +1,4 @@
 {
     "BASE_URL_API" : "https://back-ware-api.onrender.com/",
-    "BASE_URL_IMG_API" : "https://back-ware-api.onrender.com/",
-    "REACT_APP_IMG_API_CLOUD_NAME" : "hyysfznsd"
+    "BASE_URL_IMG_API" : "https://back-ware-api.onrender.com/"
 }

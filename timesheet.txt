@@ -120,13 +120,14 @@
 05.05. 2,5h
 19.05. 2,5h
 27.05. 1h
+28.05. 2h
 
 Kosten:
     Node server Render
         Feb 7€
 
 ToDo:
-Router dynamic Routes edit - change pattern ?
+Photo Upload 
 
 Preis
 WV == 0.85 * NVP

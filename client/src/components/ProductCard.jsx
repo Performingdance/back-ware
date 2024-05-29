@@ -24,7 +24,7 @@ export default function ProductCard({
   if(!img || (img == "NULL") || (img == "default")){
     image = "../imgs/default_product_img.jpg"
   }else{
-    image = BASE_URL_IMG_API+"public/recipe_imgs/"+img
+    image = BASE_URL_IMG_API+"public/product_imgs/"+img
   }
   
 
