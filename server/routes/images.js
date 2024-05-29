@@ -39,7 +39,6 @@ router.post('/photoUpload', isLoggedIn, upload.single("image"), (req, res) => {
       if(err){
         res.send(err)
       }else{
-        res.send(info)
       }
     })
   // Remove old photo
