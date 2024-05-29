@@ -11,6 +11,7 @@ router.get("/all", isLoggedIn, (req, res) => {
     ON a.recipeID = recipes.ID) AS b
     LEFT JOIN form
     ON b.formID = form.ID
+    ORDER BY name ASC
     `, (err, result) =>{
          if(err){
             console.log(err)

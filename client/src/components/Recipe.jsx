@@ -229,7 +229,7 @@ export function RecipeForm({
         if (!form.img || (form.img == "NULL")){
         image = `../imgs/default_product_img.jpg`
         }else{
-        image = `${BASE_URL_IMG_API}public/product_imgs/${form.img}`
+        image = `${BASE_URL_IMG_API}public/product_imgs/prev_${form.img}`
         }return(
             <>
             <div className='r-form-card' key={key+"main_div"} style={{backgroundImage: `url(${image})`}} >
@@ -276,6 +276,7 @@ export function RecipeForm({
             </div>
             {((togglePrices == form.ID)&& (priceList.length > 0)) && 
             <div className='r-form-card' key={key+"prices_div"}>
+                <h5 className='ta-c'>{form.product_name + " (" + form.name + ")"}</h5>
                 <h4 className='ta-c'>Preise</h4>
                 <div className='r-form-table' key={key + "table_div"}>
                     <div className='r-form-title' key={key + "title_div"}>

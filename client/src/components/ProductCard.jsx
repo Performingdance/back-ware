@@ -24,7 +24,7 @@ export default function ProductCard({
   if(!img || (img == "NULL") || (img == "default")){
     image = "../imgs/default_product_img.jpg"
   }else{
-    image = BASE_URL_IMG_API+"public/product_imgs/"+img
+    image = BASE_URL_IMG_API+"public/product_imgs/prev_"+img
   }
   
 
@@ -36,7 +36,7 @@ export default function ProductCard({
         
         <a className='rc-title' href={href}>
           <h2 className='rc-name'>{productName}</h2>
-          <img alt="" className="rc-title-img" src={image} loading='lazy'/>  
+          <img alt="" onError={(e)=>{e.target.src = "../imgs/default_product_img.jpg"}} className="rc-title-img" src={image} loading='lazy'/>?
         </a>
         <div className='rc-btns' >
           <a type="button" onClick={()=>[setOrderOpen(!orderOpen)]} className='button rc-btn '>
