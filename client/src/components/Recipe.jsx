@@ -232,7 +232,7 @@ export function RecipeForm({
         image = `${BASE_URL_IMG_API}public/product_imgs/prev_${form.img}`
         }return(
             <>
-            <div className='r-form-card' key={key+"main_div"} style={{backgroundImage: `url(${image})`}} >
+            <div className='r-form-card' key={key+"main_div"} style={{backgroundImage: `url(${image})` }} >
                 
                     <div className='r-form-card-title' key={key + "title_div"}>
                         {edit == form.ID ?
