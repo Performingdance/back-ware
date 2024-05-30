@@ -166,35 +166,22 @@ function EditInvoice  () {
     }
 
     let total_brutto
-    const sumDiv = 
-      <div>
-              <div className='invoice-tb-row'>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th ta-s'>Rechnungssumme netto</p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'>{}</p>
-              </div>
-              {
-                taxData.map((obj, key)=>{
-                total_brutto = total_brutto+obj.total_brutto
-                return(<div className='invoice-tb-row'>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th ta-s'>{"MwSt:"+obj.tax+"%"}</p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'>{obj.tax}</p>
-              </div>)
-               })
-               }
-              <div className='invoice-tb-row'>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th ta-s'>Rechnungssumme brutto</p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'>{}</p>
-              </div>
-    </div>
+    let total_netto
+    const sumTax =                
+      taxData.map((obj, key)=>{
+        total_brutto = total_brutto+obj.total_brutto
+        total_netto = total_netto+obj.total_netto
+
+        return(<div className='invoice-tb-row'>
+        <p className='invoice-tb-th'></p>
+        <p className='invoice-tb-th ta-s'>{"MwSt:"+obj.tax+"%"}</p>
+        <p className='invoice-tb-th'></p>
+        <p className='invoice-tb-th'></p>
+        <p className='invoice-tb-th'>{obj.tax}</p>
+      </div>)
+      })
+
+      
 
     
 
@@ -205,7 +192,7 @@ function EditInvoice  () {
             <p key={key+"product"} className='invoice-p ta-s'>{product.product_name}</p>
             <p key={key+"amount"} className='invoice-p' >{product.amount+"x"}</p>
             <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? (product.price_piece.replace(".",",") ): "0,00") + "€"}</p>
-            <p key={key+"price_total"} className='invoice-p'> {(product.price_total? (product.price_total.replace(".",",") ): "0,00") + "€"}</p>
+            <p key={key+"price_total"} className='invoice-p'> {(product.price_total? (product.price_total.replace(".",",") ): "0,00") + "€ ("+ product.tax + "%)"}</p>
         </div>        
         )
       })
@@ -217,7 +204,7 @@ function EditInvoice  () {
               <p key={key+"product"} className='invoice-p ta-s'>{product.product_name}</p>
               <p key={key+"amount"} className='invoice-p' >{product.amount+"x"}</p>
               <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? product.price_piece.replace(".",",") : "0,00") + "€"}</p>
-              <p key={key+"price_total"} className='invoice-p' >{(product.price_total? product.price_total.replace(".",",") : "0,00") + "€"}</p>
+              <p key={key+"price_total"} className='invoice-p' >{(product.price_total? product.price_total.replace(".",",") : "0,00") + "€ ("+ product.tax + "%)"}</p>
              </div>   
             <button key={key+"del"} className='edit-btn' onClick={()=>[setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
           </div>
@@ -356,11 +343,29 @@ function EditInvoice  () {
                 <p className='invoice-tb-th ta-s'>Artikel</p>
                 <p className='invoice-tb-th'>Anzahl</p>
                 <p className='invoice-tb-th'>Einzelpreis</p>
-                <p className='invoice-tb-th'>Summe Netto</p>
+                <p className='invoice-tb-th'>Summe Netto (MwSt)</p>
               </div>
               {(res && !edit) && items}
               {(res && edit) && editItems}
-
+              <div>
+              <div className='invoice-tb-row'>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th ta-s'>Rechnungssumme netto</p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'>{total_netto+"€"}</p>
+              </div>
+              {
+                taxData && sumTax
+               }
+              <div className='invoice-tb-row'>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th ta-s'>Rechnungssumme brutto</p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'>{total_brutto+"€"}</p>
+              </div>
+    </div>
         </div>
         : 
         <h4>Noch keine Produkte in der Bestellung</h4>}
