@@ -47,7 +47,7 @@ export  function OrderCard({
             {( data.invoiceID <= 0)? <a type="button" className='button rc-btn ' onClick={onClickInv}>
               <SVGIcon class="rc-btn-svg" src={file_plus}/> Rechnung (neu)
             </a> :
-            <a type="button" className='button rc-btn ' onClick={()=>window.location.href = `/invoices/edit:${data.invoiceID}`}>
+            <a type="button" className='button rc-btn ' onClick={()=>window.location.href = `/invoices/${data.invoiceID}`}>
               <SVGIcon class="rc-btn-svg" src={bar_graph}/> Rechnung öffnen
             </a>}          
             <a type="button" className='button rc-btn' onClick={onClickMore}>

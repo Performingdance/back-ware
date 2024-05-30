@@ -250,7 +250,7 @@ export function RecipeForm({
                     </div>
                 <div className='r-form-table' key={key + "table_div"}>
                     <div className='r-form-title' key={key + "title_div"}>
-                        <p key={key + "title_1"}>Form-Gewicht (kg)</p>
+                        <p key={key + "title_1"}>Einwaage (kg)</p>
                         <p key={key + "title_2"}>Arbeitszeit(h)</p>
                         <p key={key + "title_3"}>Stück / Arbeitszeit </p>
                         <p key={key + "title_4"}>VKP-Netto</p>

@@ -368,6 +368,27 @@ function EditInvoice  () {
               </div>
               {(res && !edit) && items}
               {(res && edit) && editItems}
+              <div className='invoice-tb-row'>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th ta-s'>Rechnungssumme netto</p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'>{}</p>
+              </div>
+              <div className='invoice-tb-row'>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th ta-s'>MwSt. 7%</p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'>{}</p>
+              </div>
+              <div className='invoice-tb-row'>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th ta-s'>Rechnungssumme netto</p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'>{}</p>
+              </div>
         </div>
         : 
         <h4>Noch keine Produkte in der Bestellung</h4>}
