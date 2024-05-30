@@ -8,24 +8,27 @@
 
 }
 .invoice-tb-row{
-    display: grid;
+    display:grid;
     grid-template-columns: 0.2fr 1fr 0.5fr 0.7fr 0.7fr;
     column-gap: 0.2rem;
-    padding: 0rem;
+    margin: 0.3rem;
+    padding-top: 0.3rem;
     text-align: end;
 }
 .invoice-tb-data{
-    padding: 0.3rem;
+    padding: 0 ;
+    margin: 0;
 
 }
 .invoice-p{
     text-align: end;
+    margin: 0;
 }
 .invoice-div{
     position: relative;
     height: fit-content;
     background-color: var(--bg);
-    padding: 1rem ;
+    padding: 0.5rem ;
     border: var(--border);
     border-radius: var(--border-radius);
     background: none;

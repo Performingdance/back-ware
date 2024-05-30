@@ -122,12 +122,18 @@
 27.05. 1h
 28.05. 2h
 29.05. 1,5h
+30.05. 2h
+
 Kosten:
     Node server Render
         Feb 7€
 
 ToDo:
-Photo Upload 
+[x] photo Upload
+[x] photo Komprimierung
+[] tax new item / new product, edit product
+[] edit invoice, is paid
+[] ordercards billed items
 
 Preis
 WV == 0.85 * NVP
@@ -136,7 +142,7 @@ Laden == NVP + 7% MWst
 
 Form-Gewicht - Einwaage
 Eingaben
-Todo Bilder Komprimierung
+
 
 
 Produkte nach photUpload im Rezept neu laden

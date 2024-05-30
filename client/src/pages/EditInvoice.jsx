@@ -56,7 +56,7 @@ function EditInvoice  () {
     const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
     const [clientData, clientError,clientLoading, handleCRequest] = handleClientSelectRequest();
       useEffect(()=>handleMRequest(), [edit]);
-      useEffect(()=>handleTRequest(), [edit]);
+      useEffect(()=>handleTRequest(invoiceID), [edit]);
       useEffect(()=> handleCRequest(),[edit]);
 
 
@@ -165,23 +165,23 @@ function EditInvoice  () {
     
     }
 
-    let total_brutto
-    let total_netto
+    let total_brutto = 0
+    let total_netto = 0
     const sumTax =                
       taxData.map((obj, key)=>{
-        total_brutto = total_brutto+obj.total_brutto
-        total_netto = total_netto+obj.total_netto
+        total_brutto = total_brutto+parseFloat(obj.total_brutto)
+        total_netto = total_netto+parseFloat(obj.total_netto)
 
-        return(<div className='invoice-tb-row'>
-        <p className='invoice-tb-th'></p>
-        <p className='invoice-tb-th ta-s'>{"MwSt:"+obj.tax+"%"}</p>
-        <p className='invoice-tb-th'></p>
-        <p className='invoice-tb-th'></p>
-        <p className='invoice-tb-th'>{obj.tax}</p>
+        return(
+      <div key={key+"tax"} className='invoice-tb-row'>
+        <p className='invoice-p'></p>
+        <p className='invoice-p ta-s'>{"MwSt: "+obj.tax+"%"}</p>
+        <p className='invoice-p'></p>
+        <p className='invoice-p'></p>
+        <p className='invoice-p'>{obj.total_tax.replace('.',',')+"€"}</p>
       </div>)
       })
 
-      
 
     
 
@@ -349,21 +349,22 @@ function EditInvoice  () {
               {(res && edit) && editItems}
               <div>
               <div className='invoice-tb-row'>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th ta-s'>Rechnungssumme netto</p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'>{total_netto+"€"}</p>
+                <p className='invoice-p'></p>
+                <p className='invoice-p ta-s'>Rechnungssumme netto</p>
+                <p className='invoice-p'></p>
+                <p className='invoice-p'></p>
+                <p className='invoice-p'>{total_netto.toFixed(2).toString().replace('.',',')+"€"}</p>
               </div>
               {
                 taxData && sumTax
                }
               <div className='invoice-tb-row'>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th ta-s'>Rechnungssumme brutto</p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'>{total_brutto+"€"}</p>
+                <p className='invoice-p'></p>
+                <p className='invoice-p ta-s'>Rechnungssumme brutto</p>
+                <p className='invoice-p'></p>
+                <p className='invoice-p'></p>
+                <p className='invoice-p'>{total_brutto.toFixed(2).toString().replace('.',',')
++"€"}</p>
               </div>
     </div>
         </div>

@@ -15,7 +15,7 @@ export default function handleInvoiceTaxRequest() {
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "GET",
+            method: "POST",
             url:"s/invoices/ID/tax",
             headers: {
                 "authorization": authHeader()

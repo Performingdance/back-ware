@@ -216,6 +216,9 @@ input[type=number] {
   overflow-y:hidden;
   overflow-x:hidden;
 }
+.m-t-0{
+  margin-top: 0;
+}
 
 .jc-c{
   justify-content: center;

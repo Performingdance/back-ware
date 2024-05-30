@@ -128,8 +128,9 @@ function EditIng  () {
                 window.location.href = "/ingredients"
 
               }).catch((err) => {
-                  return(err)
                   console.log(err);
+                  return
+
               })
 
     };

@@ -340,7 +340,7 @@ function EditOrder  () {
             </div>: 
             <div className='d-il ai-c'>
               <p>Rechnung: </p>
-              <a key={"bar_graph"} className='edit-btn' href={'/invoices/edit:'+orderRes.invoiceID}><SVGIcon src={bar_graph} class="svg-icon-md"/> </a>
+              <a key={"bar_graph"} className='edit-btn' href={'/invoices/'+orderRes.invoiceID}><SVGIcon src={bar_graph} class="svg-icon-md"/> </a>
             </div>} 
           {((err || orderErr) && <p>{err.message || orderErr.message}</p>)}
           { !edit? 
