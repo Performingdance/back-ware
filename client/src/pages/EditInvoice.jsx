@@ -15,6 +15,9 @@ import { AddInvoiceClientPopup, AddInvoiceOrderPopup, AddInvoiceProdPopup, Promp
 import handleInvoiceIDRequest from '../hooks/handleInvoiceIDRequest';
 import { DateLine } from '../components/Calendar';
 import { SelectComponent } from '../components/Searchbar';
+import handleClientSelectRequest from '../hooks/handleClientSelectRequest';
+import handleMargesRequest from '../hooks/handleMargesRequest';
+import handleInvoiceTaxRequest from '../hooks/handleInvoiceTaxRequest';
 
 
 function EditInvoice  () {
@@ -49,14 +52,12 @@ function EditInvoice  () {
     const [subError, setSubError] = useState("");
     const [subLoading, setSubLoading] = useState(false);
 
-    const [margeData, setMargeData] = useState({});
-    const [margeError, setMargeError] = useState("");
-    const [margeLoading, setMargeLoading] = useState(false);
-
-    const [clientData, setClientData] = useState({});
-    const [clientError, setClientError] = useState("");
-    const [clientLoading, setClientLoading] = useState(false);
-
+    const [margeData, margeError, margeLoading, handleMRequest] = handleMargesRequest();
+    const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
+    const [clientData, clientError,clientLoading, handleCRequest] = handleClientSelectRequest();
+      useEffect(()=>handleMRequest(), [edit]);
+      useEffect(()=>handleTRequest(), [edit]);
+      useEffect(()=> handleCRequest(),[edit]);
 
 
     let invoice_dateRef = useRef()
@@ -64,50 +65,8 @@ function EditInvoice  () {
     let margeIDRef = useRef()
     let clientIDRef = useRef()
 
-    useEffect(()=>{handleMargeRequest()}, [edit]) ;
 
-    useEffect(()=> handleClientRequest,[edit])
     
-    function handleClientRequest () {
-      setClientLoading(true)
-        axios({
-            axiosInstance: axios,
-            method: "GET",
-            url:"s/clients/select",
-            headers: {
-                "authorization": authHeader()
-            }
-        }).then((response)=>{
-            setClientData(response.data)
-            //console.log(response.data);
-        }).catch((err) => {
-            setClientError(err)
-            //console.log(err);
-        })
-
-        setClientLoading(false)
-        
-    }
-
-    const handleMargeRequest = () => {
-      setMargeLoading(true)
-      axios({
-          axiosInstance: axios,
-          method: "GET",
-          url:"s/marges/all/name",
-          headers: {
-              "authorization": authHeader()
-          },
-      }).then((response)=>{
-          setMargeData(response.data)
-          //console.log(response.data);
-      }).catch((err) => {
-          setMargeError(err)
-          //console.log(err);
-      })
-
-      setMargeLoading(false)
-      }
     
     const handleSubmit = (e) =>{
       e.preventDefault()
@@ -205,6 +164,39 @@ function EditInvoice  () {
           
     
     }
+
+    let total_brutto
+    const sumDiv = 
+      <div>
+              <div className='invoice-tb-row'>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th ta-s'>Rechnungssumme netto</p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'>{}</p>
+              </div>
+              {
+                taxData.map((obj, key)=>{
+                total_brutto = total_brutto+obj.total_brutto
+                return(<div className='invoice-tb-row'>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th ta-s'>{"MwSt:"+obj.tax+"%"}</p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'>{obj.tax}</p>
+              </div>)
+               })
+               }
+              <div className='invoice-tb-row'>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th ta-s'>Rechnungssumme brutto</p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'></p>
+                <p className='invoice-tb-th'>{}</p>
+              </div>
+    </div>
+
+    
 
     const items = res.map((product, key)=> {
       return(
@@ -368,27 +360,7 @@ function EditInvoice  () {
               </div>
               {(res && !edit) && items}
               {(res && edit) && editItems}
-              <div className='invoice-tb-row'>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th ta-s'>Rechnungssumme netto</p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'>{}</p>
-              </div>
-              <div className='invoice-tb-row'>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th ta-s'>MwSt. 7%</p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'>{}</p>
-              </div>
-              <div className='invoice-tb-row'>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th ta-s'>Rechnungssumme netto</p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'></p>
-                <p className='invoice-tb-th'>{}</p>
-              </div>
+
         </div>
         : 
         <h4>Noch keine Produkte in der Bestellung</h4>}
