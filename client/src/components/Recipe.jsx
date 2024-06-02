@@ -119,7 +119,9 @@ export function RecipeForm({
                 "formweight": "",
                 "worktime": "",
                 "workamount": "",
-                "vkp_netto": ""
+                "vkp_netto": "",
+                "tax": ""
+
             })
         
 
@@ -149,6 +151,7 @@ export function RecipeForm({
                     "worktime": editForm.worktime.replace(",", "."),
                     "workamount": editForm.workamount.replace(",", "."),
                     "vkp_netto": editForm.vkp_netto.replace(",", "."),
+                    "tax": editForm.tax.replace(",", "."),
                     "product_name": editForm.product_name,
                     "price_list": temp_priceList
                 }
@@ -254,14 +257,16 @@ export function RecipeForm({
                         <p key={key + "title_2"}>Arbeitszeit(h)</p>
                         <p key={key + "title_3"}>Stück / Arbeitszeit </p>
                         <p key={key + "title_4"}>VKP-Netto</p>
+                        <p key={key + "title_5"}>MwSt</p>
                         <SVGIcon key={key+"plus_btn"} class="button r-form-btn" src={plus} onClick={()=>{if(togglePrices==form.ID){setTogglePrices(-1)}else{handlePriceRequest(form.ID),setTogglePrices(form.ID)}}}/> 
                     </div>
                     {edit == form.ID ? 
-                    <div className='r-form-amount' key={key + "amount_edit_div"}> 
+                    <div className='r-form-amount-input' key={key + "amount_edit_div"}> 
                         <input key={key+ "amount_edit_1"} className='r-form-input' onChange={(e)=>handleFormValueChange( "formweight", e.target.value)} defaultValue={form.formweight || "0,000"}></input>
                         <input key={key+ "amount_edit_2"} className='r-form-input' onChange={(e)=>handleFormValueChange( "worktime", e.target.value)} defaultValue={form.worktime || "0"}></input>
                         <input key={key+ "amount_edit_3"} className='r-form-input' onChange={(e)=>handleFormValueChange( "workamount", e.target.value)} defaultValue={form.workamount || "0"}></input>
                         <input key={key+ "amount_edit_4"} className='r-form-input' onChange={(e)=>handleFormValueChange( "vkp_netto", e.target.value)} defaultValue={form.vkp_netto || "0,00"}></input>
+                        <input key={key+ "amount_edit_5"} className='r-form-input' onChange={(e)=>handleFormValueChange( "tax", e.target.value)} defaultValue={form.tax || "0"}></input>
 
                     </div>
                         :
@@ -270,6 +275,7 @@ export function RecipeForm({
                         <p key={key+"amount_2"}>{form.worktime || "0"}h</p>
                         <p key={key+"amount_3"}>{form.workamount || "0"}</p>
                         <p key={key+"amount_4"}>{form.vkp_netto || "0,00"}€</p>
+                        <p key={key+"amount_5"}>{form.tax || "0"}%</p>
                     </div>
                     }
                 </div>
@@ -283,7 +289,7 @@ export function RecipeForm({
                         {price_titles}
                     </div>
                     {edit == form.ID ? 
-                    <div className='r-form-amount' key={key + "amount_edit_div"}> 
+                    <div className='r-form-amount-input' key={key + "amount_edit_div"}> 
                         {editPriceListInputs}
                     </div>
                         :

@@ -71,6 +71,21 @@ router.post("/ID/tax", isLoggedIn, (req, res) =>{
         }
    });
 });
+router.post("/ID/sum", isLoggedIn, (req, res) =>{
+    const invoiceID = req.body.invoiceID;
+    const margeID = req.body.margeID;
+
+    db.query(`
+    // select prices accordung to margeID and update invoice_items table
+    `,invoiceID, (err, result) =>{
+        if(err){
+           console.log(err)
+        } else {
+           res.send(result)
+        }
+   });
+});
+
 // search invoices by client
 router.post("/searchbyclient", isLoggedIn, (req, res) => {
     const clientID = req.body.clientID;

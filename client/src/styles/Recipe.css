@@ -77,10 +77,16 @@
     color: var(--text-color);
 
 }
+.r-form-amount-input{
+    position: relative;
+    margin-top: 0.5rem;
+
+}
+
 .r-form-amount{
     position: relative;
     width: 5rem;
-    margin-top: 0.5rem;
+    margin-top: 0rem;
     background: none;
     color: var(--text-color);
 
