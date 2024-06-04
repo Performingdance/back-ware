@@ -8,6 +8,7 @@ import check from '../assets/icons/check-all.svg'
 import trash from '../assets/icons/trash.svg'
 import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
+import InvoiceNetto from '../components/Invoice'
 import '../styles/EditInvoice.css';
 
 import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest'
@@ -17,7 +18,7 @@ import { DateLine } from '../components/Calendar';
 import { SelectComponent } from '../components/Searchbar';
 import handleClientSelectRequest from '../hooks/handleClientSelectRequest';
 import handleMargesRequest from '../hooks/handleMargesRequest';
-import handleInvoiceTaxRequest from '../hooks/handleInvoiceTaxRequest';
+import handleInvoiceMargeUpdateRequest from '../hooks/invoices/handleInvoiceMargesUpdateRequest';
 
 
 function EditInvoice  () {
@@ -37,7 +38,7 @@ function EditInvoice  () {
     let productRef = useRef();
   
 
-    const [res, err, loading, handleProdRequest] = handleInvoiceProdRequest();
+    const [products, prodErr, prodLoading, handleProdRequest] = handleInvoiceProdRequest();
     useEffect(()=>{handleProdRequest(invoiceID)},[updateInvoice])
     const [InvoiceRes, invoiceErr, invoiceLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
     //console.log(res)
@@ -47,16 +48,13 @@ function EditInvoice  () {
     const [delRes, setDelRes] = useState([]);
     const [delError, setDelError] = useState("");
     const [delLoading, setDelLoading] = useState(false);
-
     const [subRes, setSubRes] = useState([]);
     const [subError, setSubError] = useState("");
     const [subLoading, setSubLoading] = useState(false);
 
     const [margeData, margeError, margeLoading, handleMRequest] = handleMargesRequest();
-    const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
     const [clientData, clientError,clientLoading, handleCRequest] = handleClientSelectRequest();
       useEffect(()=>handleMRequest(), [edit]);
-      useEffect(()=>handleTRequest(invoiceID), [edit]);
       useEffect(()=> handleCRequest(),[edit]);
 
 
@@ -78,7 +76,9 @@ function EditInvoice  () {
         invoice_dateRef.current = invoice_dateRef.current.replace(/(..).(..).(..)/, "20$3-$2-$1")
       }
 
-
+      if(margeIDRef.current != InvoiceRes.margeID){
+        handleInvoiceMargeUpdateRequest(invoiceID,margeIDRef.current)
+      }
       //console.log (order_date, delivery_date)
       setSubLoading(true)
       axios({
@@ -165,52 +165,10 @@ function EditInvoice  () {
     
     }
 
-    let total_brutto = 0
-    let total_netto = 0
-    const sumTax =                
-      taxData.map((obj, key)=>{
-        total_brutto = total_brutto+parseFloat(obj.total_brutto)
-        total_netto = total_netto+parseFloat(obj.total_netto)
-
-        return(
-      <div key={key+"tax"} className='invoice-tb-row'>
-        <p className='invoice-p'></p>
-        <p className='invoice-p ta-s'>{"MwSt: "+obj.tax+"%"}</p>
-        <p className='invoice-p'></p>
-        <p className='invoice-p'></p>
-        <p className='invoice-p'>{obj.total_tax.replace('.',',')+"€"}</p>
-      </div>)
-      })
-
 
     
 
-    const items = res.map((product, key)=> {
-      return(
-        <div key={key+"li"} className='invoice-tb-row'>      
-            <p key={key+"pos"} className='invoice-p'>{key+1}</p>
-            <p key={key+"product"} className='invoice-p ta-s'>{product.product_name}</p>
-            <p key={key+"amount"} className='invoice-p' >{product.amount+"x"}</p>
-            <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? (product.price_piece.replace(".",",") ): "0,00") + "€"}</p>
-            <p key={key+"price_total"} className='invoice-p'> {(product.price_total? (product.price_total.replace(".",",") ): "0,00") + "€ ("+ product.tax + "%)"}</p>
-        </div>        
-        )
-      })
-      const editItems = res.map((product, key)=> {
-        return(
-          <div key={key+"div"} className=''>
-            <div key={key+"li"} className='invoice-tb-row'>      
-              <p key={key+"pos"} className='invoice-p'>{key+1}</p>
-              <p key={key+"product"} className='invoice-p ta-s'>{product.product_name}</p>
-              <p key={key+"amount"} className='invoice-p' >{product.amount+"x"}</p>
-              <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? product.price_piece.replace(".",",") : "0,00") + "€"}</p>
-              <p key={key+"price_total"} className='invoice-p' >{(product.price_total? product.price_total.replace(".",",") : "0,00") + "€ ("+ product.tax + "%)"}</p>
-             </div>   
-            <button key={key+"del"} className='edit-btn' onClick={()=>[setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
-          </div>
-
-        )
-      })      
+   
 
   return (
     <div className='page-content-wide'>
@@ -264,7 +222,7 @@ function EditInvoice  () {
 
       <div className='invoice-wrapper'>
         <div className='invoice-div'>
-        {((err || invoiceErr) && <p className='errorMsg'>{err.message || invoiceErr.message}</p>)}
+        {((prodErr || invoiceErr) && <p className='errorMsg'>{prodErr.message || invoiceErr.message}</p>)}
           {!edit ?<p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>:
                     <div className='d-il ai-c'> 
                     <p>Kunde:</p> 
@@ -336,40 +294,7 @@ function EditInvoice  () {
           </div>}
         </div>
         <div className='invoice-div'>
-        {res.length? 
-        <div className='invoice-tb-tbody'>   
-              <div className='invoice-tb-row'>
-                <p className='invoice-tb-th'>Pos</p>
-                <p className='invoice-tb-th ta-s'>Artikel</p>
-                <p className='invoice-tb-th'>Anzahl</p>
-                <p className='invoice-tb-th'>Einzelpreis</p>
-                <p className='invoice-tb-th'>Summe Netto (MwSt)</p>
-              </div>
-              {(res && !edit) && items}
-              {(res && edit) && editItems}
-              <div>
-              <div className='invoice-tb-row'>
-                <p className='invoice-p'></p>
-                <p className='invoice-p ta-s'>Rechnungssumme netto</p>
-                <p className='invoice-p'></p>
-                <p className='invoice-p'></p>
-                <p className='invoice-p'>{total_netto.toFixed(2).toString().replace('.',',')+"€"}</p>
-              </div>
-              {
-                taxData && sumTax
-               }
-              <div className='invoice-tb-row'>
-                <p className='invoice-p'></p>
-                <p className='invoice-p ta-s'>Rechnungssumme brutto</p>
-                <p className='invoice-p'></p>
-                <p className='invoice-p'></p>
-                <p className='invoice-p'>{total_brutto.toFixed(2).toString().replace('.',',')
-+"€"}</p>
-              </div>
-    </div>
-        </div>
-        : 
-        <h4>Noch keine Produkte in der Bestellung</h4>}
+          {< InvoiceNetto data={products} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>}
                 
         <div className='invoice-btns'>
           <button className='invoice-btn' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Bestellung</button>

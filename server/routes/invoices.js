@@ -57,6 +57,7 @@ router.post("/ID/prod", isLoggedIn, (req, res) =>{
 });
 router.post("/ID/tax", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
+    const margeID = req.body.margeID || 1
 
     db.query(`
     SELECT invoiceID,tax,TRUNCATE(SUM(price_total),2) AS total_netto , TRUNCATE(SUM(price_total)*(1+tax*0.01),2) AS total_brutto, TRUNCATE(SUM(price_total)*(tax*0.01),2) AS total_tax
@@ -71,19 +72,50 @@ router.post("/ID/tax", isLoggedIn, (req, res) =>{
         }
    });
 });
-router.post("/ID/sum", isLoggedIn, (req, res) =>{
+router.post("/ID/margeChange", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
     const margeID = req.body.margeID;
 
+    
     db.query(`
-    // select prices accordung to margeID and update invoice_items table
-    `,invoiceID, (err, result) =>{
+    SELECT ID AS invoice_itemID, productID, amount FROM invoices_items
+    WHERE invoiceID = ? AND productID > 0;`, 
+    [invoiceID], 
+    (err, res) =>{
         if(err){
-           console.log(err)
+            console.log(err)
         } else {
-           res.send(result)
+            //console.log(res)
+            res.forEach((obj)=>{
+                const productID = obj.productID
+                const invoice_itemID = obj.invoice_itemID
+                const amount = obj.amount
+                
+
+                db.query(`SELECT price FROM prices WHERE productID = ? AND margeID = ? `, 
+                [productID, margeID], 
+                (err, result) =>{
+                    if(err){
+                        console.log(err)
+                    } else {
+                        const price_piece = result[0].price
+                        const price_total = parseFloat(price_piece)*parseFloat(amount)
+                        db.query(`UPDATE invoice_items SET price_piece = ?, set_price_total = ?  WHERE ID = ? `, 
+                        [price_piece, price_total, invoice_itemID], 
+                        (err, result) =>{
+                            if(err){
+                                console.log(err)
+                            } else {
+                               
+                            }
+                        });
+                    }
+                });
+            })
+          res.send("success")
         }
-   });
+    });
+
 });
 
 // search invoices by client

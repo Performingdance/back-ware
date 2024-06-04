@@ -83,14 +83,15 @@ router.put("/form/new", isLoggedIn, (req, res) => {
    const img = req.body.img;
    const worktime = req.body.worktime;
    const workamount = req.body.workamount;
+   const tax = req.body.tax || 7;
    const vkp_netto = req.body.vkp_netto;
    const price_list = req.body.price_list || [];
    //console.log(price_list, price_list[0])
 
    db.query("SELECT ID FROM products WHERE formID = ? AND recipeID = ?", [formID, recipeID], (err,result)=>{
       if(err || !result.length){
-         db.query("INSERT INTO products (recipeID, formID, product_name, formweight, img, worktime, workamount, vkp_netto) VALUES (?,?,?,?,?,?,?,?)", 
-         [recipeID, formID, product_name, formweight, img, worktime, workamount, vkp_netto], 
+         db.query("INSERT INTO products (recipeID, formID, product_name, formweight, img, worktime, workamount, vkp_netto, tax) VALUES (?,?,?,?,?,?,?,?,?)", 
+         [recipeID, formID, product_name, formweight, img, worktime, workamount, vkp_netto,tax], 
          (err, result)=>{
             if (err){
                console.log(err)
@@ -147,10 +148,11 @@ router.put("/form/update", isLoggedIn, (req, res) => {
    const worktime = req.body.worktime;
    const workamount = req.body.workamount;
    const vkp_netto = req.body.vkp_netto || 0;
+   const tax = req.body.tax || 7;
    const price_list = req.body.price_list || [];
 
-         db.query("UPDATE products SET formweight = ?, product_name = ?, worktime = ?, workamount = ?, vkp_netto = ? WHERE ID = ?", 
-         [ formweight, product_name, worktime, workamount, vkp_netto, productID], 
+         db.query("UPDATE products SET formweight = ?, product_name = ?, worktime = ?, workamount = ?, vkp_netto = ?, tax = ? WHERE ID = ?", 
+         [ formweight, product_name, worktime, workamount, vkp_netto, tax, productID], 
          (err, result)=>{
             if (err){
                console.log(err)

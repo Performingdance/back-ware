@@ -123,6 +123,7 @@
 28.05. 2h
 29.05. 1,5h
 30.05. 2h
+02.06. 0,5h
 
 Kosten:
     Node server Render

@@ -267,6 +267,9 @@ input[type=number] {
 .border-b{
   border-bottom: var(--border);
 }
+.br-t-d{
+  border-top-style: double;
+}
 .bg-none{
   background-color: none;
 }
