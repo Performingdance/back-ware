@@ -28,7 +28,7 @@ function EditIng  () {
 
     const ingredient =  ingExt.map((ing)=>{
       return(
-        [
+        
         
         <div key={ing.ID} className='ingredient-card jc-c'>
           <ul key={ing.ID + "ul"} className='c-list'>
@@ -68,7 +68,7 @@ function EditIng  () {
 
             </ul>
         </div>
-        ]
+  
     
     )})
 
@@ -80,15 +80,15 @@ function EditIng  () {
       if(obj == "price"){
         const _priceKG = val/data.amount
         data.priceKG = _priceKG;
-        data = ({...data, price : val, priceKG : _priceKG});
+        data = ({...data, "price" : val, "priceKG" : _priceKG});
 
       }
       if(obj == "amount"){
         const _priceKG = data.price/val
         data.priceKG = _priceKG;
-        data = ({...data, amount : val, priceKG : _priceKG});
+        data = ({...data, "amount" : val, "priceKG" : _priceKG});
       }else{
-        data = ({...data, [obj] : val});
+        data = ({...data, obj : val});
       }
       setIngExt([data]);
       //console.log(data)
