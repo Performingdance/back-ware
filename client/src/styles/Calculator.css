@@ -32,7 +32,11 @@
     padding-top: 0.5rem;
     border: none;
     border-radius: 0 ;
+    width: 8rem;
 
+}
+.bvp-price-tip{
+    width: 5rem;
 }
 .bvp-price-first{
     margin-top: 1rem;
@@ -41,6 +45,7 @@
     border: none;
     border-top-style: double;
     border-radius: 0 ;
+    width: 8rem;
 
 }
 .nutri-wrapper{

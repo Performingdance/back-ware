@@ -16,7 +16,7 @@ export default function handlePriceListSugRequest() {
         axios({
             axiosInstance: axios,
             method: "POST",
-            url:"s/calculator/prod/prices",
+            url:"s/calc/prod/prices",
             headers: {
                 "authorization": authHeader()
             }, 

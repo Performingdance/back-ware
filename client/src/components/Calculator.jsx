@@ -130,15 +130,14 @@ function handlePriceSubmit() {
 let editPriceListInputs = []
 if(priceList.length > 0){
     editPriceListInputs = priceList.map((obj, key) =>
-       {return(
-           [<p key={"title_price" + key}>{obj.name}</p>,
-           <div className='d-il'>
-            <input key={"price_edit_"+key} className='bvp-price' onChange={(e)=>handlePriceValueChange( obj.margeID, e.target.value)} defaultValue={obj.price.replace(".", ",") || "0,00"}></input>
-            <p key={"priceTip" + key} className='bvp-price-tip'>{obj.priceTip}</p>
-            </div>]
+    {return(
+        [<p key={"title_price" + key}>{obj.name}</p>,
+        <div key={"priceTip_div" + key} className='d-il'>
+        <input key={"price_edit" + key} className='bvp-price' onChange={(e)=>handlePriceValueChange( obj.margeID, e.target.value)} defaultValue={obj.price.replace(".", ",") || "0,00"}></input>
+        <p key={"priceTip" + key} className='bvp-price-tip'>{"(" + (obj.priceTip? obj.priceTip: "-") + ")"}</p>
+        </div>]
        )
     })
-
 }
   return (
     <div className='bvp-wrapper'>

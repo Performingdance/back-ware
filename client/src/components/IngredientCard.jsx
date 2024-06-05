@@ -30,7 +30,8 @@ export default function IngredientCard({
         </div>
     </div>
     {priceOpen &&
-    <div key={data.ID + "ic-price"} className='ic-price'>
+    <table>
+    <tbody key={data.ID + "ic-price"} className='ic-price'>
         <tr key={data.ID + "price-ul"}  className='ic-list'>
             <td key={data.ID + "price-li_1"} className='ic-list-item'>Preis: </td>
             <td key={data.ID + "price-li_2"} className='ic-list-item'>Preis/KG: </td>
@@ -44,9 +45,11 @@ export default function IngredientCard({
             <td key={data.ID + "price-li_8"} className='ic-list-item'>{data.source != (" " && 0) ? data.source : "-"}</td>
         </tr>
 
-    </div>}
+    </tbody>
+    </table>}
     {nutriOpen &&
-    <div key={data.ID + "ic-nutri"} className='ic-nutri'>
+    <table>
+    <tbody key={data.ID + "ic-nutri"} className='ic-nutri'>
         <tr key={data.ID + "nutri-ul"} className='ic-list'>
             <td key={data.ID + "nutri-li_1"} className='ic-list-item'>Allergen: </td>
             <td key={data.ID + "nutri-li_2"} className='ic-list-item'>kJ: </td>
@@ -76,7 +79,9 @@ export default function IngredientCard({
             <td key={data.ID + "nutri-li_20"} className='ic-list-item'>{data.salt != " " ? data.salt +"g" : "-"}</td>
         </tr>
 
-    </div>}
+    </tbody>    
+    </table>}
+
     </div>
 
   )
