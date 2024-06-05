@@ -6,15 +6,15 @@ const db = require('../lib/db.js');
 router.post("/bvp", isLoggedIn, (req, res) =>{
     const productID = req.body.productID;
     db.query(`
-    SELECT g.*, CAST((nvp+ (nvp*mwst/100))AS DECIMAL(5,2)) AS bvp
+    SELECT g.*, CAST((nvp+ (nvp*tax/100))AS DECIMAL(5,2)) AS bvp
     FROM(SELECT f.*, CAST((sk+(sk*rg/100)) AS DECIMAL(5,2)) AS nvp   
-        FROM (SELECT e.*,CAST(bk+mk AS DECIMAL(5,2)) AS sk, settings.setting AS mwst
+        FROM (SELECT e.*,CAST(bk+mk AS DECIMAL(5,2)) AS sk
             FROM (SELECT d.*, settings.setting AS rg, CAST(priceKG*formweight*d.mk_preisniveau AS DECIMAL(5,2)) AS mk
                 FROM (SELECT c.*,  CAST(settings.setting/100 AS DECIMAL(5,2)) AS mk_preisniveau
                     FROM (SELECT b.*, CAST(settings.setting*b.worktime AS DECIMAL(5,2)) AS bk
                         FROM(SELECT a.*, ingredients.priceKG
-                            FROM (SELECT * FROM products
-                            WHERE ID = ?) AS a
+                          FROM(SELECT * FROM products
+                        WHERE ID = ?) AS a
                         LEFT JOIN ingredients
                         ON ingredients.recipeID = a.recipeID) AS b 
                     LEFT JOIN settings
@@ -22,9 +22,8 @@ router.post("/bvp", isLoggedIn, (req, res) =>{
                 LEFT JOIN settings
                 on settings.ID = 2) AS d 
             LEFT JOIN settings
-            on settings.ID = 3) AS e
-        LEFT JOIN settings
-        on settings.ID = 4) AS f) 
+            on settings.ID = 3) AS e) 
+         AS f) 
     AS g `, [productID],
         (err, result) =>{
         if(err){
@@ -34,7 +33,44 @@ router.post("/bvp", isLoggedIn, (req, res) =>{
         }
    });
 });
-
+router.post("/prod/prices", isLoggedIn, (req, res) => {
+    const productID = req.body.productID;
+    db.query(`
+    SELECT g.name, g.margeID, g.price, CAST(
+        CASE
+        WHEN g.marge_tax = 1 THEN nvp*marge_pc/100+ (nvp*tax/100) 
+        ELSE nvp*(1+marge_pc/100)
+        END AS DECIMAL(5,2)) AS priceTip
+        FROM(SELECT f.*, CAST((sk+(sk*rg/100)) AS DECIMAL(5,2)) AS nvp   
+            FROM (SELECT e.*,CAST(bk+mk AS DECIMAL(5,2)) AS sk
+                FROM (SELECT d.*, settings.setting AS rg, CAST(priceKG*formweight*d.mk_preisniveau AS DECIMAL(5,2)) AS mk
+                    FROM (SELECT c.*, CAST(settings.setting/100 AS DECIMAL(5,2)) AS mk_preisniveau
+                        FROM (SELECT b.*, CAST(settings.setting*b.worktime AS DECIMAL(5,2)) AS bk
+                            FROM(SELECT bb.*, ingredients.priceKG
+                              FROM(SELECT aa.*, products.recipeID, products.worktime, products.workamount, products.formweight, products.tax, products.vkp_netto
+                                FROM (SELECT a.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS name, marges.tax AS marge_tax, marges.marge_pc
+                                 FROM (SELECT * FROM prices WHERE productID = ?) AS a
+                                 LEFT JOIN marges
+                                 ON marges.ID = a.margeID) AS aa
+                            LEFT JOIN products
+                            ON products.ID = aa.productID) AS bb 
+                            LEFT JOIN ingredients
+                            ON ingredients.recipeID = bb.recipeID) AS b 
+                        LEFT JOIN settings
+                        on settings.ID = 1) AS c
+                    LEFT JOIN settings
+                    on settings.ID = 2) AS d 
+                LEFT JOIN settings
+                on settings.ID = 3) AS e) 
+             AS f) 
+        AS g;`, productID, (err, result) =>{
+         if(err){
+            console.log(err)
+         } else {
+            res.send(result)
+         }
+    });
+ });
 router.post("/nutri", isLoggedIn, (req, res) => {
     const recipeID = req.body.recipeID;
     db.query("SELECT * FROM ingredients WHERE recipeID = ?",[recipeID], (err, result) =>{

@@ -16,7 +16,7 @@ export default function InvoiceNetto ({
 
     let total_netto = 0
     taxData.forEach(tax=>{
-        total_netto = total_netto +  parseFloat(tax.total_netto)
+        total_netto = total_netto +  parseFloat(tax.total)
     })
 
     const items = data.map((product, key)=> {
@@ -91,7 +91,7 @@ export function InvoiceBrutto ({
     let total_netto = 0
     const sumTax =                
       taxData.map((obj, key)=>{
-        total_brutto = total_brutto+parseFloat(obj.total_brutto)
+        total_brutto = total_brutto+parseFloat(obj.total)
         total_netto = total_netto+parseFloat(obj.total_netto)
 
         return(
@@ -142,25 +142,26 @@ export function InvoiceBrutto ({
               </div>
               {(data && !edit) && items}
               {(data && edit) && editItems}
-              <div>
-              <div className='invoice-tb-row br-t-d'>
+              <div className='br-t-d'>
+              {/* <div className='invoice-tb-row br-t-d'>
                 <p className='invoice-p'></p>
                 <p className='invoice-p ta-s'>Rechnungssumme netto</p>
                 <p className='invoice-p'></p>
                 <p className='invoice-p'></p>
                 <p className='invoice-p'>{total_netto.toFixed(2).toString().replace('.',',')+"€"}</p>
-              </div>
-              {
-                taxData && sumTax
-               }
-              <div className='invoice-tb-row'>
+              </div> */}
+             
+              <div className='invoice-tb-row '>
                 <p className='invoice-p'></p>
                 <p className='invoice-p ta-s'>Rechnungssumme brutto</p>
                 <p className='invoice-p'></p>
                 <p className='invoice-p'></p>
                 <p className='invoice-p'>{total_brutto.toFixed(2).toString().replace('.',',')+"€"}</p>
               </div>
-    </div>
+              {
+                taxData && sumTax
+               }
+              </div>
         </div>
         : 
         <h4>Noch keine Produkte in der Bestellung</h4>)

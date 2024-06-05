@@ -26,7 +26,7 @@ function EditInvoice  () {
 
     let invoiceID = window.location.pathname.split("/")[2]
     const [togglePrompt, setTogglePrompt] = useState(false);
-    const [toggleBrutto, setToggleBrutto] = useState(true);
+    const [toggleBrutto, setToggleBrutto] = useState(false);
     const [addItemPrompt, setAddItemPrompt] = useState(false);
     const [addClientItemPrompt, setAddClientItemPrompt] = useState(false);
     const [addOrderPrompt, setAddOrderPrompt] = useState(false);
@@ -283,10 +283,10 @@ function EditInvoice  () {
               onDateChange={(val)=>{invoice_dateRef.current = val}} /> 
           </div>}
           <div>
-          <p>Brutto / Netto </p> 
-          <label class="switch"> 
-          <input type="checkbox" onChange={()=>setToggleBrutto(!toggleBrutto)}/>
-          <span class="slider round"></span>
+          <p> Netto / Brutto </p> 
+          <label className="switch"> 
+          <input type="checkbox" defaultChecked={toggleBrutto} onChange={()=>setToggleBrutto(!toggleBrutto)}/>
+          <span className="slider round"></span>
           </label>
           </div>
           {/* {!edit? <p>Lieferzeitraum: {res.delivery_date? res.delivery_date : "-"}</p>:         
@@ -308,8 +308,8 @@ function EditInvoice  () {
           </div>}
         </div>
         <div className='invoice-div'>
-        {toggleBrutto? < InvoiceNetto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>:
-        < InvoiceBrutto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>}
+        {toggleBrutto? < InvoiceBrutto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>:
+        < InvoiceNetto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>}
                 
         <div className='invoice-btns'>
           <button className='invoice-btn' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Bestellung</button>

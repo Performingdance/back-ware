@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import '../styles/Calculator.css'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
-import handlePriceListRequest from '../hooks/handlePriceListRequest';
+import handlePriceListSugRequest from '../hooks/calculator/handlePriceListRequest';
 
 
 // // BVP Rechner 
@@ -43,7 +43,7 @@ export default function Bvp({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [editPriceList, setEditPriceList] = useState([]);
-  const [priceList, priceError, priceLoad, handlePriceRequest] = handlePriceListRequest()
+  const [priceList, priceError, priceLoad, handlePriceRequest] = handlePriceListSugRequest()
   useEffect(()=>handlePriceRequest(productID),[])
   useEffect(()=>setEditPriceList(priceList), []);
   //console.log(data)
@@ -132,7 +132,10 @@ if(priceList.length > 0){
     editPriceListInputs = priceList.map((obj, key) =>
        {return(
            [<p key={"title_price" + key}>{obj.name}</p>,
-           <input key={"price_edit_"+key} className='bvp-price' onChange={(e)=>handlePriceValueChange( obj.margeID, e.target.value)} defaultValue={obj.price.replace(".", ",") || "0,00"}></input>]
+           <div className='d-il'>
+            <input key={"price_edit_"+key} className='bvp-price' onChange={(e)=>handlePriceValueChange( obj.margeID, e.target.value)} defaultValue={obj.price.replace(".", ",") || "0,00"}></input>
+            <p key={"priceTip" + key} className='bvp-price-tip'>{obj.priceTip}</p>
+            </div>]
        )
     })
 

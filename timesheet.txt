@@ -125,6 +125,7 @@
 30.05. 2h
 02.06. 0,5h
 04.06. 1,5h
+05.06. 1h
 
 Kosten:
     Node server Render
@@ -136,7 +137,8 @@ ToDo:
 [] tax new item / new product, edit product
 [] edit invoice, is paid
 [] ordercards billed items
-[]
+[] Invoice - Lieferzeitraum
+[] dropdown select component, no Input invoice-marge
 
 Preis
 WV == 0.85 * NVP
