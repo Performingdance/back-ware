@@ -75,44 +75,18 @@ router.post("/ID/tax", isLoggedIn, (req, res) =>{
 router.post("/ID/margeChange", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
     const margeID = req.body.margeID || 1;
-
-    
+ 
     db.query(`
-    SELECT ID AS invoice_itemID, productID, amount FROM invoices_items
-    WHERE invoiceID = ? AND productID > 0;`, 
-    [invoiceID], 
+    UPDATE invoices_items JOIN prices 
+    ON invoices_items.productID = prices.productID AND prices.margeID = ?
+    SET invoices_items.price_piece = prices.price,
+        invoices_items.price_total = prices.price*invoices_items.amount
+    WHERE invoices_items.invoiceID = ?`, 
+    [margeID, invoiceID], 
     (err, result) =>{
         if(err){
             console.log(err)
         } else {
-            //console.log(res)
-            result.forEach((obj)=>{
-                const productID = obj.productID
-                const invoice_itemID = obj.invoice_itemID
-                const amount = obj.amount
-                
-
-                db.query(`SELECT price FROM prices WHERE productID = ? AND margeID = ? `, 
-                [productID, margeID], 
-                (err, bresult) =>{
-                    if(err){
-                        console.log(err)
-                    } else {
-                        console.log(bresult)
-                        const price_piece = bresult.price || 0
-                        const price_total = parseFloat(price_piece)*parseFloat(amount)
-                        db.query(`UPDATE invoice_items SET price_piece = ?, price_total = ?  WHERE ID = ? `, 
-                        [price_piece, price_total, invoice_itemID], 
-                        (err, result) =>{
-                            if(err){
-                                console.log(err)
-                            } else {
-                               
-                            }
-                        });
-                    }
-                });
-            })
             res.send("success")
         }
     });
