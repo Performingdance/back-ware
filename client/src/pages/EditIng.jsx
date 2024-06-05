@@ -80,13 +80,13 @@ function EditIng  () {
       if(obj == "price"){
         const _priceKG = val/data.amount
         data.priceKG = _priceKG;
-        data = ({...data, "price" : val, "priceKG" : _priceKG});
+        data = ({...data, price : val, priceKG : _priceKG});
 
       }
       if(obj == "amount"){
         const _priceKG = data.price/val
         data.priceKG = _priceKG;
-        data = ({...data, "amount" : val, "priceKG" : _priceKG});
+        data = ({...data, amount : val, priceKG : _priceKG});
       }else{
         data = ({...data, obj : val});
       }
