@@ -8,7 +8,7 @@ import check from '../assets/icons/check-all.svg'
 import trash from '../assets/icons/trash.svg'
 import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
-import InvoiceNetto from '../components/Invoice'
+import InvoiceNetto, { InvoiceBrutto } from '../components/Invoice'
 import '../styles/EditInvoice.css';
 
 import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest'
@@ -19,12 +19,14 @@ import { SelectComponent } from '../components/Searchbar';
 import handleClientSelectRequest from '../hooks/handleClientSelectRequest';
 import handleMargesRequest from '../hooks/handleMargesRequest';
 import handleInvoiceMargeUpdateRequest from '../hooks/invoices/handleInvoiceMargesUpdateRequest';
+import handleInvoiceTaxRequest from '../hooks/handleInvoiceTaxRequest';
 
 
 function EditInvoice  () {
 
     let invoiceID = window.location.pathname.split("/")[2]
     const [togglePrompt, setTogglePrompt] = useState(false);
+    const [toggleBrutto, setToggleBrutto] = useState(true);
     const [addItemPrompt, setAddItemPrompt] = useState(false);
     const [addClientItemPrompt, setAddClientItemPrompt] = useState(false);
     const [addOrderPrompt, setAddOrderPrompt] = useState(false);
@@ -55,8 +57,11 @@ function EditInvoice  () {
     const [margeData, margeError, margeLoading, handleMRequest] = handleMargesRequest();
     const [margeUpdate, margeUError, margeULoading, handleMURequest] = handleInvoiceMargeUpdateRequest();
     const [clientData, clientError,clientLoading, handleCRequest] = handleClientSelectRequest();
+    const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
+      useEffect(()=>handleTRequest(invoiceID), [edit]);
       useEffect(()=>handleMRequest(), [edit]);
       useEffect(()=> handleCRequest(),[edit]);
+
 
 
     let invoice_dateRef = useRef()
@@ -95,12 +100,12 @@ function EditInvoice  () {
               "invoice_number": invoice_numberRef.current || InvoiceRes.invoice_number,
               "margeID": margeIDRef.current || InvoiceRes.margeID
           }
-      }).then((response)=>{
-          setSubRes(response.data)
-          //console.log(response.data);
+      }).then((response)=>{         
           if(margeIDRef.current != InvoiceRes.margeID){
             handleMURequest(invoiceID,margeIDRef.current)
           }
+          setSubRes(response.data)
+          //console.log(response.data);
 
       }).catch((err) => {
           setSubError(err)
@@ -277,6 +282,13 @@ function EditInvoice  () {
               defaultDay={InvoiceRes? InvoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1"): ""} 
               onDateChange={(val)=>{invoice_dateRef.current = val}} /> 
           </div>}
+          <div>
+          <p>Brutto / Netto </p> 
+          <label class="switch"> 
+          <input type="checkbox" onChange={()=>setToggleBrutto(!toggleBrutto)}/>
+          <span class="slider round"></span>
+          </label>
+          </div>
           {/* {!edit? <p>Lieferzeitraum: {res.delivery_date? res.delivery_date : "-"}</p>:         
           <div className='d-il ai-c'> 
             <p>Lieferdatum:</p> 
@@ -296,7 +308,8 @@ function EditInvoice  () {
           </div>}
         </div>
         <div className='invoice-div'>
-          {< InvoiceNetto data={products} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>}
+        {toggleBrutto? < InvoiceNetto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>:
+        < InvoiceBrutto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>}
                 
         <div className='invoice-btns'>
           <button className='invoice-btn' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Bestellung</button>

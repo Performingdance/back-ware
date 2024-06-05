@@ -1012,8 +1012,8 @@ export function AddInvoiceProdPopup({
   let delivery_dateRef = useRef(today)
   let amountRef = useRef()
   let product_nameRef = useRef()
-  let price_pieceRef = useRef()
-  let price_totalRef = useRef()
+  let price_pieceRef = useRef("0")
+  let price_totalRef = useRef("0")
   
  
   let editRef = useRef(0)

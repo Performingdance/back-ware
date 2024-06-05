@@ -57,13 +57,12 @@ router.post("/ID/prod", isLoggedIn, (req, res) =>{
 });
 router.post("/ID/tax", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
-    const margeID = req.body.margeID || 1
 
     db.query(`
-    SELECT invoiceID,tax,TRUNCATE(SUM(price_total),2) AS total_netto , TRUNCATE(SUM(price_total)*(1+tax*0.01),2) AS total_brutto, TRUNCATE(SUM(price_total)*(tax*0.01),2) AS total_tax
+    SELECT invoiceID,tax,TRUNCATE(SUM(price_total),2) AS total , TRUNCATE(SUM(price_total)*(1-tax*0.01),2) AS total_netto, TRUNCATE(SUM(price_total)*(tax*0.01),2) AS total_tax
     FROM invoices_items
     WHERE invoiceID = ?
-    GROUP BY invoiceID,tax;
+    GROUP BY invoiceID,tax
     `,invoiceID, (err, result) =>{
         if(err){
            console.log(err)

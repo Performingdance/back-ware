@@ -1,13 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
-import handleInvoiceTaxRequest from '../hooks/handleInvoiceTaxRequest';
 
 import SVGIcon from '../components/SVG';
-import pencil_square from '../assets/icons/pencil-square.svg'
-import x_circle from '../assets/icons/x-circle.svg'
-import check from '../assets/icons/check-all.svg'
 import trash from '../assets/icons/trash.svg'
-import plus from '../assets/icons/plus.svg'
-
 
 
 export default function InvoiceNetto ({
@@ -15,11 +9,10 @@ export default function InvoiceNetto ({
     edit,
     invoiceID,
     productRef,
-    toggleDelPrompt
+    toggleDelPrompt,
+    taxData
 
 }) {
-    const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
-    useEffect(()=>handleTRequest(invoiceID), [edit]);
 
     let total_netto = 0
     taxData.forEach(tax=>{
@@ -83,16 +76,16 @@ export default function InvoiceNetto ({
 }
 
 
-export  function InvoiceBrutto ({
+export function InvoiceBrutto ({
     data,
     edit,
-    invoiceID
+    invoiceID,
+    productRef,
+    toggleDelPrompt,
+    taxData
 
 }) {
-    const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
-    useEffect(()=>handleTRequest(invoiceID), [edit]);
-    let editRef = useRef();
-    let productRef = useRef();
+
 
     let total_brutto = 0
     let total_netto = 0
@@ -104,7 +97,7 @@ export  function InvoiceBrutto ({
         return(
       <div key={key+"tax"} className='invoice-tb-row'>
         <p className='invoice-p'></p>
-        <p className='invoice-p ta-s'>{"MwSt: "+obj.tax+"%"}</p>
+        <p className='invoice-p ta-s'>{"inkl. MwSt: "+obj.tax+"%"}</p>
         <p className='invoice-p'></p>
         <p className='invoice-p'></p>
         <p className='invoice-p'>{obj.total_tax.replace('.',',')+"€"}</p>
@@ -131,7 +124,7 @@ export  function InvoiceBrutto ({
             <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? product.price_piece.replace(".",",") : "0,00") + "€"}</p>
             <p key={key+"price_total"} className='invoice-p' >{(product.price_total? product.price_total.replace(".",",") : "0,00") + "€ ("+ product.tax + "%)"}</p>
             </div>   
-            <button key={key+"del"} className='edit-btn' onClick={()=>[setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
+            <button key={key+"del"} className='edit-btn' onClick={()=>[toggleDelPrompt(true), productRef(product)]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
         </div>
 
         )
@@ -145,7 +138,7 @@ export  function InvoiceBrutto ({
                 <p className='invoice-tb-th ta-s'>Artikel</p>
                 <p className='invoice-tb-th'>Anzahl</p>
                 <p className='invoice-tb-th'>Einzelpreis</p>
-                <p className='invoice-tb-th'>Summe Netto (MwSt)</p>
+                <p className='invoice-tb-th'>Summe Brutto (inkl. MwSt)</p>
               </div>
               {(data && !edit) && items}
               {(data && edit) && editItems}
