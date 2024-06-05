@@ -53,6 +53,7 @@ function EditInvoice  () {
     const [subLoading, setSubLoading] = useState(false);
 
     const [margeData, margeError, margeLoading, handleMRequest] = handleMargesRequest();
+    const [margeUpdate, margeUError, margeULoading, handleMURequest] = handleInvoiceMargeUpdateRequest();
     const [clientData, clientError,clientLoading, handleCRequest] = handleClientSelectRequest();
       useEffect(()=>handleMRequest(), [edit]);
       useEffect(()=> handleCRequest(),[edit]);
@@ -66,7 +67,7 @@ function EditInvoice  () {
 
     
     
-    const handleSubmit = (e) =>{
+    function handleSubmit(e){
       e.preventDefault()
       const today = new Date().toISOString().split("T",[1])
       if((invoice_dateRef.current == "00.00.00"|| !invoice_dateRef.current)){
@@ -76,9 +77,7 @@ function EditInvoice  () {
         invoice_dateRef.current = invoice_dateRef.current.replace(/(..).(..).(..)/, "20$3-$2-$1")
       }
 
-      if(margeIDRef.current != InvoiceRes.margeID){
-        handleInvoiceMargeUpdateRequest(invoiceID,margeIDRef.current)
-      }
+
       //console.log (order_date, delivery_date)
       setSubLoading(true)
       axios({
@@ -99,6 +98,9 @@ function EditInvoice  () {
       }).then((response)=>{
           setSubRes(response.data)
           //console.log(response.data);
+          if(margeIDRef.current != InvoiceRes.margeID){
+            handleMURequest(invoiceID,margeIDRef.current)
+          }
 
       }).catch((err) => {
           setSubError(err)

@@ -2,15 +2,14 @@ import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../../services/auth-header';
 
-export default function handleInvoiceMargeUpdateRequest(invoiceID, margeID) {
+export default function handleInvoiceMargeUpdateRequest() {
 
     // handle api request 
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    useEffect(()=>handleRequest(),[])
-    function handleRequest () {
+    function handleRequest (invoiceID, margeID) {
         // console.log(res)
         setLoading(true)
         axios({
@@ -35,6 +34,6 @@ export default function handleInvoiceMargeUpdateRequest(invoiceID, margeID) {
         setLoading(false)
         
     }
-    return [res, error, loading];
+    return [res, error, loading, handleRequest];
     
   }

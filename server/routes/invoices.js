@@ -112,9 +112,10 @@ router.post("/ID/margeChange", isLoggedIn, (req, res) =>{
                     }
                 });
             })
-          res.send("success")
+
         }
     });
+    res.send("success")
 
 });
 
