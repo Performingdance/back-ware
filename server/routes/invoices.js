@@ -74,7 +74,7 @@ router.post("/ID/tax", isLoggedIn, (req, res) =>{
 });
 router.post("/ID/margeChange", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
-    const margeID = req.body.margeID;
+    const margeID = req.body.margeID || 1;
 
     
     db.query(`
@@ -99,7 +99,7 @@ router.post("/ID/margeChange", isLoggedIn, (req, res) =>{
                         console.log(err)
                     } else {
                         console.log(bresult)
-                        const price_piece = bresult[0].price || 0
+                        const price_piece = bresult.price || 0
                         const price_total = parseFloat(price_piece)*parseFloat(amount)
                         db.query(`UPDATE invoice_items SET price_piece = ?, price_total = ?  WHERE ID = ? `, 
                         [price_piece, price_total, invoice_itemID], 
