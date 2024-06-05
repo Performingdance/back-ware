@@ -81,12 +81,12 @@ router.post("/ID/margeChange", isLoggedIn, (req, res) =>{
     SELECT ID AS invoice_itemID, productID, amount FROM invoices_items
     WHERE invoiceID = ? AND productID > 0;`, 
     [invoiceID], 
-    (err, res) =>{
+    (err, result) =>{
         if(err){
             console.log(err)
         } else {
             //console.log(res)
-            res.forEach((obj)=>{
+            result.forEach((obj)=>{
                 const productID = obj.productID
                 const invoice_itemID = obj.invoice_itemID
                 const amount = obj.amount
@@ -112,11 +112,10 @@ router.post("/ID/margeChange", isLoggedIn, (req, res) =>{
                     }
                 });
             })
-
+            res.send("success")
         }
     });
-    res.send("success")
-
+   
 });
 
 // search invoices by client
