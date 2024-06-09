@@ -4,7 +4,7 @@ const {isLoggedIn} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 router.get("/all", isLoggedIn, (req, res) =>{
-    db.query(`SELECT a.ID, a.invoiceID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client 
+    db.query(`SELECT a.ID, a.invoiceID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, a.billed_items, a.total_items
     FROM (SELECT * FROM orders) AS a
         LEFT JOIN clients
         ON a.clientID = clients.ID

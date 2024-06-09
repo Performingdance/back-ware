@@ -145,7 +145,7 @@ WV == 0.85 * NVP
 Markt == 1,1*NVP + 7% MWst
 Laden == NVP + 7% MWst
 
-Form-Gewicht - Einwaage
+
 Eingaben
 
 

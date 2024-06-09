@@ -54,7 +54,7 @@ export default function NewRecipePopup({
             }
         }).then((response)=>{
           if(response.data.insertId >0){
-            window.location.pathname = `/recipes/edit:${response.data.insertId}`
+            window.location.pathname = `/recipes/${response.data.insertId}`
           }else(
             setAddError(response.data)
           )
@@ -205,7 +205,7 @@ export function NewClientPopup({
         }).then((response)=>{
           if(response.data.insertId > 0){
             setOpen(false)
-            window.location.pathname = `/clients/edit:${response.data.insertId}`
+            window.location.pathname = `/clients/${response.data.insertId}`
           }else(
             setAddError(response.data)
           )
@@ -489,7 +489,7 @@ export function NewInvoicePopup({
               invoiceID(response.data.insertId)
               return
             }else{
-              window.location.pathname = `/invoices/edit:${response.data.insertId}`
+              window.location.pathname = `/invoices/${response.data.insertId}`
             }
             
          
@@ -613,7 +613,7 @@ export function AddInvoicePopup({
                 if(forwardEdit == false){
                   return
                 }else{
-                  window.location.pathname = `/invoices/edit:${selectedInvoiceID}`
+                  window.location.pathname = `/invoices/${selectedInvoiceID}`
                 }
             }).catch((err) => {
                 setAddError(err)
@@ -992,6 +992,7 @@ export function AddInvoiceProdPopup({
   onClickAbort,
   defaultInvoiceID,
   defaultClientID,
+  margeID 
 
 
 }){
@@ -999,18 +1000,25 @@ export function AddInvoiceProdPopup({
   const today = new Date().toISOString().split("T",[1])[0]
   const [selectedProductID, setSelectedProductID] = useState(-1)
 
-  const [products, errProducts, loadingProducts] = handleProductRequest();
+  const [products, errProducts, loadingProducts] = handleProductRequest(margeID);
 
   const [productOpen,setProductOpen] = useState(false)
   const [newInvoicePrompt,setNewInvoicePrompt] = useState(false)
   const [addRes, setAddRes] = useState([])
   const [addError, setAddError] = useState("");
   const [addLoading, setAddLoading] = useState(false);  
+  const [update, setUpdate] = useState(0)
+
+  useEffect(()=>{
+    handleProductSelect()
+  },[productOpen])
+
 
   let order_dateRef = useRef(today)
   let production_dateRef = useRef(today)
   let delivery_dateRef = useRef(today)
-  let amountRef = useRef()
+  let amountRef = useRef("1")
+  let taxRef = useRef("7")
   let product_nameRef = useRef()
   let price_pieceRef = useRef("0")
   let price_totalRef = useRef("0")
@@ -1019,6 +1027,20 @@ export function AddInvoiceProdPopup({
   let editRef = useRef(0)
 
 
+  function handleProductSelect (){
+    if(selectedProductID > 0){
+      products.forEach((prod)=>{
+        if(prod.ID == selectedProductID){
+          taxRef.current = prod.tax
+          price_pieceRef.current = prod.vkp_netto
+        }
+      })
+    }else{
+      taxRef.current = "7"
+      price_pieceRef.current = "0"
+    }
+    setUpdate(update+1)
+  }
 
   function handleSubmit (e) {
 
@@ -1027,11 +1049,11 @@ export function AddInvoiceProdPopup({
       return}
     if(defaultClientID<0){return}
     else{
-      products.forEach((product)=>{
-        if(product.ID == selectedProductID){
-          production_dateRef.current = product.production_date
-        }
-      })
+      // products.forEach((product)=>{
+      //   if(product.ID == selectedProductID){
+      //     production_dateRef.current = product.production_date
+      //   }
+      // })
       
         e = e || window.Event;
         e.preventDefault();
@@ -1052,6 +1074,7 @@ export function AddInvoiceProdPopup({
                   "price_piece" : parseFloat(price_pieceRef.current.replace(",",".")),
                   "price_total" : parseFloat(price_totalRef.current.replace(",",".")),
                   "amount" : amountRef.current.replace(",","."),
+                  "tax" : taxRef.current.replace(",","."),
                   "order_date" : order_dateRef.current,
                   "production_date" : production_dateRef.current,
                   "delivery_date" : delivery_dateRef.current,
@@ -1104,11 +1127,13 @@ export function AddInvoiceProdPopup({
             />
 
             <p className='lb-title '>Menge</p>
-            <input className='i-select' onChange={(e)=>{amountRef.current = e.target.value}}></input>
+            <input className='i-select' type="number" defaultValue={amountRef.current} onChange={(e)=>{amountRef.current = e.target.value}}></input>
+            <p className='lb-title '>MwSt (%)</p>
+            <input className='i-select' type="number" value={taxRef.current} onChange={(e)=>{taxRef.current = e.target.value}}></input>
             <p className='lb-title '>Einzelpreis</p>
-            <input className='i-select' onChange={(e)=>{price_pieceRef.current = e.target.value}}></input> 
+            <input className='i-select' type="number" value={price_pieceRef.current} onChange={(e)=>{price_pieceRef.current = e.target.value}}></input> 
             <p className='lb-title '>Gesamtpreis</p>
-            <input className='i-select' onChange={(e)=>{price_totalRef.current = e.target.value}}></input>                    
+            <input className='i-select' type="number" value={price_totalRef.current} onChange={(e)=>{price_totalRef.current = e.target.value}}></input>                    
 
             
             <div className=''>                    
@@ -1721,6 +1746,7 @@ export function RecipeFormPopup({
   let editRef = useRef();
   let product_nameRef = useRef();
   let formweightRef = useRef();
+  let taxRef = useRef();
   let worktimeRef = useRef();
   let workamountRef = useRef();
   let vkp_nettoRef = useRef();
@@ -1780,6 +1806,7 @@ function handleSubmit (e) {
                   "formweight": formweightRef.current,
                   "img": "",
                   "worktime": worktimeRef.current,
+                  "tax": taxRef.current,
                   "workamount": workamountRef.current,
                   "vkp_netto": vkp_nettoRef.current,
                   "price_list": price_list
@@ -1837,11 +1864,12 @@ function handleSubmit (e) {
             className='i-select' 
             type='text' 
             />
-            <LabelInput className='popup-input' type='text' title="Produktbezeichnung" defaultvalue={""} onChange={(e)=>{product_nameRef.current = e.target.value}}/>
-            <LabelInput className='popup-input' type='number' title="Form-Gewicht (kg)" defaultvalue={0} onChange={(e)=>{formweightRef.current = e.target.value}}/>
+            <LabelInput className='popup-input' type='text'  title="*Produktbezeichnung" defaultvalue={""} onChange={(e)=>{product_nameRef.current = e.target.value}}/>
+            <LabelInput className='popup-input' type='number' title="Einwaage (kg)" defaultvalue={0} onChange={(e)=>{formweightRef.current = e.target.value}}/>
             <LabelInput className='popup-input' type='number' title="Arbeitszeit(h)" defaultvalue={0} onChange={(e)=>{worktimeRef.current = e.target.value}}/>
             <LabelInput className='popup-input' type='number' title="Stück/Arbeitszeit" defaultvalue={0} onChange={(e)=>{workamountRef.current = e.target.value}}/>
-            <LabelInput className='popup-input' type='number' title="VKP-Netto" defaultvalue={0} onChange={(e)=>{vkp_nettoRef.current = e.target.value}}/>
+            <LabelInput className='popup-input' type='number' title="MwSt (%)" defaultvalue={7} onChange={(e)=>{taxRef.current = e.target.value}}/>
+            <LabelInput className='popup-input' type='number' title="VKP-Netto (€)" defaultvalue={0} onChange={(e)=>{vkp_nettoRef.current = e.target.value}}/>
             {priceListInput}
             <div className='popup-card-btns'>
                 <button className='btn popup-card-btn' onClick={(e)=>[ handleSubmit(e)]} >Weiter</button>
