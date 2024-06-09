@@ -145,26 +145,17 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
     const tax = req.body.tax || 7;
 
     if((productID >= 1)){
-        db.query("SELECT product_name FROM products WHERE ID = ?", 
-        [productID], 
-        (err, result) =>{
-            if(err){
-                console.log(err)
-            } else{
-                product_name = result[0].product_name
-                db.query(`INSERT INTO invoices_items 
-                (invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date, tax) 
-                VALUES (?,?,?,?,?,?,?,?,?,?) `, 
-                [invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date, tax], 
-                (err, result) =>{
-                    if(err){
-                        console.log(err)
-                    } else{
-                            res.send("success")
-                    };
-                })
-            };
-        });
+        db.query(`INSERT INTO invoices_items 
+            (invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date, tax) 
+            VALUES (?,?,?,?,?,?,?,?,?,?) `, 
+            [invoiceID, clientID, productID, product_name, amount, price_piece, price_total, order_date, delivery_date, tax], 
+            (err, result) =>{
+                if(err){
+                    console.log(err)
+                } else{
+                       
+                };
+            })
 
     }else{
         db.query(`INSERT INTO invoices_items 
@@ -175,12 +166,12 @@ router.post("/new/item", isLoggedIn, (req, res, next) => {
             if(err){
                 console.log(err)
             } else{
-                    res.send("success")
+                 
             };
         })
     }
 
-        
+    res.send("success")  
 });
 // Add unpaid Item of client to invoice
 router.post("/new/client/item", isLoggedIn, (req, res, next) => {
@@ -220,14 +211,32 @@ router.post("/new/client/item", isLoggedIn, (req, res, next) => {
                             if(berr){
                                 console.log(berr)
                             } else {
-                                res.send("success")
+                                db.query(`UPDATE orders 
+                                    SET  
+                                    total_items =
+                                    (SELECT COUNT(ID) AS total_items 
+                                                FROM orders_items 
+                                                WHERE orderID = ?),
+                                    billed_items = (SELECT COUNT(ID) AS billed_items 
+                                                FROM orders_items 
+                                                WHERE orderID = ? AND invoiceID > 0)
+                                    WHERE ID = ?           
+                                    `, 
+                                [orderID,orderID,orderID], 
+                                (err, result) =>{
+                                    if(err){
+                                        console.log(err)
+                                    } else {
+                                        
+                                    }
+                                });
                             }
                         });
                     };
                 })
             };
         });
-
+        res.send("success")
     }
 
         
@@ -287,7 +296,25 @@ router.post("/new/items/client", isLoggedIn, (req, res, next) => {
                                     if(err){
                                         console.log(err)
                                     } else {
-                                       
+                                        db.query(`UPDATE orders 
+                                            SET  
+                                            total_items =
+                                            (SELECT COUNT(ID) AS total_items 
+                                                        FROM orders_items 
+                                                        WHERE orderID = ?),
+                                            billed_items = (SELECT COUNT(ID) AS billed_items 
+                                                        FROM orders_items 
+                                                        WHERE orderID = ? AND invoiceID > 0)
+                                            WHERE ID = ?           
+                                            `, 
+                                        [orderID,orderID,orderID], 
+                                        (err, result) =>{
+                                            if(err){
+                                                console.log(err)
+                                            } else {
+                                                
+                                            }
+                                        });
                                     }
                                 });
                             })
@@ -335,7 +362,25 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
                     if(err){
                         console.log(err)
                     } else {
-                       
+                        db.query(`UPDATE orders 
+                            SET  
+                            total_items =
+                            (SELECT COUNT(ID) AS total_items 
+                                        FROM orders_items 
+                                        WHERE orderID = ?),
+                            billed_items = (SELECT COUNT(ID) AS billed_items 
+                                        FROM orders_items 
+                                        WHERE orderID = ? AND invoiceID > 0)
+                            WHERE ID = ?           
+                            `, 
+                        [orderID,orderID,orderID], 
+                        (err, result) =>{
+                            if(err){
+                                console.log(err)
+                            } else {
+                                
+                            }
+                        });
                     }
                 });
             }
@@ -344,6 +389,8 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
         res.send("success")
     })
 });
+
+
 
 router.put("/new", isLoggedIn, (req, res, next) => {
     const clientID = req.body.clientID;
@@ -540,10 +587,19 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                     } else{
                         orderIDs.forEach((order)=>{
                             db.query(`
-                            UPDATE orders SET 
-                                billed_items = (SELECT COUNT(ID) AS total_items FROM orders_items WHERE orderID = ? AND invoiceID IS NOT NULL)
-                            WHERE ID = ?`, 
-                            [order.orderID, order.orderID], 
+                            UPDATE orders 
+                                SET  
+                                total_items =
+                                (SELECT COUNT(ID) AS total_items 
+                                            FROM orders_items 
+                                            WHERE orderID = ?),
+                                billed_items = (SELECT COUNT(ID) AS billed_items 
+                                            FROM orders_items 
+                                            WHERE orderID = ? AND invoiceID > 0)
+                                WHERE ID = ?            
+
+                                `, 
+                            [order.orderID, order.orderID, order.orderID], 
                             (berr, bresult) =>{
                                 if(berr){
                                     console.log(berr)

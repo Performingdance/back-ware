@@ -1011,7 +1011,7 @@ export function AddInvoiceProdPopup({
 
   useEffect(()=>{
     handleProductSelect()
-  },[productOpen])
+  },[selectedProductID])
 
 
   let order_dateRef = useRef(today)
@@ -1019,7 +1019,7 @@ export function AddInvoiceProdPopup({
   let delivery_dateRef = useRef(today)
   let amountRef = useRef("1")
   let taxRef = useRef("7")
-  let product_nameRef = useRef()
+  let product_nameRef = useRef("")
   let price_pieceRef = useRef("0")
   let price_totalRef = useRef("0")
   
@@ -1033,6 +1033,7 @@ export function AddInvoiceProdPopup({
         if(prod.ID == selectedProductID){
           taxRef.current = prod.tax
           price_pieceRef.current = prod.vkp_netto
+          product_nameRef.current = prod.product_name
         }
       })
     }else{
@@ -1071,10 +1072,10 @@ export function AddInvoiceProdPopup({
                   "invoiceID" : defaultInvoiceID,
                   "productID" : selectedProductID,
                   "product_name" : product_nameRef.current,
-                  "price_piece" : parseFloat(price_pieceRef.current.replace(",",".")),
-                  "price_total" : parseFloat(price_totalRef.current.replace(",",".")),
+                  "price_piece" : parseFloat(price_pieceRef.current.toString().replace(",",".")),
+                  "price_total" : parseFloat(price_totalRef.current.toString().replace(",",".")),
                   "amount" : amountRef.current.replace(",","."),
-                  "tax" : taxRef.current.replace(",","."),
+                  "tax" : taxRef.current.toString().replace(",","."),
                   "order_date" : order_dateRef.current,
                   "production_date" : production_dateRef.current,
                   "delivery_date" : delivery_dateRef.current,
@@ -1129,11 +1130,11 @@ export function AddInvoiceProdPopup({
             <p className='lb-title '>Menge</p>
             <input className='i-select' type="number" defaultValue={amountRef.current} onChange={(e)=>{amountRef.current = e.target.value}}></input>
             <p className='lb-title '>MwSt (%)</p>
-            <input className='i-select' type="number" value={taxRef.current} onChange={(e)=>{taxRef.current = e.target.value}}></input>
+            <input className='i-select' type="number" defaultValue={taxRef.current} onChange={(e)=>{taxRef.current = e.target.value}}></input>
             <p className='lb-title '>Einzelpreis</p>
             <input className='i-select' type="number" value={price_pieceRef.current} onChange={(e)=>{price_pieceRef.current = e.target.value}}></input> 
             <p className='lb-title '>Gesamtpreis</p>
-            <input className='i-select' type="number" value={price_totalRef.current} onChange={(e)=>{price_totalRef.current = e.target.value}}></input>                    
+            <input className='i-select' type="number" defaultValue={price_totalRef.current} onChange={(e)=>{price_totalRef.current = e.target.value}}></input>                    
 
             
             <div className=''>                    
