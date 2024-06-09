@@ -367,11 +367,11 @@ router.put("/new", isLoggedIn, (req, res, next) => {
             if(err){
                 console.log(err)
             } else{
-                res.send(res);
+                
             };
         })
         };
-
+        res.send(res);
     })
 });
 

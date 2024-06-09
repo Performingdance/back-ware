@@ -44,12 +44,13 @@ export  function OrderCard({
             <p>{ "#"+ data.ID + " (" + data.order_date + ")" }</p>
           </div>
           <div className='rc-btns' > 
-            {( data.invoiceID <= 0)? <a type="button" className='button rc-btn ' onClick={onClickInv}>
-              <SVGIcon class="rc-btn-svg" src={file_plus}/> Rechnung (neu)
-            </a> :
+            {( data.billed_items == data.total_items)?
             <a type="button" className='button rc-btn ' onClick={()=>window.location.href = `/invoices/${data.invoiceID}`}>
               <SVGIcon class="rc-btn-svg" src={bar_graph}/> Rechnung öffnen
-            </a>}          
+            </a>:
+            <a type="button" className='button rc-btn ' onClick={onClickInv}>
+            <SVGIcon class="rc-btn-svg" src={file_plus}/> Rechnung (neu)
+          </a>}          
             <a type="button" className='button rc-btn' onClick={onClickMore}>
               <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
             </a>
