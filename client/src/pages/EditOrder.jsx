@@ -209,7 +209,10 @@ function EditOrder  () {
         <div key={key+"li"} className='order-grid'>
           <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
           <p key={key+"product"} className='order-p'>{product.product_name}</p>
-          <p key={key+"p"} ></p>
+          {product.invoiceID >0 ?<a key={key+"invoice-btn"} type="button" className='button' onClick={()=>window.location.href = `/invoices/${product.invoiceID}`}>
+              <SVGIcon class="rc-btn-svg" src={bar_graph}/> 
+          </a>:
+          <p key={key+"p"}></p>}
           <p key={key+"p2"} ></p>
           <p key={key+"production"} className='order-p'>{"Backtag: " + (product.production_date|| "-")}</p>
           <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>

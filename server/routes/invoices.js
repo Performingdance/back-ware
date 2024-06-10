@@ -414,12 +414,13 @@ router.put("/new", isLoggedIn, (req, res, next) => {
             if(err){
                 console.log(err)
             } else{
-                
+                res.send("success")
             };
         })
         };
-        res.send(res);
+        
     })
+
 });
 
 
@@ -517,7 +518,7 @@ router.put("/update/item", isLoggedIn, (req, res, next) => {
                     if(err){
                         console.log(err)
                     } else{
-                        res.send("success");
+                       
                     };
                 });
             };
@@ -530,11 +531,10 @@ router.put("/update/item", isLoggedIn, (req, res, next) => {
             if(err){
                 console.log(err)
             } else{
-                res.send("success");
             };
         });
     }
- 
+    res.send("success");
    
      
  });
