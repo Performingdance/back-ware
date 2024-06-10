@@ -28,10 +28,10 @@ export  function OrderCard({
           <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
           <p key={key+"product"} className='order-p'>{product.product_name}</p>
           {(product.invoiceID > 0)?
-            <a type="button" className='button rc-btn ' onClick={()=>window.location.href = `/invoices/${product.invoiceID}`}>
+            <a type="button" className='button order-btn' onClick={()=>window.location.href = `/invoices/${product.invoiceID}`}>
               <SVGIcon class="rc-btn-svg" src={bar_graph}/> 
             </a>:
-            <a type="button" className='button rc-btn ' onClick={onClickInv}>
+            <a type="button" className='button order-btn' onClick={onClickInv}>
             <SVGIcon class="rc-btn-svg" src={file_plus}/>
           </a>}
         </li>
@@ -52,9 +52,7 @@ export  function OrderCard({
           </div>
           <div className='rc-btns' > 
             {(( data.billed_items == data.total_items) && data.total_items > 0)?
-            <a type="button" className='button rc-btn ' onClick={()=>window.location.href = `/invoices/${data.invoiceID}`}>
-              <SVGIcon class="rc-btn-svg" src={bar_graph}/> Rechnung öffnen
-            </a>:
+            "":
             <a type="button" className='button rc-btn ' onClick={onClickInv}>
             <SVGIcon class="rc-btn-svg" src={file_plus}/> Rechnung (neu)
           </a>}          
@@ -73,7 +71,7 @@ export  function OrderCard({
        {( data.invoiceID <= 0) && <p>Rechnung erstellen</p>}
       </div>}
       {editID==data.ID && editBtn==2 && 
-      <div className=' c-card cc-more '>
+      <div className=' cc-more c-card   '>
         <ul className='product-list'>
         {productList.length? productList: <p>noch keine Produkte unter dieser Bestellung</p>}
 

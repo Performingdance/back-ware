@@ -4,14 +4,16 @@
    font-size: 0.9rem;
    text-align: center;
 }
+.order-btn{
+    width: 100%;
+}
 .order-li{
-    margin: 0;
     display: grid;
-    grid-template-columns: 10% 80% 10%;
+    grid-template-columns: 8% 80% 12%;
     justify-self: center;
     align-items: center;
-    padding: 0.3rem;
-    margin: auto;
+    padding: 0rem;
+    margin: 0.3rem;
     
 }
 .order-grid{
@@ -50,8 +52,11 @@
     width: 2rem;
 }
 .product-list{
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     text-align: center;
+    margin: 0;
+    padding: 0;
 
 }
 
