@@ -4,37 +4,32 @@ const {isLoggedIn} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 router.get("/all", isLoggedIn, (req, res) =>{
-    let result
     db.query(`SELECT a.ID, a.invoiceID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, a.billed_items, a.total_items
     FROM (SELECT * FROM orders) AS a
         LEFT JOIN clients
         ON a.clientID = clients.ID
-        ORDER BY ID DESC`, (err, _result) =>{
+        ORDER BY ID DESC`, (err, result) =>{
         if(err){
            console.log(err)
         } else {
-           result = _result
+           res.send(result)
         }
    });
-   res.send(result)
 });
 router.post("/ID", isLoggedIn, (req, res) =>{
     const orderID = req.body.orderID;
-    let result
     db.query(`SELECT a.ID, a.invoiceID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(a.delivery_date , "%d.%m.%y") AS delivery_date, DATE_FORMAT(a.delivery_date_end , "%d.%m.%y") AS delivery_date_end, CONCAT(company," (", first_name, " ", last_name, ")") AS client 
         FROM (SELECT * FROM orders WHERE ID = ?) AS a
             LEFT JOIN clients
-            ON a.clientID = clients.ID`, [orderID], (err, _result) =>{
+            ON a.clientID = clients.ID`, [orderID], (err, result) =>{
         if(err){
            console.log(err)
         } else {
-            result = _result
+           res.send(result)
         }
    });
-   res.send(result)
 });
 router.post("/ID/prod", isLoggedIn, (req, res) =>{
-    let result
     const orderID = req.body.orderID;
     db.query(`
     SELECT a.*, products.product_name
@@ -44,67 +39,56 @@ router.post("/ID/prod", isLoggedIn, (req, res) =>{
     LEFT JOIN products
     ON a.productID = products.ID
     ORDER BY a.productID
-    `, [orderID], 
-    (err, _result) =>{
+    `, [orderID], (err, result) =>{
         if(err){
            console.log(err)
         } else {
-            result = _result
-           
+           res.send(result)
         }
    });
-   res.send(result)
 });
 
 router.post("/all/date", isLoggedIn, (req, res) =>{
-    let result
     const delivery_date = req.body.delivery_date;
-    db.query("SELECT * FROM orders WHERE delivery_date = ?", delivery_date, 
-        (err, _result) =>{
+    db.query("SELECT * FROM orders WHERE delivery_date = ?", delivery_date, (err, result) =>{
         if(err){
            console.log(err)
         } else {
-            result = _result
-           
+           res.send(result)
         }
    });
-   res.send(result)
 });
 router.get("/all/noInvoice", isLoggedIn, (req, res) =>{
-    let result
     db.query(`SELECT a.*, CONCAT(company," (", first_name, " ", last_name, ")") AS client 
     FROM (SELECT * FROM orders 
         WHERE invoiceID IS null
         ORDER BY order_date DESC) AS a
     LEFT JOIN clients
-    ON a.clientID = clients.ID`, (err, _result) =>{
+    ON a.clientID = clients.ID`, (err, result) =>{
         if(err){
            console.log(err)
         } else {
-            result = _result
+           res.send(result)
         }
    });
-   res.send(result)
 });
 router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {   
-    let result
     const clientID = req.body.clientID;
 
             db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name 
             FROM orders 
             WHERE clientID = ? AND invoiceID IS NULL`, 
             [clientID],
-            (err, _result) =>{
+            (err, result) =>{
                 if(err){
                     console.log(err)
                 } else{
-                    result = _result 
+                    res.send(result)
                 };
             })
-            res.send(result)          
+            
 });
-router.post("/client/items/noInvoice", isLoggedIn, (req, res, next) => { 
-    let result  
+router.post("/client/items/noInvoice", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
 
             db.query(`SELECT b.*,CONCAT(b.amount , "x ", products.product_name) AS name , products.vkp_netto AS price_piece, (products.vkp_netto*b.amount) AS price_total  
@@ -117,34 +101,32 @@ router.post("/client/items/noInvoice", isLoggedIn, (req, res, next) => {
                 LEFT JOIN products
                 ON b.productID = products.ID;`, 
             [clientID],
-            (err, _result) =>{
+            (err, result) =>{
                 if(err){
                     console.log(err)
                 } else{
-                    result = _result
+                    res.send(result)
                 };
             })
-    res.send(result)     
+            
 });
-router.get("/all/items/noInvoice", isLoggedIn, (req, res, next) => {
-    let result   
+router.get("/all/items/noInvoice", isLoggedIn, (req, res, next) => {   
 
-    db.query(`SELECT ID, product_name AS name, DATE_FORMAT(order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date  
-    FROM order_items 
-    WHERE invoiceID IS NULL`, 
-    [clientID],
-    (err, result) =>{
-        if(err){
-            console.log(err)
-        } else{
-            
-        };
-    })
-    res.send(result)
+
+            db.query(`SELECT ID, product_name AS name, DATE_FORMAT(order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date  
+            FROM order_items 
+            WHERE invoiceID IS NULL`, 
+            [clientID],
+            (err, result) =>{
+                if(err){
+                    console.log(err)
+                } else{
+                    res.send(result)
+                };
+            })
             
 });
-router.post("/all/client", isLoggedIn, (req, res, next) => {
-    let result   
+router.post("/all/client", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
 
             db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name, invoiceID 
@@ -152,28 +134,27 @@ router.post("/all/client", isLoggedIn, (req, res, next) => {
             WHERE clientID = ?
             ORDER BY ID DESC`, 
             [clientID],
-            (err, _result) =>{
+            (err, result) =>{
                 if(err){
                     console.log(err)
                 } else{
-                    result = _result
+                    res.send(result)
                 };
             })
-    res.send(result)       
+            
 });
-router.put("/new", isLoggedIn, (req, res, next) => {
-    let result   
+router.put("/new", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
 
             db.query("INSERT INTO orders (order_date, clientID) VALUES (now(), ?)", [clientID],
-            (err, _result) =>{
+            (err, result) =>{
                 if(err){
                     console.log(err)
                 } else{
-                    result = _result
+                    res.send(result)
                 };
             })
-    res.send(result)         
+            
 });
 router.put("/new/item", isLoggedIn, (req, res, next) => {   
     const orderID = req.body.orderID;
@@ -224,6 +205,7 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
                                                 if(berr){
                                                     console.log(berr)
                                                 } else{
+                                                    res.send("success");
                                                 };
                                             })
                                         };
@@ -234,7 +216,7 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
                     })
                 };
             })
-    res.send("success");        
+            
 });
 
 router.put("/update", isLoggedIn, (req, res, next) => {
@@ -259,10 +241,9 @@ router.put("/update", isLoggedIn, (req, res, next) => {
                 } else{
                 }
             })
-            
+            res.send("success")
         }
     })
-    res.send("success")
 });
 router.put("/update/items", isLoggedIn, (req, res, next) => {
     const ID = req.body.ID;
@@ -312,7 +293,7 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                                 if(aaaerr){
                                     console.log(aaaerr)
                                 } else{
-                                    
+                                    res.send("success");
                                 };
                             })
                         };
@@ -336,18 +317,17 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                                 if(berr){
                                     console.log(bberr)
                                 } else{
-                                    
+                                    res.send("success");
                                 };
                             })
                         };
                     })
                 }
             })
-            };
-        })
+                        };
+                    })
         };
     });
-    res.send("success");
      
 });
 router.put("/update/items/all", isLoggedIn, (req, res, next) => {
@@ -524,7 +504,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                                 if(berr){
                                     console.log(berr)
                                 } else{
-                                    
+                                    res.send("success");
                                 };
                             })
                         }
@@ -533,11 +513,9 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
            });
         }
    });
-   res.send("success");
 });
 
 router.delete("/delete", isLoggedIn, (req, res) => {
-    let result
 
     const orderID = req.body.orderID;
     db.query("DELETE FROM orders WHERE ID = ?", orderID, (err, result) =>{
@@ -548,12 +526,11 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                 if(berr){
                    console.log(berr)
                 } else {
-                   result = bresult
+                   res.send(bresult)
                 }
            });
         }
    });
-   res.send(result)
 });
 
 module.exports = router;

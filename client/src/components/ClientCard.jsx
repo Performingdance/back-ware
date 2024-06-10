@@ -57,11 +57,7 @@ orders.map((order, key)=> {
       <li key={key+"li"} className='client-li'>
         <p></p>
         <p key={key+"recipe"} className='order-p'>{order.name}</p>
-        {order.invoiceID? 
-        <a href={`/invoices/${order.invoiceID}`} type="button" className='button rc-btn'>
-          <SVGIcon class="rc-btn-svg" src={bar_graph}/>
-        </a>  
-        :<div className='d-il'>
+        {<div className='d-il'>
           <a href={`/orders/${order.ID}`} type="button" className='button rc-btn'>
               <SVGIcon class="rc-btn-svg" src={pencil_square}/>
         </a>
