@@ -335,10 +335,10 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
     const invoiceID = req.body.invoiceID;
 
     db.query(`INSERT INTO invoices_items 
-    (invoiceID, clientID, orderID ,productID, amount, order_date, production_date, delivery_date,tax, product_name, price_piece, price_total) 
-    SELECT b.*, products.product_name, products.vkp_netto, (products.vkp_netto * amount) AS price_total
-    FROM (SELECT a.*
-        FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, productID, amount, delivery_date, tax  
+    (invoiceID, clientID, orderID ,productID, amount,  production_date, delivery_date, order_date, product_name, price_piece, price_total, tax) 
+    SELECT b.*, products.product_name, products.vkp_netto, (products.vkp_netto * b.amount) AS price_total, products.tax
+    FROM (SELECT a.*, orders.order_date
+        FROM (SELECT ? AS invoiceID, ? AS clientID, orderID, productID,  amount, production_date, delivery_date  
             FROM orders_items 
             WHERE orderID = ? AND invoiceID IS NULL) as a
         LEFT JOIN orders
