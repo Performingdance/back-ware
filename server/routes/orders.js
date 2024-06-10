@@ -34,7 +34,7 @@ router.post("/ID/prod", isLoggedIn, (req, res) =>{
     db.query(`
     SELECT a.*, products.product_name
     FROM
-        (SELECT ID, productID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(production_date , "%d.%m.%y") AS production_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date
+        (SELECT ID, productID, CAST(amount AS SIGNED ) AS amount, orderID , DATE_FORMAT(production_date , "%d.%m.%y") AS production_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date, invoiceID
         FROM orders_items WHERE orderID = ?) AS a
     LEFT JOIN products
     ON a.productID = products.ID
