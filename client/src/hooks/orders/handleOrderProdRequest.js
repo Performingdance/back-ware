@@ -23,7 +23,7 @@ export default function handleOrderProdRequest(orderID, update) {
         axios({
             axiosInstance: axios,
             method: "POST",
-            url:"s/orders/ID/ing",
+            url:"s/orders/ID/prod",
             headers: {
                 "authorization": authHeader()
             },

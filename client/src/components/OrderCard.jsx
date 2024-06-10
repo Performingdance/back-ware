@@ -27,6 +27,13 @@ export  function OrderCard({
         <li key={key+"li"} className='order-li'>
           <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
           <p key={key+"product"} className='order-p'>{product.product_name}</p>
+          {(product.invoiceID > 0)?
+            <a type="button" className='button rc-btn ' onClick={()=>window.location.href = `/invoices/${product.invoiceID}`}>
+              <SVGIcon class="rc-btn-svg" src={bar_graph}/> 
+            </a>:
+            <a type="button" className='button rc-btn ' onClick={onClickInv}>
+            <SVGIcon class="rc-btn-svg" src={file_plus}/>
+          </a>}
         </li>
 
       )
