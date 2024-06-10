@@ -1,35 +1,28 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleOrderIngRequest(orderID, update) {
-   // console.log(clientID)
+export default function handleUnpaidItemsRequest() {
 
     // handle api request 
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    
-        useEffect(()=>handleRequest(),[orderID, update])
-    
-        
-    
-    function handleRequest() {
-        if(orderID != -1){
 
-            
+    function handleRequest (clientID) {
+        // console.log(res)
         setLoading(true)
         axios({
             axiosInstance: axios,
             method: "POST",
-            url:"s/orders/ID/ing",
+            url:"s/orders/client/items/noInvoice",
             headers: {
                 "authorization": authHeader()
             },
             data: {
-                "orderID": orderID
-            }
+                "clientID" : clientID
+            } 
         }).then((response)=>{
             setRes(response.data)
             //console.log(res);
@@ -39,11 +32,8 @@ export default function handleOrderIngRequest(orderID, update) {
         })
 
         setLoading(false)
-    }
         
     }
-    return [res, error, loading];
-
-
-   
+    return [res, error, loading, handleRequest];
+    
   }

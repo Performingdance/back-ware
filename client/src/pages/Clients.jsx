@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import ClientCard from '../components/ClientCard'
 import Searchbar_filter from '../components/Searchbar'
-import handleClientRequest from '../hooks/handleClientRequest'
+import handleClientRequest from '../hooks/clients/handleClientRequest'
 import FloatIcon from '../components/FloatIcon.jsx'
 // temp 
 

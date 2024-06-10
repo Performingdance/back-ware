@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Header from '../components/Header'
-import handleInvoiceRequest from '../hooks/handleInvoiceRequest'
+import handleInvoiceRequest from '../hooks/invoices/handleInvoiceRequest'
 import InvoiceCards from '../components/InvoiceCards'
 import Loading from '../components/Loading'
 import FloatIcon from '../components/FloatIcon'

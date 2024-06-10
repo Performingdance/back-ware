@@ -1,31 +1,32 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleInvoiceOpenOrderRequest() {
-   // console.log(clientID)
+export default function handleRecipeFormRequest(recipeID) {
 
     // handle api request 
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-   
-        
-    
-    function handleRequest(invoiceID) {
-        if(invoiceID != -1){
 
-            
+
+
+
+    useEffect(()=>handleRequest(),[recipeID])
+    function handleRequest () {
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "GET",
-            url:"s/orders/all/noInvoice",
+            method: "POST",
+            url:"s/recipes/forms",
             headers: {
                 "authorization": authHeader()
+            },
+            data: {
+                "recipeID": recipeID
             }
         }).then((response)=>{
-            setRes(response.data)
+                setRes(response.data)
             //console.log(res);
         }).catch((err) => {
             setError(err)
@@ -33,11 +34,8 @@ export default function handleInvoiceOpenOrderRequest() {
         })
 
         setLoading(false)
-    }
         
     }
-    return [res, error, loading, handleRequest];
-
-
-   
+    return [res, error, loading];
+    
   }

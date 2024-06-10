@@ -7,7 +7,7 @@ import bar_graph from '../assets/icons/bar-graph.svg'
 import '../styles/ClientCard.css'
 import '../styles/RecipeCard.css'
 import '../styles/OrderCard.css'
-import handleClientOrderRequest from '../hooks/handleClientOrderRequest'
+import handleClientOrderRequest from '../hooks/clients/handleClientOrderRequest'
 import { AddInvoicePopup, NewOrderPopup } from './Popup'
 
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import Header from '../components/Header'
 import '../styles/IngredientCard.css'
-import handleIngIDRequest from '../hooks/handleIngIDRequest'
+import handleIngIDRequest from '../hooks/ingredients/handleIngIDRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import pencil_square from '../assets/icons/pencil-square.svg'

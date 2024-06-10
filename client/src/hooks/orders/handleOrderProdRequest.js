@@ -1,8 +1,8 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleInvoiceIDRequest(invoiceID, update) {
+export default function handleOrderProdRequest(orderID, update) {
    // console.log(clientID)
 
     // handle api request 
@@ -10,23 +10,28 @@ export default function handleInvoiceIDRequest(invoiceID, update) {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    useEffect(()=>handleRequest(),[invoiceID, update])
+    
+        useEffect(()=>handleRequest(),[orderID, update])
+    
         
     
     function handleRequest() {
+        if(orderID != -1){
+
+            
         setLoading(true)
         axios({
             axiosInstance: axios,
             method: "POST",
-            url:"s/invoices/ID",
+            url:"s/orders/ID/ing",
             headers: {
                 "authorization": authHeader()
             },
             data: {
-                "invoiceID" : invoiceID
+                "orderID": orderID
             }
         }).then((response)=>{
-            setRes(response.data[0])
+            setRes(response.data)
             //console.log(res);
         }).catch((err) => {
             setError(err)
@@ -36,6 +41,7 @@ export default function handleInvoiceIDRequest(invoiceID, update) {
         setLoading(false)
     }
         
+    }
     return [res, error, loading];
 
 

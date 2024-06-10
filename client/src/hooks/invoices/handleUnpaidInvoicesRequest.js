@@ -1,9 +1,8 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleProductRequest() {
-   // console.log(clientID)
+export default function handleUnpaidInvoicesRequest() {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -11,18 +10,16 @@ export default function handleProductRequest() {
     const [loading, setLoading] = useState(false);
 
 
-    useEffect(()=>handleRequest(),[])
-        
-    
-    function handleRequest() {
+    function handleRequest () {
+        // console.log(res)
         setLoading(true)
         axios({
             axiosInstance: axios,
             method: "GET",
-            url:"s/products/all",
+            url:"s/invoices/unpaid",
             headers: {
                 "authorization": authHeader()
-            }
+            }, 
         }).then((response)=>{
             setRes(response.data)
             //console.log(res);
@@ -32,10 +29,8 @@ export default function handleProductRequest() {
         })
 
         setLoading(false)
-    }
         
-    return [res, error, loading];
-
-
-   
+    }
+    return [res, error, loading, handleRequest];
+    
   }

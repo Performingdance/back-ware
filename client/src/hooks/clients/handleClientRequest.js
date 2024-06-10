@@ -1,7 +1,7 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
-import logoutToken from '../services/logout';
+import authHeader from '../../services/auth-header';
+import logoutToken from '../../services/logout';
 
 export default function handleClientRequest(){
 

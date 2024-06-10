@@ -1,8 +1,9 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleRecipeFormRequest(recipeID) {
+export default function handleOrderRequest() {
+   // console.log(clientID)
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -10,23 +11,20 @@ export default function handleRecipeFormRequest(recipeID) {
     const [loading, setLoading] = useState(false);
 
 
-
-
-    useEffect(()=>handleRequest(),[recipeID])
-    function handleRequest () {
+    useEffect(()=>handleRequest(),[])
+        
+    
+    function handleRequest() {
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "POST",
-            url:"s/recipes/forms",
+            method: "GET",
+            url:"s/orders/all",
             headers: {
                 "authorization": authHeader()
-            },
-            data: {
-                "recipeID": recipeID
             }
         }).then((response)=>{
-                setRes(response.data)
+            setRes(response.data)
             //console.log(res);
         }).catch((err) => {
             setError(err)
@@ -34,8 +32,10 @@ export default function handleRecipeFormRequest(recipeID) {
         })
 
         setLoading(false)
-        
     }
+        
     return [res, error, loading];
-    
+
+
+   
   }

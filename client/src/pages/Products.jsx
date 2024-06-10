@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import FloatIcon from '../components/FloatIcon';
 import Searchbar_filter from '../components/Searchbar';
-import handleProductRequest from '../hooks/handleProductRequest';
+import handleProductRequest from '../hooks/products/handleProductRequest';
 import Loading from '../components/Loading';
 
 

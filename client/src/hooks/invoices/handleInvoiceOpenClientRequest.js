@@ -1,27 +1,31 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleRecipeIngRequest(recipeID, ingRes, delRes, edit) {
+export default function handleInvoiceOpenClientRequest() {
+   // console.log(clientID)
 
     // handle api request 
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+   
+        
+    
+    function handleRequest(clientID) {
+        if(clientID != -1){
 
-
-    useEffect(()=>handleRequest(),[recipeID, ingRes, delRes,edit])
-    function handleRequest () {
+            
         setLoading(true)
         axios({
             axiosInstance: axios,
             method: "POST",
-            url:"s/recipes/ing/id",
+            url:"s/orders/all/client/noInvoice",
             headers: {
                 "authorization": authHeader()
-            },
-            data:{
-                "recipeID": recipeID
+            }, 
+            data: {
+                "clientID": clientID
             }
         }).then((response)=>{
             setRes(response.data)
@@ -32,8 +36,11 @@ export default function handleRecipeIngRequest(recipeID, ingRes, delRes, edit) {
         })
 
         setLoading(false)
+    }
         
     }
-    return [res, error, loading];
-    
+    return [res, error, loading, handleRequest];
+
+
+   
   }

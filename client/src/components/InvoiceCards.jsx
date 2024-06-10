@@ -36,7 +36,7 @@ import '../styles/IngredientCard.css';
 import SVGIcon from './SVG';
 import pencil_square from '../assets/icons/pencil-square.svg'
 import plus from "../assets/icons/plus.svg"
-import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest';
+import handleInvoiceProdRequest from '../hooks/invoices/handleInvoiceProdRequest';
 
 
 

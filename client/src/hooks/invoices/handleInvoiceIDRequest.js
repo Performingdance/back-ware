@@ -1,27 +1,32 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleUnpaidInvoicesRequest() {
+export default function handleInvoiceIDRequest(invoiceID, update) {
+   // console.log(clientID)
 
     // handle api request 
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-
-    function handleRequest () {
-        // console.log(res)
+    useEffect(()=>handleRequest(),[invoiceID, update])
+        
+    
+    function handleRequest() {
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "GET",
-            url:"s/invoices/unpaid",
+            method: "POST",
+            url:"s/invoices/ID",
             headers: {
                 "authorization": authHeader()
-            }, 
+            },
+            data: {
+                "invoiceID" : invoiceID
+            }
         }).then((response)=>{
-            setRes(response.data)
+            setRes(response.data[0])
             //console.log(res);
         }).catch((err) => {
             setError(err)
@@ -29,8 +34,10 @@ export default function handleUnpaidInvoicesRequest() {
         })
 
         setLoading(false)
-        
     }
-    return [res, error, loading, handleRequest];
-    
+        
+    return [res, error, loading];
+
+
+   
   }

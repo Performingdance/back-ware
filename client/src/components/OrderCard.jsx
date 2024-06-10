@@ -44,7 +44,7 @@ export  function OrderCard({
             <p>{ "#"+ data.ID + " (" + data.order_date + ")" }</p>
           </div>
           <div className='rc-btns' > 
-            {( data.billed_items == data.total_items)?
+            {(( data.billed_items == data.total_items) && data.total_items > 0)?
             <a type="button" className='button rc-btn ' onClick={()=>window.location.href = `/invoices/${data.invoiceID}`}>
               <SVGIcon class="rc-btn-svg" src={bar_graph}/> Rechnung öffnen
             </a>:

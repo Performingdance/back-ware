@@ -10,16 +10,16 @@ import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
 import InvoiceNetto, { InvoiceBrutto } from '../components/Invoice'
 import '../styles/EditInvoice.css';
-
-import handleInvoiceProdRequest from '../hooks/handleInvoiceProdRequest'
-import { AddInvoiceClientPopup, AddInvoiceOrderPopup, AddInvoiceProdPopup, PromptPopup } from '../components/Popup';
-import handleInvoiceIDRequest from '../hooks/handleInvoiceIDRequest';
 import { DateLine } from '../components/Calendar';
 import { SelectComponent } from '../components/Searchbar';
-import handleClientSelectRequest from '../hooks/handleClientSelectRequest';
+import { AddInvoiceClientPopup, AddInvoiceOrderPopup, AddInvoiceProdPopup, PromptPopup } from '../components/Popup';
+
+import handleInvoiceProdRequest from '../hooks/invoices/handleInvoiceProdRequest'
+import handleInvoiceIDRequest from '../hooks/invoices/handleInvoiceIDRequest';
+import handleClientSelectRequest from '../hooks/clients/handleClientSelectRequest';
 import handleMargesRequest from '../hooks/handleMargesRequest';
 import handleInvoiceMargeUpdateRequest from '../hooks/invoices/handleInvoiceMargesUpdateRequest';
-import handleInvoiceTaxRequest from '../hooks/handleInvoiceTaxRequest';
+import handleInvoiceTaxRequest from '../hooks/invoices/handleInvoiceTaxRequest';
 
 
 function EditInvoice  () {

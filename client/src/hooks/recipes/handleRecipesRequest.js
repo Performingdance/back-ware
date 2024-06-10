@@ -1,8 +1,8 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleInvoiceTaxRequest() {
+export default function handleRecipesRequest() {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -10,18 +10,15 @@ export default function handleInvoiceTaxRequest() {
     const [loading, setLoading] = useState(false);
 
 
-    function handleRequest (invoiceID) {
-        // console.log(res)
+    useEffect(()=>handleRequest(),[])
+    function handleRequest () {
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "POST",
-            url:"s/invoices/ID/tax",
+            method: "GET",
+            url:"s/recipes/img",
             headers: {
                 "authorization": authHeader()
-            },
-            data:{
-                "invoiceID": invoiceID
             }
         }).then((response)=>{
             setRes(response.data)
@@ -34,6 +31,6 @@ export default function handleInvoiceTaxRequest() {
         setLoading(false)
         
     }
-    return [res, error, loading, handleRequest];
+    return [res, error, loading];
     
   }

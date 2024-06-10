@@ -1,6 +1,6 @@
 import React from 'react'
 import '../styles/LabelBox.css'
-import calcHeight from '../hooks/handleResize'
+import calcHeight from '../hooks/utility/handleResize'
 
 export default function LabelBox({
     _key, 

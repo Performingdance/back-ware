@@ -5,7 +5,7 @@ import x_circle from '../assets/icons/x-circle.svg'
 import x from '../assets/icons/x.svg'
 import check from '../assets/icons/check.svg'
 import '../styles/Searchbar.css'
-import handleIngAllRequest from '../hooks/handleIngAllRequest'
+import handleIngAllRequest from '../hooks/ingredients/handleIngAllRequest'
 
 
 export default function Searchbar_filter(props) {

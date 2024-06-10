@@ -1,8 +1,8 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleIngExtRequest() {
+export default function handleFormRequest(update) {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -10,13 +10,13 @@ export default function handleIngExtRequest() {
     const [loading, setLoading] = useState(false);
 
 
-    useEffect(()=>handleRequest(),[])
+    useEffect(()=>handleRequest(),[update])
     function handleRequest () {
         setLoading(true)
         axios({
             axiosInstance: axios,
             method: "GET",
-            url:"s/ing/all/noRecipes",
+            url:"s/form/all",
             headers: {
                 "authorization": authHeader()
             }

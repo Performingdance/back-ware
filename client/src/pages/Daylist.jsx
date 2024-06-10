@@ -10,7 +10,6 @@ import add from '../assets/icons/plus.svg'
 import check_all from '../assets/icons/check-all.svg'
 import check from '../assets/icons/check.svg'
 import x_circle from '../assets/icons/x-circle.svg'
-// import handleRecipesRequest from '../hooks/handleRecipesRequest'
 import { ProductOrderPopup, PromptPopup } from '../components/Popup'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';

@@ -1,24 +1,31 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleRecipesRequest() {
+export default function handleInvoiceProdRequest() {
+   // console.log(clientID)
 
     // handle api request 
     const [res, setRes] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+   
+        
+    
+    function handleRequest(invoiceID) {
+        if(invoiceID != -1){
 
-
-    useEffect(()=>handleRequest(),[])
-    function handleRequest () {
+            
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "GET",
-            url:"s/recipes/img",
+            method: "POST",
+            url:"s/invoices/ID/prod",
             headers: {
                 "authorization": authHeader()
+            },
+            data: {
+                "invoiceID": invoiceID
             }
         }).then((response)=>{
             setRes(response.data)
@@ -29,8 +36,11 @@ export default function handleRecipesRequest() {
         })
 
         setLoading(false)
+    }
         
     }
-    return [res, error, loading];
-    
+    return [res, error, loading, handleRequest];
+
+
+   
   }

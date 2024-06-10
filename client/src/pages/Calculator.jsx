@@ -2,10 +2,9 @@ import Header from '../components/Header'
 import React, { useMemo, useState, useRef, useEffect } from 'react'
 import Bvp, { Nutri } from '../components/Calculator'
 import {SelectComponent} from '../components/Searchbar'
-import handleRecipesRequest from '../hooks/handleRecipesRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
-import handleProductRequest from '../hooks/handleProductRequest'
+import handleProductRequest from '../hooks/products/handleProductRequest'
 import handleBvpRequest from '../hooks/calculator/handleBvpRequest'
 import handleNutriRequest from '../hooks/calculator/handleNutriRequest'
 import handleProdIngRequest from '../hooks/calculator/handleProdIngRequest'

@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import Header from '../components/Header'
 import '../styles/IngredientCard.css'
-import handleOrderIngRequest from '../hooks/handleOrderIngRequest'
+import handleOrderProdRequest from '../hooks/orders/handleOrderProdRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import file_plus from '../assets/icons/file-plus.svg'
@@ -13,7 +13,7 @@ import trash from '../assets/icons/trash.svg'
 import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
 import NewRecipePopup, { AddInvoicePopup, ProductOrderPopup, PromptPopup } from '../components/Popup';
-import handleOrderIDRequest from '../hooks/handleOrderIDRequest';
+import handleOrderIDRequest from '../hooks/orders/handleOrderIDRequest';
 import { DateLine } from '../components/Calendar';
 import { LabelTextInput } from '../components/LabelBox';
 
@@ -31,7 +31,7 @@ function EditOrder  () {
     let productRef = useRef()
   
 
-    const [res, err, loading] = handleOrderIngRequest(orderID, updateOrder);
+    const [res, err, loading] = handleOrderProdRequest(orderID, updateOrder);
     const [orderRes, orderErr, orderLoading] = handleOrderIDRequest(orderID, updateOrder);
     
 
@@ -65,7 +65,7 @@ function EditOrder  () {
             if((val == "00.00.00"|| !val)){
               editRes[key][obj] = today[0]
             }
-            editRes[key][obj] = val.replace(/(..).(..).(..)/, "20$3-$2-$1")
+            editRes[key][obj] = val
           }else{
             editRes[key][obj]= val
           }

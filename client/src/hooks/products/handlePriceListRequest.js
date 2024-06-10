@@ -1,8 +1,8 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleUnpaidItemsRequest() {
+export default function handlePriceListRequest() {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -10,19 +10,19 @@ export default function handleUnpaidItemsRequest() {
     const [loading, setLoading] = useState(false);
 
 
-    function handleRequest (clientID) {
+    function handleRequest (productID) {
         // console.log(res)
         setLoading(true)
         axios({
             axiosInstance: axios,
             method: "POST",
-            url:"s/orders/client/items/noInvoice",
+            url:"s/recipes/form/prices",
             headers: {
                 "authorization": authHeader()
-            },
-            data: {
-                "clientID" : clientID
-            } 
+            }, 
+            data:{
+                "productID": productID,
+            }
         }).then((response)=>{
             setRes(response.data)
             //console.log(res);

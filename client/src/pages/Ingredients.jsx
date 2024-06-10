@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import Searchbar_filter from '../components/Searchbar'
 import IngredientCard from '../components/IngredientCard'
 import FloatIcon from '../components/FloatIcon'
-import handleIngExtRequest from '../hooks/handleIngExtRequest'
+import handleIngExtRequest from '../hooks/ingredients/handleIngExtRequest'
 import Loading from '../components/Loading'
 //Temp
 

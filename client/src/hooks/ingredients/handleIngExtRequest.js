@@ -1,8 +1,8 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handlePriceListRequest() {
+export default function handleIngExtRequest() {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -10,18 +10,15 @@ export default function handlePriceListRequest() {
     const [loading, setLoading] = useState(false);
 
 
-    function handleRequest (productID) {
-        // console.log(res)
+    useEffect(()=>handleRequest(),[])
+    function handleRequest () {
         setLoading(true)
         axios({
             axiosInstance: axios,
-            method: "POST",
-            url:"s/recipes/form/prices",
+            method: "GET",
+            url:"s/ing/all/noRecipes",
             headers: {
                 "authorization": authHeader()
-            }, 
-            data:{
-                "productID": productID,
             }
         }).then((response)=>{
             setRes(response.data)
@@ -34,6 +31,6 @@ export default function handlePriceListRequest() {
         setLoading(false)
         
     }
-    return [res, error, loading, handleRequest];
+    return [res, error, loading];
     
   }

@@ -12,9 +12,10 @@ router.get("/all", isLoggedIn, (req, res) =>{
         if(err){
            console.log(err)
         } else {
-           res.send(result)
+           
         }
    });
+   res.send(result)
 });
 router.post("/ID", isLoggedIn, (req, res) =>{
     const orderID = req.body.orderID;
@@ -25,9 +26,10 @@ router.post("/ID", isLoggedIn, (req, res) =>{
         if(err){
            console.log(err)
         } else {
-           res.send(result)
+           
         }
    });
+   res.send(result)
 });
 router.post("/ID/ing", isLoggedIn, (req, res) =>{
     const orderID = req.body.orderID;
@@ -43,9 +45,10 @@ router.post("/ID/ing", isLoggedIn, (req, res) =>{
         if(err){
            console.log(err)
         } else {
-           res.send(result)
+           
         }
    });
+   res.send(result)
 });
 
 router.post("/all/date", isLoggedIn, (req, res) =>{
@@ -54,9 +57,10 @@ router.post("/all/date", isLoggedIn, (req, res) =>{
         if(err){
            console.log(err)
         } else {
-           res.send(result)
+           
         }
    });
+   res.send(result)
 });
 router.get("/all/noInvoice", isLoggedIn, (req, res) =>{
     db.query(`SELECT a.*, CONCAT(company," (", first_name, " ", last_name, ")") AS client 
@@ -68,9 +72,10 @@ router.get("/all/noInvoice", isLoggedIn, (req, res) =>{
         if(err){
            console.log(err)
         } else {
-           res.send(result)
+          
         }
    });
+   res.send(result)
 });
 router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
@@ -83,10 +88,10 @@ router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {
                 if(err){
                     console.log(err)
                 } else{
-                    res.send(result)
+                    
                 };
             })
-            
+            res.send(result)          
 });
 router.post("/client/items/noInvoice", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
@@ -105,25 +110,25 @@ router.post("/client/items/noInvoice", isLoggedIn, (req, res, next) => {
                 if(err){
                     console.log(err)
                 } else{
-                    res.send(result)
+                    
                 };
             })
-            
+    res.send(result)     
 });
 router.get("/all/items/noInvoice", isLoggedIn, (req, res, next) => {   
 
-
-            db.query(`SELECT ID, product_name AS name, DATE_FORMAT(order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date  
-            FROM order_items 
-            WHERE invoiceID IS NULL`, 
-            [clientID],
-            (err, result) =>{
-                if(err){
-                    console.log(err)
-                } else{
-                    res.send(result)
-                };
-            })
+    db.query(`SELECT ID, product_name AS name, DATE_FORMAT(order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(delivery_date , "%d.%m.%y") AS delivery_date  
+    FROM order_items 
+    WHERE invoiceID IS NULL`, 
+    [clientID],
+    (err, result) =>{
+        if(err){
+            console.log(err)
+        } else{
+            
+        };
+    })
+    res.send(result)
             
 });
 router.post("/all/client", isLoggedIn, (req, res, next) => {   
@@ -138,10 +143,9 @@ router.post("/all/client", isLoggedIn, (req, res, next) => {
                 if(err){
                     console.log(err)
                 } else{
-                    res.send(result)
                 };
             })
-            
+    res.send(result)       
 });
 router.put("/new", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
@@ -151,10 +155,10 @@ router.put("/new", isLoggedIn, (req, res, next) => {
                 if(err){
                     console.log(err)
                 } else{
-                    res.send(result)
+                    
                 };
             })
-            
+    res.send(result)         
 });
 router.put("/new/item", isLoggedIn, (req, res, next) => {   
     const orderID = req.body.orderID;
@@ -205,7 +209,6 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
                                                 if(berr){
                                                     console.log(berr)
                                                 } else{
-                                                    res.send("success");
                                                 };
                                             })
                                         };
@@ -216,7 +219,7 @@ router.put("/new/item", isLoggedIn, (req, res, next) => {
                     })
                 };
             })
-            
+    res.send("success");        
 });
 
 router.put("/update", isLoggedIn, (req, res, next) => {
@@ -241,9 +244,10 @@ router.put("/update", isLoggedIn, (req, res, next) => {
                 } else{
                 }
             })
-            res.send("success")
+            
         }
     })
+    res.send("success")
 });
 router.put("/update/items", isLoggedIn, (req, res, next) => {
     const ID = req.body.ID;
@@ -293,7 +297,7 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                                 if(aaaerr){
                                     console.log(aaaerr)
                                 } else{
-                                    res.send("success");
+                                    
                                 };
                             })
                         };
@@ -317,17 +321,18 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
                                 if(berr){
                                     console.log(bberr)
                                 } else{
-                                    res.send("success");
+                                    
                                 };
                             })
                         };
                     })
                 }
             })
-                        };
-                    })
+            };
+        })
         };
     });
+    res.send("success");
      
 });
 router.put("/update/items/all", isLoggedIn, (req, res, next) => {
@@ -504,7 +509,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                                 if(berr){
                                     console.log(berr)
                                 } else{
-                                    res.send("success");
+                                    
                                 };
                             })
                         }
@@ -513,6 +518,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
            });
         }
    });
+   res.send("success");
 });
 
 router.delete("/delete", isLoggedIn, (req, res) => {
@@ -526,11 +532,12 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                 if(berr){
                    console.log(berr)
                 } else {
-                   res.send(bresult)
+                   
                 }
            });
         }
    });
+   res.send(bresult)
 });
 
 module.exports = router;

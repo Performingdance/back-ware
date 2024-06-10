@@ -1,8 +1,8 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleInvoiceRequest() {
+export default function handleInvoicenoRequest() {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -16,12 +16,24 @@ export default function handleInvoiceRequest() {
         axios({
             axiosInstance: axios,
             method: "GET",
-            url:"s/invoices/all",
+            url:"s/invoices/invoiceno",
             headers: {
                 "authorization": authHeader()
             }, 
         }).then((response)=>{
-            setRes(response.data)
+            if(!response.data.length){
+                const newRes = [{
+                    ID: 0, 
+                    name: "Neue Rechnung" 
+               }]
+               setRes(newRes)
+
+            }else{
+                const addRes = 
+                    [{ID: 0, name: "Neue Rechnung"}, ...response.data]
+            
+                setRes(addRes)
+            }
             //console.log(res);
         }).catch((err) => {
             setError(err)

@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import RecipeCard from '../components/RecipeCard';
 import FloatIcon from '../components/FloatIcon';
 import Searchbar_filter from '../components/Searchbar';
-import handleRecipesRequest from '../hooks/handleRecipesRequest';
+import handleRecipesRequest from '../hooks/recipes/handleRecipesRequest';
 import Loading from '../components/Loading';
 
 

@@ -1,28 +1,27 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleFormRequest(update) {
+export default function handleClientSelectRequest(update){
 
-    // handle api request 
-    const [res, setRes] = useState([])
+    const [res, setRes] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-
-    useEffect(()=>handleRequest(),[update])
+useEffect(()=> handleRequest,[update])
+    
     function handleRequest () {
         setLoading(true)
         axios({
             axiosInstance: axios,
             method: "GET",
-            url:"s/form/all",
+            url:"s/clients/select",
             headers: {
                 "authorization": authHeader()
             }
         }).then((response)=>{
             setRes(response.data)
-            //console.log(res);
+            //console.log(response.data);
         }).catch((err) => {
             setError(err)
             //console.log(err);
@@ -31,6 +30,9 @@ export default function handleFormRequest(update) {
         setLoading(false)
         
     }
-    return [res, error, loading];
+
+   
+
+    return [res, error, loading,handleRequest];
     
-  }
+}

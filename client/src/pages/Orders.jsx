@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Searchbar_filter from '../components/Searchbar'
 import FloatIcon from '../components/FloatIcon.jsx'
-import handleOrderRequest from '../hooks/handleOrderRequest.js'
+import handleOrderRequest from '../hooks/orders/handleOrderRequest.js'
 import { OrderCard } from '../components/OrderCard.jsx'
-import handleOrderIngRequest from '../hooks/handleOrderIngRequest.js'
+import handleOrderProdRequest from '../hooks/orders/handleOrderProdRequest.js'
 import { AddInvoicePopup } from '../components/Popup.jsx'
 // temp 
 
@@ -18,7 +18,7 @@ function Orders() {
   const [editID, setEditID] = useState(0)
   const [editBtn, setEditBtn] = useState(0)
   const [_editBtn, set_EditBtn] = useState(0)
-  const [products, proError, proLoading] = handleOrderIngRequest(editID);
+  const [products, proError, proLoading] = handleOrderProdRequest(editID);
   const [editOrder, setEditOrder] = useState({})
   let editInvoiceId = -1
   const [newInvoicePrompt, setNewInvoicePrompt] = useState(false)

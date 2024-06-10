@@ -1,8 +1,8 @@
-import axios from '../apis/backWare';
+import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
-import authHeader from '../services/auth-header';
+import authHeader from '../../services/auth-header';
 
-export default function handleRecipeProductsRequest(recipeID) {
+export default function handleRecipeIngRequest(recipeID, ingRes, delRes, edit) {
 
     // handle api request 
     const [res, setRes] = useState([])
@@ -10,19 +10,17 @@ export default function handleRecipeProductsRequest(recipeID) {
     const [loading, setLoading] = useState(false);
 
 
-
-
-    useEffect(()=>handleRequest(),[recipeID])
+    useEffect(()=>handleRequest(),[recipeID, ingRes, delRes,edit])
     function handleRequest () {
         setLoading(true)
         axios({
             axiosInstance: axios,
             method: "POST",
-            url:"s/recipes/products",
+            url:"s/recipes/ing/id",
             headers: {
                 "authorization": authHeader()
             },
-            data: {
+            data:{
                 "recipeID": recipeID
             }
         }).then((response)=>{
