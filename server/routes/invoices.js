@@ -395,7 +395,9 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
 router.put("/new", isLoggedIn, (req, res, next) => {
     const clientID = req.body.clientID;
     const invoice_date = req.body.invoice_date
+    let invoice_number = ""
     let invoiceID = -1
+    let margeID = -1
 
     db.query(`SELECT a.last_invoice, clients.margeID
         FROM (SELECT MAX(invoice_number) as last_invoice 
@@ -407,8 +409,8 @@ router.put("/new", isLoggedIn, (req, res, next) => {
         if(err){
             console.log(err)
         } else{
-        const invoice_number = result[0].last_invoice +1;
-        const margeID = result[0].margeID;
+            invoice_number = result[0].last_invoice +1;
+            margeID = result[0].margeID;
         db.query(`INSERT INTO invoices (clientID, invoice_number, invoice_date, margeID) VALUES (?,?,?,?)`, 
         [clientID, invoice_number, invoice_date, margeID], 
         (err, result) =>{
