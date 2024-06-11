@@ -414,13 +414,13 @@ router.put("/new", isLoggedIn, (req, res, next) => {
             if(err){
                 console.log(err)
             } else{
-                res.send("success")
+
             };
         })
         };
         
     })
-
+    res.send("success")
 });
 
 
