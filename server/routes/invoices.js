@@ -423,7 +423,7 @@ router.put("/new", isLoggedIn, (req, res, next) => {
         };
         
     })
-    res.send({invoice_number: invoice_number, invoiceID : invoiceID})
+    res.send({"invoice_number": invoice_number, "invoiceID" : invoiceID})
 });
 
 
