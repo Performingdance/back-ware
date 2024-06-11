@@ -26,11 +26,12 @@ router.post("/new", isLoggedIn, (req, res) => {
 
     const name = req.body.name;
     const marge_pc = req.body.marge_pc;
+    const tax = req.body.tax || 1;
     
 
 
-    db.query("INSERT INTO marges (name, marge_pc) VALUES (?, ?)", 
-    [name, marge_pc], 
+    db.query("INSERT INTO marges (name, marge_pc, tax) VALUES (?, ?, ?)", 
+    [name, marge_pc, tax], 
     (err, result) =>{
         if(err){
             console.log(err)
@@ -55,9 +56,10 @@ router.put("/update", isLoggedIn, (req, res) => {
     const ID = req.body.ID;
     const name = req.body.name;
     const marge_pc = req.body.marge_pc;
+    const tax = req.body.tax;
 
-    db.query("UPDATE marges SET name = ?, marge_pc = ? WHERE ID = ?", 
-    [name, marge_pc, ID], 
+    db.query("UPDATE marges SET name = ?, marge_pc = ?, tax = ? WHERE ID = ?", 
+    [name, marge_pc, tax, ID], 
     (err, result) =>{
         if(err){
             console.log(err)
@@ -86,7 +88,7 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                         } else {
                         }
                    });
-                   res.send(bresult)
+                   res.send("success")
                 }
            });
         }else{

@@ -127,7 +127,7 @@
 04.06. 1,5h
 05.06. 1h
 09.06. 2h
-10.06. 1h
+10.06. 2h
 
 Kosten:
     Node server Render
@@ -158,7 +158,6 @@ Daylist Update - check
 order -  add to invoice: product_name wird nicht übernommen check
 
 
-token check -> Response: location (/home) + next (original page)
 Order_Items - Daylist verknüpfung überprüfen (Löschen aus der Daylist - auch aus Order?)
 
 Preisliste - Kategorie, vorgeschlagen, gesetzt
@@ -174,7 +173,7 @@ Preisliste - Kategorie, vorgeschlagen, gesetzt
          UI überarbeiten - Tabellenstruktur
          Pdf erstellen
     Bestellungen
-    Rechnung öffnen -> invoices/edit:ID
+    Rechnung öffnen -> invoices/ID
     zu Rechnung hinzufügen / neue erstellen prompt
 
 Update Rezept Nährwerte in ingredients-db

@@ -26,7 +26,6 @@ function EditInvoice  () {
 
     let invoiceID = window.location.pathname.split("/")[2]
     const [togglePrompt, setTogglePrompt] = useState(false);
-    const [toggleBrutto, setToggleBrutto] = useState(false);
     const [addItemPrompt, setAddItemPrompt] = useState(false);
     const [addClientItemPrompt, setAddClientItemPrompt] = useState(false);
     const [addOrderPrompt, setAddOrderPrompt] = useState(false);
@@ -62,6 +61,7 @@ function EditInvoice  () {
       useEffect(()=>handleMRequest(), [edit]);
       useEffect(()=> handleCRequest(),[edit]);
 
+      const [toggleBrutto, setToggleBrutto] = useState(InvoiceRes?.tax || false);
 
 
     let invoice_dateRef = useRef()
