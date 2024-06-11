@@ -418,12 +418,13 @@ router.put("/new", isLoggedIn, (req, res, next) => {
                 console.log(err)
             } else{
                 invoiceID = result.insertId
+                res.send({"invoice_number": invoice_number, "invoiceID" : invoiceID})
+
             };
         })
         };
         
     })
-    res.send({"invoice_number": invoice_number, "invoiceID" : invoiceID})
 });
 
 
