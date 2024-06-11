@@ -651,7 +651,7 @@ export function AddInvoicePopup({
                   editref={editRef.current}
                   options={invoices}
                   onSelect={(val)=>{[editRef.current=val, setSelectedInvoiceID(-1)]}}
-                  onChange={(val) =>{setSelectedInvoiceID(val)}}
+                  onChange={(val) =>{setSelectedInvoiceID(val), setNewInvoicePrompt(true)}}
                   selectedID={selectedInvoiceID}
                   placeholder='Rechungsnummer wählen...'
                   open={invoiceOpen}
@@ -659,7 +659,7 @@ export function AddInvoicePopup({
                   className='i-select popup-input' 
                   defaultValue={""}
                   />
-                  {(selectedInvoiceID == 0) &&
+                  {(selectedInvoiceID == 0) && newInvoicePrompt &&
                   <NewInvoicePopup
                   title={"neue Rechung"}
                   forwardEdit={false}
@@ -749,7 +749,7 @@ export function AddInvoiceOrderPopup({
                 if(forwardEdit == false){
                   return
                 }else{
-                  window.location.pathname = `/invoices/edit:${defaultInvoiceID}`
+                  window.location.pathname = `/invoices/${defaultInvoiceID}`
                 }
             }).catch((err) => {
                 setAddError(err)
