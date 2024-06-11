@@ -486,14 +486,14 @@ export function NewInvoicePopup({
                 "invoice_date": date,
             }
         }).then((response)=>{
-          
+            
             setOpen(false)
             if(forwardEdit == false){
-              invoiceID(response.invoiceID)
-              invoiceNo(response.invoiceNo)
+              invoiceID(response.data.invoiceID)
+              invoiceNo(response.data.invoiceNo)
               return
             }else{
-              window.location.pathname = `/invoices/${response.data.insertId}`
+              window.location.pathname = `/invoices/${response.data.invoiceID}`
             }
             
          
@@ -646,8 +646,8 @@ export function AddInvoicePopup({
                   id ="invoices"
                   editref={editRef.current}
                   options={invoices}
-                  onSelect={(val)=>{[editRef.current=val, setSelectedInvoiceID(-1)]}}
-                  onChange={(val) =>{setSelectedInvoiceID(val), setNewInvoicePrompt(true)}}
+                  onSelect={(val)=>{editRef.current=val, setSelectedInvoiceID(-1)}}
+                  onChange={(val) =>{setSelectedInvoiceID(val), val == 0? setNewInvoicePrompt(true):setNewInvoicePrompt(false)}}
                   selectedID={selectedInvoiceID}
                   placeholder='Rechungsnummer wählen...'
                   open={invoiceOpen}
@@ -663,7 +663,7 @@ export function AddInvoicePopup({
                   defaultClientName={defaultClientName}
                   invoiceID={(val)=>{setSelectedInvoiceID(val)}}
                   invoiceNo={(val)=>{setInvoiceNo(val)}}
-                  onClickOK={()=>setNewInvoicePrompt(false)}
+                  onClickOK={()=>{setNewInvoicePrompt(false)}}
                   onClickAbort={()=>setNewInvoicePrompt(false)} />}
             <div className='popup-card-btns'>
                 <button className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Weiter</button>
@@ -683,7 +683,6 @@ export function AddInvoiceOrderPopup({
   onClickAbort,
   defaultInvoiceID,
   defaultClientID,
-  defaultInvoiceName,
   defaultClientName
 
 }){
