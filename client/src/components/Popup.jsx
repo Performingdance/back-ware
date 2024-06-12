@@ -1018,8 +1018,8 @@ export function AddInvoiceProdPopup({
   let amountRef = useRef("1")
   let taxRef = useRef("7")
   let product_nameRef = useRef("")
-  let price_pieceRef = useRef("0")
-  let price_totalRef = useRef("0")
+  let price_pieceRef = useRef()
+  let price_totalRef = useRef()
   
  
   let editRef = useRef(0)
@@ -1130,7 +1130,7 @@ export function AddInvoiceProdPopup({
             <p className='lb-title '>MwSt (%)</p>
             <input className='i-select' type="number" defaultValue={taxRef.current} onChange={(e)=>{taxRef.current = e.target.value}}></input>
             <p className='lb-title '>Einzelpreis</p>
-            <input className='i-select' type="number" value={price_pieceRef.current} onChange={(e)=>{price_pieceRef.current = e.target.value}}></input> 
+            <input className='i-select' type="number" defaultValue={price_pieceRef.current.replace(",",".")} onChange={(e)=>{price_pieceRef.current = e.target.value}}></input> 
             <p className='lb-title '>Gesamtpreis</p>
             <input className='i-select' type="number" defaultValue={price_totalRef.current} onChange={(e)=>{price_totalRef.current = e.target.value}}></input>                    
 

@@ -5,6 +5,7 @@ import FloatIcon from '../components/FloatIcon';
 import Searchbar_filter from '../components/Searchbar';
 import handleProductRequest from '../hooks/products/handleProductRequest';
 import Loading from '../components/Loading';
+import errorHandling from '../services/errorHandling';
 
 
 
@@ -13,6 +14,7 @@ import Loading from '../components/Loading';
 export default function Products() {
 
 const [res, error, loading] =  handleProductRequest();
+useEffect(()=>errorHandling(error),[Error])
 //console.log(res)
 const [filteredData,setFilteredData] = useState(res);
 useEffect(()=>setFilteredData(res),[res])

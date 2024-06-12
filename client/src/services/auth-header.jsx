@@ -1,4 +1,3 @@
-import { LoginPopup } from "../components/Popup";
 
 export default function authHeader(){
     //console.log(localStorage.getItem("token"))
