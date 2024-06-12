@@ -17,9 +17,10 @@ import { AddInvoiceClientPopup, AddInvoiceOrderPopup, AddInvoiceProdPopup, Promp
 import handleInvoiceProdRequest from '../hooks/invoices/handleInvoiceProdRequest'
 import handleInvoiceIDRequest from '../hooks/invoices/handleInvoiceIDRequest';
 import handleClientSelectRequest from '../hooks/clients/handleClientSelectRequest';
-import handleMargesRequest from '../hooks/handleMargesRequest';
+import handleMargesRequest from '../hooks/marges/handleMargesRequest';
 import handleInvoiceMargeUpdateRequest from '../hooks/invoices/handleInvoiceMargesUpdateRequest';
 import handleInvoiceTaxRequest from '../hooks/invoices/handleInvoiceTaxRequest';
+import errorHandling from '../services/errorHandling';
 
 
 function EditInvoice  () {
@@ -109,6 +110,7 @@ function EditInvoice  () {
           //console.log(response.data);
 
       }).catch((err) => {
+          errorHandling(err)
           setSubError(err)
           //console.log(err);
       }) 
@@ -136,6 +138,7 @@ function EditInvoice  () {
           
           //console.log(response.data);
       }).catch((err) => {
+          errorHandling(err)
           setDelError(err)
           //console.log(err);
       })
@@ -164,6 +167,7 @@ function EditInvoice  () {
           //console.log(response.data);
 
       }).catch((err) => {
+          errorHandling(err)
           setDelError(err)
           //console.log(err);
       }) 

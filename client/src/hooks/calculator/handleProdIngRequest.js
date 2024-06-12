@@ -1,6 +1,7 @@
 import axios from '../../apis/backWare';
 import authHeader from '../../services/auth-header';
 import { useState } from 'react';
+import errorHandling from '../../services/errorHandling';
 
 
 export default function handleProdIngRequest(){
@@ -32,6 +33,7 @@ export default function handleProdIngRequest(){
 
 
   }).catch(function (error) {
+    errorHandling(error)
     console.log(error.message);
     setError(error.message)
     setLoading(false);

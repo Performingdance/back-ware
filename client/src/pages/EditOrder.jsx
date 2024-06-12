@@ -12,10 +12,11 @@ import check from '../assets/icons/check-all.svg'
 import trash from '../assets/icons/trash.svg'
 import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
-import NewRecipePopup, { AddInvoicePopup, ProductOrderPopup, PromptPopup } from '../components/Popup';
+import AddInvoicePopup, {ProductOrderPopup, PromptPopup } from '../components/Popup';
 import handleOrderIDRequest from '../hooks/orders/handleOrderIDRequest';
 import { DateLine } from '../components/Calendar';
 import { LabelTextInput } from '../components/LabelBox';
+import errorHandling from '../services/errorHandling';
 
 
 function EditOrder  () {
@@ -139,6 +140,7 @@ function EditOrder  () {
         setUpdateOrder(updateOrder+1)
 
       }).catch((err) => {
+          errorHandling(err)
           setSubError(err)
           //console.log(err);
       }) 
@@ -168,6 +170,7 @@ function EditOrder  () {
           
           //console.log(response.data);
       }).catch((err) => {
+          errorHandling(err)
           setDelError(err)
           //console.log(err);
       })
@@ -196,6 +199,7 @@ function EditOrder  () {
           //console.log(response.data);
 
       }).catch((err) => {
+          errorHandling(err)
           setDelError(err)
           //console.log(err);
       }) 

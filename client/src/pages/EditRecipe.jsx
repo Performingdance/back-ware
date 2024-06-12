@@ -8,6 +8,7 @@ import RecipeIng, { RecipeForm, RecipeIns } from '../components/Recipe';
 import SVGIcon from '../components/SVG';
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
+import errorHandling from '../services/errorHandling'
 
 
 
@@ -32,6 +33,7 @@ function handleRecipeRequestByID(){
           setRes(response.data[0])
           //console.log(res);
       }).catch((err) => {
+          errorHandling(err)
           setError(err)
           //console.log(err);
       })
@@ -76,6 +78,7 @@ const [openTab, setOpenTab] = useState("forms")
             setNameRes(response.data)
             //console.log(res);
         }).catch((err) => {
+            errorHandling(err)
             setNameError(err)
             //console.log(err);
         })
@@ -102,6 +105,7 @@ const [openTab, setOpenTab] = useState("forms")
         console.log(response.data);
         window.location.href = "/recipes";
     }).catch((err) => {
+        errorHandling(err)
         setDelError(err)
         //console.log(err);
     })

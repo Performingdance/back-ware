@@ -1,6 +1,7 @@
 import axios from '../../apis/backWare';
 import authHeader from '../../services/auth-header';
 import { useState } from 'react';
+import errorHandling from '../../services/errorHandling';
 
 
 export default function handleNutriRequest(){
@@ -30,6 +31,7 @@ export default function handleNutriRequest(){
 
 
   }).catch(function (error) {
+    errorHandling(error)
     console.log(error.message);
     setError(error.message)
     setLoading(false);

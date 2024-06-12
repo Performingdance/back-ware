@@ -3,6 +3,7 @@ import '../styles/Calculator.css'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import handlePriceListSugRequest from '../hooks/calculator/handlePriceListRequest';
+import errorHandling from '../services/errorHandling';
 
 
 // // BVP Rechner 
@@ -119,6 +120,7 @@ function handlePriceSubmit() {
   
   
     }).catch(function (error) {
+      errorHandling(err)
       console.log(error.message);
       setError(error.message)
       setLoading(false);

@@ -1,36 +1,3 @@
-// [
-//     {
-//         "ID": 2,
-//         "clientID": 3,
-//         "invoice_number": 101,
-//         "invoice_date": "2023-03-18T00:00:00.000Z",
-//         "total_sum_netto": null,
-//         "total_sum_brutto": null,
-//         "is_paid": null,
-//         "margeID": 1
-//     },
-//     {
-//         "ID": 3,
-//         "clientID": 4,
-//         "invoice_number": 102,
-//         "invoice_date": "2023-03-18T00:00:00.000Z",
-//         "total_sum_netto": null,
-//         "total_sum_brutto": null,
-//         "is_paid": null,
-//         "margeID": 1
-//     },
-//     {
-//         "ID": 4,
-//         "clientID": 2,
-//         "invoice_number": 103,
-//         "invoice_date": "2023-03-18T00:00:00.000Z",
-//         "total_sum_netto": null,
-//         "total_sum_brutto": null,
-//         "is_paid": null,
-//         "margeID": 2
-//     }
-// ]
-
 import React, {useEffect, useMemo, useState} from 'react';
 import '../styles/IngredientCard.css';
 import SVGIcon from './SVG';

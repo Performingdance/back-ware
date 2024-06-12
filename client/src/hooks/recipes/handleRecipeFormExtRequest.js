@@ -1,6 +1,7 @@
 import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../../services/auth-header';
+import errorHandling from '../../services/errorHandling';
 
 export default function handleRecipeFormRequest(recipeID, update) {
     //console.log(recipeID)
@@ -46,6 +47,7 @@ export default function handleRecipeFormRequest(recipeID, update) {
             setRes(response.data)
             //console.log(response.data)
         }).catch((err) => {
+            errorHandling(err)
             setError(err)
             //console.log(err);
         })

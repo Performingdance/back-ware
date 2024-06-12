@@ -1,6 +1,7 @@
 import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../../services/auth-header';
+import errorHandling from '../../services/errorHandling';
 
 export default function handleInvoiceIDRequest(invoiceID, update) {
    // console.log(clientID)
@@ -29,6 +30,7 @@ export default function handleInvoiceIDRequest(invoiceID, update) {
             setRes(response.data[0])
             //console.log(res);
         }).catch((err) => {
+            errorHandling(err)
             setError(err)
             //console.log(err);
         })

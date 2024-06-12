@@ -14,6 +14,7 @@ import { ProductOrderPopup, PromptPopup } from '../components/Popup'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import Loading from '../components/Loading'
+import errorHandling from '../services/errorHandling'
 
 function handleDaylistDayRequest(date, deleteID, update){
   //api {{baseURL}}s/daylist/all/day
@@ -39,6 +40,7 @@ function handleDaylistDayRequest(date, deleteID, update){
           setRes(response.data)
           //console.log(res);
       }).catch((err) => {
+        errorHandling(err)
           setError(err)
           //console.log(err);
       })
@@ -130,6 +132,7 @@ function Daylist() {
 
           //console.log(response.data);
       }).catch((err) => {
+          errorHandling(err)
           setUpdError(err)
           console.log(err);
       })
@@ -157,6 +160,7 @@ function Daylist() {
         setUpdateDaylist(updateDaylist+1)
         //console.log(response.data);
     }).catch((err) => {
+        errorHandling(err)
         setDelError(err)
         //console.log(err);
     })

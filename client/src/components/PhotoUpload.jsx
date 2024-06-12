@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import config from '../config.json'
+import errorHandling from "../services/errorHandling";
 
 
 
@@ -49,6 +50,7 @@ export function FileUploadPopUp({
         //console.log(response)
         setRes("Erfolgreich hochgeladen")
       }).catch((err) => {
+          errorHandling(err)
           setError(err)
           //console.log(err);
       })
@@ -79,6 +81,7 @@ export function FileUploadPopUp({
         //console.log(response)
         setRes("Erfolgreich Zurückgesetzt")
       }).catch((err) => {
+          errorHandling(err)
           setError(err)
           //console.log(err);
       })

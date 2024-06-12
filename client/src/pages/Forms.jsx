@@ -14,7 +14,7 @@ import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import { NewFormPopup } from '../components/Popup'
 import { LabelInput } from '../components/LabelBox'
-
+import errorHandling from '../services/errorHandling';
 
 function Forms() {
   const [edit, setEdit] = useState(false);
@@ -29,6 +29,11 @@ function Forms() {
   const [delRes, setDelRes] = useState([])
   const [delError, setDelError] = useState("");
   const [delLoading, setDelLoading] = useState(false);
+
+  const [updRes, setUpdRes] = useState([])
+  const [updError, setUpdError] = useState("");
+  const [updLoading, setUpdLoading] = useState(false);
+
   let editNameRef = useRef()
   let editIDRef = useRef()
   let editBruchRef = useRef()
@@ -51,6 +56,7 @@ function Forms() {
         console.log(response.data);
         setUpdateForms(updateForms+1);
     }).catch((err) => {
+        errorHandling(err)
         setDelError(err)
         //console.log(err);
     })
@@ -60,7 +66,7 @@ function Forms() {
   }
 
   function handleSubmit(){
-    setDelLoading(true)
+    setUpdLoading(true)
     axios({
         axiosInstance: axios,
         method: "PUT",
@@ -74,11 +80,12 @@ function Forms() {
             "bruch": editBruchRef.current
         }
     }).then((response)=>{
-        setDelRes(response.data)
+        setUpdRes(response.data)
         console.log(response.data);
         setUpdateForms(updateForms+1)
     }).catch((err) => {
-        setDelError(err)
+        errorHandling(err)
+        setUpdError(err)
         //console.log(err);
     })
 
@@ -135,8 +142,12 @@ function Forms() {
     <Searchbar_filter data={res} searchkey={"name"} filteredData={(searchData) => {setFilteredData(searchData)}} class="searchbar-header" btn_class="searchbar-btn" input_class="searchbar-input"/>
     {filteredData.length && !error && !loading? formCards: 
     <h1 className=''>Keine Formen verfügbar</h1>}
-    {error && <h3> {error.message} </h3>}
+    {error  && <h3> {error.message} </h3>}
+    {delError  && <h3> {delError.message} </h3>}
+    {updError  && <h3> {updError.message} </h3>}
     {loading && <Loading/>}
+    {updLoading && <Loading/>}
+    {delLoading && <Loading/>}
     <button className='r-ins-add-btn r-ins-card jc-c' key={"add-btn"} onClick={()=>setAddOpen(!addOpen)} ><SVGIcon src={plus} class="svg-icon-lg"/></button>
     {addOpen && <NewFormPopup key={"popup"} title={"Neue Form"} onClickOK={()=>{setUpdateForms(updateForms+1),setAddOpen(false)}} onClickAbort={()=>setAddOpen(false)}/>}
     

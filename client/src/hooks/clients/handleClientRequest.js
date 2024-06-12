@@ -2,6 +2,7 @@ import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../../services/auth-header';
 import logoutToken from '../../services/logout';
+import errorHandling from '../../services/errorHandling';
 
 export default function handleClientRequest(){
 
@@ -25,6 +26,7 @@ export default function handleClientRequest(){
                 setRes(response.data)
                 //console.log(res);
             }).catch((err) => {
+                errorHandling(err)
                 setError(err)
                 //console.log(err);
             })

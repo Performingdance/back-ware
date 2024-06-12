@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import Header from '../components/Header'
-import login from '../assets/icons/login.svg'
 import logout from '../assets/icons/logout.svg'
-import person_plus from '../assets/icons/person-plus.svg'
 import { AlertPopup, LoginPopup } from '../components/Popup'
 import SVGIcon from '../components/SVG'
 import { useAuth } from '../services/auth/AuthProvider'

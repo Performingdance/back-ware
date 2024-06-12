@@ -4,12 +4,8 @@ import '../styles/IngredientCard.css'
 import handleIngIDRequest from '../hooks/ingredients/handleIngIDRequest'
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
-import pencil_square from '../assets/icons/pencil-square.svg'
-import x_circle from '../assets/icons/x-circle.svg'
-import check from '../assets/icons/check-all.svg'
-import trash from '../assets/icons/trash.svg'
-import SVGIcon from '../components/SVG';
 import { PromptPopup } from '../components/Popup';
+import errorHandling from '../services/errorHandling';
 
 
 function EditIng  () {
@@ -128,6 +124,7 @@ function EditIng  () {
                 window.location.href = "/ingredients"
 
               }).catch((err) => {
+                  errorHandling(err)
                   console.log(err);
                   return
 

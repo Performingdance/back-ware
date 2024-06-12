@@ -14,9 +14,10 @@ import handleClientSelectRequest from '../hooks/clients/handleClientSelectReques
 import handleInvoicenoRequest from '../hooks/invoices/handleInvoicenoRequest';
 import handleOpenOrderRequest from '../hooks/orders/handleOpenOrderRequest';
 import handleFormRequest from '../hooks/recipes/handleFormRequest';
-import handleMargesRequest from '../hooks/handleMargesRequest';
+import handleMargesRequest from '../hooks/marges/handleMargesRequest';
 import handleProductRequest from '../hooks/products/handleProductRequest';
 import handleUnpaidItemsRequest from '../hooks/invoices/handleUnpaidItemsRequest';
+import errorHandling from '../services/errorHandling';
 
 
 
@@ -61,6 +62,7 @@ export default function NewRecipePopup({
             setAddError(response.data)
           )
         }).catch((err) => {
+            errorHandling(err)
             setAddError(err.message)
             console.log(err);
         })
@@ -129,6 +131,7 @@ export function NewIngPopup({
             window.location.pathname = `/ingredients/edit:${response.data.insertId}`
             //console.log(response);
         }).catch((err) => {
+            errorHandling(err)
             setAddError(err.message)
             console.log(err);
         })
@@ -212,6 +215,7 @@ export function NewClientPopup({
             setAddError(response.data)
           )
         }).catch((err) => {
+            errorHandling(err)
             setAddError(err.message)
             console.log(err);
         })
@@ -297,6 +301,7 @@ export function NewOrderPopup({
             setAddError(response.data)
           )
         }).catch((err) => {
+            errorHandling(err)
             setAddError(err.message)
             console.log(err);
         })
@@ -399,6 +404,7 @@ export function NewFormPopup({
             setAddError({})
           )
         }).catch((err) => {
+            errorHandling(err)
             setAddError(err)
             console.log(err);
         })
@@ -498,6 +504,7 @@ export function NewInvoicePopup({
             
          
         }).catch((err) => {
+            errorHandling(err)
             setAddError(err.message)
             console.log(err);
         })
@@ -614,6 +621,7 @@ export function AddInvoicePopup({
                   window.location.pathname = `/invoices/${selectedInvoiceID}`
                 }
             }).catch((err) => {
+                errorHandling(err)
                 setAddError(err)
                 console.log(err);
             })
@@ -748,6 +756,7 @@ export function AddInvoiceOrderPopup({
                   window.location.pathname = `/invoices/${defaultInvoiceID}`
                 }
             }).catch((err) => {
+                errorHandling(err)
                 setAddError(err)
                 console.log(err);
             })
@@ -898,6 +907,7 @@ export function AddInvoiceClientPopup({
                   window.location.pathname = `/invoices/edit:${defaultInvoiceID}`
                 }
             }).catch((err) => {
+                errorHandling(err)
                 setAddError(err)
                 console.log(err);
             })
@@ -1085,9 +1095,10 @@ export function AddInvoiceProdPopup({
                 if(forwardEdit == false){
                   return
                 }else{
-                  window.location.pathname = `/invoices/edit:${defaultInvoiceID}`
+                  window.location.pathname = `/invoices/${defaultInvoiceID}`
                 }
             }).catch((err) => {
+                errorHandling(err)
                 setAddError(err)
                 console.log(err);
             })
@@ -1227,6 +1238,7 @@ function handleSubmit (e) {
             setOpen(false)
             onClickOK(false)
         }).catch((err) => {
+            errorHandling(err)
             setAddError(err.message)
             console.log(err);
         })
@@ -1422,6 +1434,7 @@ export function RecipeOrderPopup({
               
                 onClickOK(false)
             }).catch((err) => {
+                errorHandling(err)
                 setAddError(err)
                 console.log(err);
             })
@@ -1631,8 +1644,9 @@ export function ProductOrderPopup({
               
                 onClickOK(false)
             }).catch((err) => {
+                errorHandling(err)
                 setAddError(err)
-                console.log(err);
+                console.log(err)
             })
     
             setAddLoading(false)
@@ -1815,6 +1829,7 @@ function handleSubmit (e) {
               //console.log(res);
               onClickOK(false)
           }).catch((err) => {
+              errorHandling(err)
               setAddError(err)
               //console.log(err);
           })

@@ -9,6 +9,7 @@ import '../styles/Worksheet.css';
 import handleDaylistFormRequest from '../hooks/handleDaylistFormRequest';
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
+import errorHandling from '../services/errorHandling';
 
 
 
@@ -73,6 +74,7 @@ function IngList ({
               
               
                 }).catch(function (error) {
+                  errorHandling(err)
                   console.log(error.message);
                   setCheckedError(error.message)
         
@@ -121,6 +123,7 @@ function IngList ({
           
           
             }).catch(function (error) {
+              errorHandling(err)
               console.log(error.message);
               setCheckedBaseError(error.message)
     

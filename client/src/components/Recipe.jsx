@@ -19,6 +19,7 @@ import handlePriceListRequest from '../hooks/products/handlePriceListRequest'
 import { RecipeFormPopup } from './Popup'
 import { FileUploadPopUp } from './PhotoUpload'
 import config from '../config.json'
+import errorHandling from '../services/errorHandling'
 
 const BASE_URL_IMG_API = config.BASE_URL_IMG_API
 
@@ -44,6 +45,7 @@ function handleInsRequest(recipeID, edit, addRes, delRes){
             setRes(response.data)
             //console.log(res);
         }).catch((err) => {
+            errorHandling(err)
             setError(err)
             //console.log(err);
         })
@@ -160,6 +162,7 @@ export function RecipeForm({
                 setFormsUpdate(formsUpdate+1)
                 //console.log(res);
             }).catch((err) => {
+                errorHandling(err)
                 setError(err)
                 //console.log(err);
             })
@@ -194,6 +197,7 @@ export function RecipeForm({
                 setFormsUpdate(formsUpdate+1)
                 //console.log(res);
             }).catch((err) => {
+                errorHandling(err)
                 setError(err)
                 //console.log(err);
             })

@@ -70,7 +70,7 @@ router.post("/login", (req, res, next) => {
                 const token = jwt.sign({
                     username:result[0].username,
                     userId: result[0].id
-                    }, process.env.REACT_APP_SECRET_KEY, {expiresIn: "10s"}
+                    }, process.env.REACT_APP_SECRET_KEY, {expiresIn: "7d"}
                     );
                 db.query(`UPDATE users SET last_login = now() WHERE id = '${result[0].id}';`);
                 return res.status(200).send({

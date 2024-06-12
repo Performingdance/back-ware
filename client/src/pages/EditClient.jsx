@@ -5,6 +5,8 @@ import { Select, SelectComponent } from '../components/Searchbar';
 import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import { PromptPopup } from '../components/Popup';
+import errorHandling from '../services/errorHandling';
+import handleMargesRequest from '../hooks/marges/handleMargesRequest';
 
 
 
@@ -17,69 +19,24 @@ function EditClient() {
     
     let selectedMargeRef = useRef();
     let editRef = useRef();
-    const [clientExt, setClientExt] = useState([]);
-    const [clError, setClError] = useState("");
-    const [clLoading, setClLoading] = useState(false);
+    const [client, clError, clLoading, handleClRequest] = useState([]); handleClientExtRequest(clientID)
+    const [clientExt, setClientExt] = useState({});
     const [upRes, setUpRes] = useState([]);
     const [upError, setUpError] = useState("");
     const [upLoading, setUpLoading] = useState(false);
-    const [margeData, setMargeData] = useState({})
-    const [margeError, setMargeError] = useState("");
-    const [margeLoading, setMargeLoading] = useState(false);
+    const [margeData, margeError,margeLoading, handleMRequest] = handleMargesRequest();
     const [delRes, setDelRes] = useState([])
     const [delError, setDelError] = useState("");
     const [delLoading, setDelLoading] = useState(false);
-    useEffect(()=>{handleClientExtRequest(clientID), handleMargeRequest()}, [clientID,upRes]) ;
-
+    useEffect(()=>{ handleClRequest(clientID), handleMRequest()}, [clientID,upRes]) ;
+    useEffect(()=>setClientExt(client[0]),[client])
 
     //
-    function handleClientExtRequest(clientID){
 
-          setClLoading(true)
-          axios({
-              axiosInstance: axios,
-              method: "POST",
-              url:"s/clients/byID",
-              headers: {
-                  "authorization": authHeader()
-              },
-              data: {
-                  "clientID": clientID
-              }
-          }).then((response)=>{
-              setClientExt(response.data[0])
-              //console.log(res);
-          }).catch((err) => {
-              setClError(err)
-              //console.log(err);
-          })
-  
-          setClLoading(false)
-         
-      }
-    const handleMargeRequest = () => {
-      setMargeLoading(true)
-      axios({
-          axiosInstance: axios,
-          method: "GET",
-          url:"s/marges/all/name",
-          headers: {
-              "authorization": authHeader()
-          },
-      }).then((response)=>{
-          setMargeData(response.data)
-          //console.log(response.data);
-      }).catch((err) => {
-          setMargeError(err)
-          //console.log(err);
-      })
-
-      setMargeLoading(false)
-      }
 
       // console.log(clientExt.first_name)
     const handleValueChange = (obj, val) =>  {
-      let data = clientExt;
+      let data = client;
      
       data = ({...data, [obj] : val});
       
@@ -88,7 +45,7 @@ function EditClient() {
       return
     }
     const handleMargeChange = () => {
-      let data = clientExt;
+      let data = client;
       const margeID = selectedMargeRef.current || 0;
  
 
@@ -129,6 +86,7 @@ function EditClient() {
               window.location.href = "/clients"
               //console.log(res);
           }).catch((err) => {
+              errorHandling(err)
               setUpError(err)
               //console.log(err);
           })
@@ -158,6 +116,7 @@ function EditClient() {
             window.location.href = "/clients";
             setTogglePrompt(false)
         }).catch((err) => {
+            errorHandling(err)
             setDelError(err)
             //console.log(err);
         })

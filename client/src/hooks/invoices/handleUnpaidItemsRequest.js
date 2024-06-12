@@ -1,6 +1,7 @@
 import axios from '../../apis/backWare';
 import { useEffect, useState } from 'react';
 import authHeader from '../../services/auth-header';
+import errorHandling from '../../services/errorHandling';
 
 export default function handleUnpaidItemsRequest() {
 
@@ -27,6 +28,7 @@ export default function handleUnpaidItemsRequest() {
             setRes(response.data)
             //console.log(res);
         }).catch((err) => {
+            errorHandling(err)
             setError(err)
             //console.log(err);
         })
