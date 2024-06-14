@@ -24,7 +24,7 @@
     text-align: end;
     margin: 0;
 }
-.invoice-div{
+.invoice-div, .invoice-info-div{
     position: relative;
     height: fit-content;
     background-color: var(--bg);
@@ -37,7 +37,12 @@
 .invoice-amount-input{
     width: 2rem;
 }
-
+.invoice-input{
+    width: 12.5rem;
+    margin-inline: 0;
+    padding: 0.3rem;
+    text-align: start;
+}
 .invoice-wrapper{
     width: 80%;
 

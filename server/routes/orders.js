@@ -348,7 +348,7 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
         const delivery_date = item.delivery_date;
         const production_date = item.production_date;
         db.query("UPDATE orders_items SET amount = ?, delivery_date = ?, production_date = ? WHERE ID = ?", 
-        [ amount, delivery_date, production_date, ID], 
+        [ amount, delivery_date, production_date, itemID], 
         (err, result) =>{
             if(err){
                 console.log(err)

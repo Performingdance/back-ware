@@ -240,10 +240,10 @@ function EditInvoice  () {
 
 
       <div className='invoice-wrapper'>
-        <div className='invoice-div'>
+        <div className='invoice-info-div'>
         {((prodErr || invoiceErr) && <p className='errorMsg'>{prodErr.message || invoiceErr.message}</p>)}
           {!edit ?<p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>:
-                    <div className='d-il ai-c'> 
+                    <div className=''> 
                     <p>Kunde:</p> 
                     {clientData && 
                   <SelectComponent 
@@ -263,7 +263,7 @@ function EditInvoice  () {
                       />}
                   </div>}
           {!edit ?<p>Marge: {InvoiceRes? InvoiceRes.marge_name : "-"} </p>:
-                    <div className='d-il ai-c'> 
+                    <div className=' ai-c'> 
                     <p>Marge:</p> 
                     {margeData && 
                   <SelectComponent 
@@ -283,12 +283,12 @@ function EditInvoice  () {
                       />}
                   </div>}
           {!edit ?<p>Rechnungs-Nr.: {InvoiceRes? "#" + InvoiceRes.invoice_number : "# -"} </p>:
-                    <div className='d-il ai-c'> 
+                    <div className=' ai-c'> 
                     <p>Rechnungs-Nr.:</p> 
-                    <input type='number' defaultValue={InvoiceRes? InvoiceRes.invoice_number: 0}  onChange={(e)=>{invoice_numberRef.current = e.target.valueAsNumber}}></input>
+                    <input className='invoice-input' type='number' defaultValue={InvoiceRes? InvoiceRes.invoice_number: 0}  onChange={(e)=>{invoice_numberRef.current = e.target.valueAsNumber}}></input>
                   </div>}
           {!edit? <p>Rechnungsdatum: {InvoiceRes? InvoiceRes.invoice_date : "-"}</p>:         
-          <div className='d-il ai-c'> 
+          <div className=' ai-c'> 
             <p>Rechnungsdatum:</p> 
             <DateLine 
               defaultDay={InvoiceRes? InvoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1"): ""} 
@@ -297,7 +297,7 @@ function EditInvoice  () {
           {!edit? <div>
             <p>Notizen: </p><pre className=''>{InvoiceRes? InvoiceRes.notes : "-"}</pre>
             </div>:
-          <div className='d-il ai-c'>
+          <div className='ai-c'>
             <p>Notizen:</p>
             <LabelTextInput defaultValue={InvoiceRes? InvoiceRes.notes : "-"} onChange={(val)=> notesRef.current = val} />
           </div>}

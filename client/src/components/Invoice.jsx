@@ -142,15 +142,18 @@ export function InvoiceBrutto ({
               </div>
               {(data && !edit) && items}
               {(data && edit) && editItems}
-              <div className='br-t-d'>
-              {/* <div className='invoice-tb-row br-t-d'>
+
+              <div className=''>
+              <div className='invoice-tb-row br-t-d'>
                 <p className='invoice-p'></p>
                 <p className='invoice-p ta-s'>Rechnungssumme netto</p>
                 <p className='invoice-p'></p>
                 <p className='invoice-p'></p>
                 <p className='invoice-p'>{total_netto.toFixed(2).toString().replace('.',',')+"€"}</p>
-              </div> */}
-             
+              </div>
+                           {
+                taxData && sumTax
+               }
               <div className='invoice-tb-row '>
                 <p className='invoice-p'></p>
                 <p className='invoice-p ta-s'>Rechnungssumme brutto</p>
@@ -158,9 +161,7 @@ export function InvoiceBrutto ({
                 <p className='invoice-p'></p>
                 <p className='invoice-p'>{total_brutto.toFixed(2).toString().replace('.',',')+"€"}</p>
               </div>
-              {
-                taxData && sumTax
-               }
+
               </div>
         </div>
         : 

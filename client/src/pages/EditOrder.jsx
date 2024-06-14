@@ -352,7 +352,7 @@ function EditOrder  () {
           </div>:
           <div key={"btns"} className='edit-btns'>
             <button key={"check"} className='edit-btn' onClick={(e)=>[setEdit(false), handleSubmit(e)]}><SVGIcon src={check} class="svg-icon-md"/> </button>
-            <button key={"del"} className='edit-btn' onClick={()=>[setEdit(false), setTogglePrompt(true)]}><SVGIcon src={trash} class="svg-icon-md"/> </button>
+            <button key={"del"} className='edit-btn' onClick={()=>[setTogglePrompt(true)]}><SVGIcon src={trash} class="svg-icon-md"/> </button>
             <button key={"abort"} className='edit-btn' onClick={()=>setEdit(false)}><SVGIcon src={x_circle} class="svg-icon-md"/> </button>
           </div>}
         </div>
