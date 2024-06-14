@@ -428,9 +428,10 @@ router.put("/update", isLoggedIn, (req, res, next) => {
    const invoice_date = req.body.invoice_date;
    const invoice_number = req.body.invoice_number;
    const margeID = req.body.margeID;
+   const notes = req.body.notes;
 
-   db.query("UPDATE invoices SET clientID = ?, invoice_date = ?, invoice_number = ?, margeID = ? WHERE ID = ?", 
-   [clientID, invoice_date, invoice_number, margeID, ID], 
+   db.query("UPDATE invoices SET clientID = ?, invoice_date = ?, invoice_number = ?, margeID = ?, notes = ? WHERE ID = ?", 
+   [clientID, invoice_date, invoice_number, margeID, notes, ID], 
    (err, result) =>{
        if(err){
            console.log(err)

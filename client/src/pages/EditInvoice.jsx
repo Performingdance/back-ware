@@ -21,6 +21,7 @@ import handleMargesRequest from '../hooks/marges/handleMargesRequest';
 import handleInvoiceMargeUpdateRequest from '../hooks/invoices/handleInvoiceMargesUpdateRequest';
 import handleInvoiceTaxRequest from '../hooks/invoices/handleInvoiceTaxRequest';
 import errorHandling from '../services/errorHandling';
+import { LabelTextInput } from '../components/LabelBox';
 
 
 function EditInvoice  () {
@@ -74,6 +75,7 @@ function EditInvoice  () {
     let invoice_numberRef = useRef()
     let margeIDRef = useRef()
     let clientIDRef = useRef()
+    let notesRef = useRef()
 
 
     
@@ -104,7 +106,8 @@ function EditInvoice  () {
               "clientID": clientIDRef.current || InvoiceRes.clientID,
               "invoice_date": invoice_dateRef.current || InvoiceRes.invoice_date,
               "invoice_number": invoice_numberRef.current || InvoiceRes.invoice_number,
-              "margeID": margeIDRef.current || InvoiceRes.margeID
+              "margeID": margeIDRef.current || InvoiceRes.margeID,
+              "notes": notesRef.current || InvoiceRes.notes
           }
       }).then((response)=>{         
           if(margeIDRef.current != InvoiceRes.margeID){
@@ -291,20 +294,13 @@ function EditInvoice  () {
               defaultDay={InvoiceRes? InvoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1"): ""} 
               onDateChange={(val)=>{invoice_dateRef.current = val}} /> 
           </div>}
-          {/* <div>
-          <p> Netto / Brutto </p> 
-          <label className="switch"> 
-          <input type="checkbox" defaultChecked={toggleBrutto} onChange={()=>setToggleBrutto(!toggleBrutto)}/>
-          <span className="slider round"></span>
-          </label>
-          </div> */}
-          {/* {!edit? <p>Lieferzeitraum: {res.delivery_date? res.delivery_date : "-"}</p>:         
-          <div className='d-il ai-c'> 
-            <p>Lieferdatum:</p> 
-            <DateLine 
-              defaultDay={(InvoiceRes.delivery_date != "00.00.00") && InvoiceRes.delivery_date && (InvoiceRes.delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
-              onDateChange={(val)=>{delivery_date = val}} />
-          </div>} */}
+          {!edit? <div>
+            <p>Notizen: </p><pre className=''>{InvoiceRes? InvoiceRes.notes : "-"}</pre>
+            </div>:
+          <div className='d-il ai-c'>
+            <p>Notizen:</p>
+            <LabelTextInput defaultValue={InvoiceRes? InvoiceRes.notes : "-"} onChange={(val)=> notesRef.current = val} />
+          </div>}
           
           { !edit? 
           <div key={"header_div"} className='edit-btns'>
