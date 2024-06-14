@@ -130,7 +130,7 @@
 10.06. 2h
 11.06. 0,5h
 12.06. 1h
-15.06. 1h
+15.06. 2h
 Kosten:
     Node server Render
         Feb 7€
@@ -139,7 +139,7 @@ ToDo:
 [x] photo Upload
 [x] photo Komprimierung
 [] tax new item / new product, edit product
-[] edit invoice, is paid
+[] edit invoice items, is paid
 [] ordercards billed items
 [] Invoice - Lieferzeitraum
 [] dropdown select component, no Input invoice-marge

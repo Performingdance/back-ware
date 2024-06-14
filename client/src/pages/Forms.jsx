@@ -66,6 +66,12 @@ function Forms() {
   }
 
   function handleSubmit(){
+    if(editBruchRef.current == true){
+      editBruchRef.current = 1
+    }
+    if(editBruchRef.current == false){
+      editBruchRef.current = 0
+    }
     setUpdLoading(true)
     axios({
         axiosInstance: axios,
@@ -108,8 +114,8 @@ function Forms() {
                 type="checkbox"
                 key ={form.ID+ "bruchInput"} 
                 className="d-il"
-                value={editBruchRef.current}
-                onChange={(e)=>{editBruchRef.current = e.target.value}} />
+                defaultChecked={editBruchRef.current}
+                onChange={(e)=>{editBruchRef.current = !editBruchRef.current}} />
               </div>
             </div>:
             <h2>{form.name}</h2>
