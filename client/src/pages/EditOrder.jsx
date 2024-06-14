@@ -340,15 +340,15 @@ function EditOrder  () {
             <p>Notizen:</p>
             <LabelTextInput defaultValue={notes} onChange={(val)=> notes = val} />
           </div>}
-          {(orderRes.invoiceID == null)? 
-            <div className='d-il ai-c'>
-              <p>Rechnung erstellen </p>
-              <button key={"file_plus"} className='edit-btn' onClick={(e)=>{setInvoicePrompt(true), setUpdateOrder(updateOrder+1)}}><SVGIcon src={file_plus} class="svg-icon-md"/> </button>
-            </div>: ""} 
+          
           {((err || orderErr) && <p>{err.message || orderErr.message}</p>)}
           { !edit? 
           <div key={"header_div"} className='edit-btns'>
-            <button key={"edit"} className='edit-btn' onClick={()=>setEdit(true)}><SVGIcon src={pencil_square} class="svg-icon-md"/> </button> 
+            <button key={"edit"} className='edit-btn' onClick={()=>setEdit(true)}><SVGIcon src={pencil_square} class="svg-icon-md"/> </button>
+            {(orderRes.billed_items != orderRes.total_items)? 
+            <div className='d-il ai-c'>
+              <button key={"file_plus"} className='edit-btn' onClick={(e)=>{setInvoicePrompt(true), setUpdateOrder(updateOrder+1)}}><SVGIcon src={file_plus} class="svg-icon-md"/> </button>
+            </div>: ""}  
           </div>:
           <div key={"btns"} className='edit-btns'>
             <button key={"check"} className='edit-btn' onClick={(e)=>[setEdit(false), handleSubmit(e)]}><SVGIcon src={check} class="svg-icon-md"/> </button>

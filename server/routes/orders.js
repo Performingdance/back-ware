@@ -499,7 +499,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
                 LEFT JOIN products
                 ON orders_items.productID = products.ID
                 WHERE orders_items.ID = ?
-                `,[date, orderID, itemID], (err, result) =>{
+                `,[itemID], (err, result) =>{
                 if(err){
                    console.log(err)
                 } else {
