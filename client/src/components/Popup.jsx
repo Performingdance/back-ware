@@ -937,7 +937,7 @@ export function AddInvoiceClientPopup({
               if(forwardEdit == false){
                 return
               }else{
-                window.location.pathname = `/invoices/edit:${defaultInvoiceID}`
+                window.location.pathname = `/invoices/${defaultInvoiceID}`
               }
           }).catch((err) => {
               setAddError(err)

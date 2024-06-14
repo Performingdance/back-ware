@@ -4,7 +4,7 @@ const {isLoggedIn} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 router.get("/all", isLoggedIn, (req, res) =>{
-    db.query(`SELECT a.ID, a.invoiceID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, a.billed_items, a.total_items
+    db.query(`SELECT a.ID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, a.billed_items, a.total_items
     FROM (SELECT * FROM orders) AS a
         LEFT JOIN clients
         ON a.clientID = clients.ID
@@ -18,7 +18,7 @@ router.get("/all", isLoggedIn, (req, res) =>{
 });
 router.post("/ID", isLoggedIn, (req, res) =>{
     const orderID = req.body.orderID;
-    db.query(`SELECT a.ID, a.invoiceID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(a.delivery_date , "%d.%m.%y") AS delivery_date, DATE_FORMAT(a.delivery_date_end , "%d.%m.%y") AS delivery_date_end, CONCAT(company," (", first_name, " ", last_name, ")") AS client 
+    db.query(`SELECT a.ID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(a.delivery_date , "%d.%m.%y") AS delivery_date, DATE_FORMAT(a.delivery_date_end , "%d.%m.%y") AS delivery_date_end, CONCAT(company," (", first_name, " ", last_name, ")") AS client, a.total_items, a. billed_items
         FROM (SELECT * FROM orders WHERE ID = ?) AS a
             LEFT JOIN clients
             ON a.clientID = clients.ID`, [orderID], (err, result) =>{
@@ -60,11 +60,14 @@ router.post("/all/date", isLoggedIn, (req, res) =>{
 });
 router.get("/all/noInvoice", isLoggedIn, (req, res) =>{
     db.query(`SELECT a.*, CONCAT(company," (", first_name, " ", last_name, ")") AS client 
-    FROM (SELECT * FROM orders 
-        WHERE invoiceID IS null
-        ORDER BY order_date DESC) AS a
+    FROM (SELECT orders.clientID, orders.ID, orders.billed_items, orders.total_items FROM orders_items 
+          LEFT JOIN orders 
+          ON orders.ID = orders_items.orderID
+        WHERE orders_items.invoiceID IS null
+       	GROUP BY orderID, clientID, billed_items, total_items
+        ORDER BY orders.order_date DESC) AS a
     LEFT JOIN clients
-    ON a.clientID = clients.ID`, (err, result) =>{
+    ON a.clientID = clients.ID;`, (err, result) =>{
         if(err){
            console.log(err)
         } else {
@@ -75,9 +78,15 @@ router.get("/all/noInvoice", isLoggedIn, (req, res) =>{
 router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
 
-            db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name 
-            FROM orders 
-            WHERE clientID = ? AND invoiceID IS NULL`, 
+            db.query(`SELECT a.*, CONCAT(company," (", first_name, " ", last_name, ")") AS client 
+                FROM (SELECT orders.clientID, orders.ID, orders.billed_items, orders.total_items FROM orders_items 
+                    LEFT JOIN orders 
+                    ON orders.ID = orders_items.orderID
+                    WHERE orders_items.invoiceID IS null AND orders.clientID=5
+                    GROUP BY orderID, clientID, billed_items, total_items
+                    ORDER BY orders.order_date DESC) AS a
+                LEFT JOIN clients
+                ON a.clientID = clients.ID`, 
             [clientID],
             (err, result) =>{
                 if(err){

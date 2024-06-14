@@ -48,7 +48,7 @@ export  function OrderCard({
       <div className='c-card'>
           <div className='c-title' >
             <h3>{data.client}</h3>
-            <p>{ "#"+ data.ID + " (" + data.order_date + ")" }</p>
+            <p>{ "#"+ data.ID + " (" + data.order_date + ") " + (data.billed_items || "0") + "/" + (data.total_items || "0" ) }</p>
           </div>
           <div className='rc-btns' > 
             {(( data.billed_items == data.total_items) && data.total_items > 0)?

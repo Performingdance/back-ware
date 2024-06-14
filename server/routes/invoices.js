@@ -178,7 +178,8 @@ router.post("/new/client/item", isLoggedIn, (req, res, next) => {
 
     const invoiceID = req.body.invoiceID;
     const clientID = req.body.clientID;
-    const productID = req.body.productID
+    const productID = req.body.productID;
+    const orderID = req.body.orderID;
     let product_name = req.body.product_name;
     const amount = req.body.amount;
     const price_piece = req.body.price_piece;
@@ -356,31 +357,23 @@ router.post("/new/items/order", isLoggedIn, (req, res, next) => {
             if(err){
                 console.log(err)
             } else {
-                db.query("UPDATE orders SET invoiceID = ? WHERE ID = ?", 
-                [invoiceID, orderID], 
+                db.query(`UPDATE orders 
+                    SET  
+                    total_items =
+                    (SELECT COUNT(ID) AS total_items 
+                                FROM orders_items 
+                                WHERE orderID = ?),
+                    billed_items = (SELECT COUNT(ID) AS billed_items 
+                                FROM orders_items 
+                                WHERE orderID = ? AND invoiceID > 0)
+                    WHERE ID = ?           
+                    `, 
+                [orderID,orderID,orderID], 
                 (err, result) =>{
                     if(err){
                         console.log(err)
                     } else {
-                        db.query(`UPDATE orders 
-                            SET  
-                            total_items =
-                            (SELECT COUNT(ID) AS total_items 
-                                        FROM orders_items 
-                                        WHERE orderID = ?),
-                            billed_items = (SELECT COUNT(ID) AS billed_items 
-                                        FROM orders_items 
-                                        WHERE orderID = ? AND invoiceID > 0)
-                            WHERE ID = ?           
-                            `, 
-                        [orderID,orderID,orderID], 
-                        (err, result) =>{
-                            if(err){
-                                console.log(err)
-                            } else {
-                                
-                            }
-                        });
+                        
                     }
                 });
             }
