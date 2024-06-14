@@ -601,18 +601,6 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                                 if(berr){
                                     console.log(berr)
                                 } else{
-                                    db.query(`
-                                    UPDATE orders SET 
-                                        invoiceID = NULL 
-                                    WHERE ID = ? AND invoiceID = ?`, 
-                                    [order.orderID,invoiceID], 
-                                    (berr, bresult) =>{
-                                        if(berr){
-                                            console.log(berr)
-                                        } else{
-                                            
-                                        };
-                                    })
                                     
                                 };
                             })
@@ -642,7 +630,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
            console.log(err)
         } else {
             if(productID != -1){
-                db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ? AND productID =?", 
+                db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ? AND productID = ?", 
                 [invoiceID, productID], 
                 (berr, bresult) =>{
                     if(berr){

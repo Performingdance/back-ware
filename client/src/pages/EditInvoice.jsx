@@ -60,10 +60,14 @@ function EditInvoice  () {
     const [clientData, clientError,clientLoading, handleCRequest] = handleClientSelectRequest();
     const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
       useEffect(()=>handleTRequest(invoiceID), [edit]);
-      useEffect(()=>handleMRequest(), [edit]);
-      useEffect(()=> handleCRequest(),[edit]);
+      
       useEffect(()=>setToggleBrutto(InvoiceRes.tax),[InvoiceRes])
-
+    function handleSelectRequests(){
+      
+        handleMRequest()
+        handleCRequest()
+      
+    }
 
 
     let invoice_dateRef = useRef()
@@ -304,7 +308,7 @@ function EditInvoice  () {
           
           { !edit? 
           <div key={"header_div"} className='edit-btns'>
-            <button key={"edit"} className='edit-btn' onClick={()=>setEdit(true)}><SVGIcon src={pencil_square} class="svg-icon-md"/> </button> 
+            <button key={"edit"} className='edit-btn' onClick={()=>{setEdit(true), handleSelectRequests()}}><SVGIcon src={pencil_square} class="svg-icon-md"/> </button> 
           </div>:
           <div key={"btns"} className='edit-btns'>
             <button key={"check"} className='edit-btn' onClick={(e)=>[setEdit(false), handleSubmit(e)]}><SVGIcon src={check} class="svg-icon-md"/> </button>

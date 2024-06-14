@@ -342,7 +342,7 @@ router.put("/update/items", isLoggedIn, (req, res, next) => {
 router.put("/update/items/all", isLoggedIn, (req, res, next) => {
     const items = req.body.changedItems
     items.forEach(item => {
-        const ID = item.ID;
+        const itemID = item.ID;
         const orderID = item.orderID;
         const amount = item.amount;
         const delivery_date = item.delivery_date;
@@ -405,7 +405,7 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
                                 UPDATE daylist SET 
                                 mass = (SELECT( ? * (SELECT formweight FROM products WHERE recipeID = ? and formID = ?)) AS mass) 
                                 WHERE orderID = ?`, 
-                                [amount, recipeID, formID, ID], 
+                                [amount, recipeID, formID, orderID], 
                                 (bberr, bbresult) =>{
                                     if(berr){
                                         console.log(bberr)
@@ -494,7 +494,12 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
         if(err){
            console.log(err)
         } else {
-            db.query("SELECT recipeID, formID FROM orders_items WHERE ID = ?",[date, orderID, itemID], (err, result) =>{
+            db.query(`SELECT recipeID, formID
+                FROM orders_items
+                LEFT JOIN products
+                ON orders_items.productID = products.ID
+                WHERE orders_items.ID = ?
+                `,[date, orderID, itemID], (err, result) =>{
                 if(err){
                    console.log(err)
                 } else {
