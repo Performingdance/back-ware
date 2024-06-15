@@ -241,7 +241,7 @@ router.put("/update", isLoggedIn, (req, res, next) => {
     const notes = req.body.notes;
 
     db.query("UPDATE orders SET order_date = ?,  clientID = ?, notes = ? WHERE ID = ?", 
-    [order_date, delivery_date,delivery_date_end, clientID, notes, orderID], 
+    [order_date,  clientID, notes, orderID], 
     (err, result) =>{
         if(err){
             console.log(err)
