@@ -26,7 +26,7 @@ router.post("/ID", isLoggedIn, (req, res) =>{
     SELECT d.*, DATE_FORMAT(MIN(invoices_items.delivery_date) , "%d.%m.%y") AS delivery_date, 
     DATE_FORMAT(MAX(invoices_items.delivery_date) , "%d.%m.%y") AS delivery_date_end
         FROM(
-        SELECT c.ID, c.clientID, c.invoice_number, DATE_FORMAT(c.invoice_date , "%d.%m.%y") AS invoice_date, 
+        SELECT c.ID, c.clientID, c.invoice_number, DATE_FORMAT(c.invoice_date , "%d.%m.%y") AS invoice_date, c.invoice_part, 
         CONCAT(company," (", first_name, " ", last_name, ")") AS client, c.total_sum_netto, c.total_sum_brutto, c.is_paid, c.margeID, c.marge_name, c.tax, c.notes
             FROM
                 (SELECT a.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS marge_name, marges.tax 
@@ -430,7 +430,7 @@ router.put("/new", isLoggedIn, (req, res, next) => {
 
 // Update invoice in general
 router.put("/update", isLoggedIn, (req, res, next) => {
-   const ID = req.body.ID;
+   const invoiceID = req.body.invoiceID;
    const clientID = req.body.clientID;
    const invoice_date = req.body.invoice_date;
    const invoice_number = req.body.invoice_number;
@@ -438,7 +438,7 @@ router.put("/update", isLoggedIn, (req, res, next) => {
    const notes = req.body.notes;
 
    db.query("UPDATE invoices SET clientID = ?, invoice_date = ?, invoice_number = ?, margeID = ?, notes = ? WHERE ID = ?", 
-   [clientID, invoice_date, invoice_number, margeID, notes, ID], 
+   [clientID, invoice_date, invoice_number, margeID, notes, invoiceID], 
    (err, result) =>{
        if(err){
            console.log(err)
@@ -448,6 +448,59 @@ router.put("/update", isLoggedIn, (req, res, next) => {
    });
     
 });
+
+// update delivery date to create a partial Invoice
+router.put("/update/deliverydate", isLoggedIn, (req, res, next) => {
+    const invoiceID = req.body.invoiceID;
+    const delivery_date_end = req.body.delivery_date_end;
+    let invoice_part = req.body.invoice_part || 0;
+
+    if(invoice_part == 0){
+        invoice_part = parseInt(invoice_part)+1
+        db.query(`
+            UPDATE invoices
+            SET invoice_part = ?
+            WHERE ID = ?`, 
+        [invoice_part, invoiceID], 
+        (err, result) =>{
+            if(err){
+                console.log(err)
+            } else{
+            };
+        });
+    }
+    db.query(`
+        INSERT INTO invoices
+        (clientID, invoice_number, invoice_date, margeID, notes, invoice_part ) 
+        SELECT clientID, invoice_number, invoice_date, margeID, notes, invoice_part+1 
+        FROM invoices 
+        WHERE ID = ?`, 
+    [invoiceID], 
+    (err, result) =>{
+        if(err){
+            console.log(err)
+        } else{
+            const newInvoiceID = result[0].insertId
+            db.query(`
+                UPDATE invoices_items 
+                SET invoiceID = ? 
+                WHERE invoiceID = ? AND delivery_date > ?
+                `, 
+            [newInvoiceID, invoiceID, delivery_date_end], 
+            (err, result) =>{
+                if(err){
+                    console.log(err)
+                } else{
+    
+                };
+            });
+            res.send("success");
+        };
+    });
+     
+ });
+
+
 //claculate price for invoice_items
 router.put("/update/item/price", isLoggedIn, (req, res, next) => {
     const invoiceID = req.body.invoiceID;

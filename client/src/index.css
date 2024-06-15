@@ -262,6 +262,9 @@ input[type=number] {
 .ta-e{
   text-align: end;
 }
+.fw-b{
+  font-weight: bold;
+}
 .fix-left{
   position: fixed;
   left: 0;

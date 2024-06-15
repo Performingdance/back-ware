@@ -5,7 +5,7 @@ import caret_left from "../assets/icons/caret-left.svg"
 import caret_right from "../assets/icons/caret-right.svg"
 import DatePanel from "react-multi-date-picker/plugins/date_panel"
 import SVGIcon from "./SVG"
-import '../styles/RecipeCard.css'
+import '../styles/Calendar.css'
 
 
 const weekDays = ["S", "M", "D", "M", "D", "F", "S"]
@@ -29,7 +29,8 @@ function CustomInputLine({
   handleValueChange, 
   date, 
   onNextDay, 
-  onPrevDay}){
+  onPrevDay
+}){
   let icon_size
   let date_size
   let arrow_size
@@ -52,7 +53,7 @@ function CustomInputLine({
   const dayDate = new Date(date).toLocaleDateString();
   //console.log(date)
   return(
-      <div className="calendar-line">
+      <div className={`calendar-line`}>
         <div className={arrow_size} onClick={onPrevDay} type="button">
           <SVGIcon src={caret_left} class={icon_size}/>
         </div>
@@ -148,7 +149,8 @@ export function CalendarSingle({onDateChange}) {
 export function DateLine({
   onDateChange,
   defaultDay,
-  size
+  size,
+  classDiv
 }) {
   const today = new Date().toISOString().split("T",[1])
   const [value, setValue] = useState(defaultDay|| today);
@@ -176,7 +178,7 @@ export function DateLine({
 
   return (
     
-    <div className="calendar-wrap jc-c">
+    <div className={`calendar-wrap jc-c ${classDiv || ""}`}>
     <DatePicker 
         multiple={false}
         months={months}

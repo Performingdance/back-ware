@@ -71,17 +71,18 @@
   }
 
 .c-list-item{
-    margin: 0.1rem;
+    margin: 0rem;
+    padding: 0;
     color: var(--text-color);
     justify-content: start;
 }   
 
 
 .i-select{
-    padding-bottom: 0rem;
+    padding: 0rem;
+    margin: 0;
     align-self: top;
     align-content: center;
-
     width: 13rem;
     background-color: var(--input-bg);
     border-radius: var(--border-radius);
