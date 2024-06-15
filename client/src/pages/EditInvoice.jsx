@@ -76,7 +76,7 @@ function EditInvoice  () {
     let notesRef = useRef()
     let invoice_delivery_date = InvoiceRes.delivery_date
     let delivery_date_end = InvoiceRes.delivery_date_end
-    let delivery_date_end_new = InvoiceRes.delivery_date_end
+    let delivery_date_end_newRef = useRef(InvoiceRes.delivery_date_end)
     let editProd = useRef([]) 
 
     useEffect(() => {
@@ -116,12 +116,12 @@ function EditInvoice  () {
         invoice_dateRef.current = invoice_dateRef.current.replace(/(..).(..).(..)/, "20$3-$2-$1")
       } 
 
-      if(delivery_date_end != delivery_date_end_new){
-        if((delivery_date_end_new == "00.00.00"|| !delivery_date_end_new)){
-          delivery_date_end_new = today[0]
+      if(delivery_date_end != delivery_date_end_newRef.current){
+        if((delivery_date_end_newRef.current == "00.00.00"|| !delivery_date_end_newRef.current)){
+          delivery_date_end_newRef.current = today[0]
         }
-        if(delivery_date_end_new.indexOf(".") != -1){
-          delivery_date_end_new = delivery_date_end_new.replace(/(..).(..).(..)/, "20$3-$2-$1")
+        if(delivery_date_end_newRef.current.indexOf(".") != -1){
+          delivery_date_end_newRef.current = delivery_date_end_newRef.current.replace(/(..).(..).(..)/, "20$3-$2-$1")
         }
       }
       let changedItems = []
@@ -172,7 +172,7 @@ function EditInvoice  () {
               changedItems
             }
         }).then((response)=>{
-          if(delivery_date_end != delivery_date_end_new){
+          if(delivery_date_end != delivery_date_end_newRef.current){
             axios({
                 axiosInstance: axios,
                 method: "PUT",
@@ -183,7 +183,7 @@ function EditInvoice  () {
                 data : {
               
                     "invoiceID": invoiceID,
-                    "delivery_date_end": delivery_date_end_new.current || InvoiceRes.delivery_date_end,
+                    "delivery_date_end": delivery_date_end_newRef.current || InvoiceRes.delivery_date_end,
                     "invoice_part": InvoiceRes.invoice_part || 0
                 }
             }).then((response)=>{         
@@ -394,7 +394,7 @@ function EditInvoice  () {
               <p className=' '>bis</p>
               <DateLine 
                 defaultDay={(delivery_date_end != "00.00.00") && delivery_date_end && (delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
-                onDateChange={(val)=>{delivery_date_end_new = val}}
+                onDateChange={(val)=>{delivery_date_end_newRef.current = val}}
                 size="sm" 
                 classDiv=""/>
             </div>
@@ -417,7 +417,7 @@ function EditInvoice  () {
           </div>:
           <div key={"btns"} className='edit-btns'>
             <button key={"check"} className='edit-btn' onClick={(e)=>{setEdit(false), 
-              (delivery_date_end != delivery_date_end_new)? setToggleDeliveryAlert(true) : handleSubmit(e)} }><SVGIcon src={check} class="svg-icon-md"/> </button>
+              (delivery_date_end != delivery_date_end_newRef.current)? setToggleDeliveryAlert(true) : handleSubmit(e)} }><SVGIcon src={check} class="svg-icon-md"/> </button>
             <button key={"del"} className='edit-btn' onClick={()=>[setEdit(false), setTogglePrompt(true)]}><SVGIcon src={trash} class="svg-icon-md"/> </button>
             <button key={"abort"} className='edit-btn' onClick={()=>setEdit(false)}><SVGIcon src={x_circle} class="svg-icon-md"/> </button>
           </div>}
@@ -427,10 +427,12 @@ function EditInvoice  () {
         < InvoiceBrutto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} handleValueChange={(obj,val,ID)=>{handleValueChange(obj,val,ID)}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>:
         < InvoiceNetto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} handleValueChange={(obj,val,ID)=>{handleValueChange(obj,val,ID)}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>}
         {toggleDeliveryAlert &&
-        <AlertPopup
+        <PromptPopup
           title="Lieferzeitraum anpassen"
           message="Durch das ändern des Lieferzeitraumes wird eine zweite Rechnung mit den übrigen Produkten erstellt. Fortfahren?"
           onClickOK={(e)=>{handleSubmit(e),setToggleDeliveryAlert(false)}}
+          btnOk={"OK"}
+          btnAbort={"Abbrechen"}
           onClickAbort={()=>setToggleDeliveryAlert(false)}
         />
 

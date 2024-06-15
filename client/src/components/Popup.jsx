@@ -1979,8 +1979,8 @@ export function PromptPopup({
             <p>{message? message : ""}</p>
 
             <div key={"pc_btn"} className='popup-card-btns'>
-                <button key="btn pc_btn_ok" className='popup-card-btn' onClick={onClickOK} >{btnOk}</button>
-                <button key="btn pc_btn_abort" className='popup-card-btn 'onClick={onClickAbort} >{btnAbort}</button>
+                <button key="btn pc_btn_ok" className='popup-card-btn' onClick={onClickOK} >{btnOk || "OK"}</button>
+                <button key="btn pc_btn_abort" className='popup-card-btn 'onClick={onClickAbort} >{btnAbort || "Abbrechen"}</button>
             </div>
           </div>
         </div>

@@ -494,9 +494,10 @@ router.put("/update/deliverydate", isLoggedIn, (req, res, next) => {
     
                 };
             });
-            res.send("success");
+            
         };
     });
+    res.send("success");
      
  });
 
