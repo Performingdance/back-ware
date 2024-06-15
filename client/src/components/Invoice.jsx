@@ -123,13 +123,13 @@ export function InvoiceBrutto ({
     const editItems = data.map((product, key)=> {
         return(
         <div key={key+"div"} className=''>
-            <div key={key+"li"} className='invoice-tb-row'>      
+            <div key={key+"li"} className='invoice-tb-row-edit'>      
             <p key={key+"pos"} className='invoice-p'>{key+1}</p>
             <div><input key={key+"product_name"} className='invoice-name-input'defaultValue={product.product_name} onChange={(e)=>handleValueChange("product_name",e.target.value,product.ID)}></input></div>
             <div><input key={key+"amount"} className='invoice-amount-input'defaultValue={product.amount.toString().replace(".",",")} onChange={(e)=>handleValueChange("amount",e.target.value.toString().replace(",","."),product.ID)}></input>x</div>
-            <div><input key={key+"price_piece"} className='invoice-price-input'defaultValue={(product.price_piece? product.price_piece.replace(".",",") : "0,00")} onChange={(e)=>handleValueChange("price_piece",e.target.value.replace(",","."),product.ID)}></input>€</div>
-            <div><input key={key+"price_total"} className='invoice-price-input'defaultValue={(product.price_total? product.price_total.replace(".",",") : "0,00")} onChange={(e)=>handleValueChange("price_total",e.target.value.replace(",","."),product.ID)}></input>€</div>
-           
+            <div><input key={key+"price_piece"} className='invoice-price-input'defaultValue={(product.price_piece? product.price_piece.toString().replace(".",",") : "0,00")} onChange={(e)=>handleValueChange("price_piece",e.target.value.replace(",","."),product.ID)}></input>€</div>
+            <div><input key={key+"price_total"} className='invoice-price-input'defaultValue={(product.price_total? product.price_total.toString().replace(".",",") : "0,00")} onChange={(e)=>handleValueChange("price_total",e.target.value.replace(",","."),product.ID)}></input>€</div>
+            <div><input key={key+"price_total"} className='invoice-price-input'defaultValue={(product.tax? product.tax.toString().replace(".",",") : "0")} onChange={(e)=>handleValueChange("tax",e.target.value.toString().replace(",","."),product.ID)}></input>%</div>
             </div>   
             <button key={key+"del"} className='edit-btn' onClick={()=>[toggleDelPrompt(true), productRef(product)]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
         </div>
@@ -140,13 +140,22 @@ export function InvoiceBrutto ({
     return(
         data.length? 
         <div className='invoice-tb-tbody'>   
+        {edit?
+              <div className='invoice-tb-row-edit'>
+                <p className='invoice-tb-th'>Pos</p>
+                <p className='invoice-tb-th ta-s'>Artikel</p>
+                <p className='invoice-tb-th'>Anzahl</p>
+                <p className='invoice-tb-th'>Einzelpreis</p>
+                <p className='invoice-tb-th'>Summe Brutto</p>
+                <p className='invoice-tb-th'>MwSt</p>
+              </div>:
               <div className='invoice-tb-row'>
                 <p className='invoice-tb-th'>Pos</p>
                 <p className='invoice-tb-th ta-s'>Artikel</p>
                 <p className='invoice-tb-th'>Anzahl</p>
                 <p className='invoice-tb-th'>Einzelpreis</p>
                 <p className='invoice-tb-th'>Summe Brutto (inkl. MwSt)</p>
-              </div>
+              </div>}
               {(data && !edit) && items}
               {(data && edit) && editItems}
 

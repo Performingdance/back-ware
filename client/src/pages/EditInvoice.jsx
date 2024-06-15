@@ -330,7 +330,7 @@ function EditInvoice  () {
         <div className='invoice-info-div ta-c'>
         {((prodErr || invoiceErr) && <p className='errorMsg'>{prodErr.message || invoiceErr.message}</p>)}
           {!edit ?<p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>:
-                    <div className='d-il ai-c'> 
+                    <div className=' ai-c'> 
                     <p>Kunde:</p> 
                     {clientData && 
                   <SelectComponent 
@@ -345,12 +345,12 @@ function EditInvoice  () {
                       placeholder={"Kunde wählen...."}
                       open={clientSelectOpen}
                       setOpen={(val)=>{setClientSelectOpen(val)}}
-                      className='i-select' 
+                      className='i-select d-il' 
                       
                       />}
                   </div>}
           {!edit ?<p>Marge: {InvoiceRes? InvoiceRes.marge_name : "-"} </p>:
-                    <div className=' d-il ai-c'> 
+                    <div className='  ai-c'> 
                     <p>Marge:</p> 
                     {margeData && 
                   <SelectComponent 
@@ -365,14 +365,14 @@ function EditInvoice  () {
                       placeholder={"Marge wählen...."}
                       open={margeSelectOpen}
                       setOpen={(val)=>{setMargeSelectOpen(val)}}
-                      className='i-select' 
+                      className='i-select d-il' 
                       
                       />}
                   </div>}
           {!edit ?<p>Rechnungs-Nr.: {InvoiceRes? "#" + InvoiceRes.invoice_number+ (InvoiceRes.invoice_part != "0"? "-"+InvoiceRes.invoice_part : "") : "# -"} </p>:
-                    <div className='d-il ai-c'> 
+                    <div className=' ai-c'> 
                     <p>Rechnungs-Nr.:</p> 
-                    <input className='invoice-input' type='number' defaultValue={InvoiceRes? InvoiceRes.invoice_number: 0}  onChange={(e)=>{invoice_numberRef.current = e.target.valueAsNumber}}></input>
+                    <input className='invoice-input d-il' type='number' defaultValue={InvoiceRes? InvoiceRes.invoice_number: 0}  onChange={(e)=>{invoice_numberRef.current = e.target.valueAsNumber}}></input>
                   </div>}
           {!edit? <p>Rechnungsdatum: {InvoiceRes? InvoiceRes.invoice_date : "-"}</p>:         
           <div className=' ai-c'> 
