@@ -46,6 +46,7 @@ function Clients() {
     <Header title="Kunden"/>
     <Searchbar_filter data={clients} searchkey={"fullName"} searchkey2={"company"} filteredData={(searchData) => {setfilteredData(searchData)}} class="searchbar-header" btn_class="searchbar-btn" input_class="searchbar-input"/>
     {clientCards}
+    {error  && <h3> {error.message} </h3>}
     <FloatIcon/>
     </div>
 

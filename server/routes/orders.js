@@ -238,11 +238,9 @@ router.put("/update", isLoggedIn, (req, res, next) => {
     const orderID = req.body.orderID;
     const clientID = req.body.clientID;
     const order_date = req.body.order_date;
-    const delivery_date = req.body.delivery_date;
-    const delivery_date_end = req.body.delivery_date_end;
     const notes = req.body.notes;
 
-    db.query("UPDATE orders SET order_date = ?, delivery_date = ?, delivery_date_end = ?,  clientID = ?, notes = ? WHERE ID = ?", 
+    db.query("UPDATE orders SET order_date = ?,  clientID = ?, notes = ? WHERE ID = ?", 
     [order_date, delivery_date,delivery_date_end, clientID, notes, orderID], 
     (err, result) =>{
         if(err){
