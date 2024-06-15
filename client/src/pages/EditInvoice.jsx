@@ -65,12 +65,9 @@ function EditInvoice  () {
       
       useEffect(()=>setToggleBrutto(InvoiceRes.tax),[InvoiceRes])
     function handleSelectRequests(){
-      
         handleMRequest()
-        handleCRequest()
-      
+        handleCRequest()    
     }
-
 
     let invoice_dateRef = useRef()
     let invoice_numberRef = useRef()
@@ -80,8 +77,33 @@ function EditInvoice  () {
     let invoice_delivery_date = InvoiceRes.delivery_date
     let delivery_date_end = InvoiceRes.delivery_date_end
     let delivery_date_end_new = InvoiceRes.delivery_date_end
+    let editProd = [] 
 
+    useEffect(() => {
+      products.forEach((obj)=>{
+      let temp_obj = {...obj, edit : false}
+      editProd = [...editProd, temp_obj] 
+      
+    }) }, [products,edit])
+    const handleValueChange = (obj, val, ID) =>{
+      editProd.forEach((product,key)=>{
+        if(product.ID == ID){
+          editProd[key].edit = true;
+          if((obj == "production_date") || (obj == "delivery_date")){
+            if((val == "00.00.00"|| !val)){
+              editProd[key][obj] = today[0]
+            }
+            editProd[key][obj] = val
+          }else{
+            editProd[key][obj]= val
+          }
+          editProd[key].edit = true
+          
+        }
+      })
+      //console.log(editRes)
 
+    }
     
     
     function handleSubmit(e){
@@ -102,6 +124,18 @@ function EditInvoice  () {
           delivery_date_end_new = delivery_date_end_new.replace(/(..).(..).(..)/, "20$3-$2-$1")
         }
       }
+      let changedItems = []
+      editProd.forEach((obj)=>{
+        if(obj.edit == true){
+          if(obj.production_date.includes(".")){
+            obj.production_date = obj.production_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
+          }
+          if(obj.delivery_date.includes(".")){
+            obj.delivery_date = obj.delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
+          }           
+          changedItems = [...changedItems, obj]
+        }
+      })
 
 
       //console.log (order_date, delivery_date)

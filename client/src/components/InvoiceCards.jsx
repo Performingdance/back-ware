@@ -37,7 +37,7 @@ export default function invoiceCards ({
             <div className='c-title' >
               <h3>{invoice.name}</h3>
               <p>{invoice.company}</p>
-              <p>#{invoice.invoice_number + " (" + invoice.invoice_date + ")" }</p>
+              <p>#{invoice.invoice_number +(invoice.invoice_part != "0"? "-"+invoice.invoice_part : "")+ " (" + invoice.invoice_date + ")" }</p>
             </div>
             <div className='rc-btns' > 
               <a type="button" className='button rc-btn' onClick={onClickOrder}>
