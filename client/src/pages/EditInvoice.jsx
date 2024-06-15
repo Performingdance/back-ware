@@ -324,7 +324,7 @@ function EditInvoice  () {
                       
                       />}
                   </div>}
-          {!edit ?<p>Rechnungs-Nr.: {InvoiceRes? "#" + InvoiceRes.invoice_number : "# -"} </p>:
+          {!edit ?<p>Rechnungs-Nr.: {InvoiceRes? "#" + InvoiceRes.invoice_number+ (InvoiceRes.invoice_part != "0"? "-"+InvoiceRes.invoice_part : "") : "# -"} </p>:
                     <div className='d-il ai-c'> 
                     <p>Rechnungs-Nr.:</p> 
                     <input className='invoice-input' type='number' defaultValue={InvoiceRes? InvoiceRes.invoice_number: 0}  onChange={(e)=>{invoice_numberRef.current = e.target.valueAsNumber}}></input>
