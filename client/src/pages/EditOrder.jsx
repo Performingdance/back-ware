@@ -86,6 +86,12 @@ function EditOrder  () {
       let changedItems = []
       editRes.forEach((obj)=>{
         if(obj.edit == true){
+          if(obj.production_date.includes(".")){
+            obj.production_date = obj.production_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
+          }
+          if(obj.delivery_date.includes(".")){
+            obj.delivery_date = obj.delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
+          }           
           changedItems = [...changedItems, obj]
         }
       })
