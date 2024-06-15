@@ -223,8 +223,14 @@ input[type=number] {
 .jc-c{
   justify-content: center;
 }
+.js-c{
+  justify-self: center;
+}
 .ac-c{
   align-content: center;
+}
+.as-c{
+  align-self: center;
 }
 .ai-c{
   align-items: center;
@@ -237,6 +243,12 @@ input[type=number] {
 }
 .w-100{
   width: 100%;
+}
+.w-fc{
+  width: fit-content;
+}
+.h-fc{
+  height: fit-content;
 }
 .js-f-e{
   align-self: flex-end;

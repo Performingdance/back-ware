@@ -199,10 +199,13 @@ function EditOrder  () {
         <div key={key+"li"} className='order-grid'>
           <p key={key+"amount"} className='order-p' >{product.amount+"x"}</p>
           <p key={key+"product"} className='order-p'>{product.product_name}</p>
-          {product.invoiceID >0 ?<a key={key+"invoice-btn"} type="button" className='button' onClick={()=>window.location.href = `/invoices/${product.invoiceID}`}>
+          {product.invoiceID >0 ?
+          <a key={key+"invoice-btn"} type="button" className='button js-c w-fc' onClick={()=>window.location.href = `/invoices/${product.invoiceID}`}>
               <SVGIcon class="rc-btn-svg" src={bar_graph}/> 
           </a>:
-          <p key={key+"p"}></p>}
+          <a key={key+"invoice-btn"} type="button" className='button js-c w-fc' onClick={(e)=>{setInvoicePrompt(true), setUpdateOrder(updateOrder+1)}}>
+            <SVGIcon class="rc-btn-svg" src={file_plus}/> 
+          </a>}
           <p key={key+"p2"} ></p>
           <p key={key+"production"} className='order-p'>{"Backtag: " + (product.production_date|| "-")}</p>
           <p key={key+"delivery"} className='order-p'>{"Lieferdatum: " + (product.delivery_date || delivery_date || "-")}</p>
@@ -230,7 +233,8 @@ function EditOrder  () {
               size={"sm"} /> 
               </div>
             </div>
-            <button key={key+"del"} className='edit-btn' onClick={()=>[setEdit(false), setToggleDelPrompt(true), productRef.current = product]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
+            <button key={key+"del"} className='edit-btn h-fc as-c' onClick={()=>[setEdit(false), setToggleDelPrompt(true), productRef.current = product]}>
+              <SVGIcon src={trash} class="svg-icon-sm"/> </button>
           </div>
 
         )
