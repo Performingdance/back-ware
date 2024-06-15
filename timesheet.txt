@@ -139,15 +139,21 @@ ToDo:
 [x] photo Upload
 [x] photo Komprimierung
 [] tax new item / new product, edit product
+[] add invoice icon edit order items 
 [] edit invoice items, is paid
 [] ordercards billed items
 [] Invoice - Lieferzeitraum
 [] dropdown select component, no Input invoice-marge
+[x]   Preisliste in Preisrechner einfügen (Preis, Marge)
+[] 
+[] 
+[] 
+[] 
 
 Preis
 WV == 0.85 * NVP
-Markt == 1,1*NVP + 7% MWst
-Laden == NVP + 7% MWst
+Markt == 1,1*NVP + MWst
+Laden == NVP + MWst
 
 
 Eingaben
@@ -155,36 +161,53 @@ Eingaben
 
 
 Produkte nach photUpload im Rezept neu laden
-Rechnung artikel, Zutaten decimal comma replace
-Daylist Update - check
-order -  add to invoice: product_name wird nicht übernommen check
+Daylist Update - check
 
 
-Order_Items - Daylist verknüpfung überprüfen (Löschen aus der Daylist - auch aus Order?)
+[]    Order_Items - Daylist verknüpfung überprüfen (Löschen aus der Daylist - auch aus Order?)
 
-Preisliste - Kategorie, vorgeschlagen, gesetzt
-    Bsp: WV (85%) | 0,48€ | 0,50€
-    Preisliste in Preisrechner einfügen (Preis, Marge)
-    Rechnungen:
-        Check ob ID 0 für neue Rechnung == 1. item oder nur neue Rechnung
-         Preis von Preisliste übernehmen, Gesamtpreis berechenen / updaten
+calculator
+[]      order ingredients properly
+[x]    Preisliste in Preisrechner einfügen (Preis, Marge)
+[]      Preisvorschlag kalkulation überprüfen
 
-         Gesamtpreis Brutto / Netto, is_paid anzeigen
-         Produkte / Sonderposten hinzufügen
-         Lieferzeitraum
-         UI überarbeiten - Tabellenstruktur
-         Pdf erstellen
-    Bestellungen
-    Rechnung öffnen -> invoices/ID
-    zu Rechnung hinzufügen / neue erstellen prompt
-
-Update Rezept Nährwerte in ingredients-db
+[]      Preisliste - nettopreise, einfache Bearbeitung
 
 
-Arbeitsplan-Zeiterfassung
-gemeinsamer Kalender
+    Rechnungen:
+[]         Preis von Preisliste übernehmen, Gesamtpreis berechenen / updaten
+[]          Lieferzeitraum(ergänzt rechnungsnummer und erstellt neue Rechnung -2 mit allen Produkten nach dem Zeitraum)
+[x]        UI überarbeiten - Tabellenstruktur
+[]          Pdf erstellen
+[]         Rechnugsübersicht, Rechnungsablage
 
-Postfach (Arbeitszeiten eingetragen) - Push-Benachrichtigungen
+
+    
+[]          Update Rezept Nährwerte in ingredients-db
+[]          find permanent solution for hosting
+
+
+
+
+BUGS
+[]          WorkSheet check Abschnitt wird nicht gespeichert
+[]           editclient handleclientextrequest is undefined
+ 
+
+UI
+
+[]          PhotoUpload Prompt
+[]          WorkSheet baseIng different colors
+[]          ClientCards Orders message / icon for new order
+[]          Preisrechner: align select input center
+[]          Rechnungsnummer absteigend bei Auswhl sortieren (neuste zuerst)
+
+
+QOL
+[]     Arbeitsplan-Zeiterfassung
+[]     gemeinsamer Kalender
+
+[]     Postfach (Arbeitszeiten eingetragen) - Push-Benachrichtigungen
 
 Fragen:
 
@@ -195,9 +218,7 @@ Hofladen BVP
 Backzettel - wichtige Info
 Rechnugsnodwendigkeit - Bei Bestellung
 
-ASYNC - Funktionen
-
-Bestellung RechnungsID erst bei vollständiger
+ASYNC - Funktionen
 
 Firma fEIN
 Lieferzeitraum ergänzend zu Lieferdatum + Lieferdatum für jedes Produkt
@@ -209,30 +230,15 @@ Backzettel:
 Ist, soll, Rest
 Produktion - Froster (Was ist im Froster, was kann aufgetaut werden, Produkte für Froster)
 
-Rechnugnsübersicht, Rechnungsablage ()
+Rechnugsübersicht, Rechnungsablage ()
 
 
-Preisliste - nettopreise, einfache Bearbeitung
+
 Worksheets:
     Add base ID (ID of ingredient-recipe with more ingredients to uniquely id Item/recipe )
     Recipe titleID - 
 
-calculation
-    - total amount invoice netto/brutto
-
-calculator
-    - order ingredients properly
-
-user roles - admin, helper
-
-
-QOL:
-convert input decimals
-converter worktime based 60 (minutes) to based 100 (percent of hour)
-recipe-formCard-> for each form (Picture) -> sort by recipe/ each form (for clients)
-category for recipes
 
 
 
-
-
+user roles - admin, h

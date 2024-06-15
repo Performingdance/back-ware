@@ -62,7 +62,7 @@ function EditOrder  () {
       editRes.forEach((product,key)=>{
         if(product.ID == ID){
           editRes[key].edit = true;
-          if((obj == "delivery_date") || (obj == "production_date")){
+          if((obj == "production_date") || (obj == "delivery_date")){
             if((val == "00.00.00"|| !val)){
               editRes[key][obj] = today[0]
             }
@@ -80,18 +80,6 @@ function EditOrder  () {
     const handleSubmit = (e) =>{
       e.preventDefault()
 
-      if((order_delivery_date == "00.00.00"|| !order_delivery_date)){
-        order_delivery_date = today[0]
-      }      
-      if((order_delivery_date_end == "00.00.00"|| !order_delivery_date_end)){
-        order_delivery_date_end = today[0]
-      }
-      if(order_delivery_date_end.indexOf(".") != -1){
-        order_delivery_date_end = order_delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1")
-      }
-      if(order_delivery_date.indexOf(".") != -1){
-        order_delivery_date = order_delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
-      }
       if(order_date.indexOf(".") != -1){
         order_date = order_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
       }
@@ -114,8 +102,6 @@ function EditOrder  () {
               "orderID": orderID,
               "clientID": orderRes.clientID,
               "order_date": order_date,
-              "delivery_date": order_delivery_date,
-              "delivery_date_end": order_delivery_date_end,
               "notes": notes
           }
       }).then((response)=>{
@@ -301,36 +287,10 @@ function EditOrder  () {
               onDateChange={(val)=>{order_date = val}} /> 
           </div>}
           {(order_delivery_date != order_delivery_date_end) ?
-          !edit? 
-          <p>Lieferzeitraum: {(order_delivery_date && order_delivery_date_end)? order_delivery_date + "-" +order_delivery_date_end : "-"}
+          <p>Lieferzeitraum: {(order_delivery_date && order_delivery_date_end)? order_delivery_date + "-" + order_delivery_date_end : "-"}
           </p>:         
-          <div className=' ai-c'> 
-            <p>Lieferzeitraum:</p> 
-            <DateLine 
-              defaultDay={(order_delivery_date != "00.00.00") && order_delivery_date && (order_delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
-              onDateChange={(val)=>{order_delivery_date = val}}
-              size="sm" />
-              <p>-</p>
-            <DateLine 
-              defaultDay={(order_delivery_date_end != "00.00.00") && order_delivery_date_end && (order_delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
-              onDateChange={(val)=>{order_delivery_date_end = val}}
-              size="sm" />
-          </div>:
-          !edit? 
           <p>Lieferdatum: {(order_delivery_date)? order_delivery_date: "-"}
-          </p>:         
-          <div className='ai-c jc-c'> 
-            <p>Lieferzeitraum:</p> 
-            <DateLine 
-              defaultDay={(order_delivery_date != "00.00.00") && order_delivery_date && (order_delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
-              onDateChange={(val)=>{order_delivery_date = val}}
-              size="sm" />
-            <p className='ta-c'>bis</p>
-            <DateLine 
-              defaultDay={(order_delivery_date_end != "00.00.00") && order_delivery_date_end && (order_delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
-              onDateChange={(val)=>{order_delivery_date_end = val}}
-              size="sm" />
-          </div>
+          </p>         
           }
           
           {!edit? <div>

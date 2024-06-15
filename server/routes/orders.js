@@ -18,10 +18,16 @@ router.get("/all", isLoggedIn, (req, res) =>{
 });
 router.post("/ID", isLoggedIn, (req, res) =>{
     const orderID = req.body.orderID;
-    db.query(`SELECT a.ID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, DATE_FORMAT(a.delivery_date , "%d.%m.%y") AS delivery_date, DATE_FORMAT(a.delivery_date_end , "%d.%m.%y") AS delivery_date_end, CONCAT(company," (", first_name, " ", last_name, ")") AS client, a.total_items, a. billed_items
-        FROM (SELECT * FROM orders WHERE ID = ?) AS a
-            LEFT JOIN clients
-            ON a.clientID = clients.ID`, [orderID], (err, result) =>{
+    db.query(`SELECT b.*, DATE_FORMAT(MIN(orders_items.delivery_date) , "%d.%m.%y") AS delivery_date,
+                DATE_FORMAT(MAX(orders_items.delivery_date) , "%d.%m.%y") AS delivery_date_end
+                FROM(SELECT a.ID, a.clientID, a.notes, DATE_FORMAT(a.order_date , "%d.%m.%y") AS order_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, a.total_items, a. billed_items
+                        FROM (SELECT * FROM orders WHERE ID = ?) AS a
+                    LEFT JOIN clients
+                    ON a.clientID = clients.ID) AS b
+                LEFT JOIN orders_items
+                ON b.ID = orders_items.orderID 
+                GROUP BY ID, clientID, notes, order_date, client, total_items, billed_items`,
+        [orderID], (err, result) =>{
         if(err){
            console.log(err)
         } else {

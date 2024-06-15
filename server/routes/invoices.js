@@ -23,15 +23,22 @@ router.post("/ID", isLoggedIn, (req, res) =>{
     const invoiceID = req.body.invoiceID;
 
     db.query(`
-    SELECT c.ID, c.clientID, c.invoice_number, DATE_FORMAT(c.invoice_date , "%d.%m.%y") AS invoice_date, CONCAT(company," (", first_name, " ", last_name, ")") AS client, c.total_sum_netto, c.total_sum_brutto, c.is_paid, c.margeID, c.marge_name, c.tax, c.notes
-        FROM
-            (SELECT a.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS marge_name, marges.tax 
-             FROM
-                (SELECT * FROM invoices WHERE ID = ?) AS a
-            LEFT JOIN marges
-            on a.margeID = marges.ID) AS c
-    LEFT JOIN clients
-    ON c.clientID = clients.ID`,invoiceID, (err, result) =>{
+    SELECT d.*, DATE_FORMAT(MIN(invoices_items.delivery_date) , "%d.%m.%y") AS delivery_date, 
+    DATE_FORMAT(MAX(invoices_items.delivery_date) , "%d.%m.%y") AS delivery_date_end
+        FROM(
+        SELECT c.ID, c.clientID, c.invoice_number, DATE_FORMAT(c.invoice_date , "%d.%m.%y") AS invoice_date, 
+        CONCAT(company," (", first_name, " ", last_name, ")") AS client, c.total_sum_netto, c.total_sum_brutto, c.is_paid, c.margeID, c.marge_name, c.tax, c.notes
+            FROM
+                (SELECT a.*, CONCAT(marges.name, ' (', marges.marge_pc,'%)') AS marge_name, marges.tax 
+                FROM
+                    (SELECT * FROM invoices WHERE ID = ?) AS a
+                LEFT JOIN marges
+                on a.margeID = marges.ID) AS c
+        LEFT JOIN clients
+        ON c.clientID = clients.ID) AS d
+    LEFT JOIN invoices_items
+    ON d.ID = invoices_items.invoiceID
+    `,invoiceID, (err, result) =>{
         if(err){
            console.log(err)
         } else {

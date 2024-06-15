@@ -76,6 +76,8 @@ function EditInvoice  () {
     let margeIDRef = useRef()
     let clientIDRef = useRef()
     let notesRef = useRef()
+    let invoice_delivery_date = InvoiceRes.delivery_date
+    let invoice_delivery_date_end = InvoiceRes.delivery_date_end
 
 
     
@@ -88,6 +90,18 @@ function EditInvoice  () {
       }
       if(invoice_dateRef.current.indexOf(".") != -1){
         invoice_dateRef.current = invoice_dateRef.current.replace(/(..).(..).(..)/, "20$3-$2-$1")
+      }
+      if((invoice_delivery_date == "00.00.00"|| !invoice_delivery_date)){
+        invoice_delivery_date = today[0]
+      }      
+      if((invoice_delivery_date_end == "00.00.00"|| !invoice_delivery_date_end)){
+        invoice_delivery_date_end = today[0]
+      }
+      if(invoice_delivery_date_end.indexOf(".") != -1){
+        invoice_delivery_date_end = invoice_delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1")
+      }
+      if(invoice_delivery_date.indexOf(".") != -1){
+        invoice_delivery_date = invoice_delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
       }
 
 
@@ -294,6 +308,38 @@ function EditInvoice  () {
               defaultDay={InvoiceRes? InvoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1"): ""} 
               onDateChange={(val)=>{invoice_dateRef.current = val}} /> 
           </div>}
+          {(invoice_delivery_date != invoice_delivery_date_end) ?
+          !edit? 
+          <p>Lieferzeitraum: {(invoice_delivery_date && invoice_delivery_date_end)? invoice_delivery_date + "-" +invoice_delivery_date_end : "-"}
+          </p>:         
+          <div className=' ai-c'> 
+            <p>Lieferzeitraum:</p> 
+            <DateLine 
+              defaultDay={(invoice_delivery_date != "00.00.00") && invoice_delivery_date && (invoice_delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
+              onDateChange={(val)=>{invoice_delivery_date = val}}
+              size="sm" />
+              <p>-</p>
+            <DateLine 
+              defaultDay={(invoice_delivery_date_end != "00.00.00") && invoice_delivery_date_end && (invoice_delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
+              onDateChange={(val)=>{invoice_delivery_date_end = val}}
+              size="sm" />
+          </div>:
+          !edit? 
+          <p>Lieferdatum: {(invoice_delivery_date)? invoice_delivery_date: "-"}
+          </p>:         
+          <div className='ai-c jc-c'> 
+            <p>Lieferzeitraum:</p> 
+            <DateLine 
+              defaultDay={(invoice_delivery_date != "00.00.00") && invoice_delivery_date && (invoice_delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
+              onDateChange={(val)=>{invoice_delivery_date = val}}
+              size="sm" />
+            <p className='ta-c'>bis</p>
+            <DateLine 
+              defaultDay={(invoice_delivery_date_end != "00.00.00") && invoice_delivery_date_end && (invoice_delivery_date_end.replace(/(..).(..).(..)/, "20$3-$2-$1"))} 
+              onDateChange={(val)=>{invoice_delivery_date_end = val}}
+              size="sm" />
+          </div>
+          }
           {!edit? <div>
             <p>Notizen: </p><pre className=''>{InvoiceRes? InvoiceRes.notes : "-"}</pre>
             </div>:
