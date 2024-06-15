@@ -551,50 +551,28 @@ router.put("/update/item/price", isLoggedIn, (req, res, next) => {
  });
 
 // Update items on invoice
-router.put("/update/item", isLoggedIn, (req, res, next) => {
-    const productID = req.body.productID;
-    const clientID = req.body.clientID;
-    const recipeID = req.body.recipeID;
-    const formID = req.body.formID;
-    let name = req.body.name;
-    const amount = req.body.amount;
-    const order_date = req.body.delivery_date;
-    const delivery_date = req.body.delivery_date;
-    const tax = req.body.tax || 7;
-
-    if((recipeID >= 1) && (formID >= 1)){
-        db.query("SELECT product_name FROM products WHERE ID = ?", 
-        [productID], 
-        (err, result) =>{
-            if(err){
-                console.log(err)
-            } else{
-                name = result[0].product_name
-                db.query("UPDATE invoices_items SET clientID = ?, recipeID = ?, formID = ?, name = ?, amount = ?, order_date = ?, delivery_date = ?, tax = ? WHERE ID = ?", 
-                [clientID,recipeID, formID, name, amount, order_date, delivery_date, productID, tax], 
-                (err, result) =>{
-                    if(err){
-                        console.log(err)
-                    } else{
-                       
-                    };
-                });
-            };
-        });
-
-    }else{
-        db.query("UPDATE invoices_items SET clientID = ?, recipeID = ?, formID = ?, name = ?, amount = ?, order_date = ?, delivery_date = ?, tax = ? WHERE ID = ?", 
-        [clientID,recipeID, formID, name, amount, order_date, delivery_date, productID, tax], 
+router.put("/update/items/all", isLoggedIn, (req, res, next) => {
+    const items = req.body.changedItems
+    items.forEach((item)=>{
+        const itemID = item.ID;
+        const amount = item.amount;
+        const price_piece = item.price_piece;
+        const price_total = item.price_total;
+        const tax = item.tax || 7;
+        const delivery_date = item.delivery_date;
+        const order_date = item.order_date;
+        const product_name = item.product_name;
+        db.query("UPDATE invoices_items SET name = ?, amount = ?, price_piece = ?, price_total = ?, order_date = ?, delivery_date = ?, tax = ? WHERE ID = ?", 
+            [product_name, amount, price_piece, price_total, order_date, delivery_date, tax, itemID], 
         (err, result) =>{
             if(err){
                 console.log(err)
             } else{
             };
         });
-    }
+    })
     res.send("success");
-   
-     
+ 
  });
 
  // mark invoice as paid

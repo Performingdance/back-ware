@@ -61,7 +61,6 @@ function EditOrder  () {
     const handleValueChange = (obj, val, ID) =>{
       editRes.forEach((product,key)=>{
         if(product.ID == ID){
-          editRes[key].edit = true;
           if((obj == "production_date") || (obj == "delivery_date")){
             if((val == "00.00.00"|| !val)){
               editRes[key][obj] = today[0]

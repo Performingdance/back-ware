@@ -77,34 +77,34 @@ function EditInvoice  () {
     let invoice_delivery_date = InvoiceRes.delivery_date
     let delivery_date_end = InvoiceRes.delivery_date_end
     let delivery_date_end_new = InvoiceRes.delivery_date_end
-    let editProd = [] 
+    let editProd = useRef([]) 
 
     useEffect(() => {
       products.forEach((obj)=>{
       let temp_obj = {...obj, edit : false}
-      editProd = [...editProd, temp_obj] 
+      editProd.current = [...editProd.current, temp_obj] 
       
     }) }, [products,edit])
+
+    
     const handleValueChange = (obj, val, ID) =>{
-      editProd.forEach((product,key)=>{
+      editProd.current.forEach((product,key)=>{
         if(product.ID == ID){
-          editProd[key].edit = true;
-          if((obj == "production_date") || (obj == "delivery_date")){
+          if((obj == "order_date") || (obj == "delivery_date")){
             if((val == "00.00.00"|| !val)){
-              editProd[key][obj] = today[0]
+              editProd.current[key][obj] = today[0]
             }
-            editProd[key][obj] = val
+            editProd.current[key][obj] = val
           }else{
-            editProd[key][obj]= val
+            editProd.current[key][obj]= val
           }
-          editProd[key].edit = true
+          editProd.current[key].edit = true
           
         }
       })
       //console.log(editRes)
 
     }
-    
     
     function handleSubmit(e){
       e.preventDefault()
@@ -125,10 +125,10 @@ function EditInvoice  () {
         }
       }
       let changedItems = []
-      editProd.forEach((obj)=>{
+      editProd.current.forEach((obj)=>{
         if(obj.edit == true){
-          if(obj.production_date.includes(".")){
-            obj.production_date = obj.production_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
+          if(obj.order_date.includes(".")){
+            obj.order_date = obj.order_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
           }
           if(obj.delivery_date.includes(".")){
             obj.delivery_date = obj.delivery_date.replace(/(..).(..).(..)/, "20$3-$2-$1")
@@ -160,37 +160,47 @@ function EditInvoice  () {
           if(margeIDRef.current != InvoiceRes.margeID){
             handleMURequest(invoiceID,margeIDRef.current)
           }
-          if(delivery_date_end != delivery_date_end_new){
+
           axios({
-              axiosInstance: axios,
-              method: "PUT",
-              url:"s/invoices/update/deliverydate",
-              headers: {
-                  "authorization": authHeader()
-              },
-              data : {
-            
-                  "invoiceID": invoiceID,
-                  "delivery_date_end": delivery_date_end_new.current || InvoiceRes.delivery_date_end,
-                  "invoice_part": InvoiceRes.invoice_part || 0
-              }
-          }).then((response)=>{         
-              if(margeIDRef.current != InvoiceRes.margeID){
-                handleMURequest(invoiceID,margeIDRef.current)
-              }
-              setSubRes(response.data)
-              //console.log(response.data);
+            axiosInstance: axios,
+            method: "PUT",
+            url:"s/invoices/update/items/all",
+            headers: {
+                "authorization": authHeader()
+            },
+            data : {
+              changedItems
+            }
+        }).then((response)=>{
+          if(delivery_date_end != delivery_date_end_new){
+            axios({
+                axiosInstance: axios,
+                method: "PUT",
+                url:"s/invoices/update/deliverydate",
+                headers: {
+                    "authorization": authHeader()
+                },
+                data : {
+              
+                    "invoiceID": invoiceID,
+                    "delivery_date_end": delivery_date_end_new.current || InvoiceRes.delivery_date_end,
+                    "invoice_part": InvoiceRes.invoice_part || 0
+                }
+            }).then((response)=>{         
+                setSubRes(response.data)
 
-          }).catch((err) => {
-              errorHandling(err)
-              setSubError(err)
-              //console.log(err);
-          }) 
-          }
-          
-
-    
-          //console.log(response.data);
+  
+            }).catch((err) => {
+                errorHandling(err)
+                setSubError(err)
+                //console.log(err);
+            }) 
+            }
+  
+        }).catch((err) => {
+            setSubError(err)
+            //console.log(err);
+        }) 
 
       }).catch((err) => {
           errorHandling(err)
@@ -199,6 +209,7 @@ function EditInvoice  () {
       }) 
       setSubLoading(false)
       setUpdateInvoice(updateInvoice+1)
+
 
     };
     
@@ -413,8 +424,8 @@ function EditInvoice  () {
         </div>
         <div className='invoice-div'>
         {toggleBrutto? 
-        < InvoiceBrutto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>:
-        < InvoiceNetto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>}
+        < InvoiceBrutto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} handleValueChange={(obj,val,ID)=>{handleValueChange(obj,val,ID)}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>:
+        < InvoiceNetto data={products} taxData={taxData} invoiceID={invoiceID} edit={edit} productRef={(prod)=>{productRef.current = prod}} handleValueChange={(obj,val,ID)=>{handleValueChange(obj,val,ID)}} toggleDelPrompt={(val)=>setToggleDelPrompt(val)}/>}
         {toggleDeliveryAlert &&
         <AlertPopup
           title="Lieferzeitraum anpassen"

@@ -9,7 +9,7 @@
 }
 .invoice-tb-row{
     display:grid;
-    grid-template-columns: 0.2fr 1fr 0.5fr 0.7fr 0.7fr;
+    grid-template-columns: 0.2fr 1fr 0.5fr 0.5fr 0.5fr;
     column-gap: 0.2rem;
     margin: 0.3rem;
     padding-top: 0.3rem;
@@ -35,7 +35,16 @@
     box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
 }
 .invoice-amount-input{
-    width: 2rem;
+    width: 40%;
+    text-align: end;
+}
+.invoice-name-input{
+    width: 100%;
+    text-align: end;
+}
+.invoice-price-input{
+    width: 60%;
+    text-align: end;
 }
 .invoice-input{
     width: 12.5rem;

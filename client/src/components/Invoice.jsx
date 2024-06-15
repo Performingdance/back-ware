@@ -3,6 +3,7 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import SVGIcon from '../components/SVG';
 import trash from '../assets/icons/trash.svg'
 
+let editProds = []
 
 export default function InvoiceNetto ({
     data,
@@ -10,14 +11,17 @@ export default function InvoiceNetto ({
     invoiceID,
     productRef,
     toggleDelPrompt,
-    taxData
+    taxData,
+    handleValueChange
 
 }) {
 
     let total_netto = 0
+    editProds = data
     taxData.forEach(tax=>{
         total_netto = total_netto +  parseFloat(tax.total)
     })
+
 
     const items = data.map((product, key)=> {
         
@@ -35,16 +39,16 @@ export default function InvoiceNetto ({
 
 
         return(
-        <div key={key+"div"} className=''>
-            <div key={key+"li"} className='invoice-tb-row'>      
-            <p key={key+"pos"} className='invoice-p'>{key+1}</p>
-            <p key={key+"product"} className='invoice-p ta-s'>{product.product_name}</p>
-            <p key={key+"amount"} className='invoice-p' >{product.amount+"x"}</p>
-            <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? product.price_piece.replace(".",",") : "0,00") + "€"}</p>
-            <p key={key+"price_total"} className='invoice-p' >{(product.price_total? product.price_total.replace(".",",") : "0,00") + "€ ("+ product.tax + "%)"}</p>
-            </div>   
-            <button key={key+"del"} className='edit-btn' onClick={()=>[toggleDelPrompt(true), productRef(product)]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
-        </div>
+          <div key={key+"div"} className=''>
+          <div key={key+"li"} className='invoice-tb-row'>      
+          <p key={key+"pos"} className='invoice-p'>{key+1}</p>
+          <div><input key={key+"product_name"} className='invoice-name-input'defaultValue={product.product_name} onChange={(e)=>handleValueChange("product_name",e.target.value,product.ID)}></input></div>
+          <div><input key={key+"amount"} className='invoice-amount-input'defaultValue={product.amount.toString().replace(".",",")} onChange={(e)=>handleValueChange("amount",e.target.value.toString().replace(",","."),product.ID)}></input>x</div>
+          <div><input key={key+"price_piece"} className='invoice-price-input'defaultValue={(product.price_piece? product.price_piece.replace(".",",") : "0,00")} onChange={(e)=>handleValueChange("price_piece",e.target.value.replace(",","."),product.ID)}></input>€</div>
+          <div><input key={key+"price_total"} className='invoice-price-input'defaultValue={(product.price_total? product.price_total.replace(".",",") : "0,00")} onChange={(e)=>handleValueChange("price_total",e.target.value.replace(",","."),product.ID)}></input>€</div>         
+          </div>   
+          <button key={key+"del"} className='edit-btn' onClick={()=>[toggleDelPrompt(true), productRef(product)]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
+      </div>
 
         )
     })      
@@ -82,7 +86,9 @@ export function InvoiceBrutto ({
     invoiceID,
     productRef,
     toggleDelPrompt,
-    taxData
+    taxData,
+    handleValueChange
+
 
 }) {
 
@@ -119,10 +125,11 @@ export function InvoiceBrutto ({
         <div key={key+"div"} className=''>
             <div key={key+"li"} className='invoice-tb-row'>      
             <p key={key+"pos"} className='invoice-p'>{key+1}</p>
-            <p key={key+"product"} className='invoice-p ta-s'>{product.product_name}</p>
-            <p key={key+"amount"} className='invoice-p' >{product.amount+"x"}</p>
-            <p key={key+"price_piece"} className='invoice-p' >{(product.price_piece? product.price_piece.replace(".",",") : "0,00") + "€"}</p>
-            <p key={key+"price_total"} className='invoice-p' >{(product.price_total? product.price_total.replace(".",",") : "0,00") + "€ ("+ product.tax + "%)"}</p>
+            <div><input key={key+"product_name"} className='invoice-name-input'defaultValue={product.product_name} onChange={(e)=>handleValueChange("product_name",e.target.value,product.ID)}></input></div>
+            <div><input key={key+"amount"} className='invoice-amount-input'defaultValue={product.amount.toString().replace(".",",")} onChange={(e)=>handleValueChange("amount",e.target.value.toString().replace(",","."),product.ID)}></input>x</div>
+            <div><input key={key+"price_piece"} className='invoice-price-input'defaultValue={(product.price_piece? product.price_piece.replace(".",",") : "0,00")} onChange={(e)=>handleValueChange("price_piece",e.target.value.replace(",","."),product.ID)}></input>€</div>
+            <div><input key={key+"price_total"} className='invoice-price-input'defaultValue={(product.price_total? product.price_total.replace(".",",") : "0,00")} onChange={(e)=>handleValueChange("price_total",e.target.value.replace(",","."),product.ID)}></input>€</div>
+           
             </div>   
             <button key={key+"del"} className='edit-btn' onClick={()=>[toggleDelPrompt(true), productRef(product)]}><SVGIcon src={trash} class="svg-icon-sm"/> </button>
         </div>
