@@ -11,7 +11,8 @@ router.get("/all", isLoggedIn, (req, res) =>{
         LEFT JOIN clients
         ON a.clientID = clients.ID) AS b
     LEFT JOIN marges
-    ON b.margeID = marges.ID`, (err, result) =>{
+    ON b.margeID = marges.ID
+    ORDER BY b.invoice_date DESC`, (err, result) =>{
         if(err){
            console.log(err)
         } else {
@@ -54,7 +55,8 @@ router.post("/ID/prod", isLoggedIn, (req, res) =>{
             FROM
             (SELECT * FROM invoices_items WHERE invoiceID = ?) AS c
     LEFT JOIN clients
-    ON c.clientID = clients.ID`,invoiceID, (err, result) =>{
+    ON c.clientID = clients.ID
+    ORDER BY c.delivery_date ASC`,invoiceID, (err, result) =>{
         if(err){
            console.log(err)
         } else {
