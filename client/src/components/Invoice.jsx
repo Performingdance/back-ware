@@ -143,7 +143,7 @@ export function InvoiceBrutto ({
         {edit?
               <div className='invoice-tb-row-edit'>
                 <p className='invoice-tb-th'>Pos</p>
-                <p className='invoice-tb-th ta-s'>Artikel</p>
+                <p className='invoice-tb-th'>Artikel</p>
                 <p className='invoice-tb-th'>Anzahl</p>
                 <p className='invoice-tb-th'>Einzelpreis</p>
                 <p className='invoice-tb-th'>Summe Brutto</p>
@@ -151,7 +151,7 @@ export function InvoiceBrutto ({
               </div>:
               <div className='invoice-tb-row'>
                 <p className='invoice-tb-th'>Pos</p>
-                <p className='invoice-tb-th ta-s'>Artikel</p>
+                <p className='invoice-tb-th'>Artikel</p>
                 <p className='invoice-tb-th'>Anzahl</p>
                 <p className='invoice-tb-th'>Einzelpreis</p>
                 <p className='invoice-tb-th'>Summe Brutto (inkl. MwSt)</p>

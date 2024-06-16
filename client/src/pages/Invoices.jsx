@@ -5,11 +5,15 @@ import InvoiceCards from '../components/InvoiceCards'
 import Loading from '../components/Loading'
 import FloatIcon from '../components/FloatIcon'
 import Searchbar_filter from '../components/Searchbar'
+import handleInvoiceIsPaid from '../hooks/invoices/handleInvoiceIsPaid';
+
 
 function Invoices() {
-
+  
+  const [isPaidData, isPaidError, isPaidLoading, handleIsPaidUpdate] = handleInvoiceIsPaid();
   const [invoices, err, loading, handleRequest] = handleInvoiceRequest()
-  useEffect(()=>handleRequest(),[])
+  useEffect(()=>handleRequest(),[isPaidData])
+
 
   const [filteredData,setFilteredData] = useState(invoices)
   useEffect(()=>setFilteredData(invoices),[invoices])
@@ -38,7 +42,7 @@ function Invoices() {
   }
   else{
     return (
-      <InvoiceCards key={key} invoice={invoice} onClickOrder={() => [ setEditBtn(1), handleToggleEditID(invoice.ID)]} onClickMore={() => [ setEditBtn(2),handleToggleEditID(invoice.ID)]} editID={editID} editBtn={editBtn} />
+      <InvoiceCards key={key} invoice={invoice} handleIsPaid={(ID,val)=>{handleIsPaidUpdate(ID,val)}} onClickOrder={() => [ setEditBtn(1), handleToggleEditID(invoice.ID)]} onClickMore={() => [ setEditBtn(2),handleToggleEditID(invoice.ID)]} editID={editID} editBtn={editBtn} />
       )
   } 
 

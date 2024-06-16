@@ -4,7 +4,12 @@ import axios from '../apis/backWare';
 import authHeader from '../services/auth-header';
 import pencil_square from '../assets/icons/pencil-square.svg'
 import x_circle from '../assets/icons/x-circle.svg'
-import check from '../assets/icons/check-all.svg'
+import check_all from '../assets/icons/check-all.svg'
+import check from '../assets/icons/check.svg'
+import bar_graph from '../assets/icons/bar-graph.svg'
+import filetype_pdf from '../assets/icons/filetype-pdf.svg'
+import square from '../assets/icons/square.svg'
+import euro from '../assets/icons/currency-euro.svg'
 import trash from '../assets/icons/trash.svg'
 import plus from '../assets/icons/plus.svg'
 import SVGIcon from '../components/SVG';
@@ -22,6 +27,7 @@ import handleInvoiceMargeUpdateRequest from '../hooks/invoices/handleInvoiceMarg
 import handleInvoiceTaxRequest from '../hooks/invoices/handleInvoiceTaxRequest';
 import errorHandling from '../services/errorHandling';
 import { LabelTextInput } from '../components/LabelBox';
+import handleInvoiceIsPaid from '../hooks/invoices/handleInvoiceIsPaid';
 
 
 function EditInvoice  () {
@@ -61,9 +67,12 @@ function EditInvoice  () {
     const [margeUpdate, margeUError, margeULoading, handleMURequest] = handleInvoiceMargeUpdateRequest();
     const [clientData, clientError,clientLoading, handleCRequest] = handleClientSelectRequest();
     const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
+    const [isPaidData, isPaidError, isPaidLoading, handleIsPaidUpdate] = handleInvoiceIsPaid();
       useEffect(()=>handleTRequest(invoiceID), [edit]);
-      
       useEffect(()=>setToggleBrutto(InvoiceRes.tax),[InvoiceRes])
+      useEffect(()=>{ setUpdateInvoice(updateInvoice+1)},[isPaidData])
+
+
     function handleSelectRequests(){
         handleMRequest()
         handleCRequest()    
@@ -86,6 +95,9 @@ function EditInvoice  () {
       
     }) }, [products,edit])
 
+    function handleIsPaid(isPaid){
+      handleIsPaidUpdate(invoiceID, isPaid)
+    }
     
     const handleValueChange = (obj, val, ID) =>{
       editProd.current.forEach((product,key)=>{
@@ -414,10 +426,22 @@ function EditInvoice  () {
           { !edit? 
           <div key={"header_div"} className='edit-btns'>
             <button key={"edit"} className='edit-btn' onClick={()=>{setEdit(true), handleSelectRequests()}}><SVGIcon src={pencil_square} class="svg-icon-md"/> </button> 
+            <button key={"pdf"} className='edit-btn' onClick={()=>{}}><SVGIcon src={filetype_pdf} class="svg-icon-md"/> </button> 
+            {InvoiceRes.is_paid?
+            <button key={"is_paid"} className='edit-btn' onClick={()=>{handleIsPaid(!InvoiceRes.is_paid)}}>
+              <SVGIcon src={check} class="svg-icon-md"/> 
+              <SVGIcon src={euro} class="svg-icon-md"/>  
+            </button> 
+            :
+            <button key={"is_not_paid"} className='edit-btn' onClick={()=>{handleIsPaid(!InvoiceRes.is_paid)}}>
+              <SVGIcon src={square} class="svg-icon-md"/> 
+              <SVGIcon src={euro} class="svg-icon-md"/> 
+            </button> 
+            }
           </div>:
           <div key={"btns"} className='edit-btns'>
             <button key={"check"} className='edit-btn' onClick={(e)=>{setEdit(false), 
-              (delivery_date_end != delivery_date_end_newRef.current)? setToggleDeliveryAlert(true) : handleSubmit(e)} }><SVGIcon src={check} class="svg-icon-md"/> </button>
+              (delivery_date_end != delivery_date_end_newRef.current)? setToggleDeliveryAlert(true) : handleSubmit(e)} }><SVGIcon src={check_all} class="svg-icon-md"/> </button>
             <button key={"del"} className='edit-btn' onClick={()=>[setEdit(false), setTogglePrompt(true)]}><SVGIcon src={trash} class="svg-icon-md"/> </button>
             <button key={"abort"} className='edit-btn' onClick={()=>setEdit(false)}><SVGIcon src={x_circle} class="svg-icon-md"/> </button>
           </div>}
