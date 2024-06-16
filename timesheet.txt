@@ -138,11 +138,11 @@ Kosten:
 ToDo:
 [x] photo Upload
 [x] photo Komprimierung
-[] tax new item / new product, edit product
-[] add invoice icon edit order items 
+[x] tax new item / new product, edit product
+[x] add invoice icon edit order items 
 [] edit invoice items, is paid
-[] ordercards billed items
-[] Invoice - Lieferzeitraum
+[x] ordercards billed items
+[x] Invoice - Lieferzeitraum
 [] dropdown select component, no Input invoice-marge
 [x]   Preisliste in Preisrechner einfügen (Preis, Marge)
 [] 

@@ -480,7 +480,7 @@ router.put("/update/deliverydate", isLoggedIn, (req, res, next) => {
         if(err){
             console.log(err)
         } else{
-            const newInvoiceID = result[0].insertId
+            const newInvoiceID = result.insertId
             db.query(`
                 UPDATE invoices_items 
                 SET invoiceID = ? 
