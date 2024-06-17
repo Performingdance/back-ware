@@ -198,7 +198,8 @@ function EditInvoice  () {
                     "delivery_date_end": delivery_date_end_newRef.current || InvoiceRes.delivery_date_end,
                     "invoice_part": InvoiceRes.invoice_part || 0
                 }
-            }).then((response)=>{         
+            }).then((response)=>{      
+                setUpdateInvoice(updateInvoice+1)   
                 setSubRes(response.data)
 
   
@@ -207,6 +208,8 @@ function EditInvoice  () {
                 setSubError(err)
                 //console.log(err);
             }) 
+            }else{
+              setUpdateInvoice(updateInvoice+1)
             }
   
         }).catch((err) => {
@@ -220,7 +223,7 @@ function EditInvoice  () {
           //console.log(err);
       }) 
       setSubLoading(false)
-      setUpdateInvoice(updateInvoice+1)
+
 
 
     };
@@ -425,7 +428,10 @@ function EditInvoice  () {
           
           { !edit? 
           <div key={"header_div"} className='edit-btns'>
-            <button key={"edit"} className='edit-btn' onClick={()=>{setEdit(true), handleSelectRequests()}}><SVGIcon src={pencil_square} class="svg-icon-md"/> </button> 
+            {!InvoiceRes.is_paid && 
+            <button key={"edit"} className='edit-btn' onClick={()=>{setEdit(true), handleSelectRequests()}}>
+              <SVGIcon src={pencil_square} class="svg-icon-md"/> 
+            </button>} 
             <button key={"pdf"} className='edit-btn' onClick={()=>{}}><SVGIcon src={filetype_pdf} class="svg-icon-md"/> </button> 
             {InvoiceRes.is_paid?
             <button key={"is_paid"} className='edit-btn' onClick={()=>{handleIsPaid(!InvoiceRes.is_paid)}}>
@@ -441,7 +447,7 @@ function EditInvoice  () {
           </div>:
           <div key={"btns"} className='edit-btns'>
             <button key={"check"} className='edit-btn' onClick={(e)=>{setEdit(false), 
-              (delivery_date_end != delivery_date_end_newRef.current)? setToggleDeliveryAlert(true) : handleSubmit(e)} }><SVGIcon src={check_all} class="svg-icon-md"/> </button>
+              (Date(delivery_date_end) != Date(delivery_date_end_newRef.current))? setToggleDeliveryAlert(true) : handleSubmit(e)} }><SVGIcon src={check_all} class="svg-icon-md"/> </button>
             <button key={"del"} className='edit-btn' onClick={()=>[setEdit(false), setTogglePrompt(true)]}><SVGIcon src={trash} class="svg-icon-md"/> </button>
             <button key={"abort"} className='edit-btn' onClick={()=>setEdit(false)}><SVGIcon src={x_circle} class="svg-icon-md"/> </button>
           </div>}

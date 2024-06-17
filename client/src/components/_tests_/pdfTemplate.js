@@ -383,13 +383,52 @@ var productList = [];
 
 products.forEach((product, key)=>{
     var line = [key+1, product.product_name, product.delivery_date, product.amount, (product.price_piece || "0,00")+ "€", (product.price_total || "0,00")+ "€"];
-    productList = [...productList, line]
+    productList = [...productList, line];
         
 });
 
 
 var dd = {
-    pageMargins: [ 40, 60, 40, 130 ],
+    pageMargins: [ 40, 100, 40, 130 ],
+    header: 
+    function(currentPage){
+        if(currentPage == 1){
+            return(
+            
+            {image: "snow",
+            fit: [75,75],
+            style: "headerR"
+            }
+        
+        )
+        }else{
+        return(
+            {columns: [
+                {
+        		 width: "auto",
+        		 style: 'headerL',
+        		 text: company.name +" "+ company.street+" "+ company.zip +" "+ company.city
+        		        + "\n Rechnung-Nr: " + invoice.invoice_number
+        		        + "\n Rechnungs-Datum: " + invoice.invoice_date,
+        		 color: 'gray', fontSize:12, italics: true, 
+        		 alignment: "left"
+        		    
+        		},
+                {
+                    
+                },
+                {image: "snow",
+                fit: [50, 50],
+                style: "headerR"
+                }
+            ]}
+
+        
+        )
+            
+        }
+        
+    },
 
     footer: 
     function(currentPage, pageCount, pageSize) { return (
@@ -429,18 +468,11 @@ var dd = {
 		    
 	    ],
         }
-        ) 
+        ); 
         
     },
 	content: [
-	    {columns:[
-	        
-			{image: 'sampleImage.jpg',
-			fit: [100, 100],
-			style: "logo"
-		    },
-	        
-	    ]
+	    {
 	        
 	    },
 	    {text: [company.name +", " + company.street +", " + company.zip +" " + company.city ], 
@@ -526,7 +558,19 @@ var dd = {
 		{text: 'Vielen Dank für die Gute Zusammenarbeit. Bitte zahlen Sie den Betrag abzüglich eventueller Anzahlung. \n',
 		style: 'textThanks',
 		alignment: "left"
-		}
+		},
+		{ qr: `BCD
+		001
+		1
+		SCT
+		RESDEFF150
+		FeinBaeckerei 17111
+		DE68150400680858672912
+		EUR10
+		CHAR
+		
+		Rechnung-Nr.: 2024001-1`
+        }
 		
 		],
     styles: {
@@ -559,18 +603,32 @@ var dd = {
 			margin: [0, 30, 40, 10]
 			
 		},
+		headerL: {
+		    margin: [40, 30, 0, 10],
+			alignment: "left"
+			
+		},
+		headerC: {
+		    margin: [0, 30, 0, 10],
+			alignment: "center"
+			
+		},
+		headerR: {
+		    margin: [0, 30, 20, 10],
+			alignment: "right"
+		},		
 		tableHeader: {
 			bold: true,
 			fontSize: 13,
 			color: 'black'
 		},
-		logo:{
-		    alignment: "right"
-		},
 		textThanks:{
 		    margin: [0, 10, 15, 15]
 		},
 
+	},
+	images: {
+	    snow: 'https://tse2.mm.bing.net/th?id=OIP.MoiE0TOseJC_Ml66xtSBCwHaHa&pid=Api',
 	},
 	defaultStyle: {
 		// alignment: 'justify'

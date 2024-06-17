@@ -13,7 +13,13 @@
     justify-items: center;
     display: inline-flex;
     box-shadow: 0 0.2rem 0.2rem 0 , 0 0.3rem 0.6rem 0;
+    visibility: "visible";
+    transition: "all 0.5s"
 
+}
+.header-hidden{
+    visibility: "hidden";
+    transition: "all 0.5s";
 }
 .logo-header{
     position: absolute;

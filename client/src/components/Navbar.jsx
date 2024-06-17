@@ -1,14 +1,13 @@
 import React, { useRef, useState } from 'react'
 import SVGIcon from './SVG';
 import '../styles/Navbar.css'
-//import '../hooks/handleNavbarFade.js'
 
 
 
 export default function Navbar(props) {
 
   return (
-    <nav id='navbar' className='navbar'>
+    <nav id='navbar' className='navbar' >
         <ul className='navbar-nav'> { props.children } </ul>
     </nav>
     

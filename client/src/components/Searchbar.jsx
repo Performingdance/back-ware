@@ -10,7 +10,7 @@ import handleIngAllRequest from '../hooks/ingredients/handleIngAllRequest'
 
 export default function Searchbar_filter(props) {
   const {filteredData} = props;
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false) 
 
   function handleFilter(search, data){
     const searchkey = props.searchkey;
