@@ -12,7 +12,7 @@ router.get("/all", isLoggedIn, (req, res) =>{
         ON a.clientID = clients.ID) AS b
     LEFT JOIN marges
     ON b.margeID = marges.ID
-    ORDER BY b.invoice_date DESC`, (err, result) =>{
+    ORDER BY b.invoice_number, b.invoice_part, b.invoice_date DESC`, (err, result) =>{
         if(err){
            console.log(err)
         } else {
@@ -565,7 +565,7 @@ router.put("/update/items/all", isLoggedIn, (req, res, next) => {
         const delivery_date = item.delivery_date;
         const order_date = item.order_date;
         const product_name = item.product_name;
-        db.query("UPDATE invoices_items SET name = ?, amount = ?, price_piece = ?, price_total = ?, order_date = ?, delivery_date = ?, tax = ? WHERE ID = ?", 
+        db.query("UPDATE invoices_items SET product_name = ?, amount = ?, price_piece = ?, price_total = ?, order_date = ?, delivery_date = ?, tax = ? WHERE ID = ?", 
             [product_name, amount, price_piece, price_total, order_date, delivery_date, tax, itemID], 
         (err, result) =>{
             if(err){
@@ -618,7 +618,7 @@ router.delete("/delete", isLoggedIn, (req, res) => {
                 console.log(err)
             } else{
                 const orderIDs = result
-                db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ?", 
+                db.query("UPDATE orders_items SET invoiceID = NULL WHERE invoiceID = ?", 
                 [invoiceID], 
                 (berr, bresult) =>{
                     if(berr){
@@ -672,7 +672,7 @@ router.delete("/delete/item", isLoggedIn, (req, res) => {
            console.log(err)
         } else {
             if(productID != -1){
-                db.query("UPDATE orders_items SET invoiceID = null WHERE invoiceID = ? AND productID = ?", 
+                db.query("UPDATE orders_items SET invoiceID = NULL WHERE invoiceID = ? AND productID = ?", 
                 [invoiceID, productID], 
                 (berr, bresult) =>{
                     if(berr){

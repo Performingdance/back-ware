@@ -131,6 +131,8 @@
 11.06. 0,5h
 12.06. 1h
 15.06. 6h
+16.06. 4h
+
 Kosten:
     Node server Render
         Feb 7€
@@ -145,7 +147,7 @@ ToDo:
 [x] Invoice - Lieferzeitraum
 [] dropdown select component, no Input invoice-marge
 [x]   Preisliste in Preisrechner einfügen (Preis, Marge)
-[] 
+[] Invoice pdf
 [] 
 [] 
 [] 
@@ -156,12 +158,8 @@ Markt == 1,1*NVP + MWst
 Laden == NVP + MWst
 
 
-Eingaben
-
-
-
-Produkte nach photUpload im Rezept neu laden
-Daylist Update - check
+[x] Produkte nach photUpload im Rezept neu laden
+[] Daylist Update - check
 
 
 
@@ -178,9 +176,8 @@ calculator
 
     Rechnungen:
 
-[]         Preis von Preisliste übernehmen, Gesamtpreis berechenen / updaten
-[]          Lieferzeitraum
-(ergänzt rechnungsnummer und erstellt neue Rechnung -2 mit allen Produkten nach dem Zeitraum)
+[x]         Preis von Preisliste übernehmen, Gesamtpreis berechenen / updaten
+[x]          Lieferzeitraum (ergänzt rechnungsnummer und erstellt neue Rechnung -2 mit allen Produkten nach dem Zeitraum)
 [x]        UI überarbeiten - Tabellenstruktur
 []          Pdf erstellen
 []         
