@@ -42,7 +42,7 @@ function Invoices() {
   }
   else{
     return (
-      <InvoiceCards key={key} invoice={invoice} handleIsPaid={(ID,val)=>{handleIsPaidUpdate(ID,val)}} onClickOrder={() => [ setEditBtn(1), handleToggleEditID(invoice.ID)]} onClickMore={() => [ setEditBtn(2),handleToggleEditID(invoice.ID)]} editID={editID} editBtn={editBtn} />
+      <InvoiceCards key={key} invoice={invoice} handleIsPaid={(ID,val)=>{handleIsPaidUpdate(ID,val)}} onClickOrder={() => [ setEditBtn(1), handleToggleEditID(invoice.ID)]} onClickMore={() => []} editID={editID} editBtn={editBtn} />
       )
   } 
 

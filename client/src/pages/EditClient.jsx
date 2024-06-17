@@ -7,6 +7,7 @@ import authHeader from '../services/auth-header';
 import { PromptPopup } from '../components/Popup';
 import errorHandling from '../services/errorHandling';
 import handleMargesRequest from '../hooks/marges/handleMargesRequest';
+import handleClientExtRequest from '../hooks/clients/handleClientExtRequest';
 
 
 
@@ -19,8 +20,8 @@ function EditClient() {
     
     let selectedMargeRef = useRef();
     let editRef = useRef();
-    const [client, clError, clLoading, handleClRequest] = useState([]); handleClientExtRequest(clientID)
-    const [clientExt, setClientExt] = useState({});
+    const [client, clError, clLoading, handleClRequest] = handleClientExtRequest(clientID)
+    const [clientExt, setClientExt] = useState(client [0]);
     const [upRes, setUpRes] = useState([]);
     const [upError, setUpError] = useState("");
     const [upLoading, setUpLoading] = useState(false);
@@ -29,7 +30,7 @@ function EditClient() {
     const [delError, setDelError] = useState("");
     const [delLoading, setDelLoading] = useState(false);
     useEffect(()=>{ handleClRequest(clientID), handleMRequest()}, [clientID,upRes]) ;
-    useEffect(()=>setClientExt(client[0]),[client])
+    useEffect(()=>{ setClientExt(client[0])}, [client]) ;
 
     //
 
@@ -83,7 +84,7 @@ function EditClient() {
                 "margeID" : clientExt.margeID
               }
           }).then((response)=>{
-              window.location.href = "/clients"
+              setUpRes(response)
               //console.log(res);
           }).catch((err) => {
               errorHandling(err)
@@ -127,6 +128,7 @@ function EditClient() {
       }
     
   return (
+    clientExt &&
     <div className='edit-card'>
     <Header title={(clientExt.first_name || clientExt.last_name || clientExt.company)? (clientExt.first_name? clientExt.first_name + " ": " " ) + (clientExt.last_name? clientExt.last_name + " " : " ") + (clientExt.company? clientExt.company : " ") : "Neuer Kunde"} search="false"/>
     {togglePrompt ? <PromptPopup 

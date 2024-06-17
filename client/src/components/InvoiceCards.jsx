@@ -4,7 +4,7 @@ import SVGIcon from './SVG';
 import pencil_square from '../assets/icons/pencil-square.svg'
 import plus from "../assets/icons/plus.svg"
 import check from "../assets/icons/check.svg"
-import no_euro from '../assets/icons/no-euro.svg'
+import square from '../assets/icons/square.svg'
 import euro from '../assets/icons/currency-euro.svg'
 import handleInvoiceProdRequest from '../hooks/invoices/handleInvoiceProdRequest';
 
@@ -52,17 +52,15 @@ export default function invoiceCards ({
                   </a> 
                   :
                   <a key={"is_not_paid"} className='button rc-btn' onClick={()=>{handleIsPaid(invoice.ID,!invoice.is_paid)}}>
-                    <SVGIcon src={no_euro} class="svg-icon-sm"/> 
+                    <SVGIcon src={square} class="svg-icon-sm"/>  
+                    <SVGIcon src={euro} class="svg-icon-sm"/>  
                   </a> 
               }
               <a type="button" className='button rc-btn' onClick={onClickOrder}>
                 <SVGIcon class="rc-btn-svg" src={plus}/> Produkte
               </a>
-              <a type="button" className='button rc-btn ' onClick={onClickMore}>
+              <a href={`/invoices/${invoice.ID}`} type="button" className='button rc-btn ' onClick={onClickMore}>
                 <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
-              </a>
-              <a href={`/invoices/${invoice.ID}`} type="button" className='button rc-btn'>
-                <SVGIcon class="rc-btn-svg" src={pencil_square}/>
               </a>
               
             </div>

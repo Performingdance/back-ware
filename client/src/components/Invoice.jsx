@@ -107,6 +107,7 @@ export function InvoiceBrutto ({
         <p className='invoice-p ta-s'>{"inkl. MwSt: "+obj.tax+"%"}</p>
         <p className='invoice-p'></p>
         <p className='invoice-p'></p>
+        <p className='invoice-p'></p>
         <p className='invoice-p'>{obj.total_tax.replace('.',',')+"€"}</p>
       </div>)
       })
@@ -175,6 +176,7 @@ export function InvoiceBrutto ({
                 <p className='invoice-p ta-s'>Rechnungssumme netto</p>
                 <p className='invoice-p'></p>
                 <p className='invoice-p'></p>
+                <p className='invoice-p'></p>
                 <p className='invoice-p'>{total_netto.toFixed(2).toString().replace('.',',')+"€"}</p>
               </div>
                            {
@@ -183,6 +185,7 @@ export function InvoiceBrutto ({
               <div className='invoice-tb-row '>
                 <p className='invoice-p'></p>
                 <p className='invoice-p ta-s'>Rechnungssumme brutto</p>
+                <p className='invoice-p'></p>
                 <p className='invoice-p'></p>
                 <p className='invoice-p'></p>
                 <p className='invoice-p'>{total_brutto.toFixed(2).toString().replace('.',',')+"€"}</p>

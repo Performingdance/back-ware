@@ -88,7 +88,7 @@ router.post("/all/client/noInvoice", isLoggedIn, (req, res, next) => {
                 FROM (SELECT orders.clientID, orders.ID, orders.billed_items, orders.total_items FROM orders_items 
                     LEFT JOIN orders 
                     ON orders.ID = orders_items.orderID
-                    WHERE orders_items.invoiceID IS null AND orders.clientID=5
+                    WHERE orders_items.invoiceID IS null AND orders.clientID = ?
                     GROUP BY orderID, clientID, billed_items, total_items
                     ORDER BY orders.order_date DESC) AS a
                 LEFT JOIN clients
@@ -144,7 +144,7 @@ router.get("/all/items/noInvoice", isLoggedIn, (req, res, next) => {
 router.post("/all/client", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
 
-            db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name, invoiceID 
+            db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name 
             FROM orders 
             WHERE clientID = ?
             ORDER BY ID DESC`, 

@@ -161,9 +161,9 @@ if(priceList.length > 0){
           <p className='bvp-price'>gesetzter NVP</p>
           <input className='bvp-price-first' defaultValue={data.vkp_netto ? data.vkp_netto.replace(".",","): "0,00"} onChange={(e)=>handleVkpValueChange(e.target.value)}></input>
           {editPriceListInputs? editPriceListInputs : ""}
+          <button className='bvp-submit-btn' onClick={()=>handlePriceSubmit()}>Speichern</button>
           
       </div>
-      <button className='submit_btn' onClick={()=>handlePriceSubmit()}>Speichern</button>
           {res.message && <h5 className='successMsg'>{res.message}</h5>}
       
     </div>

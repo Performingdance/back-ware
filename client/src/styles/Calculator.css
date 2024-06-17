@@ -1,11 +1,16 @@
-.calc-header{
+.calc-header, .calc-subheader{
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem,1fr));
+    display:grid;
+    grid-template-columns: 1fr;
     background-color: var(--input-bg);
     min-height: 2.8rem;
-    padding: 0rem;
+    padding: auto;
     box-shadow: 0.2rem 0rem 0 0 , 0 0.3rem 0.3rem 0;
+    justify-items: center;
+}
+.calc-subheader{
+    grid-template-columns: 1fr 1fr;
+    align-self: center;
 }
 
 .calc-s-header >*{
@@ -15,15 +20,25 @@
 .bvp-wrapper{
     margin: auto;
     margin-bottom: calc(var(--nav-size)*3.5);
-    width: 30rem;
     padding: 0 0.6rem 0.3rem 0.6rem;
     box-shadow: 0.2rem 0rem 0 0 , 0 0.3rem 0.3rem 0;
     border-radius: var(--border-radius);   
+    overflow-x: scroll;
+    max-width: 25rem;
+    align-content: center;
+
+}
+.bvp-submit-btn{
+    align-self: center;
+    padding: 0.3rem;
 }
 .bvp-table{
     display: grid;
     grid-template-columns: 0.5fr 0.5fr;
     padding: 0.3rem;
+    text-align: center;
+    margin-left: 5%;
+
 
 }
 .bvp-price{

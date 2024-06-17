@@ -80,19 +80,20 @@ function handleProductChange(productID){
     placeholder='Produkt wählen'
     open={productOpen}
     setOpen={(bol)=>setProductOpen(bol)}
-    className='i-select' 
+    className='' 
     type='text' 
     /> 
     </div>
     {selectedProductId == -1 ? "":
-    <div className='calc-header'>
+    <div className='calc-subheader'>
         <a id='bvp' onClick={()=>setOpenTab("bvp")} className={openTab=="bvp"? 'r-header-title button-hover' : 'r-header-title'}>Kosten</a> 
         <a id='nutri' onClick={()=>setOpenTab("nutri")} className={openTab=="nutri"? 'r-header-title button-hover' : 'r-header-title'}>Nährwerte</a>
     </div>}
 
     <div className='calc-content'>
       {((openTab == "bvp") && bvpData.length) ? <Bvp data={bvpData[0]} />:"" }
-      {(openTab == "nutri" && servingData.length && nutriData.length)? <Nutri nutriData={nutriData[0]} servingData={servingData[0]} ingData={ingredients} />:"" }
+      {(openTab == "nutri" && servingData.length && nutriData.length)? 
+      <Nutri nutriData={nutriData[0]} servingData={servingData[0]} ingData={ingredients} />:"" }
     </div>
 </div>
 

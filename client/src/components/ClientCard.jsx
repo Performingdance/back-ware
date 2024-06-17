@@ -16,7 +16,7 @@ import { AddInvoicePopup, NewOrderPopup } from './Popup'
 function ClientCard({
   onClick,
   onClickOrder,
-  onClickMore,
+  onClickInfo,
   editID,
   editBtn,
   client
@@ -42,17 +42,6 @@ function handleOrderBtn(e){
 }
 const orderList = 
 orders.map((order, key)=> {
-  if(order.ID <= 0){
-    return(
-      <li key={key+"li"} className='client-li'>
-        <p></p>
-        <a onClick={()=>{setOrderPrompt(true)}} type="button" className='button rc-btn'>
-          neue Bestellung
-        </a>
-      </li>
-  
-    )
-  }else{
     return(
       <li key={key+"li"} className='client-li'>
         <p></p>
@@ -68,10 +57,7 @@ orders.map((order, key)=> {
         
       </li>
   
-    )
-
-  }
-  
+    )  
 
 }) 
 
@@ -89,8 +75,8 @@ orders.map((order, key)=> {
           <a type="button" className='button rc-btn' onClick={onClickOrder}>
             <SVGIcon class="rc-btn-svg" src={plus}/> Bestellung
           </a>
-          <a type="button" className='button rc-btn ' onClick={onClickMore}>
-            <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
+          <a type="button" className='button rc-btn ' onClick={onClickInfo}>
+            <SVGIcon class="rc-btn-svg" src={plus}/> Info
           </a>
           <a href={`/clients/${client.ID}`} type="button" className='button rc-btn'>
             <SVGIcon class="rc-btn-svg" src={pencil_square}/>
@@ -101,7 +87,13 @@ orders.map((order, key)=> {
     {editID==client.ID && editBtn==1 && 
     <div className='c-card cc-order'>
        <ul className='product-list'>
-       {orders.length && orderList}
+       {orders.length ? orderList:
+             <li key={"li"} className='client-li'>
+             <p></p>
+             <a onClick={()=>{setOrderPrompt(true)}} type="button" className='button rc-btn'>
+               neue Bestellung
+             </a>
+           </li>}
        </ul>
       {orderPrompt && 
       <NewOrderPopup 
