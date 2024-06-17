@@ -73,7 +73,7 @@ orders.map((order, key)=> {
         </div>
         <div className='rc-btns' > 
           <a type="button" className='button rc-btn' onClick={onClickOrder}>
-            <SVGIcon class="rc-btn-svg" src={plus}/> Bestellung
+            <SVGIcon class="rc-btn-svg" src={plus}/> Bestellungen
           </a>
           <a type="button" className='button rc-btn ' onClick={onClickInfo}>
             <SVGIcon class="rc-btn-svg" src={plus}/> Info

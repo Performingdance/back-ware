@@ -13,7 +13,7 @@ import '../styles/OrderCard.css'
 
 export  function OrderCard({
     onClick,
-    onClickMore,
+    onClickInfo,
     onClickInv,
     editID,
     editBtn,
@@ -56,12 +56,12 @@ export  function OrderCard({
             <a type="button" className='button rc-btn ' onClick={onClickInv}>
             <SVGIcon class="rc-btn-svg" src={file_plus}/> Rechnung (neu)
           </a>}          
-            <a type="button" className='button rc-btn' onClick={onClickMore}>
-              <SVGIcon class="rc-btn-svg" src={plus}/> Mehr
+            <a type="button" className='button rc-btn' onClick={onClickInfo}>
+              <SVGIcon class="rc-btn-svg" src={plus}/> Info
             </a>
 
             <a href={`/orders/${data.ID}`} type="button" className='button rc-btn'>
-              <SVGIcon class="rc-btn-svg" src={pencil_square}/>
+              <SVGIcon class="rc-btn-svg" src={pencil_square}/> Mehr
             </a>
           </div>
   

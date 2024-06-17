@@ -37,7 +37,7 @@ function EditClient() {
 
       // console.log(clientExt.first_name)
     const handleValueChange = (obj, val) =>  {
-      let data = client;
+      let data = clientExt;
      
       data = ({...data, [obj] : val});
       
@@ -46,7 +46,7 @@ function EditClient() {
       return
     }
     const handleMargeChange = () => {
-      let data = client;
+      let data = clientExt;
       const margeID = selectedMargeRef.current || 0;
  
 
@@ -178,6 +178,7 @@ function EditClient() {
                  
                 />]}
             <button className='edit-btn button' onClick={handleSubmit} type='button'>Speichern</button>
+            { upRes ? <h5 className='successMsg'>Erfolgreich gespeichert</h5> :""}
             <button className='edit-btn button' onClick={()=>setTogglePrompt(true)} type='button'>Löschen</button>
           </ul>
       </div>

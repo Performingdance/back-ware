@@ -44,7 +44,7 @@ function Orders() {
     //console.log(editID)
   
   return (
-    <OrderCard onClickInv={() => [setEditOrder(order), setNewInvoicePrompt(true)]} onClickMore={() => [ setEditBtn(2),handleToggleEditID(order.ID)]} products={products} editID={editID} editBtn={editBtn} key={order.ID} data={order} />
+    <OrderCard onClickInv={() => [setEditOrder(order), setNewInvoicePrompt(true)]} onClickInfo={() => [ setEditBtn(2),handleToggleEditID(order.ID)]} products={products} editID={editID} editBtn={editBtn} key={order.ID} data={order} />
   )
   });
 
