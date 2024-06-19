@@ -28,12 +28,14 @@ import handleInvoiceTaxRequest from '../hooks/invoices/handleInvoiceTaxRequest';
 import errorHandling from '../services/errorHandling';
 import { LabelTextInput } from '../components/LabelBox';
 import handleInvoiceIsPaid from '../hooks/invoices/handleInvoiceIsPaid';
+import PdfCreate from '../components/pdfCreate';
 
 
 function EditInvoice  () {
 
     let invoiceID = window.location.pathname.split("/")[2]
     const [togglePrompt, setTogglePrompt] = useState(false);
+    const [createPdf, setCreatePdf] = useState(false);
     const [toggleDeliveryAlert, setToggleDeliveryAlert] = useState(false);
     const [toggleBrutto, setToggleBrutto] = useState(true);
     const [addItemPrompt, setAddItemPrompt] = useState(false);
@@ -51,7 +53,7 @@ function EditInvoice  () {
 
     const [products, prodErr, prodLoading, handleProdRequest] = handleInvoiceProdRequest();
     useEffect(()=>{handleProdRequest(invoiceID)},[updateInvoice])
-    const [InvoiceRes, invoiceErr, invoiceLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
+    const [invoiceRes, invoiceErr, invoiceLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
     //console.log(res)
     
 
@@ -69,7 +71,7 @@ function EditInvoice  () {
     const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
     const [isPaidData, isPaidError, isPaidLoading, handleIsPaidUpdate] = handleInvoiceIsPaid();
       useEffect(()=>handleTRequest(invoiceID), [edit]);
-      useEffect(()=>setToggleBrutto(InvoiceRes.tax),[InvoiceRes])
+      useEffect(()=>setToggleBrutto(invoiceRes.tax),[invoiceRes])
       useEffect(()=>{ setUpdateInvoice(updateInvoice+1)},[isPaidData])
 
 
@@ -83,9 +85,9 @@ function EditInvoice  () {
     let margeIDRef = useRef()
     let clientIDRef = useRef()
     let notesRef = useRef()
-    let invoice_delivery_date = InvoiceRes.delivery_date
-    let delivery_date_end = InvoiceRes.delivery_date_end
-    let delivery_date_end_newRef = useRef(InvoiceRes.delivery_date_end)
+    let invoice_delivery_date = invoiceRes.delivery_date
+    let delivery_date_end = invoiceRes.delivery_date_end
+    let delivery_date_end_newRef = useRef(invoiceRes.delivery_date_end)
     let editProd = useRef([]) 
 
     useEffect(() => {
@@ -162,14 +164,14 @@ function EditInvoice  () {
           data : {
         
               "invoiceID": invoiceID,
-              "clientID": clientIDRef.current || InvoiceRes.clientID,
-              "invoice_date": invoice_dateRef.current || InvoiceRes.invoice_date,
-              "invoice_number": invoice_numberRef.current || InvoiceRes.invoice_number,
-              "margeID": margeIDRef.current || InvoiceRes.margeID,
-              "notes": notesRef.current || InvoiceRes.notes
+              "clientID": clientIDRef.current || invoiceRes.clientID,
+              "invoice_date": invoice_dateRef.current || invoiceRes.invoice_date,
+              "invoice_number": invoice_numberRef.current || invoiceRes.invoice_number,
+              "margeID": margeIDRef.current || invoiceRes.margeID,
+              "notes": notesRef.current || invoiceRes.notes
           }
       }).then((response)=>{         
-          if(margeIDRef.current != InvoiceRes.margeID){
+          if(margeIDRef.current != invoiceRes.margeID){
             handleMURequest(invoiceID,margeIDRef.current)
           }
 
@@ -195,8 +197,8 @@ function EditInvoice  () {
                 data : {
               
                     "invoiceID": invoiceID,
-                    "delivery_date_end": delivery_date_end_newRef.current || InvoiceRes.delivery_date_end,
-                    "invoice_part": InvoiceRes.invoice_part || 0
+                    "delivery_date_end": delivery_date_end_newRef.current || invoiceRes.delivery_date_end,
+                    "invoice_part": invoiceRes.invoice_part || 0
                 }
             }).then((response)=>{      
                 setUpdateInvoice(updateInvoice+1)   
@@ -294,9 +296,9 @@ function EditInvoice  () {
   return (
     <div className='page-content-wide'>
     
-      <Header key="header" title={InvoiceRes? "#"+ InvoiceRes.invoice_number +" "+ (InvoiceRes.client? InvoiceRes.client : " ") :"# - "}/>
+      <Header key="header" title={invoiceRes? "#"+ invoiceRes.invoice_number +" "+ (invoiceRes.client? invoiceRes.client : " ") :"# - "}/>
       {togglePrompt && <PromptPopup 
-          title={InvoiceRes.invoice_number? `Bestellung #${InvoiceRes.invoice_number } löschen?` : "Bestellung löschen?"} 
+          title={invoiceRes.invoice_number? `Bestellung #${invoiceRes.invoice_number } löschen?` : "Bestellung löschen?"} 
           btnOk="OK" 
           btnAbort="Abbrechen"
           onClickAbort={()=>setTogglePrompt(false)} 
@@ -318,33 +320,33 @@ function EditInvoice  () {
         onClickOK={()=>{setUpdateInvoice(updateInvoice+1),setAddOrderPrompt(false)}}
         onClickAbort={()=>{setAddOrderPrompt(false)}}
         defaultInvoiceID={invoiceID}
-        defaultClientID={InvoiceRes.clientID}
-        defaultInvoiceName={InvoiceRes.invoice_number}
-        defaultClientName={InvoiceRes.client} />}
+        defaultClientID={invoiceRes.clientID}
+        defaultInvoiceName={invoiceRes.invoice_number}
+        defaultClientName={invoiceRes.client} />}
 
       {addItemPrompt && <AddInvoiceProdPopup
         forwardEdit={false}
         onClickOK={()=>{setUpdateInvoice(updateInvoice+1),setAddItemPrompt(false)}}
         onClickAbort={()=>{setAddItemPrompt(false)}}
         defaultInvoiceID={invoiceID}
-        defaultClientID={InvoiceRes.clientID}
-        defaultInvoiceName={InvoiceRes.invoice_number}
-        defaultClientName={InvoiceRes.client} />}
+        defaultClientID={invoiceRes.clientID}
+        defaultInvoiceName={invoiceRes.invoice_number}
+        defaultClientName={invoiceRes.client} />}
       
       {addClientItemPrompt && <AddInvoiceClientPopup
         forwardEdit={false}
         onClickOK={()=>{setUpdateInvoice(updateInvoice+1),setAddClientItemPrompt(false)}}
         onClickAbort={()=>{setAddClientItemPrompt(false)}}
         defaultInvoiceID={invoiceID}
-        defaultClientID={InvoiceRes.clientID}
-        defaultInvoiceName={InvoiceRes.invoice_number}
-        defaultClientName={InvoiceRes.client} />}
+        defaultClientID={invoiceRes.clientID}
+        defaultInvoiceName={invoiceRes.invoice_number}
+        defaultClientName={invoiceRes.client} />}
 
 
       <div className='invoice-wrapper'>
         <div className='invoice-info-div ta-c'>
         {((prodErr || invoiceErr) && <p className='errorMsg'>{prodErr.message || invoiceErr.message}</p>)}
-          {!edit ?<p>Kunde: {InvoiceRes? InvoiceRes.client : "-"} </p>:
+          {!edit ?<p>Kunde: {invoiceRes? invoiceRes.client : "-"} </p>:
                     <div className=' ai-c'> 
                     <p>Kunde:</p> 
                     {clientData && 
@@ -356,7 +358,7 @@ function EditInvoice  () {
                       onSelect={(val)=>{editRef.current=val}}
                       onChange={(item) =>{clientIDRef.current = item}}
                       selectedID={clientIDRef.current}
-                      defaultValue={InvoiceRes? InvoiceRes.client:""}
+                      defaultValue={invoiceRes? invoiceRes.client:""}
                       placeholder={"Kunde wählen...."}
                       open={clientSelectOpen}
                       setOpen={(val)=>{setClientSelectOpen(val)}}
@@ -364,7 +366,7 @@ function EditInvoice  () {
                       
                       />}
                   </div>}
-          {!edit ?<p>Marge: {InvoiceRes? InvoiceRes.marge_name : "-"} </p>:
+          {!edit ?<p>Marge: {invoiceRes? invoiceRes.marge_name : "-"} </p>:
                     <div className='  ai-c'> 
                     <p>Marge:</p> 
                     {margeData && 
@@ -376,7 +378,7 @@ function EditInvoice  () {
                       onSelect={(val)=>{editRef.current=val}}
                       onChange={(item) =>{margeIDRef.current = item}}
                       selectedID={margeIDRef.current}
-                      defaultValue={InvoiceRes? InvoiceRes.marge_name: ""}
+                      defaultValue={invoiceRes? invoiceRes.marge_name: ""}
                       placeholder={"Marge wählen...."}
                       open={margeSelectOpen}
                       setOpen={(val)=>{setMargeSelectOpen(val)}}
@@ -384,16 +386,16 @@ function EditInvoice  () {
                       
                       />}
                   </div>}
-          {!edit ?<p>Rechnungs-Nr.: {InvoiceRes? "#" + InvoiceRes.invoice_number+ (InvoiceRes.invoice_part != "0"? "-"+InvoiceRes.invoice_part : "") : "# -"} </p>:
+          {!edit ?<p>Rechnungs-Nr.: {invoiceRes? "#" + invoiceRes.invoice_number+ (invoiceRes.invoice_part != "0"? "-"+invoiceRes.invoice_part : "") : "# -"} </p>:
                     <div className=' ai-c'> 
                     <p>Rechnungs-Nr.:</p> 
-                    <input className='invoice-input d-il' type='number' defaultValue={InvoiceRes? InvoiceRes.invoice_number: 0}  onChange={(e)=>{invoice_numberRef.current = e.target.valueAsNumber}}></input>
+                    <input className='invoice-input d-il' type='number' defaultValue={invoiceRes? invoiceRes.invoice_number: 0}  onChange={(e)=>{invoice_numberRef.current = e.target.valueAsNumber}}></input>
                   </div>}
-          {!edit? <p>Rechnungsdatum: {InvoiceRes? InvoiceRes.invoice_date : "-"}</p>:         
+          {!edit? <p>Rechnungsdatum: {invoiceRes? invoiceRes.invoice_date : "-"}</p>:         
           <div className=' ai-c'> 
             <p>Rechnungsdatum:</p> 
             <DateLine 
-              defaultDay={InvoiceRes? InvoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1"): ""} 
+              defaultDay={invoiceRes? invoiceRes.invoice_date.replace(/(..).(..).(..)/, "20$3-$2-$1"): ""} 
               onDateChange={(val)=>{invoice_dateRef.current = val}} /> 
           </div>}
           {(invoice_delivery_date != delivery_date_end) ?
@@ -419,27 +421,27 @@ function EditInvoice  () {
           </p>}
 
           {!edit? <div>
-            <p>Notizen: </p><pre className=''>{InvoiceRes? InvoiceRes.notes : "-"}</pre>
+            <p>Notizen: </p><pre className=''>{invoiceRes? invoiceRes.notes : "-"}</pre>
             </div>:
           <div className='ai-c'>
             <p>Notizen:</p>
-            <LabelTextInput defaultValue={InvoiceRes? InvoiceRes.notes : "-"} onChange={(val)=> notesRef.current = val} />
+            <LabelTextInput defaultValue={invoiceRes? invoiceRes.notes : "-"} onChange={(val)=> notesRef.current = val} />
           </div>}
           
           { !edit? 
           <div key={"header_div"} className='edit-btns'>
-            {!InvoiceRes.is_paid && 
+            {!invoiceRes.is_paid && 
             <button key={"edit"} className='edit-btn' onClick={()=>{setEdit(true), handleSelectRequests()}}>
               <SVGIcon src={pencil_square} class="svg-icon-md"/> 
             </button>} 
-            <button key={"pdf"} className='edit-btn' onClick={()=>{}}><SVGIcon src={filetype_pdf} class="svg-icon-md"/> </button> 
-            {InvoiceRes.is_paid?
-            <button key={"is_paid"} className='edit-btn' onClick={()=>{handleIsPaid(!InvoiceRes.is_paid)}}>
+            <button key={"pdf"} className='edit-btn' onClick={()=>{setCreatePdf(true)}}><SVGIcon src={filetype_pdf} class="svg-icon-md"/> </button> 
+            {invoiceRes.is_paid?
+            <button key={"is_paid"} className='edit-btn' onClick={()=>{handleIsPaid(!invoiceRes.is_paid)}}>
               <SVGIcon src={check} class="svg-icon-md"/> 
               <SVGIcon src={euro} class="svg-icon-md"/>  
             </button> 
             :
-            <button key={"is_not_paid"} className='edit-btn' onClick={()=>{handleIsPaid(!InvoiceRes.is_paid)}}>
+            <button key={"is_not_paid"} className='edit-btn' onClick={()=>{handleIsPaid(!invoiceRes.is_paid)}}>
               <SVGIcon src={square} class="svg-icon-md"/> 
               <SVGIcon src={euro} class="svg-icon-md"/> 
             </button> 
@@ -465,8 +467,10 @@ function EditInvoice  () {
           btnAbort={"Abbrechen"}
           onClickAbort={()=>setToggleDeliveryAlert(false)}
         />
-
-        }     
+        } 
+        {
+          createPdf && <PdfCreate products={products} invoice={invoiceRes} taxData={taxData} />
+        }    
         <div className='invoice-btns'>
           <button className='invoice-btn' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Bestellung</button>
           <button className='invoice-btn' key={"add-btn_2"} onClick={()=>{setAddItemPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Produkt</button>
