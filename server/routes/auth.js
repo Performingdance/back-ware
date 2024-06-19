@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const uuid = require('uuid')
 
 const db = require('../lib/db.js');
-const {isLoggedIn, authRole} = require('../middleware/basicAuth.js');
+const {isLoggedIn, validateRegister, authRole} = require('../middleware/basicAuth.js');
 
 
 router.post("/sign-up", validateRegister, (req, res, next) => {
