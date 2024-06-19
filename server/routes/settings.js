@@ -32,7 +32,7 @@ router.get("/company", isLoggedIn, (req, res) => {
     FROM(SELECT b.ID, b.company, CONCAT(b.street, " ",settings.setting ) AS street_number
     FROM(SELECT a.*, settings.setting AS street 
     FROM(
-    SELECT 1 AS ID, setting AS company FROM settings WHERE ID = 5) AS a
+    SELECT 1 AS ID, setting AS name FROM settings WHERE ID = 5) AS a
     LEFT JOIN settings 
     ON settings.ID = 6) AS b
     LEFT JOIN settings 
