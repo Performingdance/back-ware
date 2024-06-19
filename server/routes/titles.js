@@ -4,7 +4,7 @@ const {isLoggedIn} = require('../middleware/basicAuth.js');
 const db = require('../lib/db.js');
 
 
-router.get("/all", isLoggedIn, (req, res) => {
+router.post("/all", isLoggedIn, (req, res) => {
    const recipeID = req.body.recipeID;
    db.query("SELECT * FROM titles WHERE recipeID = ? ", recipeID, (err, result) =>{
         if(err){

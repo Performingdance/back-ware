@@ -18,7 +18,7 @@ export default function docDefinition (products, taxData, client, company, invoi
             prodRowHeights = [...prodRowHeights, 16]
         }
     
-        var line = [{text: key+1}, 
+        const line = [{text: key+1}, 
         {text: product.product_name}, 
         {text: product.delivery_date}, 
         {text: product.amount}, 

@@ -1,295 +1,25 @@
 import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
+import handleClientExtRequest from "../hooks/clients/handleClientExtRequest.js";
+import handleCompanyRequest from "../hooks/settings/handleCompanyRequest.js";
 import docDefinition from "./pdfTemplate.jsx";
 
-
-// const products =
-// [
-//     {
-//     "ID":60,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,"order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":null,
-//     "price_total":null,
-//     "tax":7
-//     },
-//     {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },    {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },{
-//     "ID":60,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,"order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":null,
-//     "price_total":null,
-//     "tax":7
-//     },
-//     {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },    {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },{
-//     "ID":60,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,"order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":null,
-//     "price_total":null,
-//     "tax":7
-//     },
-//     {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },    {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },{
-//     "ID":60,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,"order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":null,
-//     "price_total":null,
-//     "tax":7
-//     },
-//     {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },    {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },{
-//     "ID":60,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,"order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":null,
-//     "price_total":null,
-//     "tax":7
-//     },
-//     {
-//     "ID":60,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,"order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":null,
-//     "price_total":null,
-//     "tax":7
-//     },   {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },
-//     {
-//     "ID":60,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,"order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":null,
-//     "price_total":null,
-//     "tax":7
-//     },   {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },{
-//     "ID":60,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,"order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":null,
-//     "price_total":null,
-//     "tax":7
-//     },   {
-//     "ID":85,
-//     "invoiceID":25,
-//     "clientID":5,
-//     "orderID":42,
-//     "productID":2,
-//     "product_name":"Käsekuchenblech, 60/20",
-//     "amount":3,
-//     "order_date":"31.03.24",
-//     "delivery_date":"01.04.24",
-//     "client":"Hofladen (Hofbäckerei Klee)",
-//     "price_piece":"25.00",
-//     "price_total":"75.00",
-//     "tax":7
-//     },
+const pdfMakeFonts = {
+    Roboto: {
+      normal:
+        "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
+      bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+      italics:
+        "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
+      bolditalics:
+        "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf",
+    },
+  };
+  pdfMake.fonts = pdfMakeFonts
 
 
-//    ];
 
 
-// const taxTotal = [
-//     {"invoiceID":25,
-//     "tax":7,
-//     "total":"137.00",
-//     "total_netto":"127.41",
-//     "total_tax":"9.59"},
-//     {"invoiceID":25,
-//     "tax":12,
-//     "total":"142.00",
-//     "total_netto":"134.41",
-//     "total_tax":"21.59"}
-//     ];
-// playground requires you to assign document definition to a variable called dd
+
 const client = {
     full_name: "Klein Schmitt",
     street:  "Hauptstraße 8",
@@ -301,6 +31,7 @@ const company = {
     street:  "Hauptstraße 8",
     zip: "10012",
     city: "Berlin",
+    country: "Deutschland",
     phone: "+4901001001010",
     email: "test@gmail.com",
     tax_no: "123567834",
@@ -309,21 +40,22 @@ const company = {
     bic: "RESDEFF150",
     taxID: "DE32565212"
 }
-// const invoice = {
-//     invoice_number: "2024002-2",
-//     invoice_date: "16.06.2024",
-//     delivery_date: "16.06.2024",
-//     delivery_date_end: "17.06.2024"
-// }
+
 
 export default function PdfCreate ({
      products,
      taxData,
-    // client,
-    // company,
-     invoice
+     invoice,
+     error,
+     loading
 }){
+  const [client, clientError, clientLoading] = handleClientExtRequest(invoice.clientID);
+  const [company, companyError, companyLoading] = handleCompanyRequest();
 
-    pdfMake.createPdf(docDefinition(products, taxData, client, company, invoice)).open();
 
+    (client && company) && pdfMake.createPdf(docDefinition(products, taxData, client, company, invoice), null, pdfMakeFonts).download(client.full_name + " Rechnung-Nr.: " + invoice.invoice_number + (invoice.invoice_part? "-"+invoice.invoice_part : "") + " " + company.name);
+  if(clientError || companyError){
+    error(clientError || companyError)
+  }
+  loading(clientLoading || companyLoading)
 }
