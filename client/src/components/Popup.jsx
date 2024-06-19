@@ -1908,6 +1908,7 @@ export function LoginPopup({
   const pwdRef = useRef("");
   const errRef = useRef("");
   const [loading, setLoading] = useState(false);
+  const [toggleRegister, setToggleRegister] = useState(false);
 
   const [loginStatus, setLoginStatus] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -1946,9 +1947,104 @@ const handleSubmit = (e) => {
             <LabelInput _key="pwInput" className='popup-input' required={true} type='password' title="Passwort"  onChange={(e)=>{pwdRef.current = e.target.value}}/>
             </div> :
             <Loading  _key="loading"/>}
-
+            <p key="btn_p">
+                <button key="btn_register" className='btn popup-card-btn' onClick={()=>{setToggleRegister(true)}}>Ok</button>
+              </p>
           <div key={"pc_btn"} className='popup-card-btns'>
               <button key="pc_btn_ok" className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Anmelden</button>
+              <button key="pc_btn_abort" className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+          </div>
+          </div>}
+        </div>
+      </div>}
+      {toggleRegister && <RegisterPopup/>}
+      </>
+    )
+
+}
+export function RegisterPopup({
+  onClickOK,
+  onClickAbort
+}){
+  const userRef = useRef("");
+  const pwdRef = useRef("");
+  const pwd2Ref = useRef("");
+  const errRef = useRef("");
+  const [loading, setLoading] = useState(false);
+
+  const [loginStatus, setLoginStatus] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+
+
+  const [rRes, setRRes] = useState([]);
+  const [rError, setRError] = useState([]);
+  const [rLoading, setRLoading] = useState([]);
+
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (pwdRef.current != pwd2Ref.current ){
+    setErrMsg({message: "Passwort stimmt nicht überein"})
+    return
+  }
+  if(pwdRef.current.length < 6){
+    setErrMsg({message: "Passwort muss mindestens 6 Zeichen enthalten"})
+    return
+  }
+  if(userRef.current.length < 3){
+    setErrMsg({message: "Benutzername muss mindestens 6 Zeichen enthalten"})
+    return
+  }
+  if (userRef.current !== "" && pwdRef.current !== "" && pwdRef.current !== "") {
+    axios({
+      axiosInstance: axios,
+      method: "POST",
+      url:"auth/login",
+      data:{
+          "username": userRef.current,
+          "password": pwdRef.current,
+          "role" : role || "client"
+      },
+    }).then(function (res){
+      //console.log(response.data);
+      if (res.data) {
+        onClickOK();
+        return;
+      }
+    }).catch(function (error) {
+      console.log(error);
+    })
+
+  }
+};
+
+  return (
+    <>
+      {        
+      <div key="pc" className='popup-card  '>
+        <div key="pc-content" className='popup-card-content jc-c '>
+          {loginStatus ?
+            <div key={"loggedIn_div"} className="popup-title jc-c"> 
+              <h2 key="h2">Erfolgreich angemeldet</h2>
+              <p key="btn_p">
+                <button key="btn_ok" className='btn popup-card-btn' onClick={onClickOK}>Ok</button>
+              </p>
+            </div> :
+            <div key="login_div" className="popup-title jc-c">
+            <p ref={errRef} className={errMsg ? "errmsg" : "d-none"} aria-live='assertive'>{errMsg}</p>
+            <h3 key="title" >Registrieren</h3>
+
+            {(!loading) ? 
+            <div>
+            <LabelInput _key="userInput" _ref={userRef} className='popup-input' type='text' title="Benutzer" onChange={(e)=>{userRef.current = e.target.value}}/>
+            <LabelInput _key="pwInput" className='popup-input' required={true} type='password' title="Passwort"  onChange={(e)=>{pwdRef.current = e.target.value}}/>
+            <LabelInput _key="pw2Input" className='popup-input' required={true} type='password' title="Passwort wiederholen"  onChange={(e)=>{pwd2Ref.current = e.target.value}}/>
+
+            </div> :
+            <Loading  _key="loading"/>}
+            {rLoading && <Loading/>}
+          <div key={"pc_btn"} className='popup-card-btns'>
+              <button key="pc_btn_ok" className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Registrieren</button>
               <button key="pc_btn_abort" className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
           </div>
           </div>}

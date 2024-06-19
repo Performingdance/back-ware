@@ -14,12 +14,6 @@ module.exports = {
                 message: "Bitte Passwort mit mind. 6 Zeichen eingeben",
             });
         }
-        // pw (repeat) must match
-        if(!req.body.password_repeat || req.body.password != req.body.password_repeat) {
-            return res.status(400).send({
-                message: "Passwort muss übereinstimmen",
-            });
-        }
         next();
     },
     isLoggedIn: (req, res, next) => {

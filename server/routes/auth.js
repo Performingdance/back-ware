@@ -5,12 +5,13 @@ const jwt = require('jsonwebtoken');
 const uuid = require('uuid')
 
 const db = require('../lib/db.js');
-const {validateRegister,isLoggedIn, authRole} = require('../middleware/basicAuth.js');
+const {isLoggedIn, authRole} = require('../middleware/basicAuth.js');
 
 
 router.post("/sign-up", validateRegister, (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
+    const role = req.body.role || "client";
 
     db.query(`SELECT id FROM users WHERE LOWER(username) = LOWER(?)`, username, (err, result) => {
         if(result && result.length) {//error
@@ -25,7 +26,7 @@ router.post("/sign-up", validateRegister, (req, res, next) => {
                         message: err,
                     });
                 } else {
-                    db.query(`INSERT INTO users (id, username, password, registered) VALUES ('${uuid.v4()}',?,'${hash}', now());`,[username],
+                    db.query(`INSERT INTO users (id, username, password, registered, role) VALUES ('${uuid.v4()}',?,'${hash}', now(), ?);`,[username, role],
                     (err, result) => {
                         if(err) {
                             return res.status(400).send({

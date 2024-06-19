@@ -30,7 +30,6 @@ const AuthProvider = ({ children }) => {
     console.log(error);
   })
 };
-
   const logOut = () => {
     setUser(null);
     setToken("");

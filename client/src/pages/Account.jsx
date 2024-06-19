@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Header from '../components/Header'
-import { LoginPopup } from '../components/Popup'
+import { LoginPopup, RegisterPopup } from '../components/Popup'
 
 
 function Settings() {
@@ -16,6 +16,8 @@ function Settings() {
     <Header title="Konto"/>
     <div className='page-content' >
     { toggleLogin && <LoginPopup onClickOK={() => setToggleLogin(false)} onClickAbort={()=> setToggleLogin(false)} />
+    }
+    { toggleRegister && <RegisterPopup onClickOK={() => {setToggleRegister(false), setToggleLogin(true)}} onClickAbort={()=> setToggleRegister(false)} />
     }
     <button onClick={()=>setToggleLogin(true)}>Login</button>
     <button onClick={()=>handleLogout()}>Logout</button>
