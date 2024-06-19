@@ -60,7 +60,7 @@ export default function docDefinition (products, taxData, client, company, invoi
 
 const dd= {
     info: {
-	title: client.full_name + " Rechnung-Nr.: " + invoice.invoice_number + (invoice.invoice_part? "-"+invoice.invoice_part : "") + " " + company.name,
+	title: client.first_name + " " + client.last_name + " Rechnung-Nr.: " + invoice.invoice_number + (invoice.invoice_part? "-"+invoice.invoice_part : "") + " " + company.name,
 	author: company.name,
 	creator: company.name,
 	producer: company.name
@@ -83,7 +83,7 @@ const dd= {
                 {
         		 width: "auto",
         		 style: 'headerL',
-        		 text: company.name +" "+ company.street+" "+ company.zip +" "+ company.city
+        		 text: company.name +" "+ company.street_number + " "+ company.zip_code +" "+ company.city
         		        + "\n Rechnung-Nr: " + + invoice.invoice_number + (invoice.invoice_part? "-"+invoice.invoice_part : "")
         		        + "\n Rechnungs-Datum: " + invoice.invoice_date,
         		 color: 'gray', fontSize:12, italics: true, 
@@ -115,7 +115,7 @@ const dd= {
     		{
     		 width: "*",
     		 style: 'footerL',
-    		 text: company.name +"\n"+ company.street+"\n"+ company.zip +" "+ company.city,
+    		 text: company.name +"\n"+ company.street_number+"\n"+ company.zip_code +" "+ company.city,
     		 alignment: "left"
     		    
     		},
@@ -123,7 +123,7 @@ const dd= {
     		[    		{
     		 width: "*",
     		 style: 'footerC',
-    		 text: "Tel.: " + company.phone +"\n Mail: "+ company.email +"\n Steuernummer: "+ company.tax_no +"\n" ,
+    		 text: "Tel.: " + company.phone +"\n Mail: "+ company.email +"\n Steuernummer: "+ company.tax_number +"\n" ,
     		 alignment: "left"
     		    
     		},
@@ -151,7 +151,7 @@ const dd= {
 	    {
 	        
 	    },
-	    {text: [company.name +", " + company.street +", " + company.zip +" " + company.city ], 
+	    {text: [company.name +", " + company.street_number +", " + company.zip_code +" " + company.city ], 
 	    color: 'gray', 
 	    fontSize:8, 
 	    italics: true
@@ -161,9 +161,9 @@ const dd= {
 			columns: [
 				[
 				    {width: 100,
-				    text: `${client.full_name}
-				    ${client.street}
-				    ${client.zip} ${client.city}`,
+				    text: `${client.first_name +" "+client.last_name }
+				    ${client.street_number}
+				    ${client.zip_code} ${client.city}`,
 			        
 				    alignment: "left"},
 				    {text: ' \nRechnung', style: 'subheader'}
@@ -298,8 +298,8 @@ const dd= {
 		{ qr: "BCD\n001\n1\n\n" + company.bic + "\n" + 
 		company.name + "\n" + company.iban+ "\nEUR\n" + 
 		invoice.total_amount_brutto + "\n\n" +
-		"Rechnung-Nr.: " + + invoice.invoice_number + (invoice.invoice_part? "-"+invoice.invoice_part : "") , fit: "100"
-		
+		"Rechnung-Nr.: " + + invoice.invoice_number + (invoice.invoice_part? "-"+invoice.invoice_part : "") , 
+		fit: "100"
         },
         {text: 'SEPA QR-Code  \n',
 		style: 'textThanks',
