@@ -21,7 +21,7 @@ export default function docDefinition (products, taxData, client, company, invoi
         const line = [{text: key+1}, 
         {text: product.product_name}, 
         {text: product.delivery_date}, 
-        {text: product.amount}, 
+        {text: product.amount+"x"}, 
         {text: product.price_piece ? parseFloat(product.price_piece).toFixed(2).toString().replace(".",",") + "€" : "0,00"  + "€",
         alignment: "right" 
         }, 

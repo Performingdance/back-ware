@@ -63,7 +63,10 @@ function EditInvoice  () {
     const [delLoading, setDelLoading] = useState(false);
     const [subRes, setSubRes] = useState([]);
     const [subError, setSubError] = useState("");
+    const [pdfError, setPdfError] = useState("");
+
     const [subLoading, setSubLoading] = useState(false);
+    const [pdfLoading, setPdfLoading] = useState(false);
 
     const [margeData, margeError, margeLoading, handleMRequest] = handleMargesRequest();
     const [margeUpdate, margeUError, margeULoading, handleMURequest] = handleInvoiceMargeUpdateRequest();
@@ -469,7 +472,7 @@ function EditInvoice  () {
         />
         } 
         {
-          createPdf && <PdfCreate products={products} invoice={invoiceRes} taxData={taxData} />
+          createPdf && <PdfCreate products={products} invoice={invoiceRes} taxData={taxData} error={(err)=>setPdfError(err)} loading={(bol)=>setPdfLoading(bol)}/>
         }    
         <div className='invoice-btns'>
           <button className='invoice-btn' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Bestellung</button>

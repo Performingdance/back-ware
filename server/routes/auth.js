@@ -12,6 +12,7 @@ router.post("/sign-up", validateRegister, (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     const role = req.body.role || "client";
+    const email = req.body.email
 
     db.query(`SELECT id FROM users WHERE LOWER(username) = LOWER(?)`, username, (err, result) => {
         if(result && result.length) {//error
@@ -26,7 +27,7 @@ router.post("/sign-up", validateRegister, (req, res, next) => {
                         message: err,
                     });
                 } else {
-                    db.query(`INSERT INTO users (id, username, password, registered, role) VALUES ('${uuid.v4()}',?,'${hash}', now(), ?);`,[username, role],
+                    db.query(`INSERT INTO users (id, username, password, email, registered, role) VALUES ('${uuid.v4()}',?,'${hash}', email, now(), ?);`,[username, email, role],
                     (err, result) => {
                         if(err) {
                             return res.status(400).send({

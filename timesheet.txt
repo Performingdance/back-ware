@@ -134,7 +134,7 @@
 16.06. 4h
 17.06. 4h
 18.06. 2h
-19.06. 1h
+19.06. 2h
 
 Kosten:
     Node server Render
@@ -149,6 +149,7 @@ ToDo:
 [x] ordercards billed items
 [x] Invoice - Lieferzeitraum
 [] dropdown select component, no Input invoice-marge
+[] offer select role if auth.user.role == "admin" for register Popup
 [x]   Preisliste in Preisrechner einfügen (Preis, Marge)
 [] Invoice pdf
 [] 

@@ -1956,7 +1956,7 @@ const handleSubmit = (e) => {
           </div>}
         </div>
       </div>}
-      {toggleRegister && <RegisterPopup/>}
+      {toggleRegister && <RegisterPopup onClickOK={()=>setToggleRegister(false)} onClickAbort={()=>setToggleRegister(false)}/>}
       </>
     )
 
@@ -1968,9 +1968,11 @@ export function RegisterPopup({
   const userRef = useRef("");
   const pwdRef = useRef("");
   const pwd2Ref = useRef("");
+  const emailRef = useRef("");
   const errRef = useRef("");
   const [loading, setLoading] = useState(false);
-  const[role,setRole] = useState("");
+  const [role,setRole] = useState("");
+  const auth = useAuth()
 
   const [loginStatus, setLoginStatus] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -1994,6 +1996,10 @@ const handleSubmit = (e) => {
     setErrMsg({message: "Passwort stimmt nicht überein"})
     return
   }
+  if (emailRef.current.length < 2 || (emailRef.current.includes("€") == -1) ){
+    setErrMsg({message: "Bitte gültige Email-Adresse eingeben"})
+    return
+  }
   if(userRef.current.length < 3){
     setErrMsg({message: "Benutzername muss mindestens 6 Zeichen enthalten"})
     return
@@ -2007,6 +2013,7 @@ const handleSubmit = (e) => {
       data:{
           "username": userRef.current,
           "password": pwdRef.current,
+          "email": emailRef.current,
           "role" : role || "client"
       },
     }).then(function (res){
@@ -2042,7 +2049,8 @@ const handleSubmit = (e) => {
 
 
             <div>
-            <LabelInput _key="userInput" _ref={userRef} className='popup-input' type='text' title="Benutzer" onChange={(e)=>{userRef.current = e.target.value}}/>
+            <LabelInput _key="userInput" _ref={userRef} className='popup-input' type='text' title="Benutzername" onChange={(e)=>{userRef.current = e.target.value}}/>
+            <LabelInput _key="emailInput" className='popup-input' required={true} type='email' title="Email"  onChange={(e)=>{emailRef.current = e.target.value}}/>
             <LabelInput _key="pwInput" className='popup-input' required={true} type='password' title="Passwort"  onChange={(e)=>{pwdRef.current = e.target.value}}/>
             <LabelInput _key="pw2Input" className='popup-input' required={true} type='password' title="Passwort wiederholen"  onChange={(e)=>{pwd2Ref.current = e.target.value}}/>
 

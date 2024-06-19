@@ -29,7 +29,7 @@ router.get("/company", isLoggedIn, (req, res) => {
     FROM(SELECT e.*, settings.setting AS country
     FROM(SELECT d.*, settings.setting AS city
     FROM(SELECT c.*, settings.setting AS zip_code
-    FROM(SELECT b.ID, b.company, CONCAT(b.street, " ",settings.setting ) AS street_number
+    FROM(SELECT b.ID, b.name, CONCAT(b.street, " ",settings.setting ) AS street_number
     FROM(SELECT a.*, settings.setting AS street 
     FROM(
     SELECT 1 AS ID, setting AS name FROM settings WHERE ID = 5) AS a
