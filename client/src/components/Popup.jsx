@@ -1947,12 +1947,11 @@ const handleSubmit = (e) => {
             <LabelInput _key="pwInput" className='popup-input' required={true} type='password' title="Passwort"  onChange={(e)=>{pwdRef.current = e.target.value}}/>
             </div> :
             <Loading  _key="loading"/>}
-            <p key="btn_p">
-                <button key="btn_register" className='btn popup-card-btn' onClick={()=>{setToggleRegister(true)}}>Ok</button>
-              </p>
           <div key={"pc_btn"} className='popup-card-btns'>
               <button key="pc_btn_ok" className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Anmelden</button>
-              <button key="pc_btn_abort" className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
+              
+             <button key="btn_register" className='btn popup-card-btn ' onClick={()=>{setToggleRegister(true)}}>Registrieren</button>
+             <button key="pc_btn_abort" className='btn popup-card-btn'onClick={onClickAbort} >Abbrechen</button>
           </div>
           </div>}
         </div>
@@ -1971,6 +1970,7 @@ export function RegisterPopup({
   const pwd2Ref = useRef("");
   const errRef = useRef("");
   const [loading, setLoading] = useState(false);
+  const[role,setRole] = useState("");
 
   const [loginStatus, setLoginStatus] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -1978,17 +1978,20 @@ export function RegisterPopup({
 
   const [rRes, setRRes] = useState([]);
   const [rError, setRError] = useState([]);
-  const [rLoading, setRLoading] = useState([]);
+
+  
+
 
 
 const handleSubmit = (e) => {
   e.preventDefault();
-  if (pwdRef.current != pwd2Ref.current ){
-    setErrMsg({message: "Passwort stimmt nicht überein"})
-    return
-  }
+
   if(pwdRef.current.length < 6){
     setErrMsg({message: "Passwort muss mindestens 6 Zeichen enthalten"})
+    return
+  }
+  if (pwdRef.current != pwd2Ref.current ){
+    setErrMsg({message: "Passwort stimmt nicht überein"})
     return
   }
   if(userRef.current.length < 3){
@@ -1996,10 +1999,11 @@ const handleSubmit = (e) => {
     return
   }
   if (userRef.current !== "" && pwdRef.current !== "" && pwdRef.current !== "") {
+    setLoading(true)
     axios({
       axiosInstance: axios,
       method: "POST",
-      url:"auth/login",
+      url:"auth/sign-up",
       data:{
           "username": userRef.current,
           "password": pwdRef.current,
@@ -2008,6 +2012,8 @@ const handleSubmit = (e) => {
     }).then(function (res){
       //console.log(response.data);
       if (res.data) {
+        setErrMsg({})
+        setLoading(false)
         onClickOK();
         return;
       }
@@ -2031,18 +2037,19 @@ const handleSubmit = (e) => {
               </p>
             </div> :
             <div key="login_div" className="popup-title jc-c">
-            <p ref={errRef} className={errMsg ? "errmsg" : "d-none"} aria-live='assertive'>{errMsg}</p>
+            <p ref={errRef} className={errMsg.message? "errmsg" : "d-none"} aria-live='assertive'>{errMsg.message}</p>
             <h3 key="title" >Registrieren</h3>
 
-            {(!loading) ? 
+
             <div>
             <LabelInput _key="userInput" _ref={userRef} className='popup-input' type='text' title="Benutzer" onChange={(e)=>{userRef.current = e.target.value}}/>
             <LabelInput _key="pwInput" className='popup-input' required={true} type='password' title="Passwort"  onChange={(e)=>{pwdRef.current = e.target.value}}/>
             <LabelInput _key="pw2Input" className='popup-input' required={true} type='password' title="Passwort wiederholen"  onChange={(e)=>{pwd2Ref.current = e.target.value}}/>
 
-            </div> :
-            <Loading  _key="loading"/>}
-            {rLoading && <Loading/>}
+            </div> 
+            {(loading)? 
+            <Loading  _key="loading"/>: ""}
+           
           <div key={"pc_btn"} className='popup-card-btns'>
               <button key="pc_btn_ok" className='btn popup-card-btn' onClick={(e)=> handleSubmit(e)} >Registrieren</button>
               <button key="pc_btn_abort" className='btn popup-card-btn 'onClick={onClickAbort} >Abbrechen</button>
