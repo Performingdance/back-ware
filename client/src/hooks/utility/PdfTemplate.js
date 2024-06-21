@@ -1,5 +1,5 @@
 
-
+import config from '../../config.json'
 
 
 export default function docDefinition (products, taxData, client, company, invoice) {
@@ -20,8 +20,12 @@ export default function docDefinition (products, taxData, client, company, invoi
     
         const line = [{text: key+1}, 
         {text: product.product_name}, 
-        {text: product.delivery_date}, 
-        {text: product.amount+"x"}, 
+        {text: product.delivery_date,
+			alignment: "center"
+		}, 
+		{text: product.amount + "x",
+			alignment: "center"
+		}, 
         {text: product.price_piece ? parseFloat(product.price_piece).toFixed(2).toString().replace(".",",") + "€" : "0,00"  + "€",
         alignment: "right" 
         }, 
@@ -51,7 +55,7 @@ export default function docDefinition (products, taxData, client, company, invoi
                         "",
                         "",
                         "",
-                        { text: parseFloat(tax.total_tax).toString().replace(".",",") +"€",
+                        { text: parseFloat(tax.total_tax).toFixed(2).toString().replace(".",",") +"€",
                         alignment: "right" 
                         }
                         ];
@@ -59,8 +63,7 @@ export default function docDefinition (products, taxData, client, company, invoi
     });
 
 const dd= {
-    info: {
-	title: client.first_name + " " + client.last_name + " Rechnung-Nr.: " + invoice.invoice_number + (invoice.invoice_part? "-"+invoice.invoice_part : "") + " " + company.name,
+    info: { 
 	author: company.name,
 	creator: company.name,
 	producer: company.name
@@ -84,7 +87,7 @@ const dd= {
         		 width: "auto",
         		 style: 'headerL',
         		 text: company.name +" "+ company.street_number + " "+ company.zip_code +" "+ company.city
-        		        + "\n Rechnung-Nr: " + + invoice.invoice_number + (invoice.invoice_part? "-"+invoice.invoice_part : "")
+        		        + "\n Rechnung-Nr: " +  invoice.invoice_number + (invoice.invoice_part? "-"+invoice.invoice_part : "")
         		        + "\n Rechnungs-Datum: " + invoice.invoice_date,
         		 color: 'gray', fontSize:12, italics: true, 
         		 alignment: "left"
@@ -133,9 +136,9 @@ const dd= {
             style: "pageNo"
             }
            ],
-           {width: "*",
+           {width: "auto",
     		 style: 'footerR',
-    		 text: company.bank +"\n IBAN: "+ company.iban +"\n BIC: "+ company.bic +"\n Ust-IdNr.: "+ company.taxID,
+    		 text: company.bank +"\n IBAN: " + company.iban +"\n BIC: "+ company.bic +"\n Ust-IdNr.: "+ company.taxID,
     		 alignment: "right"
     		    
     		}
@@ -151,19 +154,36 @@ const dd= {
 	    {
 	        
 	    },
-	    {text: [company.name +", " + company.street_number +", " + company.zip_code +" " + company.city ], 
-	    color: 'gray', 
-	    fontSize:8, 
-	    italics: true
-	    },
+	    {
+	        table:{
+	        style:"adressLine",
+	        
+	        body:[
+    	        [{text: [company.name +", " + company.street_number +", " + company.zip_code +" " + company.city ], 
+        	    color: 'gray', 
+        	    fontSize:8, 
+        	    italics: true,
+        	    border: [false,false,false, true]
+    	        }]
+	        ]
+	        },
+	        layout: {
+	            hLineWidth: function (i, node) {
+					return 1;
+				},
+				hLineColor: function (i, node) {
+					return 'grey';
+				},
+	        },
+	    }, 
 		{
 		    style: 'tableAddress',
 			columns: [
 				[
 				    {width: 100,
-				    text: `${client.first_name +" "+client.last_name }
-				    ${client.street_number}
-				    ${client.zip_code} ${client.city}`,
+				    text: `${(client.first_name || "") +" "+(client.last_name || "") }
+				    ${client.street_number || ""}
+				    ${client.zip_code|| ""} ${client.city|| ""}`,
 			        
 				    alignment: "left"},
 				    {text: ' \nRechnung', style: 'subheader'}
@@ -206,7 +226,7 @@ const dd= {
 			table: {
 			    
 				headerRows: 1,
-				widths: [25, '*', 100,50,50, 50],
+				widths: [25, '*', 80,50,50, 50],
 				heights: prodRowHeights,
 
 				body: [
@@ -276,7 +296,7 @@ const dd= {
 
 				},
 				vLineWidth: function (i, node) {
-					return (i === 0 || i === node.table.widths.length) ? 0 : 0;
+					return 0;
 				},
 
 
@@ -318,22 +338,29 @@ const dd= {
 			bold: true,
 			margin: [0, 40, 0, 5]
 		},
-		tableProd: {
-			margin: [0, 15, 0, 15]
+		adressLine: {
+		    margin: [0, 0 ,0 ,0],
+		   
 		},
 		tableAddress: {
 			margin: [0, 10, 0, 15]
 			
 		},
+		tableProd: {
+			margin: [0, 15, 0, 15]
+		},
 		footerL: {
+			fontSize: 11,
 			margin: [40, 30, 0, 10]
 			
 		},
 		footerC: {
+			fontSize: 11,
 			margin: [0, 30, 0, 10]
 			
 		},
 		footerR: {
+			fontSize: 11,
 			margin: [0, 30, 40, 10]
 			
 		},
@@ -362,7 +389,7 @@ const dd= {
 
 	},
 	images: {
-	    logo: 'https://tse2.mm.bing.net/th?id=OIP.MoiE0TOseJC_Ml66xtSBCwHaHa&pid=Api',
+	    logo: config.LOGO_BASE64,
 	},
 	defaultStyle: {
 		// alignment: 'justify'

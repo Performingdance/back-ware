@@ -28,7 +28,10 @@ import handleInvoiceTaxRequest from '../hooks/invoices/handleInvoiceTaxRequest';
 import errorHandling from '../services/errorHandling';
 import { LabelTextInput } from '../components/LabelBox';
 import handleInvoiceIsPaid from '../hooks/invoices/handleInvoiceIsPaid';
-import PdfCreate from '../components/pdfCreate';
+import handleClientExtRequest from '../hooks/clients/handleClientExtRequest';
+import handleCompanyRequest from '../hooks/settings/handleCompanyRequest';
+import Loading from '../components/Loading';
+import handlePdfCreate from '../hooks/utility/handlePdfCreate';
 
 
 function EditInvoice  () {
@@ -54,25 +57,28 @@ function EditInvoice  () {
     const [products, prodErr, prodLoading, handleProdRequest] = handleInvoiceProdRequest();
     useEffect(()=>{handleProdRequest(invoiceID)},[updateInvoice])
     const [invoiceRes, invoiceErr, invoiceLoading] = handleInvoiceIDRequest(invoiceID, updateInvoice);
-    //console.log(res)
+    const [clientEx, clientExError, clientExLoading, handleCERequest] = handleClientExtRequest();
+    const [company, companyError, companyLoading] = handleCompanyRequest();
     
-
+    useEffect(()=>{handleCERequest(invoiceRes.clientID)},[invoiceRes])
   
     const [delRes, setDelRes] = useState([]);
     const [delError, setDelError] = useState("");
     const [delLoading, setDelLoading] = useState(false);
     const [subRes, setSubRes] = useState([]);
     const [subError, setSubError] = useState("");
-    const [pdfError, setPdfError] = useState("");
 
     const [subLoading, setSubLoading] = useState(false);
-    const [pdfLoading, setPdfLoading] = useState(false);
+    const [pdfLoading, handlePdfCreateRequest] = handlePdfCreate();
+  
+
 
     const [margeData, margeError, margeLoading, handleMRequest] = handleMargesRequest();
     const [margeUpdate, margeUError, margeULoading, handleMURequest] = handleInvoiceMargeUpdateRequest();
     const [clientData, clientError,clientLoading, handleCRequest] = handleClientSelectRequest();
     const [taxData, taxError, taxLoading, handleTRequest] = handleInvoiceTaxRequest();
     const [isPaidData, isPaidError, isPaidLoading, handleIsPaidUpdate] = handleInvoiceIsPaid();
+
       useEffect(()=>handleTRequest(invoiceID), [edit]);
       useEffect(()=>setToggleBrutto(invoiceRes.tax),[invoiceRes])
       useEffect(()=>{ setUpdateInvoice(updateInvoice+1)},[isPaidData])
@@ -437,7 +443,13 @@ function EditInvoice  () {
             <button key={"edit"} className='edit-btn' onClick={()=>{setEdit(true), handleSelectRequests()}}>
               <SVGIcon src={pencil_square} class="svg-icon-md"/> 
             </button>} 
-            <button key={"pdf"} className='edit-btn' onClick={()=>{setCreatePdf(true)}}><SVGIcon src={filetype_pdf} class="svg-icon-md"/> </button> 
+            <button key={"pdf"} className='edit-btn' onClick={()=>{clientEx[0] && products && handlePdfCreateRequest(
+                   products,
+                   taxData,
+                   invoiceRes,
+                   clientEx[0],
+                   company[0]
+            )}}><SVGIcon src={filetype_pdf} class="svg-icon-md"/> </button> 
             {invoiceRes.is_paid?
             <button key={"is_paid"} className='edit-btn' onClick={()=>{handleIsPaid(!invoiceRes.is_paid)}}>
               <SVGIcon src={check} class="svg-icon-md"/> 
@@ -471,9 +483,7 @@ function EditInvoice  () {
           onClickAbort={()=>setToggleDeliveryAlert(false)}
         />
         } 
-        {
-          createPdf && <PdfCreate products={products} invoice={invoiceRes} taxData={taxData} error={(err)=>setPdfError(err)} loading={(bol)=>setPdfLoading(bol)}/>
-        }    
+        {(pdfLoading || subLoading || invoiceLoading || taxLoading) && <Loading/>}   
         <div className='invoice-btns'>
           <button className='invoice-btn' key={"add-btn_1"} onClick={()=>{setAddOrderPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Bestellung</button>
           <button className='invoice-btn' key={"add-btn_2"} onClick={()=>{setAddItemPrompt(true)}} ><SVGIcon src={plus} class="svg-icon-md"/>Produkt</button>

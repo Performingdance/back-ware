@@ -16,6 +16,7 @@ export default function InvoiceNetto ({
     handleValueChange
 
 }) {
+  
 
     let total_netto = 0
     editProds = data
@@ -92,7 +93,6 @@ export function InvoiceBrutto ({
 
 
 }) {
-
 
     let total_brutto = 0
     let total_netto = 0
