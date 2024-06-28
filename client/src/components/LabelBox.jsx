@@ -20,6 +20,7 @@ export function LabelInput({
   className,
   title,
   placeholder,
+  defaultValue,
   value,
   required,
   type,
@@ -29,7 +30,7 @@ export function LabelInput({
 return (
   <div key={_key+"lb"} className={className+" labelbox"} >
       <p key={_key+"p"} className='lb-title'>{title}</p>
-      <input key={_key+"input"} required={required} ref={_ref} value={value} type={type} className='lb-input' defaultValue={placeholder} onChange={onChange} onClick={onClick}/>
+      <input key={_key+"input"} required={required} ref={_ref} value={value} type={type} className='lb-input' defaultValue={placeholder|| defaultValue} onChange={onChange} onClick={onClick}/>
   </div>
 )
 }

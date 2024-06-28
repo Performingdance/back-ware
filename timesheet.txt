@@ -137,6 +137,7 @@
 19.06. 2,5h
 20.06. 2h
 21.06. 2h
+28.06. 2h
 
 
 Kosten:
@@ -167,10 +168,8 @@ ToDo:
 
 calculator
 []      order ingredients properly
-
 [x]    Preisliste in Preisrechner einfügen (Preis, Marge)
 []      Preisvorschlag kalkulation überprüfen
-
 []      Preisliste - nettopreise, einfache Bearbeitung
 
 

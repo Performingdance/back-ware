@@ -2,8 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import Header from '../components/Header'
 import handleSettingsRequest from '../hooks/settings/handleSettingsRequest'
 import Loading from '../components/Loading'
-import { LabelInput } from '../components/LabelBox'
+import LabelBox, { LabelInput } from '../components/LabelBox'
+import axios from '../apis/backWare';
+import authHeader from '../services/auth-header';
 import config from '../config.json'
+import '../styles/Settings.css'
 
 
 function Settings() {
@@ -15,6 +18,9 @@ function Settings() {
   const [subLoading, setSubLoading] = useState(false);
 
   const settingNames = config.SETTINGS_NAMES_DE;
+  let editList = useRef([])
+
+
   const handleSubmit = () =>{
     setSubLoading(true)
             axios({
@@ -29,6 +35,7 @@ function Settings() {
                 }
             }).then((response)=>{
               //console.log(response)
+              setUpdate(update+1)
               setSubRes(response)
 
             }).catch((err) => {
@@ -41,15 +48,8 @@ function Settings() {
 
   };
 
-  let editList = useRef([])
 
-  useEffect(() => {
-    editList.current = []
-    settings.forEach((obj)=>{
-    let temp_obj = {...obj, edit : false}
-    editList.current = [...editList.current, temp_obj] 
-    
-  }) }, [settings])
+
 
   const handleValueChange = (ID, val, type) =>  {
     if(type=="number"){
@@ -60,10 +60,44 @@ function Settings() {
 
 
 
-  const settingsList = editList.current.map((obj, key)=>{
-    
+  const settingsEditList = settings.map((obj, key)=>{
+    let tempListItem
+    if(key == 1){
+      tempListItem = [<h3 key={key+"title"}>Preisrechner</h3>, <LabelInput key={key+"input"} className='c-list-item' title={settingNames[key]+":"} type='text' onChange={(e)=> [handleValueChange(obj.ID, e.target.value, "text")]} placeholder={obj.setting}></LabelInput>]
+
+    }
+    if(key == 3){
+      tempListItem = [<h3 key={key+"title"}>Kontaktdaten</h3>,<LabelInput key={key+"input"} className='c-list-item' title={settingNames[key]+":"} type='text' onChange={(e)=> [handleValueChange(obj.ID, e.target.value, "text")]} placeholder={obj.setting}></LabelInput>]
+
+    }
+    else{
+     tempListItem = <LabelInput key={key+"input"} className='c-list-item' title={settingNames[key]+":"} type='text' onChange={(e)=> [handleValueChange(obj.ID, e.target.value, "text")]} placeholder={obj.setting}></LabelInput>
+
+    }
     return(
-      <LabelInput key={key+"input"} className='c-list-item' title={settingNames[key]+":"} type='text' onChange={(e)=> [handleValueChange(obj.ID, e.target.value, "text")]} defaultValue={obj.setting || "-"}></LabelInput>            
+      
+          tempListItem        
+    )
+
+  })
+  const settingsList = settings.map((obj, key)=>{
+    let tempListItem
+    if(key == 1){
+      tempListItem = [<h3 key={key+"title"}>Preisrechner</h3>, 
+      <LabelBox key={key+"input"} className='c-list-item' title={settingNames[key]+":"} type='text' onChange={(e)=> [handleValueChange(obj.ID, e.target.value, "text")]} text={obj.setting}></LabelBox>]
+
+    }
+    if(key == 3){
+      tempListItem = [<h3 key={key+"title"}>Kontaktdaten</h3>,
+      <LabelBox key={key+"input"} className='c-list-item' title={settingNames[key]+":"} type='text' onChange={(e)=> [handleValueChange(obj.ID, e.target.value, "text")]} text={obj.setting}></LabelBox>]
+
+    }
+    else{
+     tempListItem = <LabelBox key={key+"input"} className='c-list-item' title={settingNames[key]+":"} type='text' onChange={(e)=> [handleValueChange(obj.ID, e.target.value, "text")]} text={obj.setting}></LabelBox>
+
+    }
+    return(  
+          tempListItem        
     )
   })
   
@@ -73,40 +107,20 @@ function Settings() {
     <div className='content'>
     <Header title="Einstellungen"/>
     <div className='content-wrapper'>
-    {edit?
-    <div className='edit-setting-address'>
-      {(editList.current.length) &&
-          <ul className='c-list'>
-          <div>
-          <p>Preisrechner</p>
-          <LabelInput className='c-list-item' title="Betriebskosten(€):" type='text' onChange={(e)=> [handleValueChange(1, e.target.value, "number")]} defaultValue={editList.current[0].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="MK Preisniveau(%):" type='text' onChange={(e)=> [handleValueChange(2, e.target.value, "number")]} defaultValue={editList.current[1].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="RG(%):" type='text' onChange={(e)=> [handleValueChange(3, e.target.value, "number")]} defaultValue={editList.current[2].setting || "-"}></LabelInput>            
-          </div>
-          
-          <div>
-          <p>Firma:</p>
-          <LabelInput className='c-list-item' title="Firma:" type='text' onChange={(e)=> [handleValueChange(5, e.target.value)]} defaultValue={editList.current[3].setting ||"-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="Straße:" type='text' onChange={(e)=> [handleValueChange(6, e.target.value)]} defaultValue={editList.current[4].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="Nr.:" type='text' onChange={(e)=> [handleValueChange(7, e.target.value)]} defaultValue={editList.current[5].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="PLZ:" type='text' onChange={(e)=> [handleValueChange(8, e.target.value)]} defaultValue={editList.current[6].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="Stadt:" type='text' onChange={(e)=> [handleValueChange(9, e.target.value)]} defaultValue={editList.current[7].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="Land:" type='text' onChange={(e)=> [handleValueChange(10, e.target.value)]} defaultValue={editList.current[8].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="Telefon:" type='text' onChange={(e)=> [handleValueChange(11, e.target.value)]} defaultValue={editList.current[9].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="Email:" type='text' onChange={(e)=> [handleValueChange(12, e.target.value)]} defaultValue={editList.current[10].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="Steuernummer:" type='text' onChange={(e)=> [handleValueChange(13, e.target.value)]} defaultValue={editList.current[11].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="Bank:" type='text' onChange={(e)=> [handleValueChange(14, e.target.value)]} defaultValue={editList.current[12].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="IBAN:" type='text' onChange={(e)=> [handleValueChange(15, e.target.value)]} defaultValue={editList.current[13].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="BIC:" type='text' onChange={(e)=> [handleValueChange(16, e.target.value)]} defaultValue={editList.current[14].setting || "-"}></LabelInput>            
-          <LabelInput className='c-list-item' title="Ust-IdNr.:" type='text' onChange={(e)=> [handleValueChange(17, e.target.value)]} defaultValue={editList.current[15].setting || "-"}></LabelInput>            
-          </div>
-          </ul>}
-    </div>: 
-    settingsList}
-    
+      <div className='page-content-wide'>
+      {!edit?
+      <div className='edit-setting-address'>
+        {(settings[0]) && settingsEditList}
+      </div>: 
+      <div className='setting-address'>
+      {(settings[0]) && settingsList}
+      </div>}
+      {subRes.length ? <h3 className='successMsg'>{"Erfolgreich gespeichert"}</h3>:""}
+      {subError.length ? <h3 className='errorMsg'>{subError.message}</h3>:""}
     {<button onClick={(e)=>handleSubmit(e)} className='edit-btn button'  type='button'>Speichern</button>}
-    
     </div>
+    </div>
+    
     {settingsLoading && <Loading/>}
     </div>
   )
