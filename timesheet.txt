@@ -148,23 +148,16 @@ ToDo:
 [x] photo Komprimierung
 [x] tax new item / new product, edit product
 [x] add invoice icon edit order items 
-[] edit invoice items, is paid
+[x] edit invoice items, is paid
 [x] ordercards billed items
 [x] Invoice - Lieferzeitraum
 [] dropdown select component, no Input invoice-marge
 [] offer select role if auth.user.role == "admin" for register Popup
-[x]   Preisliste in Preisrechner einfügen (Preis, Marge)
-[] Invoice pdf
+[x] Preisliste in Preisrechner einfügen (Preis, Marge)
+[x] Invoice pdf
+[] user roles - admin, client, employee
 [] 
 [] 
-[] 
-
-Preis
-WV == 0.85 * NVP
-Markt == 1,1*NVP + MWst
-Laden == NVP + MWst
-
-
 [x] Produkte nach photUpload im Rezept neu laden
 [] Daylist Update - check
 
@@ -219,20 +212,17 @@ QOL
 []     Postfach (Arbeitszeiten eingetragen) - Push-Benachrichtigungen
 
 Fragen:
-
-Lieferdatum für jedes Produkt?
-Preisrechner vom NVP WV
-Hofladen BVP
+Preis:
+WV = 0.85 * NVP
+Markt = 1,1*NVP + MWst
+Laden = NVP + MWst
 
 Backzettel - wichtige Info
-Rechnugsnodwendigkeit - Bei Bestellung
 
 ASYNC - Funktionen
 
 
 Firma fEIN
-Lieferzeitraum ergänzend zu Lieferdatum + Lieferdatum für jedes Produkt
-
 
 Halbgebackene Waren ( Frost - tagesaktuell auftauen)
 
@@ -249,6 +239,3 @@ Worksheets:
     Recipe titleID - 
 
 
-
-
-user roles - admin, h

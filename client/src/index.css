@@ -7,14 +7,14 @@
 
 :root {
   --bg: #ffffff;
-  --bg-accent:#868585;
+  --bg-accent:#ffffff;
   --bg-light: #ffffff;
 
   --bg-0-3: #ffffff71;
   --bg-0-5: #ffffff78;
   --bg-0-8: #ffffffb6;
-  --icon-bg-0-8: #989da2b0;
-  --icon-bg: #7bf3a7;
+  --icon-bg-0-8: #e2f1ffb0;
+  --icon-bg: #e7e7e7;
   --icon-btn-bg: var(--icon-bg);
   --input-bg: #ebebeb;
 

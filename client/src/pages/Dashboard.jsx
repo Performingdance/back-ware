@@ -29,7 +29,7 @@ function Dashboard() {
       <div className='top-icon'>
         <button key={"logout"} className='btn edit-btn ' onClick={()=>{auth.logOut()}}><SVGIcon src={logout} class="svg-icon-md"/> </button>      
       </div>
-        <h1 className='ta-c'>Willkommen in der fein-Bäckerei</h1>
+        <h1 className='ta-c'>Willkommen in der Back-ware</h1>
       </div>
     )
   }

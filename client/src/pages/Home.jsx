@@ -15,12 +15,12 @@ function Home() {
   const [toggleLogoutPrompt, setToggleLogoutPrompt] = useState(false)
   const [logoutMessage, setLogoutMessage]= useState("")
 
-  if(auth.token){
+  if(auth.token && auth.user){
     document.location.href = "/dashboard"
   }
   return (
     <div className='content'>
-    <Header title={"feinBack-ware"} />
+    <Header title={"Back-ware"} />
     {toggleLogoutPrompt && <AlertPopup title={logoutMessage} onClickOK={()=>setToggleLogoutPrompt(false) } />}
     {toggleLoginPrompt && <LoginPopup onClickAbort={()=>setToggleLoginPrompt(false)} onClickOK={()=>{setToggleLoginPrompt(false)}}/>}
     <div className='top-icon'>
