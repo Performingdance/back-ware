@@ -28,15 +28,12 @@ router.get("/company", isLoggedIn, (req, res) => {
     FROM(SELECT f.*, settings.setting AS phone
     FROM(SELECT e.*, settings.setting AS country
     FROM(SELECT d.*, settings.setting AS city
-    FROM(SELECT c.*, settings.setting AS zip_code
-    FROM(SELECT b.ID, b.name, CONCAT(b.street, " ",settings.setting ) AS street_number
-    FROM(SELECT a.*, settings.setting AS street 
+    FROM(SELECT b.*, settings.setting AS zip_code
+    FROM(SELECT a.*, settings.setting  AS street_number
     FROM(
     SELECT 1 AS ID, setting AS name FROM settings WHERE ID = 5) AS a
     LEFT JOIN settings 
     ON settings.ID = 6) AS b
-    LEFT JOIN settings 
-    ON settings.ID = 7) AS c
     LEFT JOIN settings 
     ON settings.ID = 8) AS d
     LEFT JOIN settings 
@@ -68,18 +65,18 @@ router.get("/company", isLoggedIn, (req, res) => {
 });
 
 router.put("/update", isLoggedIn, (req, res) => {
-   const ID = req.body.ID;
-   const setting = req.body.setting;
-
-   db.query("UPDATE settings SET setting = ? WHERE ID = ?",
-    [setting, ID], 
-    (err, result) => {
-      if(err){
-         console.log(err)
-      } else {
-         res.send(result)
-      }
+   const editList = req.body.editList
+   editList.forEach(obj => {
+      db.query("UPDATE settings SET setting = ? WHERE ID = ?",
+         [obj.setting, obj.ID], 
+         (err, result) => {
+           if(err){
+              console.log(err)
+           } else {
+           }
+        });
    });
+   res.send("success")
 });
 
 router.delete("/delete", isLoggedIn, (req,res) => {

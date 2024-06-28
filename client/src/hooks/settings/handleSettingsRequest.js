@@ -11,7 +11,6 @@ export default function handleSettingsRequest(update) {
     const [loading, setLoading] = useState(false);
 
 
-    useEffect(()=>handleRequest(),[update])
     function handleRequest () {
         setLoading(true)
         axios({
@@ -33,6 +32,8 @@ export default function handleSettingsRequest(update) {
         setLoading(false)
         
     }
+    useEffect(()=>handleRequest(),[update])
+
     return [res, error, loading];
     
   }
