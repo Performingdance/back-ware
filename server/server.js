@@ -43,7 +43,7 @@ app.use(cors(corsOptions));
 
 app.use('/', baseRoute);
 app.use('/api/auth', authRoute);
-app.use('/api/s/user', userRoute);
+app.use('/api/s/users', userRoute);
 app.use('/api/s/settings', settingsRoute);
 app.use('/api/s/recipes', recipeRoute);
 app.use('/api/s/ing', ingRoute);

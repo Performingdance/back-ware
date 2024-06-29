@@ -25,7 +25,8 @@ function Settings() {
     {toggleLogoutPrompt && <AlertPopup title={logoutMessage} onClickOK={()=>setToggleLogoutPrompt(false) } />}
     { toggleRegister && <RegisterPopup onClickOK={() => {setToggleRegister(false), setToggleLogin(true)}} onClickAbort={()=> setToggleRegister(false)} />
     }
-{    auth?.user.role == "admin" && <EditUser />}
+    {  //auth?.user.role == "admin" && 
+      <EditUser />}
     </div>
     
     </div>

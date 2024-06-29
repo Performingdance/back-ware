@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import "../styles/User.css"
 import SVGIcon from './SVG'
 import pencil_square from '../assets/icons/pencil-square.svg'
 import handleUsersRequest from '../hooks/users/handleUserRequest'
 import { LabelInput } from './LabelBox'
+import Loading from './Loading'
+import errorHandling from '../services/errorHandling'
 
 export default function EditUser() {
 
@@ -85,6 +87,7 @@ export default function EditUser() {
 
   return (
     <div className='users-wrapper'>
+    {errUsers && <p className='errorMsg'>{errUsers.mesage}</p>}
       {users&& users.map((user, key)=>{
         if(edit == user.ID){
             editUserRef.ID = user.ID
@@ -120,8 +123,8 @@ export default function EditUser() {
         </div>)
         }
       })}
-
-    </div>
+        {loadingUsers && <Loading/>}
+    </div> 
   )
 }
 
