@@ -7,6 +7,17 @@ const uuid = require('uuid')
 const db = require('../lib/db.js');
 const {validateRegister,isLoggedIn} = require('../middleware/basicAuth.js');
 
+router.get("/all", isLoggedIn, (req, res, next) => {
+    db.query("SELECT * FROM users", (err,result) =>{
+        if(err){
+            console.log(err)
+            res.send(err)
+        }else{
+            res.send(result);
+        }
+    })
+    
+});
 
 router.post("/sign-up", validateRegister, (req, res, next) => {
     const username = req.body.username;
@@ -84,8 +95,5 @@ router.post("/login", (req, res, next) => {
     
 });
 
-router.get("/s", isLoggedIn, (req, res, next) => {
-    console.log(req.userData);
-    res.send('This is secret content');
-});
+
 module.exports = router;

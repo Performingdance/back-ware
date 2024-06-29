@@ -22,6 +22,7 @@ function Settings() {
 
 
   const handleSubmit = () =>{
+    setSubRes({})
     setSubLoading(true)
             axios({
                 axiosInstance: axios,
@@ -36,7 +37,7 @@ function Settings() {
             }).then((response)=>{
               //console.log(response)
               setUpdate(update+1)
-              setSubRes(response)
+              setSubRes({message:response})
 
             }).catch((err) => {
                 errorHandling(err)
@@ -115,7 +116,7 @@ function Settings() {
       <div className='setting-address'>
       {(settings[0]) && settingsList}
       </div>}
-      {subRes.length ? <h3 className='successMsg'>{"Erfolgreich gespeichert"}</h3>:""}
+      {subRes.message ? <h3 className='successMsg'>{"Erfolgreich gespeichert"}</h3>:""}
       {subError.length ? <h3 className='errorMsg'>{subError.message}</h3>:""}
     {<button onClick={(e)=>handleSubmit(e)} className='edit-btn button'  type='button'>Speichern</button>}
     </div>

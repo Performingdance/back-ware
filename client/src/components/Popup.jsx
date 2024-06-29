@@ -1978,8 +1978,6 @@ export function RegisterPopup({
   const [errMsg, setErrMsg] = useState("");
 
 
-  const [rRes, setRRes] = useState([]);
-  const [rError, setRError] = useState([]);
 
   
 
@@ -2025,6 +2023,7 @@ const handleSubmit = (e) => {
         return;
       }
     }).catch(function (error) {
+      setErrMsg(error)
       console.log(error);
     })
 
@@ -2044,7 +2043,7 @@ const handleSubmit = (e) => {
               </p>
             </div> :
             <div key="login_div" className="popup-title jc-c">
-            <p ref={errRef} className={errMsg.message? "errmsg" : "d-none"} aria-live='assertive'>{errMsg.message}</p>
+            <p ref={errRef} className={errMsg.message? "errorMsg" : "d-none"} aria-live='assertive'>{errMsg.message}</p>
             <h3 key="title" >Registrieren</h3>
 
 

@@ -178,7 +178,7 @@ calculator
 [x]         Preis von Preisliste übernehmen, Gesamtpreis berechenen / updaten
 [x]          Lieferzeitraum (ergänzt rechnungsnummer und erstellt neue Rechnung -2 mit allen Produkten nach dem Zeitraum)
 [x]        UI überarbeiten - Tabellenstruktur
-[]          Pdf erstellen
+[x]          Pdf erstellen
 []         
 Rechnugsübersicht, Rechnungsablage
 

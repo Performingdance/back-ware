@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const navigate = useNavigate();
   const loginAction = async (username, password) => {
@@ -19,8 +19,9 @@ const AuthProvider = ({ children }) => {
         "password": password
     },
   }).then(function (res){
-    //console.log(response.data);
+    //console.log(res.data.user);
     if (res.data) {
+      
       setUser(res.data.user);
       setToken(res.data.token);
       localStorage.setItem("token", res.data.token);
@@ -31,7 +32,7 @@ const AuthProvider = ({ children }) => {
   })
 };
   const logOut = () => {
-    setUser(null);
+    setUser({});
     setToken("");
     localStorage.removeItem("token");
     navigate("/home");
