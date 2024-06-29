@@ -12,7 +12,7 @@ function Settings() {
   const [toggleRegister, setToggleRegister] = useState(false)
   
   const auth = useAuth()
-
+  const userrole = localStorage.getItem("role")
 
   return (
     <div className='content'>
@@ -25,7 +25,7 @@ function Settings() {
     {toggleLogoutPrompt && <AlertPopup title={logoutMessage} onClickOK={()=>setToggleLogoutPrompt(false) } />}
     { toggleRegister && <RegisterPopup onClickOK={() => {setToggleRegister(false), setToggleLogin(true)}} onClickAbort={()=> setToggleRegister(false)} />
     }
-    {  //auth?.user.role == "admin" && 
+    {  userrole == "admin" && 
       <EditUser />}
     </div>
     

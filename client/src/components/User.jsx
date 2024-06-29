@@ -46,7 +46,7 @@ export default function EditUser() {
             },
             data : {
                 "userID": editUserRef.ID,
-                "name": editUserRef.username,
+                "username": editUserRef.username,
                 "email": editUserRef.email,
                 "role": editUserRef.role
             }

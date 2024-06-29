@@ -14,7 +14,7 @@ router.post("/sign-up", validateRegister, (req, res, next) => {
     const role = req.body.role || "client";
     const email = req.body.email
 
-    db.query(`SELECT id FROM users WHERE LOWER(username) = LOWER(?)`, username, (err, result) => {
+    db.query(`SELECT ID FROM users WHERE LOWER(username) = LOWER(?)`, username, (err, result) => {
         if(result && result.length) {//error
             return res.status(409).send({
                 message: "Benutzername bereits vergeben"
@@ -27,7 +27,7 @@ router.post("/sign-up", validateRegister, (req, res, next) => {
                         message: err,
                     });
                 } else {
-                    db.query(`INSERT INTO users (id, username, password, email, registered, role) VALUES ('${uuid.v4()}',?,'${hash}', email, now(), ?);`,[username, email, role],
+                    db.query(`INSERT INTO users (ID, username, password, email, registered, role) VALUES ('${uuid.v4()}',?,'${hash}', email, now(), ?);`,[username, email, role],
                     (err, result) => {
                         if(err) {
                             return res.status(400).send({
@@ -74,7 +74,7 @@ router.post("/login", (req, res, next) => {
                     userId: result[0].id
                     }, process.env.REACT_APP_SECRET_KEY, {expiresIn: "7d"}
                     );
-                db.query(`UPDATE users SET last_login = now() WHERE id = '${result[0].id}';`);
+                db.query(`UPDATE users SET last_login = now() WHERE ID = '${result[0].id}';`);
                 return res.status(200).send({
                     message: "angemeldet!",
                     auth: true,
@@ -90,8 +90,4 @@ router.post("/login", (req, res, next) => {
     
 });
 
-router.get("/s", isLoggedIn, (req, res, next) => {
-    //console.log(req.userData);
-    res.send('This is secret content');
-});
 module.exports = router;

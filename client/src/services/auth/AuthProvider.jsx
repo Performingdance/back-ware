@@ -25,6 +25,8 @@ const AuthProvider = ({ children }) => {
       setUser(res.data.user);
       setToken(res.data.token);
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", res.data.user.username);
+      localStorage.setItem("role", res.data.user.role);
       return;
     }
   }).catch(function (error) {
@@ -32,9 +34,11 @@ const AuthProvider = ({ children }) => {
   })
 };
   const logOut = () => {
-    setUser({});
+    setUser(null);
     setToken("");
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
     navigate("/home");
   };
 
