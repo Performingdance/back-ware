@@ -21,7 +21,7 @@ function Settings() {
       <button key={"logout"} className='btn edit-btn' onClick={()=>auth.logOut()}><SVGIcon src={logout} class="svg-icon-md"/> </button>
       <button key={"register"} className='btn edit-btn' onClick={()=>setToggleRegister(true)}><SVGIcon src={person_plus} class="svg-icon-md"/> </button>   
     </div>
-    <div className='page-content' >
+    <div className='page-content-wide' >
     {toggleLogoutPrompt && <AlertPopup title={logoutMessage} onClickOK={()=>setToggleLogoutPrompt(false) } />}
     { toggleRegister && <RegisterPopup onClickOK={() => {setToggleRegister(false), setToggleLogin(true)}} onClickAbort={()=> setToggleRegister(false)} />
     }

@@ -1,0 +1,18 @@
+.users-wrapper{
+ position: relative;
+ width: 100%;
+ justify-self: center;
+ justify-content: center;
+
+}
+.user-edit-div, .user-div  {
+    border: var(--border);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-accent-05);
+   
+}
+.user-edit-div, .user-div {
+    display: inline-flex;
+
+   
+}

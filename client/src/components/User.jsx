@@ -1,11 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react'
-import "../styles/User.css"
-import SVGIcon from './SVG'
-import pencil_square from '../assets/icons/pencil-square.svg'
-import handleUsersRequest from '../hooks/users/handleUserRequest'
-import { LabelInput } from './LabelBox'
-import Loading from './Loading'
-import errorHandling from '../services/errorHandling'
+import React, { useEffect, useState, useRef } from 'react';
+import "../styles/User.css";
+import SVGIcon from './SVG';
+import pencil_square from '../assets/icons/pencil-square.svg';
+import trash from '../assets/icons/trash.svg';
+import check from '../assets/icons/check.svg';
+import x_circle from '../assets/icons/x-circle.svg';
+import handleUsersRequest from '../hooks/users/handleUserRequest';
+import LabelBox, { LabelInput } from './LabelBox';
+import Loading from './Loading';
+import errorHandling from '../services/errorHandling';
+import axios from '../apis/backWare';
+import authHeader from '../services/auth-header';
 
 export default function EditUser() {
 
@@ -16,7 +21,7 @@ export default function EditUser() {
 
     let editUserRef = useRef({
         ID: -1,
-        name:"",
+        username:"",
         email:"",
         role:""
     })
@@ -41,7 +46,7 @@ export default function EditUser() {
             },
             data : {
                 "userID": editUserRef.ID,
-                "name": editUserRef.name,
+                "name": editUserRef.username,
                 "email": editUserRef.email,
                 "role": editUserRef.role
             }
@@ -88,36 +93,34 @@ export default function EditUser() {
   return (
     <div className='users-wrapper'>
     {errUsers && <p className='errorMsg'>{errUsers.mesage}</p>}
-      {users&& users.map((user, key)=>{
-        if(edit == user.ID){
+      {(users)&& users.map((user, key)=>{
+        if(edit == editUserRef.ID){
             editUserRef.ID = user.ID
-            editUserRef.name = user.name
+            editUserRef.username = user.username
             editUserRef.email = user.email
             editUserRef.role = user.role
         return(
-        <div key={key+"user-edit-div"}>
-            <LabelInput key={key+"user-name"} placeholder={user.name} onChange={(e)=>{editUserRef.name= e.target.value}}></LabelInput>
-            <LabelInput key={key+"user-email"} placeholder={user.email} onChange={(e)=>{editUserRef.email= e.target.value}}></LabelInput>
+        <div key={key+"user-edit-div"} className='user-edit-div'>
+            <LabelInput key={key+"user-name"} class="user-input" title="Name" placeholder={user.username} onChange={(e)=>{editUserRef.username= e.target.value}}></LabelInput>
+            <LabelInput key={key+"user-email"} class="user-input" title="Email" placeholder={user.email} onChange={(e)=>{editUserRef.email= e.target.value}}></LabelInput>
             <p key={key+"user-role"}>{user.role}</p>
-            <div key={key + "btns"} className='rc-btns' > 
-                <button key={key + "del"} className='rc-btn' onClick={()=>handleUserDelete(user.ID)}>
-                <SVGIcon class="svg-icon-md" src={trash}/>
-                </button>
-                <button key={key+ "cancel"} className='rc-btn ' onClick={()=> setEdit(-1)}>
-                <SVGIcon class="svg-icon-md" src={x_circle}/>
-                </button>
-                <button key={key + "check"} className='rc-btn ' onClick={()=> [handleSubmit(),setEdit(-1)]}>
-                <SVGIcon class="svg-icon-md" src={check}/>
-                </button>
-            </div>
+            <button key={key + "del"} className='rc-btn' onClick={()=>handleUserDelete(user.ID)}>
+            <SVGIcon class="svg-icon-md" src={trash}/>
+            </button>
+            <button key={key+ "cancel"} className='rc-btn ' onClick={()=> setEdit(-1)}>
+            <SVGIcon class="svg-icon-md" src={x_circle}/>
+            </button>
+            <button key={key + "check"} className='rc-btn ' onClick={()=> [handleSubmit(),setEdit(-1)]}>
+            <SVGIcon class="svg-icon-md" src={check}/>
+            </button>
         </div>
         )}else{
         return(
-            <div key={key+"user-div"}>
-            <p key={key+"user-name"}>{user.name}</p>
-            <p key={key+"user-email"}>{user.email}</p>
-            <p key={key+"user-role"}>{user.role}</p>
-            <button key={form.ID + "edit"} className='rc-btn' onClick={()=>setEdit(user.ID)}>
+            <div key={key+"user-div"} className='user-div'>
+            <LabelBox key={key+"user-name"} title="Name" text={user.username || "-"}></LabelBox>
+            <LabelBox key={key+"user-email"} title="Email" text={user.email || "-"}></LabelBox>
+            <LabelBox key={key+"user-role"} title="Rolle" text={user.role || "-"}></LabelBox>
+            <button key={key + "edit"} className='rc-btn' onClick={()=>{setEdit(user.ID), editUserRef.ID = user.ID}}>
                 <SVGIcon class="svg-icon-md" src={pencil_square}/>
             </button>
         </div>)

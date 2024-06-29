@@ -97,11 +97,11 @@ router.get("/all", isLoggedIn, (req, res, next) => {
 
 router.put("/update", isLoggedIn, (req, res, next) => {
     const userID = req.body.userID    
-    const name = req.body.name || ""
+    const username = req.body.username || ""
     const email = req.body.email || ""
     const role = req.body.role || employee
 
-    db.query("UPDATE users SET name = ?, email = ?, role = ? WHERE ID = ?",
+    db.query("UPDATE users SET username = ?, email = ?, role = ? WHERE ID = ?",
         [name,email,role,userID],
         (err,result) =>{
         if(err){
