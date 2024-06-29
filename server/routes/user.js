@@ -102,7 +102,7 @@ router.put("/update", isLoggedIn, (req, res, next) => {
     const role = req.body.role || employee
 
     db.query("UPDATE users SET username = ?, email = ?, role = ? WHERE ID = ?",
-        [name,email,role,userID],
+        [username,email,role,userID],
         (err,result) =>{
         if(err){
             console.log(err)
