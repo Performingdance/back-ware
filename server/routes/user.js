@@ -95,5 +95,34 @@ router.post("/login", (req, res, next) => {
     
 });
 
-
+router.put("/update", isLoggedIn, (req, res, next) => {
+    const userID = req.body.userID    
+    const name = req.body.name || ""
+    const email = req.body.email || ""
+    const role = req.body.role || employee
+    
+    db.query("UPDATE users SET name = ?, email = ?, role = ? WHERE ID = ?",
+        [name,email,role,userID],
+        (err,result) =>{
+        if(err){
+            console.log(err)
+            res.send(err)
+        }else{
+            res.send(result);
+        }
+    })
+    
+});
+router.post("/delete", isLoggedIn, (req, res, next) => {
+    const userID = req.body.userID
+    db.query("DELETE FROM users WHERE ID = ?",userID, (err,result) =>{
+        if(err){
+            console.log(err)
+            res.send(err)
+        }else{
+            res.send(result);
+        }
+    })
+    
+});
 module.exports = router;
