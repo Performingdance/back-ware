@@ -1,6 +1,5 @@
 .users-wrapper{
  position: relative;
- width: 100%;
  justify-self: center;
  justify-content: center;
 
@@ -9,10 +8,15 @@
     border: var(--border);
     border-radius: var(--border-radius);
     background-color: var(--bg-accent-05);
+    padding: 0.3rem;
+    margin: 0.3rem;
+    min-width: 90%;
+    justify-content: center;
    
 }
 .user-edit-div, .user-div {
     display: inline-flex;
-
-   
+}
+.user-input{
+    margin: 0.3rem;
 }

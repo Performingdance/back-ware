@@ -50,9 +50,10 @@ orders.map((order, key)=> {
           <a href={`/orders/${order.ID}`} type="button" className='button rc-btn'>
               <SVGIcon class="rc-btn-svg" src={pencil_square}/>
         </a>
+        {(order.billed_items != order.total_items) &&
         <a onClick={()=>{setInvoicePrompt(true), orderIDRef.current = order.ID, orderNameRef.current = order.name}} type="button" className='button rc-btn'>
           <SVGIcon class="rc-btn-svg" src={file_plus}/>
-        </a>         
+        </a> }        
         </div>}
         
       </li>

@@ -33,13 +33,19 @@ export default function handleClientOrderRequest() {
                 if(!response.data.length){
                     const newRes = [{
                         ID: -1, 
-                        name: "Neue Bestellung" 
+                        name: "Neue Bestellung" ,
+                        billed_items: 0,
+                        total_items: 0
                    }]
                    setRes(newRes)
     
                 }else{
                     const addRes = 
-                        [{ID: -1, name: "Neue Bestellung"}, ...response.data]
+                        [{ID: -1, 
+                        name: "Neue Bestellung", 
+                        billed_items: 0,
+                        total_items: 0}, 
+                        ...response.data]
                 
                     setRes(addRes)
                 }

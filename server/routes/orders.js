@@ -144,7 +144,7 @@ router.get("/all/items/noInvoice", isLoggedIn, (req, res, next) => {
 router.post("/all/client", isLoggedIn, (req, res, next) => {   
     const clientID = req.body.clientID;
 
-            db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name 
+            db.query(`SELECT ID, CONCAT("#" , ID , " (" , DATE_FORMAT(order_date , "%d.%m.%y") , ")") AS name, billed_items, total_items 
             FROM orders 
             WHERE clientID = ?
             ORDER BY ID DESC`, 

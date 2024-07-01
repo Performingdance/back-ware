@@ -20,7 +20,7 @@ export default function EditUser() {
     useEffect(()=>handleURequest(),[updateUsers])
 
     let editUserRef = useRef({
-        ID: -1,
+        ID: "-1",
         username:"",
         email:"",
         role:""
@@ -35,7 +35,8 @@ export default function EditUser() {
 
 
     function handleSubmit(){
-        if(editUserRef.ID == -1){return}
+        if(editUserRef.ID == "-1"){
+            return}
         setUpdLoading(true)
         axios({
             axiosInstance: axios,
@@ -92,17 +93,16 @@ export default function EditUser() {
 
   return (
     <div className='users-wrapper'>
-    {errUsers && <p className='errorMsg'>{errUsers.mesage}</p>}
+    {errUsers && <p className='errorMsg'>{errUsers.message}</p>}
       {(users)&& users.map((user, key)=>{
-        if(edit == editUserRef.ID){
-            editUserRef.ID = user.ID
+        if((edit == user.ID)){
             editUserRef.username = user.username
             editUserRef.email = user.email
             editUserRef.role = user.role
         return(
         <div key={key+"user-edit-div"} className='user-edit-div'>
-            <LabelInput key={key+"user-name"} class="user-input" title="Name" placeholder={user.username} onChange={(e)=>{editUserRef.username= e.target.value}}></LabelInput>
-            <LabelInput key={key+"user-email"} class="user-input" title="Email" placeholder={user.email} onChange={(e)=>{editUserRef.email= e.target.value}}></LabelInput>
+            <LabelInput key={key+"user-name"} className="user-input" title="Name" placeholder={user.username} onChange={(e)=>{editUserRef.username= e.target.value}}></LabelInput>
+            <LabelInput key={key+"user-email"} className="user-input" title="Email" placeholder={user.email} onChange={(e)=>{editUserRef.email= e.target.value}}></LabelInput>
             <p key={key+"user-role"}>{user.role}</p>
             <button key={key + "del"} className='rc-btn' onClick={()=>handleUserDelete(user.ID)}>
             <SVGIcon class="svg-icon-md" src={trash}/>
