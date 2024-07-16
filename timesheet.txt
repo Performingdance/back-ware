@@ -139,7 +139,8 @@
 21.06. 2h
 28.06. 2h
 29.06. 2h
-
+01.07. 2,5h
+03.07.1,5h
 
 Kosten:
     Node server Render

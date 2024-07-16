@@ -8,7 +8,6 @@ import authHeader from '../services/auth-header';
 import config from '../config.json'
 import '../styles/Settings.css'
 
-
 function Settings() {
   const [edit,setEdit] = useState(false)
   const [update,setUpdate] = useState(0)
@@ -19,6 +18,7 @@ function Settings() {
 
   const settingNames = config.SETTINGS_NAMES_DE;
   let editList = useRef([])
+
 
 
   const handleSubmit = () =>{

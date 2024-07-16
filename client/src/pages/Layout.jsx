@@ -50,6 +50,7 @@ const Layout = () =>{
   <DropdownMenu class="dropdown dropdown-end">
       <DropdownItem href="/account" class="menu-item" leftIcon={person_vcard}>Konto</DropdownItem>
       <DropdownItem href="/settings" class="menu-item" leftIcon={gear_wide}>Einstellungen</DropdownItem>
+      <DropdownItem href="/timeSheets" class="menu-item" leftIcon={gear_wide}>Zeiterfassung</DropdownItem>
   </DropdownMenu>
 </NavItem>
 </Navbar>

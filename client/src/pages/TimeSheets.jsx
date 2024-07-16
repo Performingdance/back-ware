@@ -8,6 +8,7 @@ function Settings() {
   return (
     <div className='content'>
     <Header title="Einstellungen"/>
+    
     </div>
   )
 }
