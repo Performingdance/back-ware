@@ -4,7 +4,7 @@ const {isLoggedIn} = require('../middleware/basicAuth.js');
 const multer =  require('multer')
 const path = require('path');
 const db = require('../lib/db.js');
-import { v2 as cloudinary } from 'cloudinary';
+const {v2 as cloudinary} require('cloudinary');
 const REACT_APP_IMG_API_CLOUD_NAME = process.env.REACT_APP_IMG_API_CLOUD_NAME
 const REACT_APP_IMG_API_KEY = process.env.REACT_APP_IMG_API_KEY
 const REACT_APP_IMG_API_SECRET = process.env.REACT_APP_IMG_API_SECRET
