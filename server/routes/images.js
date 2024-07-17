@@ -4,7 +4,7 @@ const {isLoggedIn} = require('../middleware/basicAuth.js');
 const multer =  require('multer')
 const path = require('path');
 const db = require('../lib/db.js');
-const {v2} = require('cloudinary');
+const {v2:cloudinary} = require('cloudinary');
 const REACT_APP_IMG_API_CLOUD_NAME = process.env.REACT_APP_IMG_API_CLOUD_NAME
 const REACT_APP_IMG_API_KEY = process.env.REACT_APP_IMG_API_KEY
 const REACT_APP_IMG_API_SECRET = process.env.REACT_APP_IMG_API_SECRET
@@ -12,7 +12,7 @@ const REACT_APP_IMG_API_SECRET = process.env.REACT_APP_IMG_API_SECRET
 
 
 let file_name
-const cloudinary = v2
+
 
 router.post('/photoUpload', isLoggedIn, (req, res) => {
   const productID = req.body.productID
