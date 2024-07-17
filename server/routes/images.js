@@ -1,10 +1,10 @@
+import { v2 as cloudinary } from 'cloudinary';
 const express = require('express');
 const router = express.Router();
 const {isLoggedIn} = require('../middleware/basicAuth.js');
 const multer =  require('multer')
 const path = require('path');
 const db = require('../lib/db.js');
-const {v2:cloudinary} = require('cloudinary');
 const REACT_APP_IMG_API_CLOUD_NAME = process.env.REACT_APP_IMG_API_CLOUD_NAME
 const REACT_APP_IMG_API_KEY = process.env.REACT_APP_IMG_API_KEY
 const REACT_APP_IMG_API_SECRET = process.env.REACT_APP_IMG_API_SECRET
